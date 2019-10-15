@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <body>
+        <table style="width:80%;margin:1px; font-size:11">
+            <div class="capt" style="width:80%;margin:1px; font-size:21"><strong>Authors List</strong></div>
+            <thead>
+                <tr><th>First-Name(s)</th><th>Last-Name(s)</th><th>Birth(s)</th><th>Died(s)</th></tr>      
+            </thead>
+            <tbody>
+                {% if author_list %}
+                {% for author in author_list %}
+                    <tr><td><a href="{{ author.get_absolute_url }}">{{ author.first_name }}</a></td><td><a href="{{ author.get_absolute_url }}">{{ author.last_name }}</a></td><td>{{author.date_of_birth}}</td><td><a href="{% url 'author_delete' author.id %}">{{author.date_of_death}}</a></td></tr>
+                {% endfor %}
+                {% else %}
+                    <p>There are no auther in list yet.</p>
+                {% endif %}      
+            </tbody>
+        </table>
+        {% block pagination %}
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    <div>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</div>
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        {% endblock %} 
+    </body>
+    {% endblock %}
+</html>

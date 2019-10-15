@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} {{ cls }} subjects {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+    <head>
+
+    </head>
+    <body>
+            <table>
+                 <div class="capt" style="font-size:13;"><strong> {{ counts }} Subjects</strong> </div>
+                <thead>
+                    <tr><th>Teacher</th><th>Subject</th><th>Review</th><th>Males</th><th>Females</th><th>Accounts</th>{% if request.user.is_superuser == True  and user.is_staff == True %}<th>Delete</th>{% endif %}<th>Session</th></tr>      
+                </thead>
+                <tbody>
+                    {% if tutor %}
+                    {% for sub in tutor %}
+                        <tr><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.teacher_name }}</td><td>{{ sub.subject }}</td><td><a href="{% url 'subject_view' pk=sub.id %}">{{ sub.term }}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td>{{ sub.accounts }}</td>{% if request.user.is_superuser == True  and user.is_staff == True %}<td><a href="{% url 'warning_delete' pk=sub.id %}"><span class="glyphicon glyphicon-remove"></span></a></td>{% endif %}<td>{{ sub.session }}</td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <pre style="width:70%;" >There are no records.</pre>
+                    {% endif %}       
+                </tbody>
+                <tfoot>
+                    <tr><th colspan="10"><div><a href="{% url 'once_results_junior_senior' pk=pk %}" style="color:green;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'results_junior_senior' pk=pk %}" style="color:red;"><span class="glyphicon glyphicon-th-large"></span></a></div></th></tr>
+                </tfoot>
+            </table>
+    </body>
+	    {% endblock %}
+</html>

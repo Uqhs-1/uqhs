@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		<title> {% block title %}{{ request.user.username }}|Subject Transfer {% endblock %}</title>
+	</head>
+	<body>
+	{% block content %}
+       <table>
+				 <div class="capt"><a href="{% url 'created_subject_list' pk=0 %}" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{{ counts }}</a></strong> <strong>subjects on record</strong></div><tr>
+            <tr><th>Move Account</th><th>Subject</th><th>Names</th><th>Review</th><th>Created</th><th>Updated</th><th>Accounts</th></tr>      
+          {% if all_page %}
+          {% for sub in all_page %}
+          <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_home_view' pk=sub.id %}">{{ sub.teacher_name }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id %}">{{ sub.first_term.subject }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id %}">{{ sub.first_term.Class }}</a></td><td>{% if sub.second_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=1 %}">{% else %}<a href="{% url 'subject_view' pk=sub.second_term.id %}">{% endif %}{{ sub.second_term.Class|default:'Update' }}</a></td><td>{% if sub.third_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=2 %}">{% else %}<a href="{% url 'subject_view' pk=sub.third_term.id %}">{% endif %}{{ sub.third_term.Class|default:'Update' }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td></tr>
+          {% endfor %}
+          {% else %}
+              <pre style="width:70%;">There are no records.</pre>
+          {% endif %}  
+       </table>
+         </body> 
+	 {% if all_page.has_other_pages %}
+      <em class="pagination" style="width:80%;margin-left:-50px;">
+        {% if all_page.has_previous %}
+          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_page.paginator.page_range %}
+          {% if all_page.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if all_page.has_next %}
+          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </em>
+    {% endif %}
+ <div><a href="{% url 'all_teachers' %}" style="font-family:Helvetica; margin-left:36%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'home' %}" style="font-family:Helvetica; margin-left:0%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a></div>    
+
+    {% endblock %}
+
+</html>
+
+ 
+
+
+ 
+
+ 

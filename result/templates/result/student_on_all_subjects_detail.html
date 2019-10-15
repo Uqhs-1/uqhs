@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} {{ count_t }} subjects returened {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+	   <div class="capt"><strong style=" color:white;" title="select any account for subject details">{{ count_t }}</strong> <em style="color:white;">subject instances. </em></div>
+        <table>
+        <thead>
+            <tr><th>Accounts ({{ count_t }})</th><th>Activity_Summary: {{ count_s }}</th></tr> 
+         </thead>
+          {% if all_page %}
+          {% for scr in all_page %} 
+          
+          <tr>
+            <td><a href="{% url 'subject_view' pk=scr.id %}" title="{{ scr.teacher_name }}">{{ scr.accounts }}</a></td><td>{{ scr.model_summary }}</td>
+          </tr>
+          
+          {% endfor %}
+          {% else %}
+              <pre style="width:70%;" >There are no records.</pre>
+          {% endif %}
+          <tfoot>
+                <tr><th colspan="10"><div><a href="{% url 'home' %}" style="color:green;"><span class="glyphicon glyphicon-home" title="home_page"></span></a><a href="{% url 'admin_page' %}" style="color:red;"><span class="glyphicon glyphicon-user" title="admin_page"></span></a></div></th></tr>
+            </tfoot>
+         </table>
+        <div>{% if pk != '1' %}<a href="{% url 'subject_view' pk=pk %}">Click Next</a>{% endif %}</div>
+	{% if all_page.has_other_pages %}
+      <ul class="pagination" style="width:80%;margin-left:-50px;"style="width:80%;margin-left:-50px;">
+        {% if all_page.has_previous %}
+          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_page.paginator.page_range %}
+          {% if all_page.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if all_page.has_next %}
+          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+     {% endblock %}
+
+

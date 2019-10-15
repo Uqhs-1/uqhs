@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> {% block title %} downloading;{{tutor.subject}}/{{ tutor.Class }}/{{ tutor.term }} in PDF format {% endblock %} </title>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900" rel="stylesheet" />
+<style>
+        @page {
+            size: "A4";
+            margin: 2.5cm 1.5cm 3.5cm 1.5cm;
+            @bottom-center {
+                background: url({% static 'site/img/logo-pdf.svg' %}) no-repeat center top;
+                background-size: auto 1.5cm;
+                padding-top: 1.8cm;
+                content: "{% trans "Donation made via www.make-impact.org" %}";
+                font: 10pt "Playfair Display";
+                text-align: center;
+                vertical-align: top;
+            }
+        }
+</style>
+<pre class "footer">/Result generated: - {{ today }}/</pre>
+<div class="header">
+        <div style="font-family:Helvetica; color:white; font-size: 31px;"><em style="color:red;">U</em>MMUL_<em style="color:red;">Q</em>URA_<em style="color:red;">H</em>IGH_<em style="color:red;">S</em>CHOOL</div>
+</div>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+        
+            <pre style="width:50%;font-size: 11px;">Subject: <em style="color:sienna;">{{tutor.subject}}</em>, Class: <em style="color:sienna;">{{ tutor.Class }}</em>, Term:  <em style="color:sienna;">{{ tutor.term }}</em> | Students in Class:<em style="color:sienna;">{{all_count}}</em> Total Scores: <em style="color:sienna;">{{all_x}}</em> Overall %: <em style="color:sienna;">{{all_y}}</em></pre>
+        </div>
+        <table class="table">
+          <tr>
+            <em class="thr"><strong>RESULT SHEET</strong> </em>
+            <tr><th>STUDENT NAME ({{ count_grade }})</th><th>Test</th><th>Asgn</th><th>Atd</th><th>Total</th><th>Exam</th><th>Sum</th><th>Grade</th><th>Pos</th></tr> 
+          </tr>
+          {% if mains %}
+          {% for scr in mains %} 
+          <tr>
+            <td  style="width: 50%; font-family: Helvetica;">{{ scr.student_name }}</td><td style="color:sienna;">{{ scr.test }}</a></td><td><em style="color:sienna;">{{ scr.agn }}</td><td><em style="color:sienna;">{{ scr.atd }}</a></td><td><em style="color:sienna;">{{ scr.total }}</a></td><td><em style="color:sienna;">{{ scr.exam }}</a></td><td><em style="color:sienna;">{{ scr.agr }}</a></td><td><em style="color:green;">{{ scr.grade }}</a></td><td><em style="color:red;">{{ scr.posi }}</a></td>
+          </tr>
+          {% endfor %}
+          {% else %}
+              <p>There are no records.</p>
+          {% endif %}
+          <tr class="capt"><td colspan="4"><strong>Subject_by:</strong>{{ tutor.teacher_name }}</td><td> <strong>AGR:</td><td>{{ subject_scores }}</td><td><strong>PER:</strong></td><td>{{ subject_pert }}%</td></tr>
+        </table>
+    </div>
+</div>
+<div class="list-group">
+       <strong>Approved By:</strong>  _______________________________________________________  <strong>Sign:</strong>  _________________  <strong>Date:</strong>  _________________________
+</div>
+</body>
+
+</html>

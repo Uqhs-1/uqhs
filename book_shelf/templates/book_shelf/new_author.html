@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if form.errors %}
+        {{ form.errors }}
+    {% endif %}
+    <form method="post" action="{% url 'author_create' %}">
+        <div class="container text-center">
+<br><p style="width:50%;margin-left: 0px; font-size:12">Author Creation Form!</p>
+<div class='signup' style="width:50%;margin-left: 0px; font-size:12">
+
+<form method="post" style="width:70%;margin-left:89; font-size:11;">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.first_name|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.last_name|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.date_of_birth|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.date_of_death|as_crispy_field }}
+      </div>
+    </div>
+    create new <a href="{% url 'language_create' %}" target=_blank >Language</a>, <a href="{% url 'book_create' %}" target=_blank >Book</a> or <a href="{% url 'genre_create' %}" target=_blank >Genre</a> one-time!
+    <button type="submit" class="btn btn-success">Done!</button>
+  </form>
+</div>
+{% endblock %}

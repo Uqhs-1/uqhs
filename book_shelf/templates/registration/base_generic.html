@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+   <head>
+       <div id="head">
+            <title>Home</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="{% static 'css/cat_log.css' %}">
+            <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+            <div class="header">
+              <img src="{% static "studentrecord/iiro.jpg"%}" alt="iiro-logo"  width="70"/>
+              <div class="header-right">
+              <a class=""href="#about"><em>UMMUL_QURA RESULT PORTAL</em></a>
+                <a class="active" href="{% url 'index' %}"><h6>Home</h6></a>
+                <a href="{% url 'books' %}"><h6>Books</h6></a>
+                <a href="{% url 'authors' %}"><h6>Authors</h6></a>
+              </div>
+          </div>
+          <div class="header-left">
+              <div class="caption">
+                  <h6>Welcom to UMMUL_QURA RESULT PORTAL</h6>   
+              </div>
+          </div>
+              <!-- Side navigation -->
+          <div class="sidenav">
+          {% if user.is_authenticated %}
+              <a href="{% url 'my-borrowed' %}" class=""><small><h6>Borrwed</h6></a>
+              <a href="{% url 'logout' %}" class="top-menu"><h6>Log_out</h6></a>
+              <a href=""><small><span class="glyphicon glyphicon-flag"></small></span><h6>{{ request.user.email|default:"Action required!" }}</h6></a>
+              <img class="rounded-circle" src="{% static "StudentScores/pic5.jpg"%}" alt="My_pics" style="max-width: 2em; margin: auto 0px;">/>
+          {% else %}
+              <a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span><h6>Login</h6></a>
+              <a href=""><span class="glyphicon glyphicon-user"></span><h6>Sign Up</h6></a>
+              
+         {% endif %} 
+          </div>
+        
+        <!-- Page content -->
+        <div class="main">
+          ...
+        </div>
+            <!-- Side navigation -->
+          <div class="sidenavs">
+          <bodys>
+            <h1><P class='blocktext'>ADMONITIONS</P></h1>
+            <navs>
+                <ul>
+                    <li><a href="#Reliance">Reliance</a></li>
+                    <li><a href="#Provider">Provider</a></li>
+                    <li><a href="#Promise">Promise</a></li>
+                    <li><a href="#Healthier">Healthier</a></li>
+                </ul>
+            </navs>
+            <article id="Reliance"> 
+            <h2>Reliance on Allah</h2>
+            <img src="{% static "studentrecord/pic1.jpg"%}" alt="True Provider for the Universe!" width=620>
+            <h3>List of features</h3>
+            <ul>
+                <li>Aboundace Provission:1</li>
+                <li>Total Security:2</li>
+                <li>Hope for the Hopeless:3</li>
+            </ul>
+    
+            <div>
+              <hr><pre>These are the interpretations! The only one who provide for all is Allah(SWA), His holy messanger atested to that!</pre><hr> 
+            </div>
+            <ol>First wisdom: No one like him.</ol>
+            <ol>Second wisdom: He is everlasting.</ol>
+            <ol>Third wisdom: His knowledge upon all.</ol>
+            </article>
+            <article id="Provider"> 
+            <h2>The Provider</h2>
+            <img src="{% static "studentrecord/pic2.jpg"%}" alt="True Provider for the Universe!" width=620>
+            <h3>List of features</h3>
+            <ul>
+                <li>Giver that never mind:1</li>
+                <li>Giver that never lack:2</li>
+                <li>Giver that never being given:3</li>
+            </ul>
+    
+            <div>
+              <hr><pre>This is the interpretations! Any other giver will surely lack in one way or the other! Allah Akbar!! </pre><hr> 
+            </div>
+            <ol>First wisdom: He reward calling on Him alone.</ol>
+            <ol>Second wisdom: He respond to call always.</ol>
+            <ol>Third wisdom: He has painful torment for detesters.</ol>
+            </article>
+            <article id="Promise"> 
+            <h2>He Fails Not His Promise</h2>
+            <img src="{% static "studentrecord/pic3.jpg"%}" alt="True Provider for the Universe!" width=620>
+            <h3>List of features</h3>
+            <ul>
+                <li>Alway with His Sincare Servant:1</li>
+                <li>He them aright!:2</li>
+                <li>His Comfort is Certain:3</li>
+            </ul>
+    
+            <div>
+              <hr><pre>This is the interpretations! He is Every part of our journey!</pre><hr> 
+            </div>
+            <ol>First wisdom</ol>
+            <ol>Second wisdom</ol>
+            <ol>Third wisdom</ol>
+            </article>
+            <article id="Healthier">
+            <h2>Healthier than Any!</h2>
+            <img src="{% static "studentrecord/pic4.jpg"%}" alt="True Provider for the Universe!" width=620>
+            <h3>List of features</h3>
+            <ul>
+                <li>He test with sickness:1</li>
+                <li>His the provider of sound health:2</li>
+                <li>All doctors are only care, but He alone cures!:3</li>
+            </ul>
+    
+            <div>
+              <hr><pre>This is the interpretations! All doctors are only care, but He alone cures!</pre><hr> 
+            </div>
+            <ol>First wisdom: Sure</ol>
+            <ol>Second wisdom: Real</ol>
+            <ol>Third wisdom: Reliable</ol>
+            </article>
+        </bodys>
+          </div>
+            
+        <!-- Page content -->
+        <div class="mains">
+          ...
+        </div>
+    </div>
+   </head>
+    <body>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+    <div class="footer">
+      <a href="">©Copyright 2019 examing body. All rights reversed.</a>
+      <div class="footer-left">
+         <em class="account"> {{ user.username }} <small><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span></a></small></em> 
+      </div>
+      
+    </div>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% block content %}
+  <html>
+    <head>
+        <title>{% block title %}Welcome Page icon {% endblock %}</title>
+        <link rel = 'icon' "href=https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200.png" type='image/x-icon'>
+    </head>
+    <div class="capt">User's Guides</div>
+    <form class="fcs">
+          <p class="first">Step 1: Use Notepad or any other text editor to prepare a file containing student names, test scores, attendance scores, asignment scores and exam scores e.g (TUNDE OLUMO, 20, 10, 10, 60) in a new line for each students. Then save it with a file name e.g my_file.txt. When there are two gender classes, just separate the class A from class B by leaving an empty line. Click <a href="{% url 'samples_disp' %}">here </a>for sample display, then <a href="{% url 'samples_down' %}" download>download</a> sample and reset it in line by line as in the sample displayed.</p>
+          <p class="second">Step 2: Login <span class="glyphicon glyphicon-log-in"></span> or Sing-up (new users) <span class="glyphicon glyphicon-user"></span> into your account. Click on the START butten in the left navigation bar. Complete the form approprately (class, term and subject from the dropdown lists; If your subject not listed, create it and refresh the page to reflect newly created subject.) and the subject teacher name, submit the form. 
+          <p class="third">Step 3: Then, choose your prepared txt file. Provide correct file name here for attachement. Upload it by simply click <a href="" class="#">upload!</a>. You will be redirected to your <a href="{% url 'home' %}" >DASHBOARD</a></p>
+          <p class="fourth">Note: On the DASHBORAD, you can navigate to various uploaded files through the blue links. With this, class subject can be corrected all at once or by review each student records.</p>
+          <p class="fourth">Step 4: On the successful completion of the steps above, locate the download links <span class="glyphicon glyphicon-save"></span>. Or delete the entire class with <span class="glyphicon glyphicon-remove"></span></p> 
+          <p class="fourth">Step 5: Annual records can be generated once third term results were successfully uploaded. After download of third term result, the annual result can be generated from the same page by clicking the annual.</p>                                                                                                                                                                                                                                                         
+          <p class="fourth">Step 6: Transfer class subject by clicking the move butten.</p> 
+          <p class="fourth">For more information: Contact Admin on <em style="font-family:Helvetica; color:purple; font-size: 10px;">uqhs2019@gmail.com</em>.</p>               
+      </form>
+</html>
+
+
+{% endblock %}
+ 
+

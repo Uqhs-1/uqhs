@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container text-center">
+<br><p style="width:40%;margin-left: 0px; font-size:12">Book Instance Creation Form!</p>
+<div class='signup' style="width:50%;margin-left: 0px; font-size:12">
+<form method="post" style="width:80%;margin-left:89; font-size:11;">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.imprint|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.status|as_crispy_field }}
+      </div>
+    </div> 
+    {% endfor %}
+    <div style="width:97%;margin-left: 10px; font-size:1">create new |<a href="{% url 'book_create' %}" target=_blank >Book</a>|<a href="{% url 'language_create' %}" target=_blank >Language</a>|<a href="{% url 'author_create' %}" target=_blank >Author</a>|<a href="{% url 'genre_create' %}" target=_blank >genre</a>| one-time!</div>
+    <div class="row spacer">
+    <div class="col-4 offset-2" style="width:97%;margin-left: 10px; font-size:1">
+        <button type="submit" class="btn btn-block btn-primary">Create</button>
+    </div>
+</div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+	<head>
+   	 <meta charset="UTF-8">
+    	<title> {% block title %} entering new scores {% endblock %} </title>
+	</head>
+	 {% block content %}
+	<body>
+    	<form method="post">
+				{% csrf_token %}
+				<div class="cap_form" ><a href="" style="color:palegoldenrod;">Student Name</a><pre>{{ result.student_name }} Click <a href="{% url 'new_student_name' pk=pk %}"> <em style="color:purple;">here</em></a> to add name of a new student.</pre></div>
+				<div class="cap_form">Scores</div>
+				<div class="row">
+					<div class="col-xs-3">
+        			{{ result.test|as_crispy_field }}
+					</div>
+					<div class="col-xs-3">
+						{{ result.agn|as_crispy_field }}
+					</div>
+					<div class="col-xs-3">
+						{{ result.atd|as_crispy_field }}
+					</div>
+					<div class="col-xs-3">
+						{{ result.exam|as_crispy_field }}
+					</div>
+				</div>
+				<div><em style="color:red;">Warning:</em> Ensure all inputs are correct. </div>
+				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Save</span></button>
+			</form> 
+	</body>
+	 {% endblock %}
+</html>
+

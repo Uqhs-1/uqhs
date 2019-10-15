@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} All Student Names {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+
+
+	
+   <div class="capt" style="color:white;">Note: Click the <a href="" style="color:blue;">hyper-link</a> from <strong style="color:blue;">{{ counts }}</strong> names, subjects and scores for review!</div>	   
+  
+        <table>
+          <thead>         	          
+            <tr><th>Unique_Id</th><th>STUDENT NAME ({{ counts }})</th><th>Created</th><th>Session</th></tr>           
+          </thead>
+          {% if all_page %}
+          {% for scr in all_page %} 
+          <tr>
+            <td><a href="{% url 'student_subject_list' pk=scr.id %}" title="{{ scr.student_name }}">{{ scr.student_id }}</a></td><td>{{ scr.student_name }}</td><td title={{Jo}}>{{ scr.tutor.Class }}</h6></td><td><h6>{{ scr.tutor.session }}</h6></td>
+          </tr>
+          {% endfor %}
+          {% else %}
+              <p>There are no records.</p>
+          {% endif %}
+          <tfoot>
+                <tr><th colspan="4"><div style="color:white; font-size:13px;">Summary</div>|<em Class= "jss_one" title="JSS1 Counts">{{Jo}}</em>--<em Class= "jss_two" title="JSS2 Counts">{{Jt}}</em>--<em Class= "jss_three" title="JSS3 Counts">{{Jh}}</em>--<em Class= "jss_one" title="SSS1 Counts">{{So}}</em>--<em Class= "jss_two" title="SSS2 Counts">{{St}}</em>--<em Class= "jss_three" title="SSS3 Counts">{{Sh}}</em>| <div style="color:white;font-size:13px;">{{ counts }} listed names</div></th></tr>
+          </tfoot>
+        </table>
+  
+     {% if all_page.has_other_pages %}
+      <div class="pagination" style="width:80%;margin-left:-50px;">
+        {% if all_page.has_previous %}
+          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_page.paginator.page_range %}
+          {% if all_page.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if all_page.has_next %}
+          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </div> 
+{% endif %}
+{% endblock %}
+
+

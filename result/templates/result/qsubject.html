@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} {{qry.Class}}/{{qry.term}}/{{qry.subject}} {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+
+	<div class="capt"><a href="{% url 'subject_home' pk=pk cl=3 %}" style="color:blue;"> Subject:</a> {{qry.subject}} <a href="{% url 'subject_home' pk=pk cl=1 %}"style="color:blue;"> Class: </a> {{ qry.Class }} <a href="{% url 'subject_home' pk=pk cl=2 %}" style="color:blue;"> Term: </a> {{ qry.term }} <pre style="line-height: 1px;">{{ qry.updated }}</pre></div>
+
+  <div>
+        <table class="qsubject">
+        <thead>
+            <tr><th>Names: <a href="{% url 'subject_view_all' pk=pk md=3 %}"  title="Click to display all the {{ males }} males only" class="males">Males</a>|<a href="{% url 'subject_view_all' pk=pk md=4 %}" title="Click to display all the {{ females }} females only" class="females">Fmales</a></th><th>Student_id</th><th>Test</th><th>Asgn</th><th>Atd</th><th>Total</th><th>Exam</th><th>Sum</th><th>Grade</th><th>Pos</th></tr> 
+        </thead>  
+        {% if all_page %}
+          {% for scr in all_page %} 
+          <tr>
+            <td><a href="{% url 'student_subject_list' pk=scr.id %}" title="{{ scr.student_id }}">{{ scr.student_name }}</a></td>{% if qry.term == '3rd Term' %}<td><a href="{% url 'add_annual_score' pk=scr.id %}" title="{{ scr.student_name }}">{{ scr.student_id }}{% else %}<td style="color:sienna;" title="{{ scr.student_name }}">{{ scr.student_id }}</a></td>{% endif %}<td style="color:sienna;" title='test'>{{ scr.test }}</a></td><td><em style="color:sienna;" title='assignment'>{{ scr.agn }}</td><td><em style="color:sienna;" title='attendance'>{{ scr.atd }}</a></td><td><em style="color:sienna;" title='total'>{{ scr.total }}</a></td><td><em style="color:sienna;" title='exam'>{{ scr.exam }}</a></td><td><em style="color:sienna;" title='aggregate'>{{ scr.agr }}</a></td><td><em style="color:green;"><a href="{% url 'grade_list' pk_code=pk|add:'_'|add:scr.grade %}" title="{{ scr.student_name }}">{{ scr.grade }}</a></td><td><a href="{% url 'subject_updates_model' pk=scr.id %}" title="{{ scr.student_name }}">{{ scr.posi }}</a></td>
+          </tr>
+          {% endfor %}
+          {% else %}
+              <pre>There are no records.</pre>
+          {% endif %}
+            <tr class="capt"><td colspan="5"><a href="{% url 'admin_page' %}" style="color:white;">Subject_by:</a> <pre style="line-height: 3px;"><a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>{{ qry.teacher_name }}</a></pre><td><a href="{% url 'search_to_load' pk=pk %}" style="color:green;"><span class="glyphicon glyphicon-plus" title="add a student's score"></span></a></td></td><td> <strong>AGR:</td><td style="color:white;">{{ subject_scores }}</td><td><strong>PER:</strong></td><td style="color:white;">{{ subject_pert }}%</td></tr>
+            <tr class="capt"><td class="capt" style="color:white; width: 200px;">Grades Summary:<pre style="line-height: 3px;"><a href="{% url 'subject_view' pk=pk md=2 %}" title='Click for details'>{{qry.subject.name}}</a></pre></td><td colspan="6" >{{ grad }}</td><td>{% if user.is_authenticated %}<a href="{% url 'html_csv' pk=pk ty=1 %}"><span class="glyphicon glyphicon-print" title="print"></span></a>{% endif %}</td><td>{% if qry.term == '3rd Term' %}<a href="" title="{{ qry.Class }} Broadsheet "><span class="glyphicon glyphicon-record"></span></a>{% endif %}</td><td>{% if qry.term == '3rd Term' %}<a href="{% url 'html_csv' pk=pk ty=1 %}"><span class="glyphicon glyphicon-export"></span></a>{% else %}<a href="{% url 'html_csv' pk=pk ty=0 %}"><span class="glyphicon glyphicon-export" title="export"></span></a>{% endif %}</td></tr>                                                                                                                              
+            <tfoot>
+                <tr><th colspan="10"><div><a href="{% url 'subject_view_all' pk=pk md=7 %}" style="color:green;"><span class="glyphicon glyphicon-list-alt" title="all"></span></a><a href="{% url 'subject_view' pk=pk md=1 %}" style="color:red;"><span class="glyphicon glyphicon-th-large" title="small"></span></a></div></th></tr>
+            </tfoot>
+        </table>
+	{% if all_page.has_other_pages %}
+      <em class="pagination" style="width:80%;margin-left:-50px;">
+        {% if all_page.has_previous %}
+          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_page.paginator.page_range %}
+          {% if all_page.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if all_page.has_next %}
+          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </em>
+    {% endif %}
+  </div>
+{% endblock %}
+
+    

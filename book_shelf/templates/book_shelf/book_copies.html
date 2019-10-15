@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <body>
+            <table style="width:80%;margin:1px; font-size:11">
+                <div class="capt" style="width:80%;margin:1px; font-size:21"><strong>Book Copie(s):</strong><em style="font-family:Helvetica; color:white; font-size: 12px;"> {{book_copies.count}}</em></div>
+                <thead>
+                    <tr><th>Book Title(s)</th><th>Imprint(s)</th><th>Statu(s)</th><th>Return-Date(s)</th><th>Edit-Book-Instance</th></tr>      
+                </thead>
+                <tbody>
+                    {% if book_copies %}
+                    {% for bookinst in book_copies %}
+                        <tr class="{% if bookinst.is_overdue %}text-danger*!{% endif %}"><td><a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a></td><td>{{ bookinst.imprint }}</td><td><a href="{% url 'qeues' pk=bookinst.id %}">{{ bookinst.status }}</a></td><td>{{ bookinst.due_back }}</td><td><a href="{% url 'bookinstance_update' pk=bookinst.id %}"><span class="glyphicon glyphicon-edit"> admin</span></a></strong></strong></a></td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <p>There are no borrowed-book in your list yet.</p>
+                    {% endif %}      
+                </tbody>
+            </table>
+            {% block pagination %}
+            {% if is_paginated %}
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                        <div>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</div>
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+            {% endblock %}
+    </body>
+    {% endblock %}
+</html>

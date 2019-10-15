@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <!--css/js files are also supported, you can
+ refer them using relative path.
+ Save all files first, including html file
+ to use this feature. -->
+
+<!--Check Examples
+
+-->
+  <form method="GET" action="{% url 'search' %}"  class="navbar-form navbar-right">
+            <div class="input-group">{% csrf_token %}
+              <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control"
+              style="width: 350px">
+
+
+            <!--<input type="text" name="q" placeholder="search post" value="{{ request.GET.q }}"/>-->
+            <!--<input type="submit" value="Search" />-->
+        <!--</form>-->
+
+              <ul id="search-results">
+
+              </ul>
+
+            <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary"><span style="font-size:1.4em" class="glyphicon glyphicon-search"></span> </button>
+            </span>
+            </div>
+          </form>
+	<style type="text/css">
+    h1{
+    color: #555555;
+    }
+    body{
+    background-color: #e2e2e2;
+    }
+    .dcoder{
+    	color: #777777;
+    }
+    </style>
+</head>
+<body>
+
+	<h1>
+    	Hello, Dcoder
+	</h1>
+
+	<div class="dcoder">
+		This is a html example from Dcoder,
+        <br>
+        have fun. :)
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,62 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<html lang="en">
+	<head>
+		<title> {% block title %}Personal Information {% endblock %}</title>
+	</head>
+    <body>
+        <div class="capt"><a href="{% url 'password' %}"><strong style="color:white;"><span class="glyphicon glyphicon-wrench">settings</span></strong></a></div>
+          <form action="" method="post">
+          {% csrf_token %}
+            <div class="capt" style="color:white;">logged in as <strong>{{ request.user.username }}</strong></div>
+            <div class="capt" style="font-family:Helvetica; color:white; font-size: 10px;width:30%;">Personal Info:</div>
+            <div class="row">
+              <div class="col-xs-2">
+                {{ form.title|as_crispy_field }}
+              </div>
+              <div class="col-xs-3">
+                {{ form.last_name|as_crispy_field }}
+              </div>
+              <div class="col-xs-4">
+                {{ form.first_name|as_crispy_field }}
+              </div>
+              <div class="col-xs-3">
+                {{ form.birth_date|as_crispy_field }}
+              </div>
+            </div>   
+            {{ form.bio|as_crispy_field }}
+            <div class="capt" style="font-family:Helvetica; color:white; font-size: 10px;width:30%;">Contact Info:</div>
+            <div class="row">
+              <div class="col-xs-3">
+                {{ form.phone|as_crispy_field }}
+              </div>
+              <div class="col-xs-3">
+                {{ form.city|as_crispy_field }}
+              </div>
+              <div class="col-xs-3">
+                {{ form.country|as_crispy_field }}
+              </div>
+              <div class="col-xs-3">
+                {{ form.location|as_crispy_field }}
+              </div>
+            </div>
+            <div class="capt" style="font-family:Helvetica; color:white; font-size: 10px;width:30%;">Profile Info:</div>
+            <div class="row">
+              <div class="col-xs-4">
+                {{ form.department|as_crispy_field }}
+              </div>
+              <div class="col-xs-4">
+                {{ form.organization|as_crispy_field }}
+              </div>
+              <div class="col-xs-4">
+                  {{ form.class_in|as_crispy_field }}
+              </div> 
+            </div> 
+            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Save</span></button>
+          </form>
+        </body>
+{% endblock %}
+
+
+    

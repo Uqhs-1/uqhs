@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New</title>
+</head>
+<body>
+    {% block content %}
+    <form method="post">
+    {% csrf_token %}
+    <div><strong>Teacher</strong>: Correct User account should be selected. </div>
+     {{ form.user|as_crispy_field }}
+     <div class="row">
+      <div class="col-xs-6">
+        {{ form.teacher_name|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.subject|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.Class|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.term|as_crispy_field }}
+      </div>
+    </div>
+    Create subject not enlisted <em> <a href="{% url 'create_subject' %}" target = _blank> here.</a></em>
+    <button type="submit" class="btn btn-success">Done!</button>
+  </form>
+   {% endblock %}
+ 
+ 
+</body>
+</html>
+

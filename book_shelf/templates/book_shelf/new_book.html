@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if form.errors %}
+        {{ form.errors }}
+    {% endif %}
+    <form method="post" action="{% url 'book_create' %}">
+        <div class="container text-center">
+<br><p style="width:50%;margin-left: 0px; font-size:12">Book Creation Form</p>
+<div class='signup' style="width:50%;margin-left: 0px; font-size:12">
+
+<form method="post" style="width:70%;margin-left:89; font-size:11;">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.title|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.author|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.language|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.genre|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        {{ form.isbn|as_crispy_field }}
+      </div>
+      <div class="col-xs-6">
+        {{ form.no_of_copy|as_crispy_field }}
+      </div>
+    </div>
+    {{ form.summary|as_crispy_field }}
+    create new <a href="{% url 'language_create' %}" target=_blank >language</a>, <a href="{% url 'author_create' %}" target=_blank >author</a>, <a href="{% url 'genre_create' %}" target=_blank >genre</a> not enlisted!
+    <button type="submit" class="btn btn-success">Done!</button>
+  </form>
+</div>
+{% endblock %}

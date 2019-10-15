@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+  <form action="" method="post">
+	<div class="capt">Searching</div>
+    {% csrf_token %}
+    <div class="row">
+    <div class="col-xs-4">
+        {{ result.subject|as_crispy_field }}
+    </div>
+    <div class="col-xs-4">
+        {{ result.Class|as_crispy_field }}
+    </div>
+    <div class="col-xs-4">
+        {{ result.term|as_crispy_field }}
+    </div>
+    </div>
+    <input type="submit" value="Submit" style="width:13.5%; font-size:1">
+    <em>Select <a href="" style="font-family:Helvetica; color:white; font-size: 14px;">an input or more, then </a> submit.</em>
+  </form>
+
+{% endblock %}
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} {{ name.student_name }}/{{ name.tutor.Class }} {% endblock %}</title>
+    </head>
+    {% block content %}
+    <table>
+	<div class="capt"font-size:13"><a href="{% url 'student_subject_detail_all_subject' pk=pk %}" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{{ name.student_name }}:</a></strong> summarised results: <em style="font-family:Helvetica; color:white; font-size: 15px;">{{ anuual }}!</em></div>
+        {% if subjects %}    
+        {% for scr in subjects %}
+        <tr>
+            <th>{{ scr.tutor.Class }}:{{ scr.tutor.subject }}<em></em></th>
+            <td style="font-family:Helvetica; color:green;">{{ scr.tutor.term }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Test:</th>
+            <td style="font-family:Helvetica; color:red;" >{{ scr.test }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Agns:</th>
+            <td style="font-family:Helvetica; color:red;" >{{ scr.agn }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Atd:</th>
+            <td style="font-family:Helvetica; color:red;" >{{ scr.atd }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Total:</th>
+            <td style="font-family:Helvetica; color:red;" >{{ scr.total }}</td>
+        </tr>
+        <tr>    								
+            <th style="font-family:Helvetica; color:blue;">Exam:</th>
+            <td style="font-family:Helvetica; color:red;" >{{ scr.exam }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Agr:</th>
+            <td style="font-family:Helvetica; color:red;" >{{ scr.agr }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Grade:</th>
+            <td style="font-family:Helvetica; color:red;">{{ scr.grade }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Pos</th>
+            <td style="font-family:Helvetica; color:red;">{{ scr.posi }}</td>
+        </tr>
+        <tr>
+            {% if scr.tutor.term == '3rd Term' %}<th><a href="{% url 'annual_view' pk=name.tutor.id %}">ANNUAL SUMMARY</a></th>{% endif %}
+            {% if scr.tutor.term == '3rd Term' %}<td>--[{{ scr.annual_scores }}]--</td>{% endif %}
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table> 
+    {% endblock %}
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <body>
+            <table style="width:80%;margin:1px; font-size:11">
+                <div class="capt" style="width:80%;margin:1px; font-size:21"><strong>Author's Name: </strong><em style="font-family:Helvetica; color:white; font-size: 12px;">{{ author.first_name }}, {{ author.last_name }}</em></div>
+                <ol>
+                   <li><strong>Birth:</strong>{{ author.date_of_birth }}</em>--<em> <strong>Dirth:</strong>{{ author.date_of_death }}</em></li>
+                   <li><strong>Author's Books:</strong></li>
+                </ol>
+                <thead>
+                    <tr><th>Book(s)</th><th>Copies</th></tr>      
+                </thead>
+                <tbody>
+                    {% if author.book_set.all %}
+                    {% for book in author.book_set.all %}
+                        <tr><td><a href="{% url 'book-detail' book.pk %}">{{book}}</a></td><td>{{book.bookinstance_set.all.count}}</td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <p>There are no books in shelf yet.</p>
+                    {% endif %}      
+                </tbody>
+            </table>
+    </body>
+    {% endblock %}
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <body>
+            <table style="width:80%;margin:1px; font-size:11">
+                <div class="capt" style="width:80%;margin:1px; font-size:21"><strong>Languages</strong></div>
+                
+                <thead>
+                    <tr><th>Name(s)</th><th>Code(s)</th></tr>      
+                </thead>
+                <tbody>
+                    {% if language.genre_set.all %}
+                    {% for lang in language_set.all %}
+                        <tr><td>{{lang.name}}</td><td>{{lang.id}}</td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <p>There are no language created yet.</p>
+                    {% endif %}      
+                </tbody>
+            </table>
+    </body>
+    {% endblock %}
+</html>

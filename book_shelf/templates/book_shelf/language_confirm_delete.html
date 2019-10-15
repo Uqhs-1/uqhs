@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Delete Book</h1>
+
+<p>Are you sure you want to delete the Language: {{ language.name }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+<p><em><h6>Back</h6><a href="{% url 'index' %}"><span class="glyphicon glyphicon-circle-arrow-left"></span></a></em></p>
+</form>
+
+{% endblock %}

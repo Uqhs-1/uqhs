@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Subject Update{% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    <form method="post">
+    <div class="capt"> Update Subject:</div>
+    <em style="font-family:Helvetica; color:white; font-size: 10px;">Correct student <a style="font-family:Helvetica; color:white; font-style: italic; font-size: 12px;" href="{% url 'Cname_edit' pk=qsubject.student_name.id %}">NAME</a> should be </em><em style="font-family:Helvetica; color:yellow; font-size: 10px;">ENSURED,</em><em style="font-family:Helvetica; color:white; font-size: 10px;">while updating records!</em><a href="{% url 'Cname_edit' pk=qsubject.student_name.id %}"> <em style="font-family:Helvetica; color:red; font-size: 13px;"><span class="glyphicon glyphicon-edit">EDIT_NAME.</span></em></a>
+    {% csrf_token %}
+     <div class="row">
+      <div class="col-xs-4">
+        {{ form.tutor|as_crispy_field }}
+      </div>
+      <div class="col-xs-4">
+        {{ form.student_name|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.grade|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.posi|as_crispy_field }}
+      </div>  
+     </div>
+    <div class="row">
+      <div class="col-xs-2">
+        {{ form.test|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.agn|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.atd|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.total|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.exam|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.agr|as_crispy_field }}
+      </div>
+     </div>  
+     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Save</span></button>
+  </form>
+ 
+   {% endblock %}
+ 
+ 
+</body>
+</html>
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} {{ tutor.Class }}/{{ tutor.term }}/{{ tutor.subject.name }} {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+        <table>
+        	<div class="capt"><a href="#" style="font-family:Helvetica; color:blue; font-size: 10px;"> Subject_Teacher:</a> {{ tutor.teacher_name }} <a href="#"style="font-family:Helvetica; color:blue; font-size: 10px;"> Class:</a> {{ tutor.Class }}<a href="#"style="font-family:Helvetica; color:blue; font-size: 10px;"> Subject:</a> {{ tutor.subject.name }}</div>
+        	<tr>
+        		<th>STUDENT NAME ({{ in_class }})</th><th>No.</th><th>1st</th><th>2nd</th><th>3rd</th><th>Agr</th><th>Avg</th>
+        	</tr>
+        	{% if all_page %}
+        	{% for scr in all_page %}
+        	<tr>
+        		<td><a href="{% url 'student_subject_list' pk=scr.student_name.id %}">{{ scr.student_name }}</a></td><td style="color:sienna;">{{ scr.id }}</td><td style="color:sienna;">{{ scr.first.agr }}</a></td><td><em style="color:sienna;">{{ scr.second.agr }}</td><td><em style="color:sienna;">{{ scr.third.agr }}</a></td><td><em style="color:sienna;">{{ scr.anual }}</a></td><td><em style="color:sienna;">{{ scr.Agr }}</a></td>
+        	</tr>
+        	{% endfor %}
+        	{% else %}
+		  <pre style="width;70%;">There are no records.</pre>
+        	{% endif %}
+        		<tr class="capt"><td colspan="7"><a href="{% url 'admin_page' %}" style="font-family:Helvetica; color:white; font-size: 10px;">RunTime: </a><pre style="line-height: 3px;">{{msg}} Click <a href="{% url 'annual_view' pk=tutor.id %}" style="color:green; font-size: 11px;">Next</a></pre></td></tr>
+        </table>
+    {% if all_page.has_other_pages %}
+      <ul class="pagination" style="width:80%;margin-left:-50px;">
+        {% if all_page.has_previous %}
+          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_page.paginator.page_range %}
+          {% if all_page.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if all_page.has_next %}
+          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+	<div><a href="{% url 'show_annual' pk=pk %}" style="font-family:Helvetica; margin-left:36%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'home' %}" style="font-family:Helvetica; margin-left:0%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a></div>
+{% endblock %}
+ 
+

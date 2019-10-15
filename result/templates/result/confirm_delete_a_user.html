@@ -1,0 +1,17 @@
+<!doctype html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %} deleting {{ qry.username }}'s account {% endblock %}</title>
+	</head>
+	{% block content %}
+	<body>
+		<form>
+			 <div class="cap_form">Action:<pre>Delete/Reset!</pre></div>
+			 Select an action to perform on <a style="font-family:Helvetica; color:white;">{{ qry.username }}'s</a> account:<a href="{% url 'yes_no' pk=pk %}" style="font-family:Helvetica; color:red; font-size: 12px;">Delete!</a>/<a href="{% url 'passwords' pk=pk %}" style="font-family:Helvetica; color:purple; font-size: 12px;">Reset</a>
+			 <div><a href="{% url 'all_accounts' %}" class="capt" style="margin-left:59%;">Go Back!</a></div>
+		</form>
+	</body>
+	{% endblock %}
+</html>

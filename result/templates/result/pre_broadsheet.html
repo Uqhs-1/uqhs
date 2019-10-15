@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% block content %}
+  <div>
+        <table>
+		<div class="capt"> {{last_name}} {{first_name}} : {{ date }} </div>
+
+          <tr>
+           <th>STUDENT NAME ({{ in_class.count }})</th>           
+	  </tr>
+          {% if in_class %}
+          {% for scr in in_class %}
+          <tr>
+           <td><a href="{% url 'student_subject_list' pk=scr.student_name.id %}">{{ scr.student_name }}</a></td>{% if scr.eng.avr != 0 %}<td>{{ scr.eng.third.tutor.Class }}</td>{% endif %}{% if scr.mat.avr != 0 %}<td>{{ scr.mat.third.tutor.Class }}</td>{% endif %}{% if scr.agr.avr != 0 %}<td>{{ scr.agr.third.tutor.Class }}</td>{% endif %}{% if scr.bus.avr != 0 %}<td>{{ scr.bus.third.tutor.Class }}</td>{% endif %}{% if scr.bst.avr != 0 %}<td>{{ scr.bst.third.tutor.Class }}</td>{% endif %}{% if scr.yor.avr != 0 %}<td>{{ scr.yor.third.tutor.Class }}</td>{% endif %}{% if scr.nva.avr != 0 %}<td>{{ scr.nva.third.tutor.Class }}</td>{% endif %}{% if scr.irs.avr != 0 %}<td>{{ scr.irs.third.tutor.Class }}</td>{% endif %}{% if scr.prv.avr != 0 %}<td>{{ scr.prv.third.tutor.Class }}</td>{% endif %}{% if scr.ict.avr != 0 %}<td>{{ scr.ict.third.tutor.Class }}</td>{% endif %}{% if scr.acc.avr != 0 %}<td>{{ scr.acc.third.tutor.Class }}</td>{% endif %}{% if scr.his.avr != 0 %}<td>{{ scr.his.third.tutor.Class }}</td>{% endif %}
+          </tr>
+          {% endfor %}
+          {% else %}
+              <p>There are no records.</p>
+          {% endif %}
+        </table>
+    <a href="{% url 'class_record_view' %}"><span class="glyphicon glyphicon-check">Next</span></a>
+  </div> 
+{% endblock %}
+ 

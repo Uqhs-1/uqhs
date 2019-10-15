@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+   <head>
+        <div id="head">
+            <meta charset="UTF-8">
+            <title>
+                uqhs |{% block title %} uqhs {% endblock %}
+             </title>
+             <link rel="icon" type="image/png" href="http://example.com/myicon.png">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="{% static 'result/css/result.css' %}">
+            <script src="{% static 'result/js/result.js' %}"></script>
+            <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+            <div class="navbar" style="width:120%;">
+                <div class="dropdown">
+                <a href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span></a>
+                <a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a>
+                  <span class="dropbtn">Juniors</span>
+                  <div class="dropdown-content">
+                    <a href="{% url 'results_junior_senior' pk=0 %}"><h6>JSS 1</h6></a>
+                    <a href="{% url 'results_junior_senior' pk=1 %}"><h6>JSS 2</h6></a>
+                    <a href="{% url 'results_junior_senior' pk=2 %}"><h6>JSS 3</h6></a>
+                    <a href="{% url 'post_list' %}"><h6>Info</h6></a>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <span class="dropbtn">Seniors</span>
+                  <div class="dropdown-content">
+                    <a href="{% url 'results_junior_senior' pk=3 %}"><h6>SSS 1</h6></a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}"><h6>SSS 2</h6></a>
+                    <a href="{% url 'results_junior_senior' pk=5 %}"><h6>SSS 3</h6></a>
+                    <a href="{% url 'flexing' %}"><h6>Info</h6></a>
+                  </div>
+                </div>
+                
+                <div class="dropdown">
+                  <span class="dropbtn">Library</span>
+                  <div class="dropdown-content">
+                    <a href="{% url 'stores' %}"><h6>Books</h6></a>
+                    <a href="{% url 'authors' %}"><h6>Authors</h6></a>
+                    <a href="{% url 'genres' %}"><h6>Genre</h6></a>
+                    <a href="{% url 'my_loan_book' %}" class="top-menu"><h6>My Lib</h6></a>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <span class="dropbtn">Portal</span>
+                  <div class="dropdown-content">
+                    <a class="active" href="{% url 'tutor_summary' pk=1 %}"><h6>Staff</h6></a>
+                    <a href="{% url 'student_names' pk=1 %}"><h6>Male Students</h6></a>
+                    <a href="{% url 'student_names' pk=2 %}"><h6>Female Students</h6></a>
+                  </div>
+                </div>
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  width="30"/></a>
+                </div>
+                <form method="GET" action="{% url 'searchs' %}"  class="navbar-form navbar-right" style="margin-right:25px; width:30%;line-heigh:5%;border-radius: 10px;">
+                <div class="input-group">{% csrf_token %}
+                  <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control">
+                <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span> </button>
+                </span>
+                </div>
+              </form>
+            </div>
+              <!-- Side navigation -->
+            <navz>
+                <span><em style="margin-left:250px; color: white;">Welcom to UMMUL_QURA RESULT PORTAL </em></span>
+            </navz>
+            <div id="mySidebar" class="sidebar">
+            {% if request.user.is_authenticated %}
+            <div class="dropdowns">
+                <span class="dropbtns"><img class="rounded-circle" src="{% static request.user.profile.image %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
+                <div class="dropdown-contents">
+                <a href="{% url 'pro_detail' request.user.id %}" class="top-menu" title="Edit personal information"><span class="glyphicon glyphicon-edit"></a>
+                <a href="{% url 'teacher_create' %}" title="1st term file upload"><span class="glyphicon glyphicon-tasks"></a>
+                <a href="{% url 'transfers' %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
+                <a href="{% url 'student_in_none' %}" title="Deleted/Canceled scores"><span class="glyphicon glyphicon-trash"></a>
+                <a href="{% url 'search_pdf' %}" title="Search past results "><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span></a>
+
+                {% if perms.catalog.can_mark_returned %}
+                <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
+                <a href="{% url 'mass_upload'  %}" title="folder uploads"><span class="glyphicon glyphicon-book"></a>
+                <a href="{% url 'post_draft_list'  %}">Posts</a>
+                <a href="{% url 'all_accounts' %}" title='List of accounts'><span class="glyphicon glyphicon-user"></a>
+                <a href="{% url 'author_create'  %}">Authors</a>
+                <a href="{% url 'book_create'  %}">Books</a>
+                <a href="{% url 'genre_create'  %}">Genres</a>
+                <a href="{% url 'language_create'  %}">Languages</a>
+                <a href="{% url 'books' %}" class="top-menu">Manage Stores</a>
+                <a href="{% url 'br-books' %}">Manage Loans</a>
+                <a href="{% url 'renew_approval'  %}">Renew Books</a>
+                <a href="{% url 'qeuing'  %}">Grant Requests</a>
+                {% endif %}
+                {% if request.user.profile.class_in != None %}
+                <a href="{% url 'broadsheet_last_stage' %}" title="Compute {{ request.user.profile.class_in }}'s Broadsheet "><span class="glyphicon glyphicon-list-alt"></a>
+                {% endif %}
+            </div>
+            <a href="{% url 'log_out' %}" style="font-family:Helvetica; color:red; font-size: 9px;"><span class="glyphicon glyphicon-log-out"></span><em class=""><em style="font-family:Helvetica; font-size:9px;">Logout</em></em></a>                                              
+            {% endif %} 
+            </div>
+              
+            
+            
+            <!-- Page content -->
+            <!--<div class="mains">-->
+            <!--...-->
+            <!--</div>-->
+        </div>
+    </head>
+    <body>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+    <div class="footer" style="width: 120%;">
+        <div style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">©Copyright 2019 examing body. All rights reversed.</div>
+        <div class="footer-left">
+            {% if user.is_authenticated %}
+             <div class="ft" style="font-family:Helvetica; color:red; font-size: 10px;"> {{ user.username }}|logged as {% if user.is_staff == True and user.is_superuser == False %} Staff {% else %} Admin {% endif %}<small><a href="{% url 'log_out' %}"><span class="glyphicon glyphicon-log-out"></span></a></small></div>
+                 {% if request.user.profile.email_confirmed == False %}
+                 <div class="ft"><a href="{% url 'pro_detail' request.user.id %}"><small><span class="glyphicon glyphicon-flag" style="color:white;"></small></span><h6>{{ request.user.profile.bio|default:"Action required!" }}</h6></a></div>
+                 {% endif %}
+            {% endif %}
+        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Contact: </strong>Arowona Bus-Stop, Akanran Road, Ibadan-Oyo state.</div>
+        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">E-mail: </strong>ummulqura@marktoob.com, ummulqr@yahoo.com</div>
+        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Tell: </strong>08053776177, 07042412052</div>
+        </div>
+    </div>
+</html>

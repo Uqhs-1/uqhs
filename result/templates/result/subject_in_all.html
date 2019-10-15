@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} Subject: {{SUB_NAME}}{% endblock %}</title>
+    </head>
+    {% block content %}
+    <body>
+      <div class="capt"> {{ count_grade }} students registered in {{SUB_NAME}} </div>
+      <table>
+          <tr>
+            <th>STUDENT NAME ({{ count_grade }})</th><th>No.</th><th>Test</th><th>Asgn</th><th>Atd</th><th>Total</th><th>Exam</th><th>Sum</th><th>Grade</th><th>Pos</th><th>Class</th><th>Term</th> 
+          </tr>
+          {% if all_page %}
+          {% for scr in all_page %} 
+          <tr>
+            <td><a href="{% url 'student_subject_list' pk=scr.student_name.id %}">{{ scr.student_name }}</a></td><td>{{ scr.id }}</td><td>{{ scr.test }}</td><td>{{ scr.agn }}</td><td>{{ scr.atd }}</td><td>{{ scr.total }}</td><td>{{ scr.exam }}</td><td>{{ scr.agr }}</td><td>{{ scr.grade }}</td><td>{{ scr.posi }}</td><td>{{ scr.tutor.Class }}</td><td>{{ scr.tutor.term }}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+              <pre style="width:70%;">There are no records.</pre>
+          {% endif %}                                                                                                                                        
+      </table>
+    </body>
+    <div>
+    {% if all_page.has_other_pages %}
+      <div class="pagination"  style="width:80%;margin-left:-50px;">
+        {% if all_page.has_previous %}
+          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in all_page.paginator.page_range %}
+          {% if all_page.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if all_page.has_next %}
+          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </div>
+    {% endif %}
+    <a href="" style="font-family:Helvetica; margin-left:36%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'home' %}" style="font-family:Helvetica; margin-left:0%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a></div>
+{% endblock %}
+</html>
+  
+    
+      
+
+  
+
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} Tutor's account: {{ request.user.username }} {% endblock %}</title>
+    </head>
+    {% block content %}
+    <body>
+        <table>
+    		<div class="capt" style="font-size:13px;text-align: center;">{{ page.count }} subjects</div>
+                <thead>
+                    <tr><th>Teacher</th><th>Subject</th><th>1st_term</th><th>2nd_term</th><th>3rd_term</th><th>Created</th><th>Last Updated</th></tr>      
+                </thead>
+                <tbody>
+                    {% if page %}
+                    {% for sub in page %}
+                        <tr><td style="color:palegoldenrod;"><a href="{% url 'home_page' pk=sub.first_term.id %}" title="Click for details of {{ sub.first_term.subject }}'s uploaded">{{ sub.teacher_name }}</a></td><td><a href="{% url 'subject_home' pk=sub.first_term.id cl=3 %}" title="Click to list all {{ sub.first_term.subject }}s">{{ sub.first_term.subject }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}" title="Lunch {{ sub.first_term.Class }} {{ sub.first_term.term }} {{ sub.first_term.subject }}">{{ sub.first_term.Class }}</a></td><td title="Lunch {{ sub.second_term.Class }} {{ sub.second_term.term }} {{ sub.second_term.subject }}">{% if sub.second_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=1 %}">{% else %}<a href="{% url 'subject_view' pk=sub.second_term.id md=1 %}">{% endif %}{{ sub.second_term.Class|default:'Update' }}</a></td><td title="Lunch {{ sub.third_term.Class }} {{ sub.third_term.term }} {{ sub.third_term.subject }}">{% if sub.third_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=2 %}">{% else %}<a href="{% url 'subject_view' pk=sub.third_term.id md=1 %}">{% endif %}{{ sub.third_term.Class|default:'Update' }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <pre style="width:70%;text-align: center;">There are no records in your account yet.</pre>
+                    {% endif %}  
+                    <tfoot>
+                        <tr><th colspan="8"><a href="{% url 'admin_page' %}"><span class="glyphicon glyphicon-user" title='admin_page'></span></a></th></tr>
+                    </tfoot>
+                </tbody>
+        </table>
+    </body>
+    {% endblock %}
+</html>

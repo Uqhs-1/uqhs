@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Update Subject Details {% endblock %} </title>
+</head>
+<body>
+    {% block content %}
+    <form method="post">
+    {% csrf_token %}
+    <div class="capt">Subject Transfer</div>
+    <div><strong>Teachers</strong>: To transfer account, correct destination account should be selected. </div>
+     <strong style="width:230px; line-height:15px; color:purple;">Select approprately</strong>
+    <div class="row">
+      <div class="col-xs-4">
+        {{ form.subject|as_crispy_field }}
+      </div>
+      <div class="col-xs-4">
+        {{ form.Class|as_crispy_field }}
+      </div>
+      <div class="col-xs-3">
+        {{ form.term|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+	{{ form.accounts|as_crispy_field }}
+      </div>
+      <div class="col-xs-4">
+        {{ form.teacher_name|as_crispy_field }}
+      </div>
+      <div class="col-xs-4">
+        {{ form.teacher_in|as_crispy_field }}
+      </div>
+    </div>
+    <strong style="width:230px; line-height:15px; color:purple;">Enter inputs as required</strong>
+    <div class="row">
+      <div class="col-xs-4" >
+        {{ form.males|as_crispy_field }}
+      </div>
+      <div class="col-xs-4">
+        {{ form.females|as_crispy_field }}
+      </div>
+      <div class="col-xs-4">
+        {{ form.status|as_crispy_field }}
+      </div>
+    </div>
+    	<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></button>
+	Create new subject <a href="{% url 'create_subject' %}"> <em style="font-family:Helvetica; color:purple; font-size: 10px;">here.</em></a>
+  </form>
+   {% endblock %} 
+</body>
+</html>
+

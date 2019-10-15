@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <body>
+            <table style="width:80%;margin:1px; font-size:11">
+                <div class="capt" style="width:80%;margin:1px; font-size:21"><strong>Borrowed books by: </strong><em>{{ request.user }}</em></div>
+                <thead>
+                    <tr><th>Title(s)</th><th>Deu-Date(s)</th></tr>      
+                </thead>
+                <tbody>
+                    {% if bookinstance_list %}
+                    {% for bookinst in bookinstance_list %}
+                        <tr class="{% if bookinst.is_overdue %}text-danger*!{% endif %}"><td><a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a></td><td>{{ bookinst.due_back }}</td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <p>There are no borrowed-book in your list yet.</p>
+                    {% endif %}      
+                </tbody>
+            </table>
+    </body>
+    {% endblock %}
+</html>
+

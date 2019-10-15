@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<form>
+<div class="cap_form">Action:<pre>Delete!</pre></div>
+Are you sure you want to delete: <em style="font-family:Helvetica; color:white;"><div class="capt">{{ qry.student_name }}'s </div></em>score completely ? <a href="{% url 'delete_anu' pk=pk %}" style="font-family:Helvetica; color:red; font-size: 12px;">Yes</a>/<a href="{% url 'home' %}" style="font-family:Helvetica; color:purple; font-size: 12px;">No</a>
+</form>
+{% endblock %}
+

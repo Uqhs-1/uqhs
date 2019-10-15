@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+	<head>
+   	 <meta charset="UTF-8">
+    	<title> {% block title %} PAST RESULTS {% endblock %} </title>
+	</head>
+	 {% block content %}
+	<body>
+    	<form method="post">
+				{% csrf_token %}
+				<div class="cap_form"><strong>PAST RESULTS</strong></div>
+				<div class="row">
+                 <div class="col-xs-2">
+						{{ subject.name|as_crispy_field }}
+					</div>
+					<div class="col-xs-3">
+        			{{ form.Class|as_crispy_field }}
+					</div>
+					<div class="col-xs-2">
+						{{ form.term|as_crispy_field }}
+					</div>
+					<div class="col-xs-3">
+						{{ new.new|as_crispy_field }}
+					</div>
+                 <div class="col-xs-2">
+						{{ frmt.formats|as_crispy_field }}
+					</div>
+				</div>
+				<div><em style="color:red;">Hint:</em> The fields with asterics * are compulsory. </div>
+				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Ok</span></button>
+			</form> 
+	</body>
+	 {% endblock %}
+</html>
+

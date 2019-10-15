@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% block content %}
+<div>
+	
+   <div class="capt" style="color:white;">[{{ all_page.count }}] Search results: Click the <a href="" style="color:blue;">hyper-link</a> on the names for subjects and scores details</div>	   
+  
+        <table>
+            <thead>
+	       
+            <tr><th>STUDENT NAMEs ({{ all_page.count }})</th><th>Class</th><th>Session</th></tr> 
+              </thead>
+          {% if all_page %}
+          {% for scr in all_page %} 
+          
+          <tr>
+            <td><a href="{% url 'search_results' pk=scr.id %}">{{ scr.student_name }}</a></td><td><a href="{% url 'upload_a_score' pk=scr.student_name_id %}">{{ scr.student_class }}</a></td><td>{{ scr.session }}</td>
+          </tr> 
+          
+          {% endfor %}
+          {% else %}
+              <pre style="width:70%;" >There are no records.</pre>
+          {% endif %}
+          <tfoot>
+          <th colspan='5'>retry by using middle or first name</th>
+          </tfoot>
+        </table>
+{% endblock %}
+
+

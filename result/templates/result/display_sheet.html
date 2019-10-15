@@ -1,0 +1,31 @@
+{% extends "base_generic1.html" %}
+<!doctype html>
+{% block content %}
+<html>
+    <table style="width:200%;">
+    
+    <div class="capt">Class: <em style="color:sienna;">{{ request.user.profile.class_in }}</em> Students in Class:<em style="color:sienna;"> {{ mains.count }}</em> Total Scores: <em style="color:sienna;"> {{ overall }}</em> Average : <em style="color:sienna;"> {{ per }}%</em></div>
+
+          <thead>
+             <tr>
+               <th>STUDENT NAME</th><th>1st</th><th>2nd</th><th>3rd</th><th>Acc</th><th>1st</th><th>2nd</th><th>3rd</th><th>Ict</th><th>1st</th><th>2nd</th><th>3rd</th><th>Bio</th><th>1st</th><th>2nd</th><th>3rd</th><th>Ent</th><th>1st</th><th>2nd</th><th>3rd</th><th>Mat</th><th>1st</th><th>2nd</th><th>3rd</th><th>Eng</th><th>1st</th><th>2nd</th><th>3rd</th><th>Plc</th><th>1st</th><th>2nd</th><th>3rd</th><th>Yor</th><th>1st</th><th>2nd</th><th>3rd</th><th>Irs</th><th>1st</th><th>2nd</th><th>3rd</th><th>Civ</th><th>AGR</th><th>AVR</th><th>GRD</th><th>POS</th> 
+            </tr><tr>         
+          </thead>
+          {% if mains %}
+          {% for scr in mains %} 
+          <tr>
+        	<td class="name" style="width:20%;">{{ scr.student_name }}</td><td class="acc1">{{ scr.acc.first.agr }}</td><td class="acc2">{{ scr.acc.second.agr }}</td><td class="acc3">{{ scr.acc.third.agr }}</td><td class="acc" style="color:sienna;">{{ scr.acc.Agr }}</td><td class="ict1">{{ scr.ict.first.agr }}</td><td class="ict2">{{ scr.ict.second.agr }}</td><td class="ict3">{{ scr.ict.third.agr }}</td><td class="ict" style="color:sienna;">{{ scr.ict.Agr }}</td><td class="bio1">{{ scr.bst.first.agr }}</td><td class="bio2">{{ scr.bst.second.agr }}</td><td class="bio3">{{ scr.bst.third.agr }}</td><td class="bio" style="color:sienna;">{{ scr.bst.Agr }}</td><td class="ent1">{{ scr.prv.first.agr }}</td><td class="ent2">{{ scr.prv.second.agr }}</td><td class="ent3">{{ scr.prv.third.agr }}</td><td class="ent" style="color:sienna;">{{ scr.prv.Agr }}</td><td class="mat1">{{ scr.mat.first.agr }}</td><td class="mat2">{{ scr.mat.second.agr }}</td><td class="mat3">{{ scr.mat.third.agr }}</td><td class="mat" style="color:sienna;">{{ scr.mat.Agr }}</td><td class="eng1">{{ scr.eng.first.agr }}</td><td class="eng2">{{ scr.eng.second.agr }}</td><td class="eng3">{{ scr.eng.third.agr }}</td><td class="eng" style="color:sienna;">{{ scr.eng.Agr }}</td><td class="bus1">{{ scr.bus.first.agr }}</td><td class="bus2">{{ scr.bus.second.agr }}</td><td class="bus3">{{ scr.bus.third.agr }}</td><td class="bus" style="color:sienna;">{{ scr.bus.Agr }}</td><td class="yor1">{{ scr.yor.first.agr }}</td><td class="yor2">{{ scr.yor.second.agr }}</td><td class="yor3">{{ scr.yor.third.agr }}</td><td class="yor" style="color:sienna;">{{ scr.yor.Agr }}</td><td class="irs1">{{ scr.irs.first.agr }}</td><td class="irs2">{{ scr.irs.second.agr }}</td><td class="irs3">{{ scr.irs.third.agr }}</td><td class="irs" style="color:sienna;">{{ scr.irs.Agr }}</td><td class="nva1">{{ scr.nva.first.agr }}</td><td class="nva2">{{ scr.nva.second.agr }}</td><td class="nva3">{{ scr.nva.third.agr }}</td><td class="nva" style="color:sienna;">{{ scr.nva.Agr }}</td><td  class="agr" style="color:red;">{{ scr.AGR }}</td><td class="avr" style="color:red;">{{ scr.AVR }}</td><td class="grd" style="color:red;">{{ scr.GRD }}<td class="pos" style="color:red;">{{ scr.POS }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+            <tfoot>
+                <tr><th colspan="10">Coment: {{ msg }}</th><th colspan="2"><a href="{% url 'broadscores' pk=request.user.id ty=1 %}"><span class="glyphicon glyphicon-print" title="print"></span></a></th><th colspan="2"><a href="{% url 'broadscores' pk=request.user.id ty=1 %}"><span class="glyphicon glyphicon-export" title="save"></span></a></th></tr>
+          </tfoot>
+        </table>
+        
+              
+        generated @: {{ date }}
+</html>
+
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div class="fc">
+      <em class="capt"><h6>New Book</h6></em>
+    </div>
+  <form action="" method="post" style="width:100%;margin-left: 36px; font-size:0.5">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Submit" style="width:11%;margin-left: -53px; font-size:1">
+  </form>
+{% endblock %}

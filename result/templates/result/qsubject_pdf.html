@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} {{qry.Class}}/{{qry.term}}/{{qry.subject}} {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+  <div>
+        <table class="qsubject">
+        <thead>
+            <th>Student Name: {{ urs }}</th><th>Test</th><th>Clw.</th><th>Prat.</th><th>Total</th><th>Exam</th><th>Sum</th><th>Grade</th><th>Pos</th>
+        </thead>  
+        {% if all_page %}
+          {% for scr in all_page %} 
+            <tr><td class="name">{{ scr.student_name }}</td><td class="test">{{ scr.test }}</td><td class="agn">{{ scr.agn }}</td><td class="atd">{{ scr.atd }}</td><td class="tot">{{ scr.total }}</td><td class="exam">{{ scr.exam }}</td><td class="agr">{{ scr.agr }}</td><td class="grd">{{ scr.grade }}</td><td class="pos">{{ scr.posi }}</td></tr>
+         {% endfor %}
+       {% endif %}
+        </table>
+{% endblock %}
+

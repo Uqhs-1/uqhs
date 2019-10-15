@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		<title> {% block title %} {{qry.term}}/{{qry.Class}}/{{qry.subject}}{% endblock %}</title>
+	</head>
+	 {% block content %}
+	<body>
+	    <table class='annual'>
+	    <thead>
+	    	<th>Student_Names</th><th>Test</th><th>Clw</th><th>Prat.</th><th>Total</th><th>Exam</th><th>3rd</th><th>2nd</th><th>1st</th><th>Agr</th><th>Avg</th><th>Grd</th><th>Pos</th> 
+        </thead>
+       {% if all_page %}
+       {% for scr in all_page %}
+        <tr>
+       	<td class="name">{{ scr.student_name }}</td><td class="t_test">{{ scr.third.test }}</td><td class="t_agn">{{ scr.third.agn }}</td><td class="t_atd">{{ scr.third.atd }}</td><td class="t_tot">{{ scr.third.total }}</td><td class="exam">{{ scr.third.exam }}</td><td class="t_agr">{{ scr.third.agr }}</td><td class="s_agr">{{ scr.second.agr }}</td><td class="f_agr">{{ scr.first.agr }}</td><td class="annual">{{ scr.anual }}</td><td class="Agr">{{ scr.Agr }}</td><td class="Grd">{{ scr.Grade }}</td><td class="pos">{{ scr.Posi }}</td>
+        </tr>
+       {% endfor %}
+       {% endif %}  
+     </table>
+   </body> 
+    	{% endblock %}
+ 
+

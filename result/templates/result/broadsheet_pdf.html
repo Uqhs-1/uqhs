@@ -1,0 +1,20 @@
+{% extends "base_generic1.html" %}
+<!doctype html>
+{% block content %}
+<html>
+    <table class="broadsheet">
+          <thead>
+               <th>STUDENT NAME</th><th>1st</th><th>2nd</th><th>3rd</th><th>Acc</th><th>1st</th><th>2nd</th><th>3rd</th><th>Ict</th><th>1st</th><th>2nd</th><th>3rd</th><th>Bio</th><th>1st</th><th>2nd</th><th>3rd</th><th>Ent</th><th>1st</th><th>2nd</th><th>3rd</th><th>Mat</th><th>1st</th><th>2nd</th><th>3rd</th><th>Eng</th><th>1st</th><th>2nd</th><th>3rd</th><th>Plc</th><th>1st</th><th>2nd</th><th>3rd</th><th>Yor</th><th>1st</th><th>2nd</th><th>3rd</th><th>Irs</th><th>1st</th><th>2nd</th><th>3rd</th><th>Civ</th><th>AGR</th><th>AVR</th><th>GRD</th><th>POS</th>         
+          </thead>
+          {% if mains %}
+          {% for scr in mains %} 
+          <tr>
+        	<td class="name">{{ scr.student_name }}</td><td class="acc1">{{ scr.acc.first.agr }}</td><td class="acc2">{{ scr.acc.second.agr }}</td><td class="acc3">{{ scr.acc.third.agr }}</td><td class="acc">{{ scr.acc.Agr }}</td><td class="ict1">{{ scr.ict.first.agr }}</td><td class="ict2">{{ scr.ict.second.agr }}</td><td class="ict3">{{ scr.ict.third.agr }}</td><td class="ict">{{ scr.ict.Agr }}</td><td class="bio1">{{ scr.bst.first.agr }}</td><td class="bio2">{{ scr.bst.second.agr }}</td><td class="bio3">{{ scr.bst.third.agr }}</td><td class="bio">{{ scr.bst.Agr }}</td><td class="ent1">{{ scr.prv.first.agr }}</td><td class="ent2">{{ scr.prv.second.agr }}</td><td class="ent3">{{ scr.prv.third.agr }}</td><td class="ent">{{ scr.prv.Agr }}</td><td class="mat1">{{ scr.mat.first.agr }}</td><td class="mat2">{{ scr.mat.second.agr }}</td><td class="mat3">{{ scr.mat.third.agr }}</td><td class="mat">{{ scr.mat.Agr }}</td><td class="eng1">{{ scr.eng.first.agr }}</td><td class="eng2">{{ scr.eng.second.agr }}</td><td class="eng3">{{ scr.eng.third.agr }}</td><td class="eng">{{ scr.eng.Agr }}</td><td class="bus1">{{ scr.bus.first.agr }}</td><td class="bus2">{{ scr.bus.second.agr }}</td><td class="bus3">{{ scr.bus.third.agr }}</td><td class="bus">{{ scr.bus.Agr }}</td><td class="yor1">{{ scr.yor.first.agr }}</td><td class="yor2">{{ scr.yor.second.agr }}</td><td class="yor3">{{ scr.yor.third.agr }}</td><td class="yor">{{ scr.yor.Agr }}</td><td class="irs1">{{ scr.irs.first.agr }}</td><td class="irs2">{{ scr.irs.second.agr }}</td><td class="irs3">{{ scr.irs.third.agr }}</td><td class="irs">{{ scr.irs.Agr }}</td><td class="nva1">{{ scr.nva.first.agr }}</td><td class="nva2">{{ scr.nva.second.agr }}</td><td class="nva3">{{ scr.nva.third.agr }}</td><td class="nva">{{ scr.nva.Agr }}</td><td class="non1">{{ scr.agr.first.agr }}</td><td class="non2">{{ scr.agr.second.agr }}</td><td class="non3">{{ scr.agr.third.agr }}</td><td class="non">{{ scr.agr.Agr }}</td><td class="nil1"></td><td class="nil2"></td><td class="nil3"></td><td class="nil"></td><td  class="agr">{{ scr.AGR }}</td><td class="avr">{{ scr.AVR }}</td><td class="grd">{{ scr.GRD }}</td><td class="pos">{{ scr.POS }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+            
+        </table>
+</html>
+{% endblock %}
+

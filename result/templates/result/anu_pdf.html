@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %} {{tutor.subject}}' Result Sheet {% endblock %}</title>
+    <style type="text/css">
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        table, th, td {
+        border: 1px solid black;
+        font-family: Baskerville Old Face;
+        text-align: center;
+        font-size: 11px;
+        }
+        table {border-collapse: collapse;
+               margin-left: -13px;
+               width: 85%;
+            }
+        
+        th, td {padding: 3px;}
+        
+        thead, tfoot {background-color: rgb(206, 172, 127);}
+        
+        tbody {background-color: seashell;}
+        tr:nth-child(even) {background-color: red;}
+        .list-group {
+            display: block;
+            width: 100%;
+            list-style: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .list-group p {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            list-style: none;
+            font-size: 1.1em;
+        }
+        
+        pre{
+        text-align: center;
+        font-size: 13px; 
+    }
+            .thr{
+            text-align: center;
+            font-size: 19px; 
+            margin-top: 40px;
+        }
+        .header {
+      padding: 20px; /* Some padding */
+      text-align: center; /* Center text*/
+      background-color: dodgerblue; /* G]rey background */
+      width: 57%;
+      margin-top: 50px;
+      line-height: 20px;
+      
+    }
+    </style>
+<div class="header">
+        <div style="font-family:Helvetica; color:white; font-size: 31px;"><em style="color:red;">U</em>MMUL_<em style="color:red;">Q</em>URA_<em style="color:red;">H</em>IGH_<em style="color:red;">S</em>CHOOL</div>
+
+</div>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <pre style="width:50%;font-size: 11px;">Subject: <em style="color:sienna;">{{tutor.subject}}</em>, Class: <em style="color:sienna;">{{ tutor.Class }}</em>, Term:  <em style="color:sienna;">{{ tutor.term }}</em> | Students in Class:<em style="color:sienna;">{{all_count}}</em> Total Scores: <em style="color:sienna;">{{all_x}}</em> Overall %: <em style="color:sienna;">{{all_y}}</em></pre>
+        </div>
+        <table class="table">
+          <tr>
+            <em class="thr"><strong>{{tutor.subject}}'s RESULT SHEET</strong> </em>
+            <th>STUDENT NAME ({{ count_grade }})</th><th>Test</th><th>Asgn</th><th>Atd</th><th>Total</th><th>Exam</th><th>3rd</th><th>2nd</th><th>1st</th><th>AGR</th><th>AVG</th><th>GRD</th><th>POS</th> 
+          </tr>
+          {% if mains %}
+          {% for scr in mains %} 
+          <tr>
+            <td style="width: 50%; font-family: Helvetica;">{{ scr.student_name }}</td><td style="color:sienna;">{{ scr.third.test }}</td><td style="color:sienna;">{{ scr.third.agn }}</td><td style="color:sienna;">{{ scr.third.atd }}</td><td style="color:sienna;">{{ scr.third.total }}</td><td style="color:sienna;">{{ scr.third.exam }}</td><td style="color:blue;">{{ scr.third.agr }}</td><td style="color:blue;">{{ scr.second.agr }}</td><td style="color:blue;">{{ scr.first.agr }}</td><td>{{ scr.anual }}</td><td>{{ scr.Agr }}</td><td style="color:green;">{{ scr.Grade }}</td><td style="color:red;">{{ scr.Posi }}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+              <pre>There are no records.</pre>
+          {% endif %}
+          <tr><th colspan="3"><strong>Subject_by:</strong> {{ tutor.teacher_name }}</th><th colspan="5"><strong> AGR:</strong> {{ subject_scores }}</th><th colspan="5"><strong> PER:</strong> {{ subject_pert }}%</th></tr>
+          <tfoot>
+            <tr><th colspan="13"><strong>Approved By:</strong><em style="color:white;">___________________________________________</em><strong>Sign:</strong><em style="color:white;">_______________</em><strong>Date:</strong>  {{ today }} </th></tr>
+          <tfoot>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

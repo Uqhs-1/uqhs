@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Aug 20 15:56:10 2019
+
+@author: AdeolaOlalekan
+"""
+
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %} Student Name Search {% endblock %} </title>
+</head>
+<body>
+    {% block content %}
+    <form method="post" >
+    <div class="cap_form" ><a href="" style="color:palegoldenrod;">New Record</a><pre>This form will search for an existing name!</pre></div>
+    <div style="color:white;"><em style="color:red;">Hint</em>: Click <a href="{% url 'new_student_name' pk=pk %}">here</a> to create new student name </div>
+    {% csrf_token %}
+    <table>
+    {{ result.as_p }}
+    </table>
+     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Search</span></button>
+  </form>
+   {% endblock %}
+</body>
+</html>
+

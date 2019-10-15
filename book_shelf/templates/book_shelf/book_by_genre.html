@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <body>
+            <table style="width:80%;margin:1px; font-size:11">
+                <div class="capt" style="width:80%;margin:1px; font-size:21"><strong>Genre</strong></div>
+                
+                <thead>
+                    <tr><th>Title(s)</th><th>Author(s)</th><th>ISBN(s)</th></tr>      
+                </thead>
+                <tbody>
+                    {% if book_by_genre %}
+                    {% for gen in book_by_genre %}
+                        <tr><td>{{gen.title}}</td><td>{{gen.author}}</td><td><a href="{% url 'copies' pk=gen.id %}">{{gen.isbn}}</a></td></tr>
+                    {% endfor %}
+                    {% else %}
+                        <p>There are no book for this genre yet.</p>
+                    {% endif %}      
+                </tbody>
+            </table>
+    </body>
+    {% endblock %}
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %} creating a new name {% endblock %} </title>
+</head>
+<body>
+    {% block content %}
+    <form method="post" >
+    {% csrf_token %}
+    <div class="cap_form" ><a href="" style="color:palegoldenrod;">New Record</a><pre>This form will create Non-existing name!</pre></div>
+    <div><em style="color:red;">Warning</em>: Ensure all inputs are correct. </div>
+    <div class="row">
+      <div class="col-xs-5">
+        {{ result.last_name|as_crispy_field }}
+      </div>
+      <div class="col-xs-5">
+        {{ result.first_name|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ result.gender|as_crispy_field }}
+      </div>
+    </div>
+     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Create</span></button>
+  </form>
+   {% endblock %}
+</body>
+</html>
+

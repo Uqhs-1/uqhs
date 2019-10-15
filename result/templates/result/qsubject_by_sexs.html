@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Aug 29 12:46:08 2019
+
+@author: AdeolaOlalekan
+"""
+
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		 <title> {% block title %} {{qry.Class}}/{{qry.term}}/{{qry.subject}} {% endblock %} </title>
+	</head>
+	{% block content %}
+	<body>
+
+	<div class="capt"><a href="{% url 'subject_home' pk=pk cl=3 %}" style="color:blue;"> Subject:</a> {{qry.subject}} <a href="{% url 'subject_home' pk=pk cl=1 %}"style="color:blue;"> Class: </a> {{ qry.Class }} <a href="{% url 'subject_home' pk=pk cl=2 %}" style="color:blue;"> Term: </a> {{ qry.term }} <pre style="line-height: 1px;">{{ qry.updated }}</pre></div>
+
+  <div>
+        <table>
+            <tr><th>STUDENT NAME ({{ counts }})</th><th>Test</th><th>Asgn</th><th>Atd</th><th>Total</th><th>Exam</th><th>Sum</th><th>Grade</th><th>Pos</th></tr> 
+          {% if all_page %}
+          {% for scr in all_page %} 
+          <tr>
+            <td><a href="{% url 'student_subject_list' pk=scr.student_name.id %}">{{ scr.student_name }}</a></td><td style="color:sienna;">{{ scr.test }}</a></td><td><em style="color:sienna;">{{ scr.agn }}</td><td><em style="color:sienna;">{{ scr.atd }}</a></td><td><em style="color:sienna;">{{ scr.total }}</a></td><td><em style="color:sienna;">{{ scr.exam }}</a></td><td><em style="color:sienna;">{{ scr.agr }}</a></td><td><em style="color:green;"><a href="{% url 'grade_list' pk_code=pk|add:'_'|add:scr.grade %}">{{ scr.grade }}</a></td><td><a href="{% url 'subject_updates_model' pk=scr.id %}">{{ scr.posi }}</a></td>
+          </tr>
+          {% endfor %}
+          {% else %}
+              <pre>There are no records.</pre>
+          {% endif %}
+            <tr class="capt"><td colspan="4"><a href="{% url 'admin_page' %}" style="color:white;">Subject_by:</a> <pre style="line-height: 3px;">{{ qry.teacher_name }}</pre><td><a href="{% url 'search_to_load' pk=pk %}" style="color:green;"><span class="glyphicon glyphicon-plus"></span></a></td></td><td> <strong>AGR:</td><td style="color:white;">{{ subject_scores }}</td><td><strong>PER:</strong></td><td style="color:white;">{{ subject_pert }}%</td></tr>
+            <tr class="capt"><td class="capt" style="color:white; width: 200px;">Grades Summary: <a href="{% url 'annual_view' pk=pk %}"><pre style="line-height: 3px;">Click on {{qry.subject.name}}</pre></a></td><td colspan="5" >{{ grad }}</td><td>{% if user.is_authenticated %}<a href="{% url 'pdf' %}"><span class="glyphicon glyphicon-print"> PDF</span></a>{% endif %}</td><td>{% if qry.term == '3rd Term' %}<a href="{% url 'compute_annual' pk=qry.id %}"><span class="glyphicon glyphicon-refresh"> Reload</span></a>{% endif %}</td><td>{% if qry.term == '3rd Term' %}<a href="{% url 'export_all' pk=qry.id %}"><span class="glyphicon glyphicon-export"> Save</span></a>{% else %}<a href="{% url 'export_users_scores' pk=qry.id %}"><span class="glyphicon glyphicon-export"> Save</span></a>{% endif %}</td></tr>                                                                                                                              
+        </table>
+	
+  </div>
+  
+ <div><a href="{% url 'subject_view_all' pk=pk %}" style="font-family:Helvetica; margin-left:36%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'home' %}" style="font-family:Helvetica; margin-left:0%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a></div>    
+
+{% endblock %}
+
+

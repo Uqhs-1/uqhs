@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html>
+    {% block content %}
+    <head>
+
+    </head>
+    <div class="fc">
+      <div class="capt" style="width:80%;margin:1px; font-size:11"><a href="{% url 'admin_page' %}" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">Warning:</a></strong> Ensure <em style="font-family:Helvetica; color:white; font-size: 10px;">file extension is</em> .txt <em style="font-family:Helvetica; color:white; font-size: 10px;">only</em> and the contnents!</div>
+    </div>
+    {% endblock %}
+</html>
