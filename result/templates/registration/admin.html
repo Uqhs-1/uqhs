@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+{% block content %}
+	<title>{% block title %} logged in {% endblock %}</title>
+    <form class="content">
+        <div class="section-inner clearfix">
+
+        <div class="fc">
+          <div class="capt">Welcome <a href="{% url 'home'  %}" style="font-family:Helvetica; color:blue; font-size: 12px;">{{ request.user.username }} !</a></div>
+        </div>
+	
+        <em style="width:89%;margin-left:59px; font-size:12">Account Details:</em>
+        {% if user.is_authenticated %}
+        {% if request.user.is_superuser == True  and user.is_staff == True %}<em class="grd_count"><div style="font-family:Helvetica; color:red; font-size: 12px;">You are logged-in as Admin</div></em>{% endif %}
+        {% if request.user.is_superuser == False and user.is_staff == True %}<em class="grd_count"><div style="font-family:Helvetica; color:red; font-size: 12px;"> You are logged-in as Staff</div></em>{% endif %}
+        {% if request.user.is_staff == False and user.is_staff == False %}<em class="grd_count"><div style="font-family:Helvetica; color:red; font-size: 12px;"> You are logged-in as Non-Staff</div><em></em></em>{% endif %}
+        {% endif %}
+        <ul style="width:89%;margin-left:59px; font-size:12">
+            <a href="{% url 'pro_detail' request.user.id %}" style="font-family:Helvetica; color:purple; font-size: 12px;">Edit Profile</span></a>
+            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Email:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.email|default:"update your account! " }}</em></li>
+            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">SuperUser:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.is_superuser }}</em></li>
+            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Staff:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.is_staff }}</em></li>
+            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Date Joined:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.date_joined }}</em></li>
+            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Last Login:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.last_login }}</em></li>
+	    <li>You have visited this page <em style="font-family:Helvetica; color:red; font-size: 12px;">{{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}</em>.</li>
+	    
+        </ul>
+        <em><a href="{% url 'home' %}"><em class="capt"><em style="font-family:Helvetica; font-size:19px; margin-left:36%;"><span class="glyphicon glyphicon-chevron-right"></span></em></a><a href="{% url 'log_out' %}"><em class="capt"><em style="font-family:Helvetica; font-size:19px;"><span class="glyphicon glyphicon-chevron-left"></span></em></a></em></em>
+        </div>
+    </form>
+
+{% endblock %}
