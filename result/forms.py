@@ -53,6 +53,11 @@ class SignUpForm(UserCreationForm):
 class subject_class_term_Form(forms.ModelForm):
     class Meta:
         model = BTUTOR
+        fields = ('Class', 'subject', 'term', )
+        
+class class_term(forms.ModelForm):
+    class Meta:
+        model = BTUTOR
         fields = ('Class', 'term', )
         
 class sessions(forms.ModelForm):

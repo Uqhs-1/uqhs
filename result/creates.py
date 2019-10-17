@@ -1,7 +1,7 @@
 from .models import QSUBJECT, ASUBJECTS, BTUTOR, TUTOR_HOME
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import subjectforms, subject_class_term_Form, sessions, FORMARTS
+from .forms import subjectforms, subject_class_term_Form, sessions, FORMARTS, class_term
 from django.contrib.auth.decorators import login_required
 from result.utils import cader, session
 
@@ -90,7 +90,7 @@ def update_teacher_class(request, pk, tr):
 
 def search_pdf(request):
     if request.method == 'POST':
-        form = subject_class_term_Form(request.POST)
+        form = class_term(request.POST)
         subject = subjectforms(request.POST)
         new = sessions(request.POST)
         frmt = FORMARTS(request.POST)
@@ -98,7 +98,7 @@ def search_pdf(request):
             xv = [['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'], ['ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR', None], ['1st Term', '2nd Term', '3rd Term', None]]
             return redirect('past_csvs', Class=xv[0].index(form.cleaned_data['Class']), subject=xv[1].index(subject.cleaned_data['name']), term=xv[2].index(form.cleaned_data['term']), session=new.cleaned_data['new'], formats=frmt.cleaned_data['formats'])
     else:
-        form = subject_class_term_Form()
+        form = class_term()
         subject = subjectforms()
         new = sessions()
         frmt = FORMARTS()

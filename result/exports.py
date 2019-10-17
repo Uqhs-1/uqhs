@@ -48,6 +48,13 @@ def export_name_text(request, pk):#result download based on login tutor
         writer.writerow(each)
     return response  
 #https://uqhs.herokuapp.com
+def tutor(request):
+    if request.user.profile.last_name != None and request.user.profile.first_name != None:
+        return str(request.user.profile.last_name.upper())+'  '+str(request.user.profile.first_name.upper())
+    else:
+        return str(request.user.profile.last_name)+'  '+str(request.user.profile.first_name)
+
+
 def scores(request, pk, ty):
     tutor = BTUTOR.objects.get(pk=pk)
     xr = [['table.qsubject', "table.annual"], [['name', 'test', 'agn', 'atd', 'tot', 'exam', 'agr', 'grd', 'pos'],['name', 't_test', 't_agn', 't_atd', 't_tot', 'exam', 't_agr', 's_agr', 'f_agr', 'annual', 'Agr', 'Grd', 'pos']], ['7', '8']]                 
@@ -97,7 +104,7 @@ def broadscores(request, pk, ty):
         os.chdir(settings.MEDIA_ROOT)
         with open(os.path.join(settings.MEDIA_ROOT, 'csvs/'+request.user.profile.class_in+'_'+str(session)+'.csv'), "r") as csvfile:
             data = list(csv.reader(csvfile)) 
-        return building(request, [data, [sum([int(float(x[-3])) for x in lists[0]]), round(mean([int(float(x[-3])) for x in lists[0]]), 2), len(lists[0]), request.user.profile.class_in, 'BROADSHEET', headers[1][0], 'BROADSHEET', 'account: {}'.format(str(request.user.profile.last_name)+'  '+str(request.user.profile.first_name))]])
+        return building(request, [data, [sum([int(float(x[-3])) for x in lists[0]]), round(mean([int(float(x[-3])) for x in lists[0]]), 2), len(lists[0]), request.user.profile.class_in, 'BROADSHEET', headers[1][0], 'BROADSHEET', tutor]])
     else:
         return export_csv_scores([request.user.profile.class_in, headers[1][0]], dg)
 
@@ -138,7 +145,7 @@ def past_csvs(request, Class, subject, term, session, formats):
         else:
             if 'AVR' in df.columns:#broadsheets
                 x = df.iloc[0:int(df.iloc[-1:].index[0])]                                                                                                                                   #[sum, avg, count, class, sheet]
-                return building(request, [data, [sum([int(float(x.AVR[i+1])) for i in range(len(x))]), round(mean([int(float(x.AVR[i+1])) for i in range(len(x))]), 2), len(x), str(xv[0][int(Class)]), 'BROADSHEET', headers, 'BROADSHEET', str(request.user.profile.last_name.upper())+'  '+str(request.user.profile.first_name.upper())]])
+                return building(request, [data, [sum([int(float(x.AVR[i+1])) for i in range(len(x))]), round(mean([int(float(x.AVR[i+1])) for i in range(len(x))]), 2), len(x), str(xv[0][int(Class)]), 'BROADSHEET', headers, 'BROADSHEET', tutor]])
             elif 'Sum' in df.columns and xv[2][int(term)] != None and xv[1][int(subject)] != None:#1st and 2nd terms
                 return building(request, [data, [sum([int(float(df.Sum[i+1])) for i in range(len(df))]), round(mean([int(float(df.Sum[i+1])) for i in range(len(df))]), 2), len(df), str(xv[0][int(Class)]), str(xv[2][int(term)])+' MarkSheet', headers, str(xv[2][int(term)])+'/'+str(xv[1][int(subject)]), TUTOR_NAME]])
             elif 'Avg' in df.columns and xv[2][int(term)] != None and xv[1][int(subject)] != None:#third terms
