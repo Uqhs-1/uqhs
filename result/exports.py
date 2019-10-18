@@ -58,7 +58,7 @@ def tutor(request):
 def scores(request, pk, ty):
     tutor = BTUTOR.objects.get(pk=pk)
     xr = [['table.qsubject', "table.annual"], [['name', 'test', 'agn', 'atd', 'tot', 'exam', 'agr', 'grd', 'pos'],['name', 't_test', 't_agn', 't_atd', 't_tot', 'exam', 't_agr', 's_agr', 'f_agr', 'annual', 'Agr', 'Grd', 'pos']], ['7', '8']]                 
-    response = requests.get('https://uqhs.herokuapp.com/result/_all/'+str(pk)+'/'+xr[-1][['qsubject', 'annual'].index(tutor.model_in)]+'/')#url 
+    response = requests.get('https://uqhi.herokuapp.com/result/_all/'+str(pk)+'/'+xr[-1][['qsubject', 'annual'].index(tutor.model_in)]+'/')#url 
     soup = BeautifulSoup(response.text, 'html.parser')
     table = soup.select_one(xr[0][['qsubject', 'annual'].index(tutor.model_in)])#tb
     headers = [th.get_text(",") for th in table.select("th")]
@@ -81,11 +81,11 @@ def scores(request, pk, ty):
     else:
         return export_csv_scores([tutor.Class, headers], lists)
     
-    
+ #https://uqhi.herokuapp.com   
 def broadscores(request, pk, ty):
     classes = [['name', 'acc1', 'acc2', 'acc3', 'acc', 'ict1', 'ict2', 'ict3', 'ict', 'bio1', 'bio2', 'bio3', 'bio', 'agr', 'avr', 'grd', 'pos'], ['name', 'ent1', 'ent2', 'ent3', 'ent', 'mat1', 'mat2', 'mat3', 'mat', 'eng1', 'eng2', 'eng3', 'eng', 'agr', 'avr', 'grd', 'pos'], ['name', 'bus1', 'bus2', 'bus3', 'bus', 'yor1', 'yor2', 'yor3', 'yor',  'irs1', 'irs2', 'irs3', 'irs','agr', 'avr', 'grd', 'pos'], ['name', 'nva1', 'nva2', 'nva3', 'nva', 'non1', 'non2', 'non3', 'non', 'nil1', 'nil2', 'nil3', 'nil','agr', 'avr', 'grd', 'pos']]
     headers = [[['STUDENT NAME', '1st', '2nd', '3rd', 'Acc', '1st', '2nd', '3rd', 'Ict', '1st', '2nd', '3rd', 'Bio', 'AGR', 'AVR', 'GRD', 'POS'], ['STUDENT NAME', '1st', '2nd', '3rd', 'Ent', '1st', '2nd', '3rd', 'Mat', '1st', '2nd', '3rd', 'Eng', 'AGR', 'AVR', 'GRD', 'POS'], ['STUDENT NAME', '1st', '2nd', '3rd', 'Plc', '1st', '2nd', '3rd', 'Yor', '1st', '2nd', '3rd', 'Irs', 'AGR', 'AVR', 'GRD', 'POS'], ['STUDENT NAME', '1st', '2nd', '3rd', 'Civ', '1st', '2nd', '3rd', 'None', '1st', '2nd', '3rd', 'None', 'AGR', 'AVR', 'GRD', 'POS']], [['STUDENT NAME', '1st', '2nd', '3rd', 'Arb', '1st', '2nd', '3rd', 'His', '1st', '2nd', '3rd', 'Bst', 'AGR', 'AVR', 'GRD', 'POS'], ['STUDENT NAME', '1st', '2nd', '3rd', 'Prv', '1st', '2nd', '3rd', 'Mat', '1st', '2nd', '3rd', 'Eng', 'AGR', 'AVR', 'GRD', 'POS'], ['STUDENT NAME', '1st', '2nd', '3rd', 'Bus', '1st', '2nd', '3rd', 'Yor', '1st', '2nd', '3rd', 'Irs', 'AGR', 'AVR', 'GRD', 'POS'], ['STUDENT NAME', '1st', '2nd', '3rd', 'Nav', '1st', '2nd', '3rd', 'Agr', '1st', '2nd', '3rd', 'None', 'AGR', 'AVR', 'GRD', 'POS']]]
-    response = requests.get('https://uqhs.herokuapp.com/result/create_update_annual_records/explorer/'+str(pk)+'/')
+    response = requests.get('https://uqhi.herokuapp.com/result/create_update_annual_records/explorer/'+str(pk)+'/')
     soup = BeautifulSoup(response.text, 'html.parser')
     table_rows = soup.select_one("table.broadsheet")
     table_rows = soup.findAll('tr')
