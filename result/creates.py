@@ -54,7 +54,8 @@ def create_new_subject_teacher(request):# teacher form for every new term, class
             if unique == 0:
                 new_teacher = BTUTOR(accounts=request.user, subject = result.cleaned_data['subject'], Class = result.cleaned_data['Class'], term = '1st Term', cader=cader(result.cleaned_data['Class']), teacher_name = f'{request.user.profile.title}{request.user.profile.last_name} : {request.user.profile.first_name}', session = session)
                 new_teacher.save()
-                TUTOR_HOME(tutor=request.user, teacher_name = f'{request.user.profile.title}{request.user.profile.last_name} : {request.user.profile.first_name}', first_term = new_teacher).save()
+                tutors = TUTOR_HOME(tutor=request.user, first_term = new_teacher)
+                tutors.save()
                 return redirect('upload_txt', pk=new_teacher.id)
             else:
                 others = BTUTOR.objects.filter(accounts__exact=request.user, subject__exact = result.cleaned_data['subject']).order_by('id')

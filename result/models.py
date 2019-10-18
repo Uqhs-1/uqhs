@@ -91,9 +91,9 @@ class BTUTOR(models.Model):
 class TUTOR_HOME(models.Model):
     tutor = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, help_text='loggon-account:move account here', related_name='home_tutor')
     teacher_name = models.CharField(max_length=50, blank=True, null=True, help_text='Subject Teacher')###
-    first_term = models.ForeignKey(BTUTOR, on_delete=models.CASCADE, default=0, null=True, blank=True, help_text='Not editable', related_name='first')
-    second_term = models.ForeignKey(BTUTOR, on_delete=models.SET_NULL, null=True, default=0, blank=True, help_text='Not editable', related_name='second')
-    third_term = models.ForeignKey(BTUTOR, on_delete=models.SET_NULL, null=True, default=0, blank=True, help_text='Not editable', related_name='third')
+    first_term = models.ForeignKey(BTUTOR, on_delete=models.CASCADE, null=True, blank=True, help_text='Not editable', related_name='first')
+    second_term = models.ForeignKey(BTUTOR, on_delete=models.SET_NULL, null=True, blank=True, help_text='Not editable', related_name='second')
+    third_term = models.ForeignKey(BTUTOR, on_delete=models.SET_NULL, null=True, blank=True, help_text='Not editable', related_name='third')
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(editable=False, blank=True, null=True,)
     class Meta:
