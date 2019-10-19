@@ -1,6 +1,6 @@
 from django.conf.urls import url
 #, include student_name_edit, subject_per_name annual_agr detailView annual_agr subject_total annual_view annual_sheet edit_user
-from.import views, imports, loggins, posts, sign_up, explorer, creates, exports, utils, deletions, updates#, pdfs
+from.import views, imports, loggins, posts, sign_up, explorer, creates, exports, utils, deletions, updates#, pdfs 
 urlpatterns = [
             #####EXPORTS #######IMPORTS#####          past_csvs           
             url('home_page/(?P<pk>\d+)/$', views.home_page, name='home_page'),

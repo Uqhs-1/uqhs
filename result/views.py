@@ -29,8 +29,8 @@ def home(request):#Step 1:: list of tutor's subjects with class, term
     Home page for every tutor!
     """
     # If a tutor is authenticated then redirect them to the tutor's page
-    if request.user.is_authenticated:#a tutor page
-        page = TUTOR_HOME.objects.filter(tutor=request.user).order_by('id')
+    if request.user.is_authenticated:#a tutor page 
+        page = TUTOR_HOME.objects.filter(tutor=request.user, first_term__session__exact=session).order_by('id')
         return render(request, 'result/page.html', {'page':page})
     else:#general login page
         return redirect('logins')

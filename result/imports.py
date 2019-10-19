@@ -138,7 +138,7 @@ def upload_new_subject_scores(request, pk):
     else:#
         return render(request, 'result/loader.html', {'pk':pk, 'qry':tutor})
     ######################STAGE 2 ::: UPLOAD SCORES##################ENDS
-    return redirect('subject_view', pk=pk)#summarise all tutor's uploads
+    return redirect('subject_view', pk=pk, md=1)#summarise all tutor's uploads
 ###############################################################################
 ###
 
