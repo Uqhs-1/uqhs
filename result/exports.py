@@ -64,7 +64,7 @@ def scores(request, pk, ty):
     headers = [th.get_text(",") for th in table.select("th")]
     headers[0] = tutor.teacher_name.upper()
     table_rows = soup.findAll('tr')
-    lists = [[data.find(class_=x).get_text(',') for x in xr[1][['qsubject', 'annual'].index(tutor.model_in)]] for data in table_rows]
+    lists = [[row.find(class_=x).get_text(',') for x in xr[1][['qsubject', 'annual'].index(tutor.model_in)]] for row in table_rows]
     if int(ty) == 1:
         df = pd.DataFrame(lists)
         df.index = [x+1 for x in range(len(df))]
@@ -74,10 +74,12 @@ def scores(request, pk, ty):
         with open(os.path.join(settings.MEDIA_ROOT, 'csvs/'+tutor.Class+'_'+tutor.subject.name+'_'+tutor.term+'_'+str(session)+'.csv'), "r") as csvfile:
             data = list(csv.reader(csvfile)) 
             data[0][1] = 'STUDENT NAME'
-        if tutor.model_in == 'annual':                                                                                                                                   #[sum, avg, count, class, sheet]
-            return building(request, [data, [sum([int(float(df.Avg[i+1])) for i in range(len(df))]), round(mean([int(float(df.Avg[i+1])) for i in range(len(df))]), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
+        if tutor.model_in == 'annual': 
+            dim = [int(float(x)) for x in [df.Avg[i+1] for i in range(len(df))] if x != None]                                                                                                                               #[sum, avg, count, class, sheet]
+            return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
         else:
-            return building(request, [data, [sum([int(float(df.Sum[i+1])) for i in range(len(df))]), round(mean([int(float(df.Sum[i+1])) for i in range(len(df))]), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
+            dim = [int(float(x)) for x in [df.Sum[i+1] for i in range(len(df))] if x != None]
+            return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
     else:
         return export_csv_scores([tutor.Class, headers], lists)
     
@@ -104,7 +106,7 @@ def broadscores(request, pk, ty):
         os.chdir(settings.MEDIA_ROOT)
         with open(os.path.join(settings.MEDIA_ROOT, 'csvs/'+request.user.profile.class_in+'_'+str(session)+'.csv'), "r") as csvfile:
             data = list(csv.reader(csvfile)) 
-        return building(request, [data, [sum([int(float(x[-3])) for x in lists[0]]), round(mean([int(float(x[-3])) for x in lists[0]]), 2), len(lists[0]), request.user.profile.class_in, 'BROADSHEET', headers[1][0], 'BROADSHEET', tutor]])
+        return building(request, [data, [sum([int(float(x[-3])) for x in lists[0] if x != None]), round(mean([int(float(x[-3])) for x in lists[0] if x != None]), 2), len(lists[0]), request.user.profile.class_in, 'BROADSHEET', headers[1][0], 'BROADSHEET', tutor]])
     else:
         return export_csv_scores([request.user.profile.class_in, headers[1][0]], dg)
 
