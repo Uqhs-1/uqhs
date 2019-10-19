@@ -108,7 +108,7 @@ def detailView(request, pk, md):##Step 2::  every tutor home detail views all_se
     tutor = get_object_or_404(BTUTOR, pk=pk)
     mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')#request.user 
     if mains.count() != 0 and md == '1':
-        grad = subject_grade_counter(pk, 'q')
+        grad = [None]#subject_grade_counter(pk, 'q')
         return render(request, 'result/qsubject.html',  {'urs':mains.count(), 'grad' : grad, 'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': paginator(request, mains), 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
     if mains.count() == 0 and md == '1':
         return redirect('upload_txt', pk=tutor.id)
@@ -116,7 +116,7 @@ def detailView(request, pk, md):##Step 2::  every tutor home detail views all_se
     if mains.count() != 0 and md == '2':
         tutor.model_in = 'annual'
         tutor.save()
-        grad = subject_grade_counter(pk, 'a')
+        grad = [None]#subject_grade_counter(pk, 'a')
         return render(request, 'result/all_annual.html',  {'subject_scores':round(mains.aggregate(Sum('Agr'))['Agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('Agr'))['Agr__avg'],2), 'males' : ANNUAL.objects.filter(subject_by__exact=tutor, student_name__gender__exact = 1).count(), 'females' : ANNUAL.objects.filter(subject_by__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': paginator(request, mains), 'qry' : tutor, 'pk': pk, 'grad': grad})
     else:
         return redirect('home')
@@ -126,10 +126,10 @@ def all_View(request, pk, md):##Step 2::  every tutor home detail views all_sear
     mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')#request.user 
     if mains.count() != 0:
         if md == '1':#scores
-            grad = subject_grade_counter(pk, 'q')
+            grad = [None]#subject_grade_counter(pk, 'q')
             return render(request, 'result/qsubject.html',  {'grad' : grad, 'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
         if md == '3' or md == '4' or md == '7':#males
-            grad = subject_grade_counter(pk, 'q')
+            grad = [None]#subject_grade_counter(pk, 'q')
             mains = QSUBJECT.objects.filter(tutor__exact=tutor, gender = int(md)-2).order_by('student_name')#genders
             if md == '7':#scores pdf
                 return render(request, 'result/qsubject_pdf.html',  {'all_page': QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')})
@@ -141,11 +141,11 @@ def all_View(request, pk, md):##Step 2::  every tutor home detail views all_sear
     mains = ANNUAL.objects.filter(subject_by__exact=tutor).order_by('id')
     if mains.count() != 0:
         if md == '2':#annuals
-            grad = subject_grade_counter(pk, 'a')
+            grad = [None]#subject_grade_counter(pk, 'a')
             return render(request, 'result/all_annual.html',  {'subject_scores':round(mains.aggregate(Sum('Agr'))['Agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('Agr'))['Agr__avg'],2), 'males' : ANNUAL.objects.filter(subject_by__exact=tutor, student_name__gender__exact = 1).count(), 'females' : ANNUAL.objects.filter(subject_by__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'qry' : tutor, 'pk': pk, 'grad': grad})
         if md == '5' or md == '6' or md == '8':
             mains = ANNUAL.objects.filter(subject_by__exact=tutor, student_name__gender__exact = int(md)-4).order_by('student_name')#ales
-            grad = subject_grade_counter(pk, 'a')
+            grad = [None]#subject_grade_counter(pk, 'a')
             if md == '8':#annual pdf
                 return render(request, 'result/all_annual_pdf.html',  {'all_page': ANNUAL.objects.filter(subject_by__exact=tutor).order_by('id')})
             else:
