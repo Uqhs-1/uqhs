@@ -100,7 +100,7 @@ def subject_grade_counter(pk, md):
         user = get_object_or_404(User, pk=get_object_or_404(BTUTOR, pk=pk).class_teacher_id)
         subjects = OVERALL_ANNUAL.objects.filter(teacher_in__exact=user, class_in__exact=user.profile.class_in, session__exact=session)
         count = Counter([x[0] for x in subjects.values_list('grade') if x != None])
-    return sorted(count.most_common()) #[('A1', 8), ('C6', 3), ('C4', 3), ('C5', 2), ('B3', 2), ('B2', 2)]
+    return [list(x) for x in sorted(count.most_common())] #[('A1', 8), ('C6', 3), ('C4', 3), ('C5', 2), ('B3', 2), ('B2', 2)]
 
 
 #from result.utils import html_csv
