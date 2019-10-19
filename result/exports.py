@@ -75,10 +75,10 @@ def scores(request, pk, ty):
             data = list(csv.reader(csvfile)) 
             data[0][1] = 'STUDENT NAME'
         if tutor.model_in == 'annual': 
-            dim = [int(float(x)) for x in [df.Avg[i+1] for i in range(len(df))] if x != None]                                                                                                                               #[sum, avg, count, class, sheet]
+            dim = [int(float(x)) for x in [df.Avg[i+1] for i in range(len(df))] if x != 'None']                                                                                                                               #[sum, avg, count, class, sheet]
             return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
         else:
-            dim = [int(float(x)) for x in [df.Sum[i+1] for i in range(len(df))] if x != None]
+            dim = [int(float(x)) for x in [df.Sum[i+1] for i in range(len(df))] if x != 'None']
             return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
     else:
         return export_csv_scores([tutor.Class, headers], lists)
