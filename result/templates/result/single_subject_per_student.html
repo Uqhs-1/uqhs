@@ -47,7 +47,7 @@
             <td style="font-family:Helvetica; color:red;">{{ scr.posi }}</td>
         </tr>
         <tr>
-            {% if scr.tutor.term == '3rd Term' %}<th><a href="{% url 'annual_view' pk=name.tutor.id %}">ANNUAL SUMMARY</a></th>{% endif %}
+            {% if scr.tutor.term == '3rd Term' %}<th><a href="{% url 'subject_view' pk=name.tutor.id md=2 %}">ANNUAL SUMMARY</a></th>{% endif %}
             {% if scr.tutor.term == '3rd Term' %}<td>--[{{ scr.annual_scores }}]--</td>{% endif %}
         </tr>
         {% endfor %}
