@@ -153,7 +153,7 @@ def mass_upload(request):
             os.chdir(os.path.join(basepath, entry))
             with open(files, 'r') as file:
                 new = files.split("_")#['99', 'SSS 3', '3', 'MAT.txt']
-                user = User.objects.get(pk=int(new[0])-75)#99   'MAT'                     'SSS 3'                                                     '3rd Term'                 's'
+                user = User.objects.get(pk=int(new[0])-78)#99   'MAT'                     'SSS 3'                                                     '3rd Term'                 's'
                 unique = BTUTOR.objects.filter(accounts__exact=user, term__exact=['empty', '1st Term', '2nd Term', '3rd Term'][int(new[2])], Class__exact=new[1], subject__exact = ASUBJECTS.objects.get(name=new[-1].split('.')[0]), session__exact = session)
                 if unique.count() == 0:
                     tutor = BTUTOR(accounts=user, subject = ASUBJECTS.objects.get(name=new[-1].split('.')[0]), Class = new[1], term = ['empty', '1st Term', '2nd Term', '3rd Term'][int(new[2])], cader=cader(new[1]), teacher_name = f'{user.profile.title}{user.profile.last_name} : {user.profile.first_name}', session = session)
