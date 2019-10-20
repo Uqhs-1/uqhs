@@ -58,7 +58,7 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  width="30"/></a>
                 </div>
-                <form method="GET" action="{% url 'searchs' %}"  class="navbar-form navbar-right" style="margin-right:25px; width:30%;line-heigh:5%;border-radius: 10px;">
+                <form method="GET" action="{% url 'searchs' %}"  class="search">
                 <div class="input-group">{% csrf_token %}
                   <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control">
                 <span class="input-group-btn">
