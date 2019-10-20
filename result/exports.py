@@ -47,7 +47,7 @@ def export_name_text(request, pk):#result download based on login tutor
     for each in sd:
         writer.writerow(each)
     return response  
-#https://uqhi.herokuapp.com
+#https://uqhs.herokuapp.com
 def tutor(request):
     if request.user.profile.last_name != None and request.user.profile.first_name != None:
         return str(request.user.profile.last_name.upper())+'  '+str(request.user.profile.first_name.upper())
@@ -64,7 +64,7 @@ def scores(request, pk, ty):
     headers = [th.get_text(",") for th in table.select("th")]
     headers[0] = tutor.teacher_name.upper()
     table_rows = soup.findAll('tr')
-    lists = [[row.find(class_=x).get_text(',') for x in xr[1][['qsubject', 'annual'].index(tutor.model_in)]] for row in table_rows]
+    lists = [[data.find(class_=x).get_text(',') for x in xr[1][['qsubject', 'annual'].index(tutor.model_in)]] for data in table_rows]
     if int(ty) == 1:
         df = pd.DataFrame(lists)
         df.index = [x+1 for x in range(len(df))]
@@ -74,12 +74,11 @@ def scores(request, pk, ty):
         with open(os.path.join(settings.MEDIA_ROOT, 'csvs/'+tutor.Class+'_'+tutor.subject.name+'_'+tutor.term+'_'+str(session)+'.csv'), "r") as csvfile:
             data = list(csv.reader(csvfile)) 
             data[0][1] = 'STUDENT NAME'
-        if tutor.model_in == 'annual': 
-            dim = [int(float(x)) for x in [df.Avg[i+1] for i in range(len(df))] if x != 'None']                                                                                                                               #[sum, avg, count, class, sheet]
-            return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
+        if tutor.model_in == 'annual':
+                                                                                                                                               #[sum, avg, count, class, sheet]
+            return building(request, [data, [sum([int(float(df.Avg[i+1])) for i in range(len(df))]), round(mean([int(float(df.Avg[i+1])) for i in range(len(df))]), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
         else:
-            dim = [int(float(x)) for x in [df.Sum[i+1] for i in range(len(df))] if x != 'None']
-            return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
+            return building(request, [data, [sum([int(float(df.Sum[i+1])) for i in range(len(df))]), round(mean([int(float(df.Sum[i+1])) for i in range(len(df))]), 2), len(df), tutor.Class, tutor.term+' MarkSheet', headers, tutor.term+'/'+tutor.subject.name, tutor.teacher_name]])
     else:
         return export_csv_scores([tutor.Class, headers], lists)
     
@@ -106,7 +105,7 @@ def broadscores(request, pk, ty):
         os.chdir(settings.MEDIA_ROOT)
         with open(os.path.join(settings.MEDIA_ROOT, 'csvs/'+request.user.profile.class_in+'_'+str(session)+'.csv'), "r") as csvfile:
             data = list(csv.reader(csvfile)) 
-        return building(request, [data, [sum([int(float(x[-3])) for x in lists[0] if x != None]), round(mean([int(float(x[-3])) for x in lists[0] if x != None]), 2), len(lists[0]), request.user.profile.class_in, 'BROADSHEET', headers[1][0], 'BROADSHEET', tutor]])
+        return building(request, [data, [sum([int(float(x[-3])) for x in lists[0]]), round(mean([int(float(x[-3])) for x in lists[0]]), 2), len(lists[0]), request.user.profile.class_in, 'BROADSHEET', headers[1][0], 'BROADSHEET', tutor(request)]])
     else:
         return export_csv_scores([request.user.profile.class_in, headers[1][0]], dg)
 
@@ -146,12 +145,14 @@ def past_csvs(request, Class, subject, term, session, formats):
             return export_csv_scores([str(xv[0][int(Class)]), headers[1][0]], data)
         else:
             if 'AVR' in df.columns:#broadsheets
-                x = df.iloc[0:int(df.iloc[-1:].index[0])]                                                                                                                                   #[sum, avg, count, class, sheet]
-                return building(request, [data, [sum([int(float(x.AVR[i+1])) for i in range(len(x))]), round(mean([int(float(x.AVR[i+1])) for i in range(len(x))]), 2), len(x), str(xv[0][int(Class)]), 'BROADSHEET', headers, 'BROADSHEET', tutor]])
+                dim = [int(float(x)) for x in [df.iloc[0:int(df.iloc[-1:].index[0])].AVR[i+1] for i in range(len(df.iloc[0:int(df.iloc[-1:].index[0])]))] if x != 'None']                                                                                                                                   #[sum, avg, count, class, sheet]
+                return building(request, [data, [sum(dim), round(mean(dim), 2), len(df.iloc[0:int(df.iloc[-1:].index[0])]), str(xv[0][int(Class)]), 'BROADSHEET', headers, 'BROADSHEET', tutor(request)]])
             elif 'Sum' in df.columns and xv[2][int(term)] != None and xv[1][int(subject)] != None:#1st and 2nd terms
-                return building(request, [data, [sum([int(float(df.Sum[i+1])) for i in range(len(df))]), round(mean([int(float(df.Sum[i+1])) for i in range(len(df))]), 2), len(df), str(xv[0][int(Class)]), str(xv[2][int(term)])+' MarkSheet', headers, str(xv[2][int(term)])+'/'+str(xv[1][int(subject)]), TUTOR_NAME]])
+                dim = [int(float(x)) for x in [df.Sum[i+1] for i in range(len(df))] if x != 'None']
+                return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), str(xv[0][int(Class)]), str(xv[2][int(term)])+' MarkSheet', headers, str(xv[2][int(term)])+'/'+str(xv[1][int(subject)]), TUTOR_NAME]])
             elif 'Avg' in df.columns and xv[2][int(term)] != None and xv[1][int(subject)] != None:#third terms
-                return building(request, [data, [sum([int(float(df.Avg[i+1])) for i in range(len(df))]), round(mean([int(float(df.Avg[i+1])) for i in range(len(df))]), 2), len(df), str(xv[0][int(Class)]), str(xv[2][int(term)])+' MarkSheet', headers, str(xv[2][int(term)])+'/'+str(xv[1][int(subject)]), TUTOR_NAME]])
+                dim = [int(float(x)) for x in [df.Avg[i+1] for i in range(len(df))] if x != 'None']
+                return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), str(xv[0][int(Class)]), str(xv[2][int(term)])+' MarkSheet', headers, str(xv[2][int(term)])+'/'+str(xv[1][int(subject)]), TUTOR_NAME]])
             else:
                 #from django.http import HttpResponse
                 #return HttpResponse([Class, subject, term, session, formats], content_type="text/plain")

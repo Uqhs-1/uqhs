@@ -73,7 +73,7 @@ body {
   text-align: center;
   padding: 12px;
   text-decoration: none;
-  font-size: 20px; 
+  font-size: 14px; 
   line-height: 15px;
   border-radius: 2px;
 }
@@ -377,6 +377,15 @@ p{ margin: 0px;
   
 }
 
+.empty{width:70%;
+       text-align:center;}
+
+.search{margin-left:76%;
+        width:30%;
+        line-heigh:5%;
+        border-radius:10px;
+        margin-top: 0px;}
+
 .navbar a {
   float: left;
   font-size: 16px;
@@ -580,27 +589,62 @@ p{ margin: 0px;
     margin-right: 0px;
   }
   
-.capt { margin-left: -13px;
+  .navbar a {
+  float: left;
+  font-size: 8px;
+  color: white;
+  text-align: center;
+  padding: 9px 10px;
+  text-decoration: none;
+}
+  
+   .dropbtn {
+  background-color: #4CAF50;
+  color: red;
+  padding: 10px;
+  font-size: 7px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-family: Bodoni MT, Helvetica, sans-serif;
+}
+  
+.capt { margin-left: 0px;
          width: 100%;
          font-size: 8px;
   }
   
   
-  form { margin-left: -13px;
+  form { margin-left: 0px;
          width: 100%;
   }
-  .sidebar {
-      height: 90%; /* Full-height: remove this if you want "auto" height */
-      width: 98%;
-      font-size: 8px;
-  }
+  .search{margin-right:0px;
+        width:30%;
+        line-heigh:5%;
+        border-radius:10px;}
   
-  table{ margin-left: -13px;
+  table{ margin-left: 0px;
         width: 100%;
         font-size: 8px;}
   
   pagination{ width:80%;
               margin-left:100px;}
+  
+  table, th, td {
+        border: 1px solid rgba(247, 238, 238, 0.918);
+        font-family: Helvetica;
+        text-align: center;
+        font-size: 8px;
+}
+  thead{font-family: Helvetica;
+        text-align: center;
+        font-size: 6px;
+          }
+  .empty{width:100%;
+       text-align:center;
+       font-size: 11px;}
+  h6{font-size:8px;
+   text-align:center;}
 }
 
 
