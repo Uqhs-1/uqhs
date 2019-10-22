@@ -22,37 +22,37 @@
                 <a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'results_junior_senior' pk=0 %}"><h6>JSS 1</h6></a>
-                    <a href="{% url 'results_junior_senior' pk=1 %}"><h6>JSS 2</h6></a>
-                    <a href="{% url 'results_junior_senior' pk=2 %}"><h6>JSS 3</h6></a>
-                    <a href="{% url 'post_list' %}"><h6>Info</h6></a>
+                    <a href="{% url 'results_junior_senior' pk=0 %}" title="JSS 1 results">JSS 1</a>
+                    <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 2 results">JSS 2</a>
+                    <a href="{% url 'results_junior_senior' pk=2 %}" title="JSS 3 results">JSS 3</a>
+                    <a href="{% url 'post_list' %}" title="Post Lists">Info</a>
                   </div>
                 </div>
                 <div class="dropdown">
                   <span class="dropbtn">Seniors</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'results_junior_senior' pk=3 %}"><h6>SSS 1</h6></a>
-                    <a href="{% url 'results_junior_senior' pk=4 %}"><h6>SSS 2</h6></a>
-                    <a href="{% url 'results_junior_senior' pk=5 %}"><h6>SSS 3</h6></a>
-                    <a href="{% url 'flexing' %}"><h6>Info</h6></a>
+                    <a href="{% url 'results_junior_senior' pk=3 %}" title="SSS 1 results">SSS 1</a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}" title="SSS 2 results">SSS 2</a>
+                    <a href="{% url 'results_junior_senior' pk=5 %}" title="SSS 3 results">SSS 3</a>
+                    <a href="{% url 'flexing' %}" title="Home Page">info</a>
                   </div>
                 </div>
                 
                 <div class="dropdown">
                   <span class="dropbtn">Library</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'stores' %}"><h6>Books</h6></a>
-                    <a href="{% url 'authors' %}"><h6>Authors</h6></a>
-                    <a href="{% url 'genres' %}"><h6>Genre</h6></a>
-                    <a href="{% url 'my_loan_book' %}" class="top-menu"><h6>My Lib</h6></a>
+                    <a href="{% url 'stores' %}" title="Book list">Books</a>
+                    <a href="{% url 'authors' %}" title="Book Authors">Authors</a>
+                    <a href="{% url 'genres' %}" title="Book Genres">Genre</a>
+                    <a href="{% url 'my_loan_book' %}" class="top-menu" title="My library">Lib</a>
                   </div>
                 </div>
                 <div class="dropdown">
-                  <span class="dropbtn">Portal</span>
+                  <span class="dropbtn">Students</span>
                   <div class="dropdown-content">
-                    <a class="active" href="{% url 'tutor_summary' pk=1 %}"><h6>Staff</h6></a>
-                    <a href="{% url 'student_names' pk=1 %}"><h6>Male Students</h6></a>
-                    <a href="{% url 'student_names' pk=2 %}"><h6>Female Students</h6></a>
+                    <a href="{% url 'student_names' pk=1 %}" title="Male name list">Male</a>
+                    <a href="{% url 'student_names' pk=2 %}" title="Female name list">Female</a>
+                    <a href="{% url 'search_pdf' %}" title="Search for past results"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span></a>
                   </div>
                 </div>
                 <div class="navbar-header">
@@ -80,7 +80,7 @@
                 <a href="{% url 'teacher_create' %}" title="1st term file upload"><span class="glyphicon glyphicon-tasks"></a>
                 <a href="{% url 'transfers' %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
                 <a href="{% url 'student_in_none' %}" title="Deleted/Canceled scores"><span class="glyphicon glyphicon-trash"></a>
-                <a href="{% url 'search_pdf' %}" title="Search past results "><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span></a>
+                
 
                 {% if perms.catalog.can_mark_returned %}
                 <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
@@ -98,9 +98,9 @@
                 {% endif %}
                 {% if request.user.profile.class_in != None %}
                 <a href="{% url 'broadsheet_last_stage' %}" title="Compute {{ request.user.profile.class_in }}'s Broadsheet "><span class="glyphicon glyphicon-list-alt"></a>
-                                {% endif %}
+                {% endif %}
             </div>
-            <a href="{% url 'log_out' %}" style="font-family:Helvetica; color:red; font-size: 9px;"><span class="glyphicon glyphicon-log-out"></span><em class=""><em style="font-family:Helvetica; font-size:9px;">Logout</em></em></a>                                              
+            <a href="{% url 'log_out' %}" style="font-family:Helvetica; color:red; font-size: 9px;" title="Do you want to logout?"><span class="glyphicon glyphicon-log-out"></span><em class=""><em style="font-family:Helvetica; font-size:9px;">Logout</em></em></a>                                              
             {% endif %} 
             </div>
               
@@ -284,7 +284,7 @@
         <div style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">©Copyright 2019 examing body. All rights reversed.</div>
         <div class="footer-left">
             {% if user.is_authenticated %}
-             <div class="ft" style="font-family:Helvetica; color:red; font-size: 10px;"> {{ user.username }}|logged as {% if user.is_staff == True and user.is_superuser == False %} Staff {% else %} Admin {% endif %}<small><a href="{% url 'log_out' %}"><span class="glyphicon glyphicon-log-out"></span></a></small></div>
+             <div class="ft" style="font-family:Helvetica; color:red; font-size: 10px;"> {{ user.username }}|logged as {% if user.is_staff == True and user.is_superuser == False %} Staff {% else %} Admin {% endif %}<small><a href="{% url 'log_out' %}" title="Do you want to logout?"><span class="glyphicon glyphicon-log-out"></span></a></small></div>
                  {% if request.user.profile.email_confirmed == False %}
                  <div class="ft"><a href="{% url 'pro_detail' request.user.id %}"><small><span class="glyphicon glyphicon-flag" style="color:white;"></small></span><h6>{{ request.user.profile.bio|default:"Action required!" }}</h6></a></div>
                  {% endif %}

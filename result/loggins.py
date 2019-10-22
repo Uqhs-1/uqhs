@@ -95,7 +95,7 @@ def InputTypeError(request):
     return render(request, 'result/InputTypeErrorExample.html')
 
 def all_users(request):#show single candidate profile
-    qry = User.objects.all()
+    qry = User.objects.all().order_by('username')
     return render(request, 'result/all_users.html', {'qry' : qry})
 
 

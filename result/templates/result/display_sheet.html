@@ -2,6 +2,9 @@
 <!doctype html>
 {% block content %}
 <html>
+    <head>
+		 <title> {% block title %} {{ request.user.profile.class_in }}'s BROADSHEET {% endblock %} </title>
+	</head>
     <table style="width:200%;">
     
     <div class="capt">Class: <em style="color:sienna;">{{ request.user.profile.class_in }}</em> Students in Class:<em style="color:sienna;"> {{ mains.count }}</em> Total Scores: <em style="color:sienna;"> {{ overall }}</em> Average : <em style="color:sienna;"> {{ per }}%</em></div>

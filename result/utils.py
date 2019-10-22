@@ -1,53 +1,14 @@
-from .models import QSUBJECT, BTUTOR, TUTOR_HOME, SESSION#, OVERALL_ANNUAL, ANNUAL
-from django.shortcuts import render#, redirect#, redirect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect
+from .models import TUTOR_HOME, SESSION
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 import xhtml2pdf.pisa as pisa
-import time
-from datetime import timedelta
-from django.contrib import messages
-from django.db.models import Avg
 
 def session():
     if SESSION.objects.all().count() == 0:
         return '2024'
     else:
-        return SESSION.objects.get(pk=[x.id for x in SESSION.objects.all()][0]).new
-
-def tutor_model_summary(request, pk):
-    start_time = time.time()
-    mains = QSUBJECT.objects.filter(tutor__session__exact=session)
-    tutors = [i[0] for i in list(set(list(mains.values_list('tutor')))) if i[0] != None]
-    for i in range(0, len(tutors)):#
-        t = BTUTOR.objects.get(pk=tutors[i])
-        avg = round(QSUBJECT.objects.filter(tutor__subject__exact=t.subject, tutor__Class__exact=t.Class, tutor__term__exact=t.term).aggregate(Avg('agr'))['agr__avg'],2)
-        count = QSUBJECT.objects.filter(tutor__subject__exact=t.subject, tutor__Class__exact=t.Class, tutor__term__exact=t.term).count()
-        t.model_summary = {str(t.teacher_name)+':'+str(t.subject)[:3]+':'+str(t.Class)+':'+str(t.term)+':'+str(count)+':'+str(avg)+'%'}
-        t.save()
-    elapsed_time_secs = time.time() - start_time
-    msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
-    messages.success(request, msg)
-    print(msg)
-    return redirect('tutor_model_redirected', pk=pk)
-    
-    
-def tutor_model_redirected(request, pk):
-    count_s = QSUBJECT.objects.filter(tutor__session__exact=session).count()
-    count_t = BTUTOR.objects.filter(session__exact=session).count()
-    page = request.GET.get('page', 1)
-    paginator = Paginator(BTUTOR.objects.filter(session__exact=session), 30)
-    try:
-        all_page = paginator.page(page)
-    except PageNotAnInteger:
-        all_page = paginator.page(1)
-    except EmptyPage:
-        all_page = paginator.page(paginator.num_pages)
-    return render(request, 'result/student_on_all_subjects_detail.html',  {'all_page': all_page, 'count_t': count_t, 'count_s':count_s, 'pk':pk})
-
-
+        return SESSION.objects.get(pk=[x.id for x in SESSION.objects.all()][1]).new
 
 def cader(qry):
     clas = [['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'], ['', 'jss_one', 'jss_two', 'jss_three', 'sss_one', 'sss_two', 'sss_three']]
