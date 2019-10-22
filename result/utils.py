@@ -8,7 +8,7 @@ def session():
     if SESSION.objects.all().count() == 0:
         return '2024'
     else:
-        return SESSION.objects.get(pk=[x.id for x in SESSION.objects.all()][1]).new
+        return SESSION.objects.get(pk=[x.id for x in SESSION.objects.all()][0]).new
 
 def cader(qry):
     clas = [['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'], ['', 'jss_one', 'jss_two', 'jss_three', 'sss_one', 'sss_two', 'sss_three']]
