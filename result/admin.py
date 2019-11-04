@@ -1,7 +1,5 @@
 from django.contrib import admin
-
 from .models import ASUBJECTS, BTUTOR, CNAME, QSUBJECT, ANNUAL, Edit_User, OVERALL_ANNUAL, SESSION, REGISTERED_ID
-
 #admin.site.register(studen_scores)#
 ########################################################
 # Define the admin class
@@ -13,13 +11,10 @@ class model_teacher(admin.ModelAdmin):
     list_display = ('model_in','accounts', 'cader', 'teacher_name', 'subject', 'Class', 'term', 'model_summary', 'session')
     fields = ['cader', 'model_in','accounts', 'teacher_name', 'subject', 'Class', 'term', 'model_summary', 'session']
 
-
-
 @admin.register(OVERALL_ANNUAL)
 class model_qsubject(admin.ModelAdmin):
     list_display = ('student_name','class_in', 'eng', 'mat', 'bus', 'bst', 'yor', 'nva', 'irs', 'prv', 'ict', 'agr', 'his', 'AGR', 'AVR', 'GRD', 'POS')
     fields = [('student_name','class_in'), ('eng', 'mat', 'bus', 'bst', 'yor', 'nva', 'irs', 'prv', 'ict', 'agr', 'his'), ('AGR', 'AVR', 'GRD', 'POS')]
-
 
 @admin.register(ANNUAL)
 class model_annual(admin.ModelAdmin):

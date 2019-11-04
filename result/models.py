@@ -21,8 +21,6 @@ class ASUBJECTS(models.Model):
 class SESSION(models.Model):
     code = tuple([('2019', '2018/2019'), ('2020', '2019/2020'), ('2021', '2020/2021'), ('2022', '2021/2022'), ('2023', '2022/2023'), ('2024', '2023/2024'), ('2025', '2024/2025'), ('2026', '2025/2026'), ('2027', '2026/2027'), ('2028', '2027/2028'), ('2029', '2028/2029'), ('2030', '2029/2030'), ('2031', '2030/2031'), ('2032', '2031/2032'), ('2033', '2032/2033'), ('2034', '2033/2034'), ('2035', '2034/2035'), ('2036', '2035/2036'), ('2037', '2036/2037'), ('2038', '2037/2038'), ('2039', '2038/2039'), ('2040', '2039/2040'), ('2041', '2040/2041'), ('2042', '2041/2042'), ('2043', '2042/2043'), ('2044', '2043/2044'), ('2045', '2044/2045'), ('2046', '2045/2046'), ('2047', '2046/2047'), ('2048', '2047/2048')])
     new = models.CharField(max_length=30, choices= code, null=True, default='2019',help_text='select academic SESSION',)
-    
-    
     def __str__(self):
          return self.new
 
@@ -77,7 +75,7 @@ class BTUTOR(models.Model):
         if not self.id:
             self.created = datetime.date.today()
         if self.accounts != None:
-            self.teacher_name = f'{self.accounts.profile.title}{self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
+            self.teacher_name = f'{self.accounts.profile.title} {self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
         self.updated = datetime.datetime.today()
         if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() != 0:
             self.males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session), gender__exact = 1).count()
@@ -236,21 +234,21 @@ class ANNUAL(models.Model):
         if self.subject_by.term == '3rd Term':
             from statistics import mean
             from result.utils import do_grades, cader
-            qsubject = QSUBJECT.objects.filter(student_name__exact = self.student_name, tutor__Class__exact = self.subject_by.Class, tutor__subject__exact = self.subject_by.subject, tutor__session__exact = self.subject_by.session)
+            qsubject = QSUBJECT.objects.filter(student_name__exact = self.student_name, tutor__Class__exact = self.subject_by.Class, tutor__subject__exact = self.subject_by.subject, tutor__session__exact = self.subject_by.session).exclude(tutor__term__exact='3rd Term')
             listed = [i[0] for i in list(qsubject.values_list('agr'))]
             if len(listed) != 0:
-                if len(listed) == 3:
-                    self.first = qsubject[0]
-                    self.second = qsubject[1]
+                if len(listed) == 2:
+                    self.first = qsubject[1]
+                    self.second = qsubject[0]
                     self.anual = qsubject[0].agr + qsubject[1].agr + self.third.agr 
                     self.Agr = round(mean([qsubject[0].agr , qsubject[1].agr, self.third.agr]), 2)
                     self.Grade = do_grades([int(mean([qsubject[0].agr , qsubject[1].agr, self.third.agr]))], cader(self.third.tutor.Class))[0]
-                elif len(listed) == 2:
-                    self.second = qsubject[1]
-                    self.anual = qsubject[1].agr + self.third.agr 
-                    self.Agr = round(mean([qsubject[1].agr, self.third.agr]), 2)
-                    self.Grade = do_grades([int(mean([qsubject[1].agr, self.third.agr]))], cader(self.third.tutor.Class))[0]
                 elif len(listed) == 1:
+                    self.second = qsubject[0]
+                    self.anual = qsubject[0].agr + self.third.agr 
+                    self.Agr = round(mean([qsubject[0].agr, self.third.agr]), 2)
+                    self.Grade = do_grades([int(mean([qsubject[0].agr, self.third.agr]))], cader(self.third.tutor.Class))[0]
+                elif len(listed) == 0:
                     self.anual = self.third.agr 
                     self.Agr = self.third.agr
                     self.Grade = do_grades([int(mean([self.third.agr]))], cader(self.third.tutor.Class))[0]

@@ -19,7 +19,7 @@
        </tr>
        {% endfor %}
        {% else %}
-       	<pre style="width:70%;">Annual record is empty.</pre>
+       	<pre class="empty">There are no records.</pre>
        {% endif %}
        <tr class="capt"><td colspan="9"><a href="{% url 'admin_page' %}" style="color:white;">Subject_by:</a> <pre style="line-height: 3px;"><a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>{{ qry.teacher_name }}</a></pre><td><a href="{% url 'home' %}" style="color:green;"><span class="glyphicon glyphicon-plus" title="add a student's score"></span></a></td></td><td> <strong>AGR:</td><td style="color:white;">{{ subject_scores }}</td><td><strong>PER:</strong></td><td style="color:white;">{{ subject_pert }}%</td></tr>
        <tr class="capt"><td class="capt" style="color:white; width: 200px;"><a href="{% url 'position_updates' pk=pk term=4 %}" title="Click to refresh grades">Grades Summary</a>:<pre style="line-height: 3px;">{% if request.user.is_authenticated %}<a href="{% url 'subject_view' pk=pk md=2 %}" title='Click for details'>{{qry.subject.name}}</a>{% endif %}</pre></td><td colspan="10" >{{ grad }}</td><td>{% if user.is_authenticated %}<a href="{% url 'html_csv' pk=pk ty=1 %}" title='print'><span class="glyphicon glyphicon-print"></span></a>{% endif %}</td><td>{% if qry.term == '3rd Term' %}<a href="{% url 'html_csv' pk=pk ty=1 %}" title="{{ qry.Class }} Broadsheet "><span class="glyphicon glyphicon-record"></span></a>{% endif %}</td><td>{% if qry.term == '3rd Term' %}<a href="{% url 'html_csv' pk=pk ty=1 %}"><span class="glyphicon glyphicon-export" title='export'></span></a>{% else %}<a href="{% url 'html_csv' pk=pk ty=1 %}"><span class="glyphicon glyphicon-export" title='export'></span></a>{% endif %}</td></tr>

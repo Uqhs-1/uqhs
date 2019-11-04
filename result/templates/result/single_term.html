@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} {{ a.student_name }}/{{ a.tutor.Class }} {% endblock %}</title>
+    </head>
+    {% block content %}
+    <table>
+	<div class="capt"font-size:13"><a href="" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{{ a.student_name }}:</a></strong> PERFORMANCE IN SUBJECT <em style="font-family:Helvetica; color:white; font-size: 15px;">!</em></div>
+        
+        <tr>
+            <th><em></em></th>
+            <thead><td>{{ a.tutor.Class }}:{{ a.tutor.term }}</td><td>Obt. Mark</td><td>{{ a.tutor.subject.name }}</td><td>{{ b.tutor.subject.name }}</td><td>{{ c.tutor.subject.name }}</td><td>{{ d.tutor.subject.name }}</td><td>{{ e.tutor.subject.name }}</td><td>{{ f.tutor.subject.name }}</td><td>{{ g.tutor.subject.name }}</td><td>{{ h.tutor.subject.name }}</td><td>{{ i.tutor.subject.name }}</td><td>{{ j.tutor.subject.name }}</td><td>{{ k.tutor.subject.name }}</td></thead>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Grade</th>
+            <td style="font-family:Helvetica; color:red;" ></td><td>{{ a.grade }}</td><td>{{ b.grade }}</td><td>{{ c.grade }}</td><td>{{ d.grade }}</td><td>{{ e.grade }}</td><td>{{ f.grade }}</td><td>{{ g.grade }}</td><td>{{ h.grade }}</td><td>{{ i.grade }}</td><td>{{ j.grade }}</td><td>{{ k.grade }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Cont. Asst Test [CA]</th>
+            <td style="font-family:Helvetica; color:red;" >40</td><td>{{ a.total }}</td><td>{{ b.total }}</td><td>{{ c.total }}</td><td>{{ d.total }}</td><td>{{ e.total }}</td><td>{{ f.total }}</td><td>{{ g.total }}</td><td>{{ h.total }}</td><td>{{ i.total }}</td><td>{{ j.total }}</td><td>{{ k.total }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Exam Score</th>
+            <td style="font-family:Helvetica; color:red;" >60</td><td>{{ a.exam }}</td><td>{{ b.exam }}</td><td>{{ c.exam }}</td><td>{{ d.exam }}</td><td>{{ e.exam }}</td><td>{{ f.exam }}</td><td>{{ g.exam }}</td><td>{{ h.exam }}</td><td>{{ i.exam }}</td><td>{{ j.exam }}</td><td>{{ k.exam }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Total Scores</th>
+            <td style="font-family:Helvetica; color:red;" >100</td><td>{{ a.agr }}</td><td>{{ b.agr }}</td><td>{{ c.agr }}</td><td>{{ d.agr }}</td><td>{{ e.agr }}</td><td>{{ f.agr }}</td><td>{{ g.agr }}</td><td>{{ h.agr }}</td><td>{{ i.agr }}</td><td>{{ j.agr }}</td><td>{{ k.agr }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">No in Class</th>
+            <td style="font-family:Helvetica; color:red;" ></td><td>{% if a != None %}{{ a.tutor.males |add:a.tutor.females }}{% endif %}</td><td>{% if b != None %}{{ b.tutor.males |add:b.tutor.females }}{% endif %}</td><td>{% if c != None %}{{ c.tutor.males |add:c.tutor.females }}{% endif %}</td><td>{% if d != None %}{{ d.tutor.males |add:d.tutor.females }}{% endif %}</td><td>{% if e != None %}{{ e.tutor.males |add:e.tutor.females }}{% endif %}</td><td>{% if f != None %}{{ f.tutor.males |add:f.tutor.females }}{% endif %}</td><td>{% if g != None %}{{ g.tutor.males |add:g.tutor.females }}{% endif %}</td><td>{% if h != None %}{{ h.tutor.males |add:h.tutor.females }}{% endif %}</td><td>{% if i != None %}{{ i.tutor.males |add:i.tutor.females }}{% endif %}</td><td>{% if j != None %}{{ j.tutor.males |add:j.tutor.females }}{% endif %}</td><td>{% if k != None %}{{ k.tutor.males |add:k.tutor.females }}{% endif %}</td>
+        </tr>
+        <tr>    								
+            <th style="font-family:Helvetica; color:blue;">Position</th>
+            <td style="font-family:Helvetica; color:red;" ></td><td>{{ a.posi }}</td><td>{{ b.posi }}</td><td>{{ c.posi }}</td><td>{{ d.posi }}</td><td>{{ e.posi }}</td><td>{{ f.posi }}</td><td>{{ g.posi }}</td><td>{{ h.posi }}</td><td>{{ i.posi }}</td><td>{{ j.posi }}</td><td>{{ k.posi }}</td>
+        </tr>
+        <tr>
+            <th style="font-family:Helvetica; color:blue;">Teacher's sign</th>
+            <td style="font-family:Helvetica; color:red;" ></td><td title="{{ a.tutor.teacher_name }}">{% if a.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ b.tutor.teacher_name }}">{% if b.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ c.tutor.teacher_name }}">{% if c.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ d.tutor.teacher_name }}">{% if d.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ e.tutor.teacher_name }}">{% if e.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ f.tutor.teacher_name }}">{% if f.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ g.tutor.teacher_name }}">{% if g.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ h.tutor.teacher_name }}">{% if h.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ i.tutor.teacher_name }}">{% if i.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ j.tutor.teacher_name }}">{% if j.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ k.tutor.teacher_name }}">{% if k.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td>
+        </tr>
+        <tr>
+            <thead><th style="font-family:Helvetica; color:blue;">Class-Teacher's Remark [<em style="font-family:Helvetica; color:red;" >{{ anuual }}</em>]</th><th colspan="12" style="color:white;">{{remark}}</th></thead>
+        </tr>
+           </table> 
+    {% endblock %}
+</html>

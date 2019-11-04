@@ -131,5 +131,25 @@ def parent_id(tutor):
         tutors.save()
     return tutor_id[0]
 
-
+def remarks(anuual):
+    remarks = ['Best results, keep it up.', 'Very good results, keep it up.', 'Good results, put more efforts.', 'Above average, try to improve.', 'Satisfactorily, you need to work harder.', 'Below average, you need to work harder.', 'Poor results.', 'Very poor results.']
+    if anuual >= 0.9:
+        remark = remarks[0]
+    elif anuual >= 0.8:
+        remark = remarks[1]
+    elif anuual >= 0.7:
+        remark = remarks[2]
+    elif anuual >= 0.6:
+        remark = remarks[3]
+    elif anuual >= 0.5:
+        remark = remarks[4]
+    elif anuual >= 0.4:
+        remark = remarks[5]
+    elif anuual >= 0.3:
+        remark = remarks[6]
+    elif anuual >= 0.2:
+        remark = remarks[7] 
+    elif anuual >= 0.1:
+        remark = remarks[8]
+    return remark
 

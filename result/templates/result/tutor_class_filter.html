@@ -18,7 +18,7 @@
                         <tr><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.teacher_name }}</td><td>{{ sub.subject }}</td><td>{{ sub.Class }}</a></td><td><a href="{% url 'subject_view_all' pk=sub.id md=1 %}">{{ sub.term }}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td>{{ sub.males|add:sub.females }}</td><td>{{ sub.session }}</td></tr>
                     {% endfor %}
                     {% else %}
-                        <p>There are no records matching your search.</p>
+                        <pre class="empty">There are no records.</pre>
                     {% endif %}       
                 </tbody>
                 <tfoot>

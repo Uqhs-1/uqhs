@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 from django.contrib.auth.decorators import login_required
-#from result.utils import parent_id
+from result.utils import remarks
 from datetime import timedelta 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Avg
@@ -34,8 +34,7 @@ def home(request):#Step 1:: list of tutor's subjects with class, term
         return render(request, 'result/page.html', {'page':page})
     else:#general login page
         return redirect('logins')
-    
-    
+        
 def paginator(request, pages):
     page = request.GET.get('page', 1)
     paginator = Paginator(pages, 30)
@@ -102,8 +101,6 @@ def subject_grade_counter(pk, md):
         count = Counter([x[0] for x in subjects.values_list('grade') if x != None])
     return [list(x) for x in sorted(count.most_common())] #[('A1', 8), ('C6', 3), ('C4', 3), ('C5', 2), ('B3', 2), ('B2', 2)]
 
-
-#from result.utils import html_csv
 def detailView(request, pk, md):##Step 2::  every tutor home detail views all_search_lists
     tutor = get_object_or_404(BTUTOR, pk=pk)
     mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')#request.user 
@@ -121,7 +118,7 @@ def detailView(request, pk, md):##Step 2::  every tutor home detail views all_se
     else:
         return redirect('home')
     
-def all_View(request, pk, md):##Step 2::  every tutor home detail views all_search_lists
+def all_View(request, pk, md):##Step 2::  every tutor home detail views all_search_lists 
     tutor = get_object_or_404(BTUTOR, pk=pk)
     mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')#request.user 
     if mains.count() != 0:
@@ -154,7 +151,6 @@ def all_View(request, pk, md):##Step 2::  every tutor home detail views all_sear
         return redirect('home')
 #########################################################################################################################
  
-
 @login_required   
 def genders_scores(request, pk_code):##Step 2::  every tutor home detail views all_search_lists
     gender = [['a', 'b'], [1, 2]]
@@ -216,7 +212,6 @@ def Student_names_list(request, pk):##Step 2::  every tutor home detail views
 
 
 def student_on_all_subjects_list(request, pk):##Step 2::  every tutor home detail views
-    
     if pk == '0':
         mains = QSUBJECT.objects.all().order_by('posi')
         tutors = len([i[0] for i in list(set(list(mains.values_list('tutor'))))])
@@ -264,7 +259,6 @@ def home_page_return(request, pk):
         tutors.third_term = QSUBJECT.objects.get(tutor = tutor).tutor
         tutors.save()
 
-
 def results_junior_senior(request, pk):
     cls = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
     tutors = BTUTOR.objects.filter(Class__exact=cls[int(pk)]).exclude(accounts__exact=None).order_by('term')
@@ -277,27 +271,32 @@ def once_results_junior_senior(request, pk):
     tutors = BTUTOR.objects.filter(Class__exact=cls[int(pk)]).exclude(accounts__exact=None).order_by('term')
     return render(request, 'result/all_results_junior_senior.html', {'tutor': tutors, 'pk':pk, 'counts':tutors.count()})
 
-def all_users(request):#show single candidate profile
+def all_users(request):#show single candidate profile 
     qry = User.objects.all()
     return render(request, 'result/all_users.html', {'qry' : qry})
 
-def student_subject_detail_one_subject(request, pk):#student subject detail(single term)
+def student_subject_detail_one_subject(request, pk):#################################
     many = get_object_or_404(QSUBJECT, pk=pk)
-    subjects = QSUBJECT.objects.filter(student_name = many.student_name, tutor__subject__exact=many.tutor.subject)
-    anuual = subjects.aggregate(Sum('agr'))['agr__sum']
-    elapsed_time_secs = time.time() - start_time
-    msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
-    print(msg)
-    return render(request, 'result/single_subject_per_student.html',  {'subjects' : subjects, 'name':many, 'anuual':anuual, 'pk':pk}) 
-
-def student_subject_detail_all_subject(request, pk):#student subject detail(single term)
-    many = get_object_or_404(QSUBJECT, pk=pk)
-    subjects = QSUBJECT.objects.filter(student_name = many.student_name, tutor__Class__exact=many.tutor.Class)
-    anuual = subjects.aggregate(Sum('agr'))['agr__sum']
-    elapsed_time_secs = time.time() - start_time
-    msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
-    print(msg)
-    return render(request, 'result/single_subject_per_student.html',  {'subjects' : subjects, 'name':many, 'anuual':anuual, 'pk':pk}) 
+    if many.tutor.term == '1st Term' or many.tutor.term == '2nd Term':
+        subjects = QSUBJECT.objects.filter(student_name = many.student_name, tutor__Class__exact=many.tutor.Class, tutor__term__exact=many.tutor.term, tutor__session__exact=session)
+    else:
+        subjects = ANNUAL.objects.filter(student_name = many.student_name, subject_by__Class__exact=many.tutor.Class, subject_by__term__exact=many.tutor.term, subject_by__session__exact=session)
+    lists = [x for x in subjects]
+    if len(lists) != 11:
+        lists = lists + [None]*(11-len(lists))
+    if subjects.count() != 0:
+        if many.tutor.term == '1st Term' or many.tutor.term == '2nd Term':
+            anuual = subjects.aggregate(Sum('agr'))['agr__sum']
+            return render(request, 'result/single_term.html',  {'anuual':round(anuual/(100*subjects.count()), 2), 'remark':remarks(round(anuual/(100*subjects.count()), 2)), 'a' : lists[0], 'b':lists[1], 'c':lists[2], 'd':lists[3], 'e':lists[4], 'f' : lists[5], 'g':lists[6], 'h':lists[7], 'i':lists[8], 'j':lists[9], 'k':lists[10]}) 
+        else:
+            first = QSUBJECT.objects.filter(student_name = many.student_name, tutor__Class__exact=many.tutor.Class, tutor__term__exact='1st Term', tutor__session__exact=session)
+            second = QSUBJECT.objects.filter(student_name = many.student_name, tutor__Class__exact=many.tutor.Class, tutor__term__exact='2nd Term', tutor__session__exact=session)
+            if subjects.count() == first.count() == second.count():
+                return render(request, 'result/three_terms.html',  {'first':round(first.aggregate(Sum('agr'))['agr__sum']/(100*subjects.count()), 2), 'second':round(second.aggregate(Sum('agr'))['agr__sum']/(100*subjects.count()), 2), 'anuual':round(subjects.aggregate(Sum('Agr'))['Agr__sum']/(100*subjects.count()), 2), 'remark_st':remarks(round(first.aggregate(Sum('agr'))['agr__sum']/(100*subjects.count()), 2)), 'remark_nd':remarks(round(second.aggregate(Sum('agr'))['agr__sum']/(100*subjects.count()), 2)), 'remark_rd':remarks(round(subjects.aggregate(Sum('Agr'))['Agr__sum']/(100*subjects.count()), 2)), 'a' : lists[0], 'b':lists[1], 'c':lists[2], 'd':lists[3], 'e':lists[4], 'f' : lists[5], 'g':lists[6], 'h':lists[7], 'i':lists[8], 'j':lists[9], 'k':lists[10]}) 
+            else:
+                return render(request, 'result/third_term_only.html',  {'first':round(first.aggregate(Sum('agr'))['agr__sum']/(100*subjects.count()), 2),  'anuual':round(subjects.aggregate(Sum('Agr'))['Agr__sum']/(100*subjects.count()), 2), 'remark_st':remarks(round(first.aggregate(Sum('agr'))['agr__sum']/(100*subjects.count()), 2)),  'remark_rd':remarks(round(subjects.aggregate(Sum('Agr'))['Agr__sum']/(100*subjects.count()), 2)), 'a' : lists[0], 'b':lists[1], 'c':lists[2], 'd':lists[3], 'e':lists[4], 'f' : lists[5], 'g':lists[6], 'h':lists[7], 'i':lists[8], 'j':lists[9], 'k':lists[10]}) 
+    else:
+        return redirect('home')
 
 def searchs(request):
     query = request.GET.get("q")

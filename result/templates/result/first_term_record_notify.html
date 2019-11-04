@@ -15,7 +15,7 @@
                 <tbody>
                     {% if all_page %}
                     {% for sub in all_page %}
-                        <tr><td>{{ sub.teacher_name }}</td><td>{{ sub.id }}</td><td>{{ sub.subject }}</td><td>{{ sub.term }}</td><td><a href="{% url 'subject_view' pk=sub.id %}">{{ sub.Class }}</a></td><td>{{ sub.session }}</td>{% if request.user.is_staff %}<td><a href="{% url 'tutor_update' sub.id %}"><span class="glyphicon glyphicon-remove"></span></a></td>{% endif %}</tr>
+                        <tr><td>{{ sub.teacher_name }}</td><td>{{ sub.id }}</td><td>{{ sub.subject }}</td><td>{{ sub.term }}</td><td><a href="{% url 'subject_view_all' pk=sub.id md=1 %}">{{ sub.Class }}</a></td><td>{{ sub.session }}</td>{% if request.user.is_staff %}<td><a href="{% url 'tutor_update' sub.id %}"><span class="glyphicon glyphicon-remove"></span></a></td>{% endif %}</tr>
                     {% endfor %}
                     {% else %}
                         <pre style="width:85%;margin:1px; font-size:12">There are no first records created in your account yet.</pre>

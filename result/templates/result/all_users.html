@@ -16,7 +16,7 @@
             <tbody>
             {% if qry %}
             {% for sub in qry %}
-                 <tr><td><a href="{% url 'confirm_deleting_a_user' pk=sub.id %}">{{ sub.id }}</a></td><td><a style="font-family:Helvetica; color:purple; font-size: 10px;" href="{% url 'edit_accounts' pk=sub.id %}">{{ sub.username }}</a></td><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.first_name }}</td><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.last_name }}</td><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.email }}</td><td style="font-family:Helvetica; color:red; font-size: 10px;">{{ sub.is_staff}}</td><td><a href="{% url 'user_update' pk=sub.profile.id %}">{{ sub.profile.class_in}}</a></td></tr>
+                 <tr><td><a href="{% url 'confirm_deleting_a_user' pk=sub.id %}">{{ sub.id }}</a></td><td><a style="font-family:Helvetica; color:purple; font-size: 10px;" href="{% url 'edit_accounts' pk=sub.id %}">{{ sub.username }}</a></td><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.profile.first_name }}</td><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.profile.last_name }}</td><td style="font-family:Helvetica; color:green; font-size: 10px;">{{ sub.email }}</td><td style="font-family:Helvetica; color:red; font-size: 10px;">{{ sub.is_staff}}</td><td><a href="{% url 'user_update' pk=sub.profile.id %}">{{ sub.profile.class_in}}</a></td></tr>
             {% endfor %}
             {% else %}
                <pre style="width:70%;">There are no user account yet.</pre>

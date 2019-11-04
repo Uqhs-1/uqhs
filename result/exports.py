@@ -7,8 +7,7 @@ Created on Thu Apr 18 18:54:06 2019
 import os
 from django.shortcuts import get_object_or_404#, redirect
 import csv
-from wsgiref.util import FileWrapper
-from .models import QSUBJECT, BTUTOR, CNAME#, SESSION
+from .models import QSUBJECT, BTUTOR, CNAME, REGISTERED_ID#, SESSION
 import pandas as pd
 from django.conf import settings
 import requests
@@ -17,33 +16,66 @@ from statistics import mean
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from result.flowerable import building
-
+from result.imports import check_repeated_names
 from result.utils import session
 session = session()
 
 module_dir = os.path.dirname(__file__)  # get current directory
-file_path = os.path.join(module_dir, 'test1.txt')
+file_path = os.path.join(module_dir, 'JSS 2.txt')
 def sample_disply(request):
     #os.chdir(file_path)
     empty_list = open(file_path, "r" )
     return HttpResponse(empty_list, content_type='text/plain')
 
 def sample_down(request):
-    #os.chdir(file_path)
-    wrapper = FileWrapper(open(file_path, "r" ))
-    response=HttpResponse(wrapper, content_type="text/plain")
+    response = HttpResponse(content_type='text/plain')
+    with open(file_path, 'r') as file:
+        file_txt = file.read()
+        contents = file_txt.split('\n');
+        sd = [[x] for x in contents]
+    writer = csv.writer(response)
+    for each in sd:
+        writer.writerow(each) 
     response['Content-Disposition'] ='attachment; filename="samples.txt"'
     return response 
 
-def export_name_text(request, pk):#result download based on login tutor
-    tutor = get_object_or_404(BTUTOR, pk=pk)
-    response = HttpResponse(content_type='text')
-    response['Content-Disposition'] = "attachment; filename={Class}-names.txt".format(Class=tutor.Class)
+def student_names(request, pk):
+    if request.user.is_authenticated:
+        Class = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', 'BIO', 'ECO', 'CHE', 'ACC', 'ARB', 'GOV', 'ICT', 'PHY', 'LIT', 'COM', 'GEO', 'AGR', 'YOR', 'ELE', 'CTR', 'GRM'][int(pk)]
+        file_path = os.path.join(settings.MEDIA_ROOT, 'student_names/'+Class+'.txt')
+        response = HttpResponse(content_type='text/plain')
+        with open(file_path, 'r') as file:
+            file_txt = file.read()
+            contents = file_txt.split('\n');
+            if len([contents.index(n) for n in contents if len(n) < 2]) == 1:
+                males = sorted([x[0].upper() for x in check_repeated_names([[x] for x in contents[:[contents.index(n) for n in contents if len(n) < 2][0]]])])
+                females = sorted([x[0].upper() for x in check_repeated_names([[x] for x in contents[[contents.index(n) for n in contents if len(n) < 2][0]+1:]])])
+            else:
+                return redirect('home')
+            sd = [[x] for x in males+['']+females]
+        writer = csv.writer(response)
+        for each in sd:
+            writer.writerow(each)    
+        response['Content-Disposition'] = "attachment; filename={Class}-names.txt".format(Class=Class)
+        return response
+    else:
+        return redirect('home')
+
+def export_name_text(request, pk, ty):#result download based on login tutor
+    if int(pk) >= 1 and int(ty) != 0:
+        tutor = get_object_or_404(BTUTOR, pk=pk)
+        subject = QSUBJECT.objects.filter(tutor__exact=tutor).values_list('student_name')
+        Class = tutor.Class
+        # 
+    else:
+        Class = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'][int(pk)]
+        subject = REGISTERED_ID.objects.filter(student_class__exact=Class, session__exact=session).values_list('student_name')
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = "attachment; filename={Class}-names.txt".format(Class=Class)
     writer = csv.writer(response)
-    subject = QSUBJECT.objects.filter(tutor__exact=tutor).values_list('student_name')
     sd = [list(x) for x in subject]
     for i in range(0, len(sd)):
-    	sd[i][0] = CNAME.objects.get(pk=sd[i][0]).last_name +' '+ CNAME.objects.get(pk=sd[i][0]).first_name
+        sd[i][0] = CNAME.objects.get(pk=sd[i][0]).last_name+' '+ CNAME.objects.get(pk=sd[i][0]).first_name
     for each in sd:
         writer.writerow(each)
     return response  
@@ -154,8 +186,6 @@ def past_csvs(request, Class, subject, term, session, formats):
                 dim = [int(float(x)) for x in [df.Avg[i+1] for i in range(len(df))] if x != 'None']
                 return building(request, [data, [sum(dim), round(mean(dim), 2), len(df), str(xv[0][int(Class)]), str(xv[2][int(term)])+' MarkSheet', headers, str(xv[2][int(term)])+'/'+str(xv[1][int(subject)]), TUTOR_NAME]])
             else:
-                #from django.http import HttpResponse
-                #return HttpResponse([Class, subject, term, session, formats], content_type="text/plain")
                 return redirect('home')
     else:
         return redirect('home')

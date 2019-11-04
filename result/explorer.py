@@ -1,4 +1,4 @@
-from .models import ANNUAL, OVERALL_ANNUAL#, SESSION#, ASUBJECTS
+from .models import ANNUAL, OVERALL_ANNUAL
 from django.shortcuts import render, redirect, get_object_or_404
 from result.utils import do_grades, do_positions, cader, session
 from datetime import datetime
@@ -23,7 +23,6 @@ def return_value_or_None(request, pk, x):
         return item 
     else:
         return None
-
 
 def create_student_annual(request):
         global dim

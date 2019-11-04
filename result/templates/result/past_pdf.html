@@ -4,13 +4,13 @@
 <html lang="en">
 	<head>
    	 <meta charset="UTF-8">
-    	<title> {% block title %} PAST RESULTS {% endblock %} </title>
+    	<title> {% block title %} RESULT SEARCH {% endblock %} </title>
 	</head>
 	 {% block content %}
 	<body>
     	<form method="post">
 				{% csrf_token %}
-				<div class="cap_form"><strong>PAST RESULTS</strong></div>
+				<div class="cap_form"><strong>RESULT SEARCH</strong></div>
 				<div class="row">
                  <div class="col-xs-2">
 						{{ subject.name|as_crispy_field }}

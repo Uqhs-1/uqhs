@@ -12,8 +12,8 @@ from django.contrib import messages
 from django.conf import settings
 import os
 import shutil
-
-
+from statistics import mean
+#import datetime
 from result.utils import session
 session = session()
 
@@ -34,6 +34,18 @@ def check(inp):
     
 def sort_key(dim):#sort with first elements of the list
     return dim[0]
+
+def check_repeated_names(valid_input):
+    word_counts = Counter([r[0] for r in valid_input])
+    repeated_name = word_counts.most_common()
+    ideces = [list(x) for x in repeated_name if x[1] != 1]
+    for i in range(0, len(ideces)):
+        repeated_names = [valid_input[valid_input.index(x)][0] + str(valid_input.index(x)) for x in valid_input if x[0] == ideces[i][0]]
+        each = [valid_input.index(x) for x in valid_input if x[0] == ideces[i][0]]
+        for r in range(0, len(repeated_names)):
+            valid_input[each[r]][0] = str(repeated_names[r])
+    return valid_input
+
 
 @login_required
 def upload_new_subject_scores(request, pk):
@@ -60,43 +72,32 @@ def upload_new_subject_scores(request, pk):
         tutor.females = females
         
         #####################REPEATED NAMES######################################
-        word_counts = Counter([r[0] for r in valid_input])
-        repeated_name = word_counts.most_common()
-        ideces = [list(x) for x in repeated_name if x[1] != 1]
-        for i in range(0, len(ideces)):
-            repeated_names = [valid_input[valid_input.index(x)][0] + str(valid_input.index(x)) for x in valid_input if x[0] == ideces[i][0]]
-            each = [valid_input.index(x) for x in valid_input if x[0] == ideces[i][0]]
-            for r in range(0, len(repeated_names)):
-                valid_input[each[r]] = str(repeated_names[r])
+        valid_input = check_repeated_names(valid_input)
         
         ##########################ERROR CHECK##############################
-        sd = []
+        
         for i in range(0, len(valid_input)):
             output = [check(s) for s in valid_input[i]]
             if len(output) == 9:
                 if output != [False, True, True, True, True, True, True, True, True]:
-                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id})
+                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
             elif len(output) == 5:
                 if output != [False, True, True, True, True]:
-                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id})
+                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
             else:
-                return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id}) 
-        ##########################ERROR CHECK##############################
-            sd += [[valid_input[i][0]]+[[int(float(ints)) for ints in valid_input[i][1:]]][0]]
-        
-        if len(sd) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
-            from statistics import mean
-            valid_input = [[round(mean(x[1:3])), round(mean(x[3:5])), round(mean(x[5:7])), round(mean(x[7:9]))] for x in sd]
-        else:
-            valid_input = sd
+                return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name}) 
             
+
+       
+        if len(valid_input[0]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
+            valid_input = [[x[0], round(mean([int(i) for i in x[1:3]])), round(mean([int(i) for i in x[3:5]])), round(mean([int(i) for i in x[5:7]])), round(mean([int(i) for i in x[7:9]]))] for x in valid_input]
+        
         x = cader(tutor.Class)
-        raw_scores = [[x[0], x[1], x[2], x[3], sum(x[1:4]), x[4], sum([sum(x[1:4]), x[4]])] for x in valid_input]
+        raw_scores = [[x[0], int(x[1]), int(x[2]), int(x[3]), sum([int(i) for i in x[1:4]]), int(x[4]), sum([sum([int(i) for i in x[1:4]]), int(x[4])])] for x in valid_input]
         
         posi = do_positions([int(i[-1]) for i in raw_scores][:])
         grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
-        
-        
+       
         #####################NAMES QUERIES######################################
         Genders = [sorted(raw_scores[:males]), sorted(raw_scores[males:])]#sorted_list
         for i in range(0, 2):
@@ -153,10 +154,10 @@ def mass_upload(request):
             os.chdir(os.path.join(basepath, entry))
             with open(files, 'r') as file:
                 new = files.split("_")#['99', 'SSS 3', '3', 'MAT.txt']
-                user = User.objects.get(pk=int(new[0])-78)#99   'MAT'                     'SSS 3'                                                     '3rd Term'                 's'
+                user = User.objects.get(pk=int(new[0]))#99   'MAT'                     'SSS 3'                                                     '3rd Term'                 's'
                 unique = BTUTOR.objects.filter(accounts__exact=user, term__exact=['empty', '1st Term', '2nd Term', '3rd Term'][int(new[2])], Class__exact=new[1], subject__exact = ASUBJECTS.objects.get(name=new[-1].split('.')[0]), session__exact = session)
                 if unique.count() == 0:
-                    tutor = BTUTOR(accounts=user, subject = ASUBJECTS.objects.get(name=new[-1].split('.')[0]), Class = new[1], term = ['empty', '1st Term', '2nd Term', '3rd Term'][int(new[2])], cader=cader(new[1]), teacher_name = f'{user.profile.title}{user.profile.last_name} : {user.profile.first_name}', session = session)
+                    tutor = BTUTOR(accounts=user, subject = ASUBJECTS.objects.get(name=new[-1].split('.')[0]), Class = new[1], term = ['empty', '1st Term', '2nd Term', '3rd Term'][int(new[2])], cader=cader(new[1]), teacher_name = f'{user.profile.title} {user.profile.last_name} : {user.profile.first_name}', session = session)
                     tutor.save()
                 else:
                     tutor = BTUTOR.objects.get(accounts=user, term=['empty', '1st Term', '2nd Term', '3rd Term'][int(new[2])], Class=new[1], subject = ASUBJECTS.objects.get(name=new[-1].split('.')[0]), session = session)
@@ -175,38 +176,26 @@ def mass_upload(request):
                 tutor.females = females
                 tutor.save()
                 #####################REPEATED NAMES######################################
-                word_counts = Counter([r[0] for r in valid_input])
-                repeated_name = word_counts.most_common()
-                ideces = [list(x) for x in repeated_name if x[1] != 1]
-                for i in range(0, len(ideces)):
-                    repeated_names = [valid_input[valid_input.index(x)][0] + str(valid_input.index(x)) for x in valid_input if x[0] == ideces[i][0]]
-                    each = [valid_input.index(x) for x in valid_input if x[0] == ideces[i][0]]
-                    for r in range(0, len(repeated_names)):
-                        valid_input[each[r]] = str(repeated_names[r])
+                valid_input = check_repeated_names(valid_input)
                 
                 ##########################ERROR CHECK##############################
-                sd = []
+                
                 for i in range(0, len(valid_input)):
                     output = [check(s) for s in valid_input[i]]
                     if len(output) == 9:
                         if output != [False, True, True, True, True, True, True, True, True]:
-                            return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':ASUBJECTS.objects.get(name=new[-1].split('.')[0])})
+                            return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
                     elif len(output) == 5:
                         if output != [False, True, True, True, True]:
-                            return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':ASUBJECTS.objects.get(name=new[-1].split('.')[0])})
+                            return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
                     else:
-                        return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':ASUBJECTS.objects.get(name=new[-1].split('.')[0])}) 
-                ##########################ERROR CHECK##############################
-                    sd += [[valid_input[i][0]]+[[int(float(ints)) for ints in valid_input[i][1:]]][0]]
-                
-                if len(sd) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
-                    from statistics import mean
-                    valid_input = [[round(mean(x[1:3])), round(mean(x[3:5])), round(mean(x[5:7])), round(mean(x[7:9]))] for x in sd]
-                else:
-                    valid_input = sd
+                        return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name}) 
                     
+                if len(valid_input[0]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
+                    valid_input = [[x[0], round(mean([int(i) for i in x[1:3]])), round(mean([int(i) for i in x[3:5]])), round(mean([int(i) for i in x[5:7]])), round(mean([int(i) for i in x[7:9]]))] for x in valid_input]
+                
                 x = cader(tutor.Class)
-                raw_scores = [[x[0], x[1], x[2], x[3], sum(x[1:4]), x[4], sum([sum(x[1:4]), x[4]])] for x in valid_input]
+                raw_scores = [[x[0], int(x[1]), int(x[2]), int(x[3]), sum([int(i) for i in x[1:4]]), int(x[4]), sum([sum([int(i) for i in x[1:4]]), int(x[4])])] for x in valid_input]
                 
                 posi = do_positions([int(i[-1]) for i in raw_scores][:])
                 grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
@@ -322,4 +311,4 @@ def upload_a_name(request, pk):
         result = student_name()
     return render(request, 'result/a_student_name.html', {'result': result})
 
-############################################################################
+

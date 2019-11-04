@@ -104,3 +104,5 @@ def search_pdf(request):
         new = sessions()
         frmt = FORMARTS()
     return render(request, 'result/past_pdf.html', {'form': form, 'new': new, 'subject':subject, 'frmt':frmt})
+
+

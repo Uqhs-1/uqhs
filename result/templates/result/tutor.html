@@ -15,7 +15,7 @@
                 <tbody>
                     {% if tutor %}
                     {% for sub in tutor %}
-                        <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_update' sub.id %}" title="Click to update subject-teacher info">{{ sub.teacher_name }}</a></td><td><a href="{% url 'ques_subject_updates' sub.id %}" title="Click to load {{ sub.subject }} subject-model">{{ sub.subject }}</a></td><td><a href="{% url 'extract_name' pk=sub.id %}" title="Click to download {{ sub.Class }} student-names">{{ sub.Class }}</a></td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}" title="Lunch {{ sub.Class }} {{ sub.term }} {{ sub.subject }}">{{ sub.term }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td><td>{{ sub.males|add:sub.females }}</td></tr>
+                        <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_update' sub.id %}" title="Click to update subject-teacher info">{{ sub.teacher_name }}</a></td><td><a href="{% url 'ques_subject_updates' sub.id %}" title="Click to load {{ sub.subject }} subject-model">{{ sub.subject }}</a></td><td><a href="{% url 'extract_name' pk=sub.id ty=1 %}" title="Click to download {{ sub.Class }} student-names">{{ sub.Class }}</a></td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}" title="Lunch {{ sub.Class }} {{ sub.term }} {{ sub.subject }}">{{ sub.term }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td><td>{{ sub.males|add:sub.females }}</td></tr>
                     {% endfor %}
                     {% else %}
                         <pre style="width:70%;text-align: center;">There are no records in your account yet.</pre>
