@@ -122,11 +122,11 @@ def upload_new_subject_scores(request, pk):
         Both_sex_ids = sorted(Males[0], key=sort_key) + sorted(Females[0], key=sort_key)#compltes ids 
         joined_scores_ids = [[str(i[1])]+x[:] for i,x in zip(Both_sex_ids, final)]
         #from django.http import HttpResponse
-        #return HttpResponse([len(joined_scores_ids)], content_type='text/plain')#
+        #
                                      ########################QUERY SUBJECT MODEL FOR CONTINUATIONS###############################
         
-        Both_sex_ids_final = [x for x in joined_scores_ids if x[1] not in [r[0] for r in [list(QSUBJECT.objects.filter(student_name__in=CNAME.objects.filter(full_name__in=[x[1] for x in joined_scores_ids])).distinct().values_list('student_name'))]]]
-        
+        Both_sex_ids_final = [x for x in joined_scores_ids if x[0] not in [r[0] for r in [list(QSUBJECT.objects.filter(student_name__in=CNAME.objects.filter(full_name__in=[x[1] for x in joined_scores_ids])).distinct().values_list('student_name'))]]]
+        #return HttpResponse([Both_sex_ids_final], content_type='text/plain')
         [QSUBJECT(student_name=CNAME.objects.get(pk=i[0]), test=i[2], agn=i[3], atd=i[4], exam=i[6], total=i[5], agr=i[7], posi=i[9], grade=i[8], tutor = tutor, cader = x).save() for i in Both_sex_ids_final]
         elapsed_time_secs = time.time() - start_time
         msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
