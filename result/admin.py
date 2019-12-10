@@ -22,8 +22,8 @@ class model_annual(admin.ModelAdmin):
     fields = ['student_name', ('first', 'second', 'third', 'summary', 'anual'), ('Agr', 'Grade', 'Posi'), 'subject_by']
 @admin.register(CNAME)
 class model_names(admin.ModelAdmin):
-    list_display = ('id', 'last_name', 'first_name', 'full_name', 'created', 'updated')
-    fields = ['last_name', 'first_name', 'full_name']
+    list_display = ('id', 'gender', 'last_name', 'first_name', 'full_name', 'created', 'updated')
+    fields = ['last_name', 'first_name', 'full_name', 'gender']
     
 @admin.register(REGISTERED_ID)
 class model_ids(admin.ModelAdmin):

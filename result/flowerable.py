@@ -25,9 +25,9 @@ def add_page_number(canvas, doc):
     page_num = canvas.getPageNumber()
     text = "Page #%s" % page_num
     canvas.drawCentredString(4 *inch, .25*inch, text)
-    canvas.drawString(6.8 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
-    canvas.drawRightString(6.8 * inch, 0.5 * inch, tutor)
-    canvas.drawString(0.5 * inch, 0.5 * inch, 'https://uqhs.herokuapp.com/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    #canvas.drawString(6.8 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
+    canvas.drawRightString(4.8 * inch, 0.5 * inch, '/account/'+tutor+'/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    canvas.drawString(5.8 * inch, 0.5 * inch, 'https://uqhi.herokuapp.com/')
     canvas.setStrokeGray(0.90)
     canvas.setFillGray(0.90)
     canvas.drawCentredString(2.5 * inch, 1.25 * inch, 'UMUL_QURA HIGH SCHOOL MARK_SHEETS')
@@ -39,9 +39,9 @@ def logo(canvas, doc):
     page_num = canvas.getPageNumber()
     text = "Page #%s" % page_num
     canvas.drawCentredString(4 *inch, .25*inch, text)
-    canvas.drawString(6.8 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
-    canvas.drawRightString(6.8 * inch, 0.5 * inch, tutor)
-    canvas.drawString(0.5 * inch, 0.5 * inch, 'https://uqhs.herokuapp.com/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    #canvas.drawString(0.5 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
+    canvas.drawRightString(4.8 * inch, 0.5 * inch, '/account/'+tutor+'/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    canvas.drawString(5.8 * inch, 0.5 * inch, 'https://uqhi.herokuapp.com/')
     canvas.setStrokeGray(0.90)
     canvas.setFillGray(0.90)
     canvas.drawImage(doc.watermark,83,760,width=68,height=57,mask='auto')
@@ -55,9 +55,9 @@ def broadsheet(canvas, doc):
     page_num = canvas.getPageNumber()
     text = "Page #%s" % page_num
     canvas.drawCentredString(5.75 *inch, .25*inch, text)
-    canvas.drawString(8.3 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
-    canvas.drawRightString(8.3 * inch, 0.5 * inch, tutor)
-    canvas.drawString(0.5 * inch, 0.5 * inch, 'https://uqhs.herokuapp.com/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    #canvas.drawString(8.3 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
+    canvas.drawRightString(4.8 * inch, 0.5 * inch, '/account/'+tutor+'/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    canvas.drawString(5.8 * inch, 0.5 * inch, 'https://uqhi.herokuapp.com/')
     canvas.setStrokeGray(0.90)
     canvas.setFillGray(0.90)
     canvas.drawCentredString(2.5 * inch, 1.25 * inch, 'UMUL_QURA HIGH SCHOOL MARK_SHEETS')
@@ -69,9 +69,9 @@ def logo2(canvas, doc):
     page_num = canvas.getPageNumber()
     text = "Page #%s" % page_num
     canvas.drawCentredString(5.75 *inch, .25*inch, text)
-    canvas.drawString(8.3 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
-    canvas.drawRightString(8.3 * inch, 0.5 * inch, tutor)
-    canvas.drawString(0.5 * inch, 0.5 * inch, 'https://uqhs.herokuapp.com/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    #canvas.drawString(8.3 * inch, 0.5 * inch, '/'+str(Class)+'/'+str(sheet))
+    canvas.drawRightString(4.8 * inch, 0.5 * inch, '/account/'+tutor+'/'+str(datetime.datetime.today())+'/: {}'.format(session))
+    canvas.drawString(5.8 * inch, 0.5 * inch, 'https://uqhi.herokuapp.com/')
     canvas.setStrokeGray(0.90)
     canvas.setFillGray(0.90)
     canvas.drawImage(doc.watermark,83,500,width=68,height=57,mask='auto')
@@ -89,7 +89,7 @@ def building(request, xy):
     title_style.alignment = 1#centered right 2 left 0
     title_style3 = styles['Heading3']
     title_style3.alignment = 1
-    title_style4 = styles['Heading4']
+    title_style4 = styles['Heading5']
     title_style4.alignment = 1
     title_style2 = styles['Heading5']
     title_style2.alignment = 1
@@ -99,7 +99,7 @@ def building(request, xy):
     elements.append(Paragraph('Arowona Bus-Stop, Akanran Road, Ibadan-Oyo state.', title_style3))
     elements.append(Paragraph('ummulqura@marktoob.com, ummulqr@yahoo.com', title_style4))
     elements.append(Paragraph('08053776177, 07042412052', title_style4))
-    elements.append(Paragraph(sheet, title_style))
+    elements.append(Paragraph(sheet, title_style3))
         
     #]# [(start_column, start_row), (end_column, end_row)]
     pdf_buffer = io.BytesIO()
