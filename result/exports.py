@@ -101,7 +101,7 @@ def scores(request, pk, ty, gd):
     table_rows = soup.findAll('tr')
     lists = [[data.find(class_=x).get_text(',') for x in xr[1][['qsubject', 'annual'].index(tutor.model_in)]] for data in table_rows]
     if int(ty) == 1:
-        df = pd.DataFrame(lists)
+        df = pd.DataFrame(sorted(lists[:tutor.males]) + sorted(lists[tutor.males:]))
         df.index = [x+1 for x in range(len(df))]
         df.columns = headers
         df.to_csv(os.path.join(settings.MEDIA_ROOT, 'csvs/'+tutor.Class+'_'+tutor.subject.name+'_'+tutor.term+'_'+str(session)+'.csv'), encoding='ISO-8859-1')
