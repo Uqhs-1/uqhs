@@ -77,9 +77,9 @@ class BTUTOR(models.Model):
         if self.accounts != None:
             self.teacher_name = f'{self.accounts.profile.title} {self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
         self.updated = datetime.datetime.today()
-        if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() != 0:
-            self.males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session), student_name__gender__exact = 1).count()
-            self.females = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session), student_name__gender__exact = 2).count()
+        #if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() != 0:
+            #self.males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session), student_name__gender__exact = 1).count()
+            #self.females = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session), student_name__gender__exact = 2).count()
         super(BTUTOR, self).save()
         
     def get_absolute_url(self):
@@ -119,7 +119,7 @@ class CNAME(models.Model):
     full_name = models.CharField(max_length=200, default='student_names', blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(editable=False, blank=True, null=True,)
-    gender = models.IntegerField(blank=True, null=True, default= 1, validators=[MaxValueValidator(1), MinValueValidator(2)])
+    gender = models.IntegerField(blank=True, null=True, default= 1, validators=[MaxValueValidator(2), MinValueValidator(1)])
     class Meta:
           ordering = ('last_name',) # helps in alphabetical listing. Sould be a tuple
     
@@ -200,7 +200,7 @@ class QSUBJECT(models.Model):#step5-subject
             self.student_id = REGISTERED_ID.objects.get(student_name=self.student_name, student_class=self.tutor.Class, session=session).student_id
             self.qteacher = self.tutor.teacher_name
          self.updated = datetime.datetime.today()
-         #self.gender = self.student_name.gender
+         self.gender = self.student_name.gender
          super(QSUBJECT, self).save()
      def get_absolute_url(self):
         """Returns the url to access a detail record for this student."""

@@ -2,7 +2,7 @@ from django.conf.urls import url
 #, include student_name_edit, subject_per_name annual_agr detailView annual_agr subject_total annual_view annual_sheet edit_user
 from.import views, imports, loggins, posts, sign_up, explorer, creates, exports, deletions, updates#, pdfs 
 urlpatterns = [
-            #####EXPORTS #######IMPORTS#####          past_csvs           
+            #####EXPORTS #######IMPORTS#####          past_csvs result/_all html_csv          
             url('home_page/(?P<pk>\d+)/$', views.home_page, name='home_page'),
             url(r'home/$', views.home, name='home'),
             url(r'home_page_return/(?P<pk>\d+)/$', views.home_page_return, name='home_page_return'),
@@ -18,7 +18,7 @@ urlpatterns = [
             url('student_names_download/(?P<pk>\d+)/$', exports.student_names, name='student_names_download'),
             url(r'^extract_name/subjects/(?P<pk>\d+)/(?P<ty>\d+)/', exports.export_name_text, name='extract_name'),
             url('signup/', sign_up.Staff_SignUp.as_view(), name='signup'),
-            url('html_csv_pdf/(?P<pk>\d+)/(?P<ty>\d+)/', exports.scores, name='html_csv'),
+            url('html_csv_pdf/(?P<pk>\d+)/(?P<ty>\d+)/(?P<gd>\d+)/', exports.scores, name='html_csv'),
             url('broad/sheete/scores/(?P<pk>\d+)/(?P<ty>\d+)/', exports.broadscores, name='broadscores'),
             url('past_csvs/(?P<Class>\d+)/(?P<subject>\d+)/(?P<term>\d+)/(?P<session>\d+)/(?P<formats>\d+)/', exports.past_csvs, name='past_csvs'),
          			 #####VIEWS##### annual_view student_subject_list student_in_none 

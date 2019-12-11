@@ -100,6 +100,8 @@ def upload_new_subject_scores(request, pk):
        
         #####################NAMES QUERIES######################################
         Genders = [sorted(raw_scores[:males]), sorted(raw_scores[males:])]#sorted_list
+        #from django.http import HttpResponse
+ #return HttpResponse(student_name_id_third, content_type='text/plain')#
         for i in range(0, 2):
             splited = sorted([x[0].split(' ') for x in Genders[i]])
             for r in range(0, len(splited)):

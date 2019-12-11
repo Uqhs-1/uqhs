@@ -95,7 +95,7 @@ def building(request, xy):
     title_style2.alignment = 1
     # PDF Text - Content
     Sum, mean, counts, Class, term, headers, sheet, tutor = data[1]
-    elements.append(Paragraph('UMMUL-QURQH HIGH SCHOOL', title_style))
+    elements.append(Paragraph('UMMUL-QURA HIGH SCHOOL', title_style))
     elements.append(Paragraph('Arowona Bus-Stop, Akanran Road, Ibadan-Oyo state.', title_style3))
     elements.append(Paragraph('ummulqura@marktoob.com, ummulqr@yahoo.com', title_style4))
     elements.append(Paragraph('08053776177, 07042412052', title_style4))

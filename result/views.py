@@ -120,16 +120,18 @@ def detailView(request, pk, md):##Step 2::  every tutor home detail views all_se
     
 def all_View(request, pk, md):##Step 2::  every tutor home detail views all_search_lists 
     tutor = get_object_or_404(BTUTOR, pk=pk)
-    mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')#request.user 
+    mains = QSUBJECT.objects.filter(tutor__exact=tutor)#.order_by('gender')#request.user 
     if mains.count() != 0:
         if md == '1':#scores
             grad = subject_grade_counter(pk, 'q')
             return render(request, 'result/qsubject.html',  {'grad' : grad, 'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
-        if md == '3' or md == '4' or md == '7':#males
+        if md == '3' or md == '4' or md == '7'or md == '9'or md == '10':#males
             grad = subject_grade_counter(pk, 'q')
             mains = QSUBJECT.objects.filter(tutor__exact=tutor, gender = int(md)-2).order_by('student_name')#genders
             if md == '7':#scores pdf
-                return render(request, 'result/qsubject_pdf.html',  {'all_page': QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')})
+                return render(request, 'result/qsubject_pdf.html',  {'all_page': QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')})#, gender__exact = 1
+            elif md == '9' or md == '10':#scores pdf by_sex
+                return render(request, 'result/qsubject_pdf.html',  {'all_page': QSUBJECT.objects.filter(tutor__exact=tutor, gender__exact = int(md)-8).order_by('gender')})
             else:
                 return render(request, 'result/qsubject.html',  {'grad' : grad, 'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
     if mains.count() == 0 and md == '1':

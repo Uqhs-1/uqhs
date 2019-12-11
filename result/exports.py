@@ -87,10 +87,13 @@ def tutor(request):
         return str(request.user.profile.last_name)+'  '+str(request.user.profile.first_name)
 
 
-def scores(request, pk, ty):
+def scores(request, pk, ty, gd):
     tutor = BTUTOR.objects.get(pk=pk)
     xr = [['table.qsubject', "table.annual"], [['name', 'test', 'agn', 'atd', 'tot', 'exam', 'agr', 'grd', 'pos'],['name', 't_test', 't_agn', 't_atd', 't_tot', 'exam', 't_agr', 's_agr', 'f_agr', 'annual', 'Agr', 'Grd', 'pos']], ['7', '8']]                 
-    response = requests.get('https://uqhi.herokuapp.com/result/_all/'+str(pk)+'/'+xr[-1][['qsubject', 'annual'].index(tutor.model_in)]+'/')#url 
+    if gd == '9' or gd == '10':
+        response = requests.get('https://uqhi.herokuapp.com/result/_all/'+str(pk)+'/'+gd+'/')
+    else:
+        response = requests.get('https://uqhi.herokuapp.com/result/_all/'+str(pk)+'/'+xr[-1][['qsubject', 'annual'].index(tutor.model_in)]+'/')#url
     soup = BeautifulSoup(response.text, 'html.parser')
     table = soup.select_one(xr[0][['qsubject', 'annual'].index(tutor.model_in)])#tb
     headers = [th.get_text(",") for th in table.select("th")]
@@ -98,7 +101,7 @@ def scores(request, pk, ty):
     table_rows = soup.findAll('tr')
     lists = [[data.find(class_=x).get_text(',') for x in xr[1][['qsubject', 'annual'].index(tutor.model_in)]] for data in table_rows]
     if int(ty) == 1:
-        df = pd.DataFrame(sorted(lists[:tutor.males]) + sorted(lists[tutor.males:]))
+        df = pd.DataFrame(lists)
         df.index = [x+1 for x in range(len(df))]
         df.columns = headers
         df.to_csv(os.path.join(settings.MEDIA_ROOT, 'csvs/'+tutor.Class+'_'+tutor.subject.name+'_'+tutor.term+'_'+str(session)+'.csv'), encoding='ISO-8859-1')
