@@ -611,7 +611,7 @@ p{ margin: 0px;
   
 .capt { margin-left: 0px;
          width: 100%;
-         font-size: 8px;
+         font-size: 76%;
   }
   
   
@@ -625,7 +625,7 @@ p{ margin: 0px;
   
   table{ margin-left: 0px;
         width: 100%;
-        font-size: 8px;}
+        font-size: 76%;}
   
   pagination{ width:80%;
               margin-left:100px;}
@@ -634,16 +634,25 @@ p{ margin: 0px;
         border: 1px solid rgba(247, 238, 238, 0.918);
         font-family: Helvetica;
         text-align: center;
-        font-size: 8px;
+        font-size: 76%;
 }
+
+  .males{   
+        font-size: 76%;
+        }
+.females{   
+        
+        font-size: 76%;
+        }
   thead{font-family: Helvetica;
         text-align: center;
-        font-size: 6px;
+        font-size: 76%;
           }
+          
   .empty{width:100%;
        text-align:center;
-       font-size: 11px;}
-  h6{font-size:8px;
+       font-size: 76%;}
+  h6{font-size:76%;
    text-align:center;}
 }
 

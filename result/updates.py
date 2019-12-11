@@ -121,6 +121,7 @@ def subject_position_updates(request, pk, term):#all
         students = [x[:] for x in list(query.values_list('agr', 'id')) if x[0] != None]
     agr = [r[0] for r in students]###############news
     posi = do_positions(agr[:])
+    grade = do_grades(agr[:], cader(BTUTOR.objects.get(pk=pk).Class))
     ids = [r[1] for r in students]
     if int(term) == 4:
         for i in range(0, len(agr)):
@@ -133,6 +134,7 @@ def subject_position_updates(request, pk, term):#all
         for i in range(0, len(agr)):
             objs = QSUBJECT.objects.get(pk=ids[i])
             objs.posi = posi[i]
+            objs.grade = grade[i]
             objs.save()
         return redirect('subject_view', pk=pk, md=1)
         
