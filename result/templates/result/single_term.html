@@ -3,47 +3,459 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %} {{ a.student_name }}/{{ a.tutor.Class }} {% endblock %}</title>
+        <title>{% block title %}{{ a.student_name }}/{{ a.tutor.Class }}/{{ a.tutor.term }}{% endblock %}</title>
     </head>
-    {% block content %}
-    <table>
-	<div class="capt"font-size:13"><a href="" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{{ a.student_name }}:</a></strong> PERFORMANCE IN SUBJECT <em style="font-family:Helvetica; color:white; font-size: 15px;">!</em></div>
-        
-        <tr>
-            <th><em></em></th>
-            <thead><td>{{ a.tutor.Class }}:{{ a.tutor.term }}</td><td>Obt. Mark</td><td>{{ a.tutor.subject.name }}</td><td>{{ b.tutor.subject.name }}</td><td>{{ c.tutor.subject.name }}</td><td>{{ d.tutor.subject.name }}</td><td>{{ e.tutor.subject.name }}</td><td>{{ f.tutor.subject.name }}</td><td>{{ g.tutor.subject.name }}</td><td>{{ h.tutor.subject.name }}</td><td>{{ i.tutor.subject.name }}</td><td>{{ j.tutor.subject.name }}</td><td>{{ k.tutor.subject.name }}</td></thead>
-        </tr>
-        <tr>
-            <th style="font-family:Helvetica; color:blue;">Grade</th>
-            <td style="font-family:Helvetica; color:red;" ></td><td>{{ a.grade }}</td><td>{{ b.grade }}</td><td>{{ c.grade }}</td><td>{{ d.grade }}</td><td>{{ e.grade }}</td><td>{{ f.grade }}</td><td>{{ g.grade }}</td><td>{{ h.grade }}</td><td>{{ i.grade }}</td><td>{{ j.grade }}</td><td>{{ k.grade }}</td>
-        </tr>
-        <tr>
-            <th style="font-family:Helvetica; color:blue;">Cont. Asst Test [CA]</th>
-            <td style="font-family:Helvetica; color:red;" >40</td><td>{{ a.total }}</td><td>{{ b.total }}</td><td>{{ c.total }}</td><td>{{ d.total }}</td><td>{{ e.total }}</td><td>{{ f.total }}</td><td>{{ g.total }}</td><td>{{ h.total }}</td><td>{{ i.total }}</td><td>{{ j.total }}</td><td>{{ k.total }}</td>
-        </tr>
-        <tr>
-            <th style="font-family:Helvetica; color:blue;">Exam Score</th>
-            <td style="font-family:Helvetica; color:red;" >60</td><td>{{ a.exam }}</td><td>{{ b.exam }}</td><td>{{ c.exam }}</td><td>{{ d.exam }}</td><td>{{ e.exam }}</td><td>{{ f.exam }}</td><td>{{ g.exam }}</td><td>{{ h.exam }}</td><td>{{ i.exam }}</td><td>{{ j.exam }}</td><td>{{ k.exam }}</td>
-        </tr>
-        <tr>
-            <th style="font-family:Helvetica; color:blue;">Total Scores</th>
-            <td style="font-family:Helvetica; color:red;" >100</td><td>{{ a.agr }}</td><td>{{ b.agr }}</td><td>{{ c.agr }}</td><td>{{ d.agr }}</td><td>{{ e.agr }}</td><td>{{ f.agr }}</td><td>{{ g.agr }}</td><td>{{ h.agr }}</td><td>{{ i.agr }}</td><td>{{ j.agr }}</td><td>{{ k.agr }}</td>
-        </tr>
-        <tr>
-            <th style="font-family:Helvetica; color:blue;">No in Class</th>
-            <td style="font-family:Helvetica; color:red;" ></td><td>{% if a != None %}{{ a.tutor.males |add:a.tutor.females }}{% endif %}</td><td>{% if b != None %}{{ b.tutor.males |add:b.tutor.females }}{% endif %}</td><td>{% if c != None %}{{ c.tutor.males |add:c.tutor.females }}{% endif %}</td><td>{% if d != None %}{{ d.tutor.males |add:d.tutor.females }}{% endif %}</td><td>{% if e != None %}{{ e.tutor.males |add:e.tutor.females }}{% endif %}</td><td>{% if f != None %}{{ f.tutor.males |add:f.tutor.females }}{% endif %}</td><td>{% if g != None %}{{ g.tutor.males |add:g.tutor.females }}{% endif %}</td><td>{% if h != None %}{{ h.tutor.males |add:h.tutor.females }}{% endif %}</td><td>{% if i != None %}{{ i.tutor.males |add:i.tutor.females }}{% endif %}</td><td>{% if j != None %}{{ j.tutor.males |add:j.tutor.females }}{% endif %}</td><td>{% if k != None %}{{ k.tutor.males |add:k.tutor.females }}{% endif %}</td>
-        </tr>
-        <tr>    								
-            <th style="font-family:Helvetica; color:blue;">Position</th>
-            <td style="font-family:Helvetica; color:red;" ></td><td>{{ a.posi }}</td><td>{{ b.posi }}</td><td>{{ c.posi }}</td><td>{{ d.posi }}</td><td>{{ e.posi }}</td><td>{{ f.posi }}</td><td>{{ g.posi }}</td><td>{{ h.posi }}</td><td>{{ i.posi }}</td><td>{{ j.posi }}</td><td>{{ k.posi }}</td>
-        </tr>
-        <tr>
-            <th style="font-family:Helvetica; color:blue;">Teacher's sign</th>
-            <td style="font-family:Helvetica; color:red;" ></td><td title="{{ a.tutor.teacher_name }}">{% if a.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ b.tutor.teacher_name }}">{% if b.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ c.tutor.teacher_name }}">{% if c.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ d.tutor.teacher_name }}">{% if d.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ e.tutor.teacher_name }}">{% if e.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ f.tutor.teacher_name }}">{% if f.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ g.tutor.teacher_name }}">{% if g.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ h.tutor.teacher_name }}">{% if h.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ i.tutor.teacher_name }}">{% if i.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ j.tutor.teacher_name }}">{% if j.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td><td title="{{ k.tutor.teacher_name }}">{% if k.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}</td>
-        </tr>
-        <tr>
-            <thead><th style="font-family:Helvetica; color:blue;">Class-Teacher's Remark [<em style="font-family:Helvetica; color:red;" >{{ anuual }}</em>]</th><th colspan="12" style="color:white;">{{remark}}</th></thead>
-        </tr>
-           </table> 
-    {% endblock %}
+    <body>
+        {% block content %}
+            <div class="capt">
+                <select id="shown" style="width:12%;margin-left:-3%;background-color:blue;color:white;border-radius:5px;"> 
+                    <option name="S" value="S">Summary</option> 
+                    <option name ="D" value="D">Detail</option>
+                    
+                </select>
+                <script>
+                    $("#shown").change(function(){
+                        var pk = $(this).val();
+                        if (pk == "D"){
+                            $(".article_one").show();
+                        }
+                        else {
+                            $(".article_one").hide();
+                        }
+                    });
+                </script>
+                <select name="dropDown" id="dropDown" style="width:30%;margin-left:13%;background-color:green;color:white;border-radius:5px;">
+                    <option name="infoOpt" id="infoOpt" value="{{ a.id }}">{{ a.student_name }}</option>
+                        {% if qsubject %}
+                        {% for info in qsubject %}
+                        <a href="" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">
+                            <option name="infoOpt" id="infoOpt" value="{{ info.id }}">{{ info.student_name }}</option>
+                        </a>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+            </div>
+        <script>
+            $("#dropDown").change(function(){
+                    var pk = $("#dropDown").val();
+                    location.replace('http://127.0.0.1:8838/result/student_subject_detail_one_subject/'+pk+'/')
+                });
+        </script>
+        <article class="article_one" hidden>
+            <div id="car">
+            <em style="font-size:16px;background:black;color:white;border-radius:5px;width:12%;text-align:center;font-weight:bold;">
+                REPORT CARD
+            </em>  
+            <em style="margin-left:10%;background:white;color:black;border-radius:5px;width:12%;text-align:center;font-weight:bold;">
+                {{ info.tutor.term }}
+            </em>
+            <em style="margin-left:20.5%;font-size:9px;"><u>STUDENT's NAME: </u>{{ info.student_name }}</em>
+        </div>
+        <div>
+            <em style="font-size:20px">UMMUL QURA HIGH SCHOOL</em>
+            <em style="margin-left:10%;font-size:9px;"><u>ADMISSION NO.:</u> {{ info.student_id }}</em> 
+            <em style="font-size:9px;"><u>CLASS: </u>{{ this.tutor.Class }}</em>
+        </div>
+        <div>
+            <em style="font-size:12px">AROWONA BUS-STOP, AKANRAN ROAD, IBADAN</em>
+            <em style="margin-left:10%;font-size:9px;"><u>DATE OF BIRTH:</u>{{info.student_name.birth_date}}</em> 
+            <em style="font-size:9px;"> <u> SEX: </u>{{info.gender}}</em>  
+            <em style="font-size:9px;">   <u>YEAR:</u>{{ this.tutor.session }}</em>
+        </div>
+            <div class="capt">1. ATTENDANCE (REGULARITY & PUNCTUALITY)</div>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>School</th>
+                    <th>Sport & Athletics</th>
+                    <th>Other Organized Activities</th>
+                    </tr>
+                <tr>
+                    <td>No. of times School opened/Activities</td>
+                    <td>{{info.no_open}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td >No. of times Present</td>
+                    <td>{{info.no_present}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>No. of times Punctual</td>
+                    <td>{{info.no_absent}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="capt">2. CONDUCT:Special Report During the Term</div>
+            <table>
+                <tr>
+                    <th>GREEN FOR EXEMPLARY CONDUCT</th>
+                    <th>RED for Bad Conduct</th>
+                    <th>Comment</th>
+                </tr>
+                <tr>
+                    <td>Deed</td>
+                    <td>Number</td>
+                    <td>{{info.comment}}</td>
+                </tr>
+                    
+            </table>
+            <div class="capt">3. PHYSICAL DEVELOPMENT, HEALTH & CLEANLINESS</div>
+            <table>
+                <tr>
+                    <th colspan="2">HEIGHT</th>
+                    <th colspan="2">WEIGHT</th>
+                    <th>NO. of Days Absent</th>
+                    <th rowspan="3">Purpose of Absence {{info.purpose}}</th>
+                </tr>
+                <tr>
+                    <td>Beginning of term</td>
+                    <td>End of term</td>
+                    <td>Beginning of term</td>
+                    <td>End of term</td>
+                    <td>{{info.no_of_day_abs}}</td>
+                </tr>
+                <tr>
+                    <td>{{info.H_begin}}m</td>
+                    <td>{{info.H_end}}m</td>
+                    <td>{{info.W_begin}}kg</td>
+                    <td>{{info.W_end}}kg</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="6">Please tick cleanlines rating as Good_____
+                        {% if info.good != 'None' %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% endif %}Fair _____
+                        {% if info.fair != 'None' %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% endif %}Poor _____
+                        {% if info.poor != 'None' %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% endif %} Remark: {{info.remark}}
+                    </td>
+                </tr>
+            </table>
+            <div class="capt">4. PERFORMANCE IN SUBJECT</div>
+        </article>
+            
+            <table>
+                <tr>
+                    <thead>
+                        <td>{% if a %}
+                            <a href="{% url 'student_info' pk=a.id %}">
+                                {{ a.tutor.Class }}:{{ a.tutor.term }}
+                            </a>
+                            {% else %}
+                            <a href="{% url 'student_info' pk=a.id %}">Profile</a>
+                            {% endif %}
+                        </td>
+                        <td>Obt. Mark</td>
+                        <td>{{ a.tutor.subject.name }}</td>
+                        <td>{{ b.tutor.subject.name }}</td>
+                        <td>{{ c.tutor.subject.name }}</td>
+                        <td>{{ d.tutor.subject.name }}</td>
+                        <td>{{ e.tutor.subject.name }}</td>
+                        <td>{{ f.tutor.subject.name }}</td>
+                        <td>{{ g.tutor.subject.name }}</td>
+                        <td>{{ h.tutor.subject.name }}</td>
+                        <td>{{ i.tutor.subject.name }}</td>
+                        <td>{{ j.tutor.subject.name }}</td>
+                        <td>{{ k.tutor.subject.name }}</td>
+                    </thead>
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">Grade</th>
+                    <td style="font-family:Helvetica; color:red;" ></td>
+                    <td>{{ a.grade }}</td>
+                    <td>{{ b.grade }}</td>
+                    <td>{{ c.grade }}</td>
+                    <td>{{ d.grade }}</td>
+                    <td>{{ e.grade }}</td>
+                    <td>{{ f.grade }}</td>
+                    <td>{{ g.grade }}</td>
+                    <td>{{ h.grade }}</td>
+                    <td>{{ i.grade }}</td>
+                    <td>{{ j.grade }}</td>
+                    <td>{{ k.grade }}</td>
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">Cont. Asst Test [CA]</th>
+                    <td style="font-family:Helvetica; color:red;" >40</td>
+                    <td>{{ a.total }}</td>
+                    <td>{{ b.total }}</td>
+                    <td>{{ c.total }}</td>
+                    <td>{{ d.total }}</td>
+                    <td>{{ e.total }}</td>
+                    <td>{{ f.total }}</td>
+                    <td>{{ g.total }}</td>
+                    <td>{{ h.total }}</td>
+                    <td>{{ i.total }}</td>
+                    <td>{{ j.total }}</td>
+                    <td>{{ k.total }}</td>
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">Exam Score</th>
+                    <td style="font-family:Helvetica; color:red;" >60</td>
+                    <td>{{ a.exam }}</td>
+                    <td>{{ b.exam }}</td>
+                    <td>{{ c.exam }}</td>
+                    <td>{{ d.exam }}</td>
+                    <td>{{ e.exam }}</td>
+                    <td>{{ f.exam }}</td>
+                    <td>{{ g.exam }}</td>
+                    <td>{{ h.exam }}</td>
+                    <td>{{ i.exam }}</td>
+                    <td>{{ j.exam }}</td>
+                    <td>{{ k.exam }}</td>
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">Total Scores</th>
+                    <td style="font-family:Helvetica; color:red;" >100</td>
+                    <td>{{ a.agr }}</td>
+                    <td>{{ b.agr }}</td>
+                    <td>{{ c.agr }}</td>
+                    <td>{{ d.agr }}</td>
+                    <td>{{ e.agr }}</td>
+                    <td>{{ f.agr }}</td>
+                    <td>{{ g.agr }}</td>
+                    <td>{{ h.agr }}</td>
+                    <td>{{ i.agr }}</td>
+                    <td>{{ j.agr }}</td>
+                    <td>{{ k.agr }}</td>
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">No in Class</th>
+                    <td style="font-family:Helvetica; color:red;" ></td>
+                    <td>{% if a != None %}{{ a.tutor.males |add:a.tutor.females }}{% endif %}</td>
+                    <td>{% if b != None %}{{ b.tutor.males |add:b.tutor.females }}{% endif %}</td>
+                    <td>{% if c != None %}{{ c.tutor.males |add:c.tutor.females }}{% endif %}</td>
+                    <td>{% if d != None %}{{ d.tutor.males |add:d.tutor.females }}{% endif %}</td>
+                    <td>{% if e != None %}{{ e.tutor.males |add:e.tutor.females }}{% endif %}</td>
+                    <td>{% if f != None %}{{ f.tutor.males |add:f.tutor.females }}{% endif %}</td>
+                    <td>{% if g != None %}{{ g.tutor.males |add:g.tutor.females }}{% endif %}</td>
+                    <td>{% if h != None %}{{ h.tutor.males |add:h.tutor.females }}{% endif %}</td>
+                    <td>{% if i != None %}{{ i.tutor.males |add:i.tutor.females }}{% endif %}</td>
+                    <td>{% if j != None %}{{ j.tutor.males |add:j.tutor.females }}{% endif %}</td>
+                    <td>{% if k != None %}{{ k.tutor.males |add:k.tutor.females }}{% endif %}</td>
+                </tr>
+                <tr>    								
+                    <th style="font-family:Helvetica; color:blue;">Position</th>
+                    <td style="font-family:Helvetica; color:red;" ></td>
+                    <td>{{ a.posi }}</td>
+                    <td>{{ b.posi }}</td>
+                    <td>{{ c.posi }}</td>
+                    <td>{{ d.posi }}</td>
+                    <td>{{ e.posi }}</td>
+                    <td>{{ f.posi }}</td>
+                    <td>{{ g.posi }}</td>
+                    <td>{{ h.posi }}</td>
+                    <td>{{ i.posi }}</td>
+                    <td>{{ j.posi }}</td>
+                    <td>{{ k.posi }}</td>
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">Teacher's sign</th>
+                    <td style="font-family:Helvetica; color:red;" ></td>
+                    <td title="{{ a.tutor.teacher_name }}">
+                        {% if a.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ b.tutor.teacher_name }}">
+                        {% if b.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ c.tutor.teacher_name }}">
+                        {% if c.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ d.tutor.teacher_name }}">
+                        {% if d.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ e.tutor.teacher_name }}">
+                        {% if e.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ f.tutor.teacher_name }}">
+                        {% if f.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ g.tutor.teacher_name }}">
+                        {% if g.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ h.tutor.teacher_name }}">
+                        {% if h.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ i.tutor.teacher_name }}">
+                        {% if i.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ j.tutor.teacher_name }}">
+                        {% if j.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                    <td title="{{ k.tutor.teacher_name }}">
+                        {% if k.posi != None %}<span class="glyphicon glyphicon-check"></span>{% endif %}
+                    </td>
+                </tr>
+            </table> 
+        <article class="article_one" hidden>
+                <div class="capt">5. SPORT</div>
+                <table>
+                <tr>
+                    <th>Events</th>
+                    <th>Indoor Games</th>
+                    <th>Ball Games</th>
+                    <th>Combative Game</th>
+                    <th>Tracts</th>
+                    <th>Jumps</th>
+                    <th>Throw</th>
+                    <th>Swim</th>
+                    <th>Weight Lifting</th>
+                </tr>
+                <tr>
+                    <td>{% if info.event == 'event' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.indoor == 'indoor' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.ball == 'ball' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.combat == 'combat' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.track == 'track' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.jump == 'jump' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.throw == 'throw' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.swim == 'swim' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                    <td>{% if info.lift == 'lift' %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <td>Coment:</td><td colspan="8" style="margin-left:0px;">{{info.sport_comment}}</td>
+                </tr>
+                </table>   
+                <div class="capt">6. CLUB, SOCIETY,ETC</i></div>
+                <table>
+                <tr>
+                    <th>Clubs/Societies</th>
+                    <th>Office Held</th>
+                    <th>Significant Contribution</th>
+                    <th>Signature</th>
+                </tr>
+                <tr>
+                    <td>{{info.club_one}}</td>
+                    <td>{{info.office_one}}</td>
+                    <td>{{info.contrib_one}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>{{info.club_two}}</td>
+                    <td>{{info.office_two}}</td>
+                    <td>{{info.contrib_two}}</td>
+                    <td></td>
+                </tr>
+                </table>
+                <div class="capt">7. REMARKS</div>
+                <table>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;width:30%">Class-Teacher's Remark </th>
+                    <th><i>{{ this.master_comment }}</i></th> 
+                </tr>
+                <tr>
+                    <th style="font-family:Helvetica; color:blue;">Principal's Remark </th>
+                    <th><i>{{ this.principal_comment }} </i>Sign:___________________Date:_________.</th>
+                </tr>
+                <tr>
+                    <td style="font-family:Helvetica; color:blue;">Next term begins on </td>
+                    <td><i>{{ this.tutor.resumption }}</i></td>
+                </tr>
+                </table>
+        </article> 
+                <table>
+                <tr>
+                    <thead>
+                        <th style="font-family:Helvetica; color:blue;">Class-Teacher's Remark </th>
+                        <th colspan="12" style="font-family:Helvetica;font-size:10px;color:white;">
+                            <i>
+                                <input type="text" Value="{{ this.master_comment }}" id = "master" 
+                                style="margin-left:-4px;width:90%;border-radius:3px;text-align:center;border:1px solid gray;color:beige;color:black">
+                            </i>
+                            <button name="save" style="margin-left:-4px;background:Khaki;width:10%;border-radius:3px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918)">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                        </th>
+                    </thead> 
+                </tr>
+                <tr>
+                    <thead>
+                        <th style="font-family:Helvetica; color:blue;">Principal's Remark </th>
+                        <th colspan="12" style="font-family:Helvetica;font-size:10px;color:white;">
+                            <i>
+                                <input type="text" Value="{{ this.principal_comment }}" id = "principal" style="margin-left:-4px;width:90%;border-radius:5px;text-align:center;border:1px solid gray;color: beige;color:black">
+                            </i>
+                            <button name="saved"style="margin-left:-4px;background:Khaki;width:10%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                        </th>
+                    </thead>
+                    </tr>
+                    <tr>
+                        <thead>
+                            <th style="font-family:Helvetica; color:blue;">Next term begins on </th>
+                            <th colspan="12" style="font-family:Helvetica;font-size:10px;color:white;">
+                                <button style="margin-left:-4px;background:blue;width:10%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918)">
+                                    <a href="{% url 'call_url' pk=this.id %}" style="color:white;">ZIP</a>
+                                </button>
+                                    <i>
+                                        <input type="text" Value="{{ this.tutor.resumption }}" style="margin-left:-4px;width:80%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);color: beige;color:black;background:Khaki;" disabled>
+                                    </i>
+                                <button style="margin-left:-4px;background:red;width:10%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);"><a href="{% url 'pdf' pk=this.id  ty=1 sx=0 %}" style="color:white;">PDF</a>
+                                </button>
+                            </th>
+                        </thead>
+                    </tr>
+                </table>
+                <div id="success" style="width:80%;font-weight:bold;margin-left:-6%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;"></div>
+            <script>
+                    $("button[name='save']").click(function() {
+                        var student_id = "{{a.id}}";
+                        var master_comment = $("#master").val();
+                        var principal_comment = $("#principal").val();
+                        $.ajax({
+                            url: 'http://127.0.0.1:8838/result/card_comments/',
+                            data: {'student_id':student_id,
+                                    'master_comment':master_comment,
+                                    'principal_comment':principal_comment
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                switch(data.status){
+                                case "master":
+                                    master.style.backgroundColor = 'GreenYellow';
+                                    master.style.color = 'white';
+                                    break
+                                case "principal":
+                                    master.style.backgroundColor = 'GreenYellow';
+                                    master.style.color = 'white';
+                                    principal.style.backgroundColor = 'IndianRed';
+                                    principal.style.color = 'white';
+                                    break
+                                case "None":
+                                    principal.style.backgroundColor = 'black';
+                                    principal.style.color = 'black';
+                                    master.style.backgroundColor = 'white';
+                                    master.style.color = 'white';
+                                    break
+                                }
+                            }
+                        });
+                    });
+                    $("button[name='saved']").click(function() {
+                        var student_id = "{{a.id}}";
+                        $.ajax({
+                            url: 'http://127.0.0.1:8838/result/do_a_write/pdf/url/'+student_id+'/',
+                            data: {'pk':student_id
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                            if (data.status){
+                                    $("#success").html(data.status)
+                        }
+                            }
+                        })
+                    });
+            </script>
+        {% endblock %}
+    </body>
 </html>
+ 

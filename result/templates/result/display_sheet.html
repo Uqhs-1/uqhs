@@ -7,7 +7,7 @@
 	</head>
     <table style="width:200%;">
     
-    <div class="capt">Class: <em style="color:sienna;">{{ request.user.profile.class_in }}</em> Students in Class:<em style="color:sienna;"> {{ mains.count }}</em> Total Scores: <em style="color:sienna;"> {{ overall }}</em> Average : <em style="color:sienna;"> {{ per }}%</em></div>
+    <div class="capt">Class: <em style="color:sienna;">{{ request.user.profile.class_in }}</em> Students in Class:<em style="color:sienna;"> {{ mains.count }}</em> Total Scores: <em style="color:sienna;"> {{ overall }}</em> Average : <em style="color:sienna;"> {{ per }}%</em><a href="{% url 'refreshe' %}" style="color:white;margin-left:40%;" title="Do you whant to reload {{ qry.Class }} annual scores?"><span class="glyphicon glyphicon-refresh"></span></a></div>
 
           <thead>
              <tr>

@@ -1,5 +1,15 @@
 @charset "utf-8";
 /* Style the header with a grey background and some padding */
+
+label {
+    padding: 10px;
+    padding-left: 38px;
+    position: relative;
+    font-size: 1em;
+    line-height: normal;
+    cursor: pointer;
+}
+
 body {
     background-color: hsla(209, 31%, 49%, 0.295);
     font-size: 13px;
@@ -10,6 +20,21 @@ body {
     width: 100%;
 }
 
+.red_black {
+  color:white;
+  border-radius:4px;
+  background-color:black;
+  border:2px solid white;
+  font-weight:bold;
+}
+
+.red_white {
+  color:white;
+  border-radius:4px;
+  background-color:black;
+  border:2px solid white;
+  font-weight:bold;
+}
  .jss_one{background-color: green;
         width: 220px;
         opacity: 0.9;
@@ -97,7 +122,7 @@ body {
 }
 
 .header a.name {
-  margin left: 10px;
+  margin-left: 10px;
   background-color: hsla(249, 42%, 37%, 0.494);
   color: white;
 }
@@ -140,7 +165,8 @@ form {
 
 
 table, th, td {
-        border: 1px solid rgba(247, 238, 238, 0.918);
+        border: 1px solid #0000CD;
+        border-radius: 5px;
         font-family: Baskerville Old Face;
         text-align: center;
         font-size: 11px;
@@ -156,10 +182,10 @@ table {
   border-spacing: 5px;
 }
 
-thead, tfoot {background-color: rgb(206, 172, 127);}
+thead, tfoot {background-color: #FFA07A;}
 
-tbody {background-color: seashell;}
-tr:nth-child(even) {background-color: silver;}
+tbody {background-color: #20B2AA;}
+tr:nth-child(even) {background-color:#90EE90;}
 pagination{ width:80%;margin-left:-50px;}
 
 .capt{margin-left: -53px;
@@ -170,6 +196,51 @@ pagination{ width:80%;margin-left:-50px;}
       font-size:11px;
       width: 83%;
       }
+
+.corrected{margin-left: -3px;
+      border-radius: 5px;
+      background-color: green;
+      opacity: 0.8;
+      color: white;
+      font-size:11px;
+      width: 73%;
+      }
+
+.result_list {
+        width:9%;
+        border-radius:5px;
+        text-align:center;
+        border:1px solid rgba(247, 238, 238, 0.918);
+        background-color:peru;
+        color:beige;
+        }
+
+.subject_list {
+           margin-left:12%;
+           width:9%;
+           border-radius:5px;
+           text-align:center;
+           border: 1px solid rgba(247, 238, 238, 0.918);
+           background-color:purple;
+           color: beige;
+           }
+.errorBox {
+            border: 2px solid red;
+} 
+
+.goodBox {
+            border: 2px solid green;
+}
+.dropDown{
+background-color:silver;color:gold;
+}
+.head_que {
+        color:white;
+        background-color:gray;
+        border-radius:5px;
+        text-align:center;
+        border:1px solid rgba(247, 238, 238, 0.918);
+        }
 
 .cap_form{margin-left: -13px;
       border-radius: 5px;
@@ -198,9 +269,10 @@ pagination{ width:80%;margin-left:-50px;}
   margin-top: 0px;
   margin-left: 20px;
   border-radius: 5px;
+  
 }
 
-}
+
 
 .sidenavs.nav {
  margin-top: 20px;
@@ -268,9 +340,9 @@ navz{
     
     }
     h1{
-        background: #4ec29565
-        margin: 0px
-        width: 100%
+        background: #4ec29565;
+        margin:0px;
+        width: 100%;
         top:0;
         opacity: 0.8;
     }
@@ -549,7 +621,6 @@ p{ margin: 0px;
   
 }
   
-}
 
 /* Links inside the navbar */
 .header-right a {
@@ -674,4 +745,50 @@ p{ margin: 0px;
   .sidenav {padding-top: 10px;}
   .sidenav a {font-size: 8px;}
   .navbar a {font-size: 7px;}
+}
+
+.slidecontainer {
+sswidth:100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.grade_no {
+  background-color:white;
+  border-radius:5px;
+  border:1px solid blue;
+  color:blue;
 }

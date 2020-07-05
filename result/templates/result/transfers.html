@@ -7,11 +7,11 @@
 	<body>
 	{% block content %}
        <table>
-				 <div class="capt"><a href="{% url 'created_subject_list' pk=0 %}" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{{ counts }}</a></strong> <strong>subjects on record</strong></div><tr>
-            <thead><tr><th>Move Account</th><th>Subject</th><th>Names</th><th>Review</th><th>Created</th><th>Updated</th><th>Accounts</th></tr></thead>      
+				 <div class="capt"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;">SUBJECT LIST-{{ counts }}</strong></div><tr>
+            <thead><tr><th>Move Account</th><th>Subject</th><th>1ST</th><th>2ND</th><th>3RD</th><th>Updated</th><th>Accounts</th></tr></thead>      
           {% if all_page %}
           {% for sub in all_page %}
-          <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_home_view' pk=sub.id %}">{{ sub.teacher_name }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}">{{ sub.first_term.subject }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}">{{ sub.first_term.Class }}</a></td><td>{% if sub.second_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=1 %}">{% else %}<a href="{% url 'subject_view' pk=sub.second_term.id md=1 %}">{% endif %}{{ sub.second_term.Class|default:'Update' }}</a></td><td>{% if sub.third_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=2 %}">{% else %}<a href="{% url 'subject_view' pk=sub.third_term.id md=1 %}">{% endif %}{{ sub.third_term.Class|default:'Update' }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td></tr>
+          <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_home_view' pk=sub.id %}" style="color:#F5F5F5">{{ sub.teacher_name }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}" style="color:#F5F5F5">{{ sub.first_term.subject }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}" style="color:#F5F5F5">{{ sub.first_term.Class }}</a></td><td>{% if sub.second_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=1 %}" style="color:#F5F5F5">{% else %}<a href="{% url 'subject_view' pk=sub.second_term.id md=1 %}" style="color:#F5F5F5">{% endif %}{{ sub.second_term.Class|default:'Update' }}</a></td><td>{% if sub.third_term.Class == None %}<a href="{% url 'update_loader' pk=sub.first_term.id tr=2 %}" style="color:#F5F5F5">{% else %}<a href="{% url 'subject_view' pk=sub.third_term.id md=1 %}" style="color:#F5F5F5">{% endif %}{{ sub.third_term.Class|default:'Update' }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td></tr>
           {% endfor %}
           {% else %}
               <pre style="width:70%;">There are no records.</pre>

@@ -7,18 +7,18 @@
 	{% block content %}
 	<body>
 
-	<div class="capt"><em style="color:yellow;">Name:</em><a href="" style="color:white;">{{ name }}</a> <em style="color:yellow;">Subject</em>: <small style="font-family:Helvetica; color:white; font-size: 10px;">{{ counts.count }}</small></div>
+	<div class="capt"><a href="" style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;">{{ name }}</a></div>
   <div>
         <table>
         <thead>
           <tr>
-            <th>Subject ({{counts}}) <th>Subject List</th><th>Class</th><th>Term</th><th>Sum</th><th>Grade</th><th>Pos</th>
+            <th>{{counts}}</th> <th>Subject<th>Subject List</th><th>Class</th><th>Term</th><th>Sum</th><th>Grade</th><th>Pos</th>
           </tr>
         </thead>
           {% if all_page %}
           {% for scr in all_page %} 
           <tr>
-            <td style="font-family:Helvetica; color:sienna; font-size: 10px;">{{ scr.id }}</td><td><a href="{% url 'student_subject_detail_one_subject' pk=scr.id %}">{{ scr.tutor.subject }}<td>{{ scr.tutor.Class }}</td><td>{{ scr.tutor.term }}</td></a></td><td>{{ scr.agr }}</td><td>{{ scr.grade }}</td><td>{{ scr.posi }}</td>
+          <td>{{ forloop.counter }}</td><td style="font-family:Helvetica; color:sienna; font-size: 10px;">{{ scr.id }}</td><td><a href="{% url 'student_subject_detail_one_subject' pk=scr.id %}" style="color:white;">{{ scr.tutor.subject }}<td>{{ scr.tutor.Class }}</td><td>{{ scr.tutor.term }}</td></a></td><td>{{ scr.agr }}</td><td>{{ scr.grade }}</td><td>{{ scr.posi }}</td>
           </tr>
           {% endfor %}
           {% else %}

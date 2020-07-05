@@ -1,36 +1,294 @@
 {% extends "base_generic.html" %}
  <title>{% block title %} log_in {% endblock %}</title>
 {% block content %}
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
-    <form method="post" action="{% url 'logins' %}">
-    {% csrf_token %}
-    <div class="container text-center">
-<div class='signup' style="width:45%;margin-left: 0px; font-size:12">
-<form role="form" method="post">
-	<em class="capt">User Login</em>
-	{% csrf_token %}
-	{{form.non_field_errors}}
-	<br>
-	<div class="fieldWrapper">
-		{{form.username.errors}}
-		<label for="form.username.id_for_label"style="font-family:Arabic Typesetting; color:white; font-size: 19px;">Account Name: </label><br>
-		{{form.username}}
-	</div>
-	<div class="fieldWrapper">
-		{{form.password1.errors}}
-		{{help_text|safe}}
-		<label for="form.password1.id_for_label"style="font-family:Arabic Typesetting; color:white; font-size: 19px;">Password: </label><br>
-		{{form.password1}}
-	</div>
-	
-		<button class="btn btn-primary"> <span class="glyphicon glyphicon-log-in" style="margin-right:5px;"></span>Login</button>
-	<a href="{% url 'post_new' %}" style="font-family:Arial Black; color:red; font-size: 9px;">Forget Password!</a>|<a href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span><em style="font-family:Arial Black; color:green; font-size: 9px;">Sign Up</em></a>
-       <input type="hidden" name="next" value="{{ next }}" />
-</form>
+
+<div id="login_type">
+		<div class="capt" style="border:2px solid white;"><strong style="background-color:white;border:2px solid blue;color:black;border-radius:5px;">SELECT LOGIN TYPE</strong>
+			<pre style="line-height: 2px;border:2px solid red;" id="preview">
+			<input style="margin-left:-33%;" type="radio" name="login" value="Staff Account" id="staff_login"> <strong style="border-radius:5px;background-color:orange;border:2px solid black;">STAFF</strong></input><input style="margin-left:23%;" type="radio" name="login" value="Student Account" id="student_login"> <strong style="border-radius:5px;background-color:gold;border:2px solid white;">STUDENT</strong> </input><input style="margin-left:20%;" type="radio" name="login" value="Sign_up" id="staff_signup"> <strong style="border-radius: 5px;background-color:brown;color:white;border:2px solid red;"> STAFF SIGNUP</strong> </input>
+			</pre>
+		</div>
 </div>
+
+<form method="post" action="{% url 'logins' %}" id="Staff_Account" hidden>
+		<div class="capt"><strong>STAFF LOGIN</strong></div>
+		{% csrf_token %}
+		<label for="user">User Name</label>
+		<input style="text-align:center;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="text" name="username" Value="username" id="user_name"></input>
+		<label for="passward">Password</label>
+		<input style="text-align:center;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="password" name="password" value="Ll018311" id="user_password"></input> 
+		<button class="btnbtn-primary" style="margin-left:42%;background-color:blue;color:white;border-radius:5px;" hidden> <span class="glyphicon glyphicon-log-in" style="margin-right:5px;"></span><strong>Login</strong></button><br>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;">*Only staff logs in here with User name and password</span>
+</form>
+<form method="post" action="{% url 'user_qury' %}" id="Sign_up" hidden>
+		<div class="capt"><strong>STAFF SIGNUP</strong></div>
+		{% csrf_token %}
+		<label for="user" style="font-size:68%;margin-left:9%;">Username:</label><label for="email" style="font-size:68%;margin-left:6%;">Email:</label><label for="passward" style="font-size:68%;margin-left:6%;">Password:</label><label for="passward1" style="font-size:68%;margin-left:0%;">Confirm Password:</label><br>
+		<em style="margin-left:10%;">
+			<input style="text-align: center;width:18%;background-color:orange;opacity:0.3;color:white;border-radius:5px;" maxlength='8' required="True" type="text" name="username" value="username" id="signup" autofocus="autofocus"></input>
+			<input style="text-align: center;width:20%;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="email" name="email" value="examples@umqhs.com" id="email" hidden></input>
+			<input style="text-align: center;width:18%;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="password" name="password" value="Ll018311" id="sign_passward" hidden></input>
+			<input style="text-align: center;width:18%;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="password" name="password1" value="Ll018311" id="confirm" hidden></input> 
+		</em><br>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;color:orange;" id="minimum" hidden>*......sign-up here with minimum of eight chracters username</span>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;color:indigo;" id="unique" hidden>*......a valid and unique email is compulsory for new account!</span>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;color:red;" id="enter_valid_email" hidden>*......please enter a valid email address!</span>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;color:violet;" id="create_key" hidden>*......create your unique strong passward!</span>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;color:green;" id="confirmed_key" hidden>*......confirm your unique passward in the next box!</span>
+		<span style="font-size:10px;color:gray;opacity:1;margin-left:24%;color:dodgerblue;" id="valid" hidden>*......a valid <i> ref number </i>from admin must be provided to complete the registration!</span>
+		<span style="font-size:10px;color:gray;opacity:1;margin-left:24%;color:dodgerblue;" id="invalid" hidden>*......the <i> ref number </i>provided is invalid, contact the admin for valid ref No.</span><br>
+		<span style="background-color:red;border-radius:5px;color:white;margin-left:15%;" id="error" hidden> <strong> <span class="glyphicon glyphicon-exclamation-sign"></span> Fix the error in your passward.</strong></span>
+		<ul>
+			<li style="margin-left:20%;font-size:10px;" id="length" hidden>Password length must be at least nine characters.</li>
+			<li style="margin-left:20%;font-size:10px;" id="cases" hidden>passward should contain upper and lower case letter (A-z).</li>
+			<li style="margin-left:20%;font-size:10px;" id="digit" hidden>Password should contain digit betwwen (0-9).</li>
+			<li style="margin-left:20%;font-size:10px;" id="characters" hidden>Password should contain any of the special characters (!@#$%^&*()_-).</li>
+		</ul>
+		<span style="background-color:green;border-radius:5px;color:white;margin-left:37%;" id="Oky" hidden><span class="glyphicon glyphicon-ok-circle"></span> Password entered is Okay.</span>
+		<span style="background-color:silver;border-radius:5px;color:white;margin-left:32%;" id="mismatched" hidden><span class="glyphicon glyphicon-asterisk"></span> The two passward entered are not matched.</span>
+		<span style="background-color:orange;border-radius:5px;color:white;margin-left:37%;opacity:0.6;" id="weak_key" hidden><span class="glyphicon glyphicon-info-sign"></span> Your password is <i>too</i> weak.</span>
+		<input style="text-align:center;width:10%;margin-left:42%;border:2px solid yellow;color:green;border-radius:5px;" required="True" type="password" value="1234" name="ref_id" id="ref_id" hidden></input>
+		<button class="btnbtn-primary" style="margin-left:42%;background-color:crimson;color:white;border-radius:5px;" hidden> <span class="glyphicon glyphicon-ok" style="margin-right:5px;"></span><strong>Submit</strong></button>
+</form>
+<form method="post" action="{% url 'student_login' %}" id="Student_Account" hidden>
+		<div class="capt"><strong>STUDENT LOGIN</strong></div>
+		{% csrf_token %}
+		<label for="name">Student Name</label>
+		<input style="text-align:center;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="studentname" name="studentname" value="Surname first" id="student_name"></input>
+		<label for="id">Student ID</label> 
+		<input style="text-align:center;background-color:orange;opacity:0.3;color:white;border-radius:5px;" required="True" type="password" name="studentid" value="AA/J/24/1423" id="student_id" title="AA/J/24/1423"></input>
+		<button class="btn-btn-primary" style="margin-left:42%;background-color:blue;color:red;border-radius:5px;" hidden> <span class="glyphicon glyphicon-log-in" style="margin-right:5px;"></span><strong>Login</strong></button><br>
+		<span style="font-size:10px;color:gray;opacity:0.9;margin-left:27%;">*Every registered Student logs in with full name and Identity Number</span>
+</form>
+<script>
+	$("input:radio[name='login']").change(function() {
+	var login_type = $(this);
+	switch(login_type.val()){
+        case "Staff Account":
+			$("#Staff_Account").show();
+			$("#Student_Account").hide();
+			$("#Sign_up").hide();
+			Staff_Account.style.backgroundColor = 'silver';
+			break
+        case "Student Account":
+			$("#Student_Account").show();
+			$("#Staff_Account").hide();
+			$("#Sign_up").hide();
+			Student_Account.style.backgroundColor = 'seashell';
+			break
+        case "Sign_up":
+			$("#Student_Account").hide();
+			$("#Staff_Account").hide();
+			$("#Sign_up").show();
+			$("#minimum").show();
+			Sign_up.style.backgroundColor = 'white';
+			}
+    
+	});
+	$("#student_id").change(function(){
+		var ids = $(this).closest('form');
+		var pas = $(this).val();
+		if (/^[A-Z]*[/][A-Z][/][0-9]*[/][0-9]*$/.test(pas) == true){
+            var student_id = $(this).val();
+            $.ajax({
+                url: 'http://127.0.0.1:8838/result/user_qury/',
+                data: {'student_id':student_id},
+                dataType: 'json',
+                success: function(data) {
+                    if (data.valid_id){
+                        $(".btn-btn-primary").show();
+                        var user_name = $("#student_name").val();
+                        alert('Name: '+user_name+'  Id: '+pas)
+                        localStorage.removeItem('tries')
+                        localStorage.setItem('passward', pas.split('/')[3])
+                        localStorage.setItem('user_name', JSON.stringify(user_name));
+                    }
+                    else {
+                        alert(data.error_message)
+                    }
+                }
+            })
+		
+		}
+	});
+	$("#user_name").change(function(){
+		var username = $(this).val();
+		$.ajax({
+			url: 'http://127.0.0.1:8838/result/user_qury/',
+			data: {'username':username
+			},
+			dataType: 'json',
+			success: function(data) {
+				if (data.is_taken != 'null'){
+					$(".btnbtn-primary").show();
+				}
+				else {
+					alert(data.error_message)
+				}
+			}
+		})
+		
+	});
+	
+	$("#signup").change(function(){
+		var username = $(this).val();
+		if (username.length >= 5){
+			if (localStorage.current_data){
+				var current_data = JSON.parse(localStorage.getItem("current_data"))
+				if(Object.keys(current_data).indexOf($(this).val()) == -1){
+					$("#email").show();
+					$("#minimum").hide();
+					$("#unique").show();
+				}
+				else{
+					alert('A user with this username already exists.')
+					$("#email").hide();
+					$("#sign_passward").hide();
+					$("#confirm").hide();
+					$("#ref_id").hide();
+				}
+			}
+			else{	
+		$.ajax({
+			url: 'http://127.0.0.1:8838/result/user_qury/',
+			data: {'username':username
+			},
+			dataType: 'json',
+			success: function(data) {
+				if (data.is_taken == 'null'){
+					$("#email").show();
+					$("#minimum").hide();
+					$("#unique").show();
+				}
+				else {
+					alert(data.error_message)
+					$("#email").hide();
+					$("#sign_passward").hide();
+					$("#confirm").hide();
+					$("#ref_id").hide();
+				}
+				localStorage.setItem("current_data", JSON.stringify(data));
+			}
+		})
+		}
+		}
+		else {
+			$("#email").hide();
+			$("#sign_passward").hide();
+			$("#confirm").hide();
+			$("#ref_id").hide();
+		}
+		
+	});
+	
+	$("#email").change(function(){
+		var current_data = JSON.parse(localStorage.getItem("current_data"))
+		if (/(\S+)@(\S+)\.(\S+)/.exec($(this).val()) != null){
+			if (Object.values(current_data).indexOf($(this).val()) == -1){
+		$("#sign_passward").show();
+		$("#unique").hide();
+		$("#create_key").show();
+		$("#enter_valid_email").hide();
+		}
+		else{
+			alert('Use another email, a user with this email already exists.')
+			$("#sign_passward").hide();
+			$("#unique").show();
+			$("#create_key").hide();
+			$("#enter_valid_email").hide();
+		}
+		}
+		else {$("#enter_valid_email").show();
+			$("#unique").hide();
+		}
+	});
+	$("#sign_passward").change(function(){
+		var passward = $(this);
+		var isOkay = true;
+		if (passward.val().match(/\d+/) == null){
+			$("#error").show();
+			$("#digit").show();
+			isOkay = false;
+		}
+		
+		if (passward.val().match(/[A-Z]/) == null){
+			$("#error").show();
+			$("#cases").show();
+			isOkay = false;
+		}
+		if (passward.val().match(/[a-z]/) == null){
+			$("#error").show();
+			$("#cases").show();
+			isOkay = false;
+		}
+		if (passward.val().length < 8){
+			$("#error").show();
+			$("#length").show();
+			isOkay = false;
+		}
+		if (isOkay == false){
+			passward.removeClass("goodBox").addClass("errorBox");
+		}
+		else {
+		passward.removeClass("errorBox").addClass("goodBox");
+		$("#Oky").show();
+		$("#confirm").show();
+		$("#error").hide();
+		$("#characters").hide();
+		$("#cases").hide();
+		$("#digit").hide();
+		$("#unique").hide();
+		$("#confirmed_key").show();
+		$("#length").hide();
+		$("#create_key").hide();
+		localStorage.setItem("current_key", JSON.stringify($(this).val()));
+		if (passward.val().match(/[!@#$%^&*()_-]/) != null){
+			$("#strong_key").show();
+			$("#weak_key").hide();
+		}else {$("#weak_key").show();
+				$("#error").show();
+			   $("#characters").show();
+			   $("#Oky").hide();}
+		}
+		return false;
+	});
+	$("#confirm").change(function(){
+		localStorage.setItem("confirm_key", JSON.stringify($(this).val()));
+		var kek = JSON.parse(localStorage.getItem("current_key"));
+		var key = JSON.parse(localStorage.getItem("confirm_key"))
+		if (kek == key){
+			var passward = $(this);
+			$("#ref_id").show();
+			$("#confirmed_key").hide();
+			$("#valid").show();
+			$("#weak_key").hide();
+			$("#error").hide();
+			$("#characters").hide();
+			$("#mismatched").hide();
+			$("#Oky").hide();
+			passward.removeClass("errorBox").addClass("goodBox");
+		}else {$("#mismatched").show();
+				$("#Oky").hide();
+				var passward = $(this);
+				passward.removeClass("goodBox").addClass("errorBox");}
+		
+	});
+	$("#ref_id").change(function(){
+		var ref_no = ['234', '345', '8970', '5467', '345', '8902']
+		if (ref_no.indexOf($(this).val()) != -1) {
+		$("#ref_id").hide();
+		$("#Oky").hide();
+		$("#valid").hide();
+		$("#mismatched").hide();
+		$(".btnbtn-primary").show();
+		
+		}
+		else {$("#invalid").show();
+		$("#Oky").hide();
+		$("#valid").hide();
+		$("#mismatched").hide();}
+	});
+	
+	
+</script>
 {% endblock %}
-
-
-

@@ -16,12 +16,10 @@ Created on Tue Aug 20 15:56:10 2019
 <body>
     {% block content %}
     <form method="post" >
-    <div class="cap_form" ><a href="" style="color:palegoldenrod;">New Record</a><pre>This form will search for an existing name!</pre></div>
-    <div style="color:white;"><em style="color:red;">Hint</em>: Click <a href="{% url 'new_student_name' pk=pk %}">here</a> to create new student name </div>
+    <div class="capt" ><a href="" style="color:palegoldenrod;">New Record</a><pre style="line-height:3px;">search for an existing name or create new registration!</pre></div>
     {% csrf_token %}
-    <table>
-    {{ result.as_p }}
-    </table>
+    <div style="width:50%;font-weight:bold;margin-left:0%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;">Surname Name: {{ result.student_name }}</div>
+    <div style="color:white;"><em style="color:red;">Or</em> Click <a href="{% url 'new_student_name' s=pk pk=0 %}">here</a> to create or register new student name </div>
      <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Search</span></button>
   </form>
    {% endblock %}

@@ -8,13 +8,13 @@
         <table>
             <thead>
 	       
-            <tr><th>STUDENT NAMEs ({{ all_page.count }})</th><th>Class</th><th>Session</th></tr> 
+            <tr><th>S/N</th><th>STUDENT NAMEs ({{ all_page.count }})</th><th>Class</th><th>Session</th></tr> 
               </thead>
           {% if all_page %}
           {% for scr in all_page %} 
           
           <tr>
-            <td><a href="{% url 'search_results' pk=scr.id %}">{{ scr.student_name }}</a></td><td><a href="{% url 'upload_a_score' pk=scr.student_name_id %}">{{ scr.student_class }}</a></td><td>{{ scr.session }}</td>
+            <td>{{ forloop.counter }}</td><td><a href="{% url 'search_results' pk=scr.id %}">{{ scr.student_name }}</a></td><td><a href="{% url 'new_student_name' s=0 pk=scr.student_name.id %}">{{ scr.student_class }}</a></td><td>{{ scr.session }}</td>
           </tr> 
           
           {% endfor %}

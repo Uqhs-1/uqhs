@@ -1,0 +1,959 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+   <head>
+		<title>{% block title %}Offline{% endblock %}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+		
+		<style>
+		body, html { margin: 0px; padding: 0px; background-color: #2CA17B ; font-family: 'Trebuchet MS'; }
+		Container { width: 90%; min-width: 500px; margin: auto; }
+			.input{
+			text-align:center;
+			width:100%;
+			background-color:white;
+			color:black;
+			border-radius:5px;
+			}
+			table, th, td {
+			border: 1px solid #0000CD;
+			border-radius: 5px;
+			font-family: Baskerville Old Face;
+			text-align: center;
+			font-size: 11px;
+			
+            }
+            .forTd {
+                 width:6%;
+                 color:white;
+            }
+			.inport{
+				height:1176px;
+				top:10%;
+				border:1px solid white;
+				border:2px solid blue;color:black;border-radius:5px;
+				background-color:red;
+				margin-left:10%;
+				width:55%;
+				bottom:10%;
+				margin-right:10%;
+				overflow-x:hidden;
+				
+			}
+			table {border-collapse: collapse;
+				margin-left:1%;
+				width: 98%;
+				}
+
+			th, td {padding: 2px;}
+
+			table {
+			border-spacing: 1px;
+			}
+
+			thead, tfoot {background-color: #FFA07A;}
+
+			tbody {background-color: #20B2AA;}
+			tr:nth-child(even) {background-color:#90EE90;}
+			.capt{margin-left: 1%;
+				border-radius: 5px;
+				background-color:green;
+				text-align: center;
+				color: white;
+				font-size:11px;
+				width: 98%;
+				}
+			.sidenavs {
+				height: 100%; /* Full-height: remove this if you want "auto" height */
+				width:25%; /* Set the width of the sidebar */
+				position:fixed; /* Fixed Sidebar (stay in place on scroll) */
+				z-index: 1; /* Stay on top */
+				top: 0px; /* Stay at the top */
+				right: 0;
+				background-color: #f1f1f1; /* Black */
+				overflow-x: hidden; /* Disable horizontal scroll */
+				padding-top: 20px;
+				background: #408000;
+				box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+				margin-top: 89px;
+				right:10%;
+				border:2px solid blue;color:black;border-radius:5px;
+				}
+				.sidenavs.nav {
+				margin-top: 20px;
+				display: block;
+				}
+				/* The navigation menu links */
+				.sidenavs a {
+				padding: 6px 8px 6px 16px;
+				text-decoration: none;
+				font-size: 25px;
+				color: #818181;
+				display: block;
+				}
+
+				/* When you mouse over the navigation links, change their color */
+				.sidenavs a:hover {
+				color: #f1f1f1;
+				}
+				.grade_no {
+				background-color:white;
+				border:2px solid blue;color:black;border-radius:5px;
+				border:1px solid blue;
+				color:blue;
+				}
+				.red_black {
+				color:white;
+				border-radius:4px;
+				background-color:black;
+				border:2px solid white;
+				
+				}
+
+				.red_white {
+				color:white;
+				border-radius:4px;
+				background-color:black;
+				border:2px solid white;
+				
+				}
+
+				.highlight{
+					background-color:pink;
+					border:2px solid red;
+				}
+
+				.selected{
+					border:2px solid green;
+					background-color:blue;
+				}
+				.selectbut{
+					border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;
+				}
+				.images{
+       height:40px;
+       wdith:40px;
+       border-radius:4px;
+       padding: 1px;
+       border:2px solid blue;
+  }
+		</style>
+   </head>
+   <body>
+		<div style="border:1px solid white;border:2px solid blue;color:black;border-radius:5px;margin-left:10%;color:white;width:80%;font-size:285%;"><img src="{% static "result/iiro.jpg" %}" class='images'/><em style="margin-left:27%;">UMMUL-QURA INSTITUTE</em>
+		</div>
+		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;width:80%;margin-left:10%;margin-right:10%;">
+			Akanran Road, Amuloko Arowona Bus-stop, Oyo State, Ibadan.
+		</div>
+		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;font-size:19px;"><em >RESULT PORTAL</em>
+				
+		</div>
+		<div style="height:100%;width:10%;top:0px;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;position:fixed;background-color:blue;right:0;color:white;text-align:center;"> <br>
+			<a href="http://127.0.0.1:8838/result/" title="Home Page" >Main Page</a>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			
+			<input type="text" placeholder="SSS 1, ENG"  name="search" id="search" placeholder="search" value="Serches" style="text-align:center;border:1px solid red;border:2px solid orange;color:black;border-radius:5px;width:60%;"><button onclick="getNames()" style="border:2px solid orange;color:black;border-radius:5px;" ><span class="glyphicon glyphicon-search"></span></button>
+			<br>
+		</div>
+	    <div style="height:100%;width:10%;top:0px;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;position:fixed;background-color:blue;left:0;color:white;text-align:center;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);">
+			<br>
+			<a href="{% url 'home' %}" title="Loggeg in Staffs"><span class="glyphicon glyphicon-home"></span></a>	<br>
+			<br>
+		RESULTS
+			<ol>
+				<li>
+					<select name="results" id="Jone" class="selectbut">
+						<option value="">JSS 1</option>
+						{% if jss1 %}
+						{% for scr in jss1 %}
+						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						{% endfor %}{% endif %}
+					</select>
+				</li>
+				<li>
+					<select name="results" id="Jtwo" class="selectbut">
+						<option value="">JSS 2</option>
+						{% if jss2 %}
+						{% for scr in jss2 %}
+						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						{% endfor %}{% endif %}
+					</select>
+				</li>
+				<li>
+					<select name="results" id="Jthree" class="selectbut">
+						<option value="">JSS 3</option>
+						{% if jss3 %}
+						{% for scr in jss3 %}
+						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						{% endfor %}{% endif %}
+					</select>
+				</li>
+				<li>
+					<select name="results" id="Sone" class="selectbut">
+						<option value="">SSS 1</option>
+						{% if sss1 %}
+						{% for scr in sss1 %}
+						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						{% endfor %}{% endif %}
+					</select>
+				</li>
+				<li>
+					<select name="results" id="Stwo" class="selectbut">
+						<option value="">SSS 2</option>
+						{% if sss2 %}
+						{% for scr in sss2 %}
+						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						{% endfor %}{% endif %}
+					</select>
+				</li>
+				<li>
+					<select name="results" id="Sthree" class="selectbut">
+						<option value="">SSS 3</option>
+						{% if sss3 %}
+						{% for scr in sss3 %}
+						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						{% endfor %}{% endif %}
+					</select>
+				</li>
+			</ol>
+			<script>
+				$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
+					location.replace('http://127.0.0.1:8838/result/'+ ""+$(this).val() + '/1/')
+				})
+			</script>
+			
+			
+			<select value="" id="Subject" class="selectbut">
+				<option value="">Subject</option>
+				<option value="ACC">Account</option>
+				<option value="AGR">Agric. Sc</option>
+				<option value="ARB">Arabic</option>
+				<option value="BIO">Biology</option>
+				<option value="BST1">Basic Science</option>
+				<option value="BST2">Basic Technology</option>
+				<option value="BUS">Business Studies</option>
+				<option value="CHE">Chemistry</option>
+				<option value="CIV">Civic Education</option>
+				<option value="COM">Commerce</option>
+				<option value="CTR">Catring Services</option>
+				<option value="ECO">Economics</option>
+				<option value="ELE">Electrical</option>
+				<option value="ENG">English Language</option>
+				<option value="FUR">Further Mathematics</option>
+				<option value="GEO">Geography</option>
+				<option value="GOV">Government</option>
+				<option value="GRM">Germent Maiking</option>
+				<option value="HIS">History</option>
+				<option value="ICT">Information Technology</option>
+				<option value="IRS">Islamic Religion Studies</option>
+				<option value="LIT">Literature</option>
+				<option value="MAT">Mathematics</option>
+				<option value="NAV">Regional and National Value</option>
+				<option value="PHY">Physics</option>
+				<option value="PRV">Pre-Vocational Studies</option>
+				<option value="YOR">Yoruba Language</option>
+			</select>
+			<br>
+			<select value="" id="Term" class="selectbut" hidden>
+				<option value="">Term</option>
+				<option value="1st Term">First Term</option>
+				<option value="2nd Term">Second Term</option>
+				<option value="3rd Term">Third Term</option>
+			</select>
+			<br>
+			<select value="" id="Class" class="selectbut" hidden>
+				<option value="">Class</option>
+				<option value="JSS 1">JSS 1</option>
+				<option value="JSS 2">JSS 2</option>
+				<option value="JSS 3">JSS 3</option>
+				<option value="SSS 1">SSS 1</option>
+				<option value="SSS 2">SSS 2</option>
+				<option value="SSS 3">SSS 3</option>
+			</select>
+			<br>
+			NEW ENTRY
+			<u>Instructions.</u>	
+			<br>
+			<label>Enter all student names separated with comma.</label>
+            <input type="text" placeholder="Enter Names..." style="text-align:center;border:1px solid red;border:2px solid blue;color:black;border-radius:5px;width:100%;" name="list" id="list">
+            <button name="submit" id="submit" style="text-align:center;border:1px solid red;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-forward"></span></button>
+			  <br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<span id="date"></span>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+		</div>
+   		<div class="inport">
+   		<br> 
+       
+        <div>
+			<div class="capt">
+				<a href="" class="red_white"> SUBJECT 
+				</a>
+				<u class="red_black" id="subject">ENG</u>
+				<a href="" class="red_white">CLASS
+				</a>
+				<u class="red_black" id="class">JSS 3</u>
+				<a href="" class="red_white">Term
+				</a>
+				<u class="red_black" id="term">First Term</u>
+				<div>
+				<label id="header" style="border-radius:2px;height:30px;background-color:red;border:2px solid red;color:white;width:45%;font-size:18px;">UMMUL-QURA HIGH SCHOOL</label><label style="border-radius:2px;height:30px;background-color:white;border:2px solid red;color:black;width:45%;font-size:18px;">SUBJECT SCORES@{<span style="font-size:8px;" id="dated"></span>}</label><img src="{% static "result/iiro.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
+				</div>
+			</div>
+				<div>
+					<table class="qsubject">
+					<thead>
+						<tr>
+						<th style="width:2%;">S/N</th>
+						<th style="width:28%;">
+							<button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
+							<a href="{% url 'home' %}">
+							<span class="glyphicon glyphicon-print" title="print"></span>
+							</a>
+							|
+							<button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
+							<a href="{% url 'home' %}">
+							<span class="glyphicon glyphicon-print" title="print"></span>
+							</a>
+						</th>
+						<th>Student_id</th>
+						<th>Test</th>
+						<th>Asgn</th>
+						<th>Atd</th>
+						<th>Total</th>
+						<th>Exam</th>
+						<th>Sum</th>
+						<th class="third" hidden>2nd</th>
+						<th class="third" hidden>1st</th>
+						<th class="third" hidden>Agr</th>
+						<th class="third" hidden>Avg</th>
+						<th class="forTd">Grd</th>
+						<th class="forTd">Pos</th>
+						</tr> 
+					</thead> 
+					<tr id="tr_{{ forloop.counter }}" class="tableRow">
+                        {% if names %} 
+                        {% for scr in names %}
+                            <tbody id="tb_{{ forloop.counter }}" onclick="doOneach({{ forloop.counter }})" hidden>
+                                <td id="sn_{{ forloop.counter }}" style="width:5%;">{{ forloop.counter }}</td>
+                                <td>
+                                <input class="input" value="ABDULRAHEEM ABDUL'SALAM" id="name_{{ forloop.counter }}" disabled>
+                                </td>
+                                <td id="states_{{ forloop.counter }}" style="color:white;width:10%;" title="Connection required">AA/J/24/1436</td>
+                                <td class="forTd" id="all_{{ forloop.counter }}_1"><input type="number" min="0" max="20" class="input" id="test_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 1)"></td>
+                                <td class="forTd" id="all_{{ forloop.counter }}_2"><input type="number" min="0" max="10" class="input" id="agn_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 2)"></td>
+                                <td class="forTd" id="all_{{ forloop.counter }}_3"><input type="number" min="0" max="10" class="input" id="atd_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 3)"></td>
+                                <td id="total_{{ forloop.counter }}" style="color:white;width:5%;">40</td>
+                                <td class="forTd"  id="all_{{ forloop.counter }}_4"><input type="number" min="0" max="60" class="input" id="exam_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 4)"></td>
+                                <td id="agr_{{ forloop.counter }}" style="color:white;width:5%;">100</td>
+								<td  class="third" style="color:white;width:5%;" hidden><input type="number" min="0" max="100" class="input" id="second_{{ forloop.counter }}" value="0"  disabled></td>
+								<td class="third" style="color:white;width:5%;" hidden><input type="number" min="0" max="100" class="input" id="first_{{ forloop.counter }}" value="0"  disabled></td>
+								<td id="annual_{{ forloop.counter }}" class="third" style="color:white;width:5%;" hidden>300</td>
+								<td id="avg_{{ forloop.counter }}" class="third" style="color:white;width:5%;" hidden>96.51</td>
+								<td class="forTd"><input type="text" value="D7" id="grade_{{ forloop.counter }}" style="width:100%;text-align:center;border-radius:5px;color:black;"  disabled></td>
+								<td class="forTd">
+									<button class="grade_no">
+                                        <a href="{% url 'home' %}" title=" scr.student_name " style="color:blue;">
+                                        <em id="posi_{{ forloop.counter }}">23rd</em>
+                                        </a>
+                                    </button>
+								</td>
+								
+                            </tbody>
+                        </tr>    
+                        {% endfor %}
+                        {% else %}
+                        <pre class="empty">There are no records.</pre>
+                        {% endif %}
+					</tr> 
+					<tr class="capt"><td colspan="6">
+					<em id="Junior" hidden> 
+						<button class="grade_no" onclick="showOnly('A')">A:<span  id="A" style="color:orange;"></span></button>
+						<button class="grade_no" onclick="showOnly('C')">C:<span  id="C" style="color:gray;"></span></button>
+						<button class="grade_no" onclick="showOnly('P')">P:<span  id="P" style="color:black;"></span></button>
+						<button class="grade_no" onclick="showOnly('F')">F:<span  id="F" style="color:pink;"></span></button>
+					</em>
+					<em id="Senior" hidden>
+						<button class="grade_no" onclick="showOnly('A1')">A1:<span  id="A1" style="color:orange;"></span></button>
+						<button class="grade_no" onclick="showOnly('B2')">B2:<span  id="B2" style="color:gray;"></span></button>
+						<button class="grade_no" onclick="showOnly('B3')">B3:<span  id="B3"style="color:black;"></span></button>
+						<button class="grade_no" onclick="showOnly('C4')">C4:<span  id="C4" style="color:yellow;"></span></button>
+						<button class="grade_no" onclick="showOnly('C5')">C5:<span  id="C5" style="color:green;"></span></button>
+						<button class="grade_no" onclick="showOnly('C6')">C6:<span  id="C6" style="color:red;"></span></button>
+						<button class="grade_no" onclick="showOnly('D7')">D7:<span  id="D7" style="color:brown;"></span></button>
+						<button class="grade_no" onclick="showOnly('E8')">E8:<span  id="E8" style="color:blue;"></span></button>
+						<button class="grade_no" onclick="showOnly('F9')">F9:<span  id="F9" style="color:pink;"></span></button>
+					</em>
+					<td>
+						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="upload()">
+							<span class="glyphicon glyphicon-upload" title="add a student's score"></span>
+						</button>
+					</td>
+					<td> <strong>AGR:</td>
+					<td class="grade_no"><span id="agr"></span></td>
+					<td>
+						<strong>PER:</strong>
+					</td>
+					<td colspan="6" class="grade_no" id="grade_no"style="width:4px;"><span id="avr"></span>%</td>
+					</tr>
+					<tr class="capt">
+					<td class="capt" style="color:white; width:200px;" colspan="2">Grade Summary 
+							<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="min" onclick="mini(0)">ENG</button>
+							<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="max" onclick="mini(1)" hidden>ENG</button>
+					</td>
+					<td colspan="6" id="tutor">
+						<a href="{% url 'home' %}" title='Click to edit class details'>
+						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="tutor_name">Mal. Yusuf Sodeeq</button>
+						</a> |
+						
+						<a href="{% url 'setup_questions' %}" style="color:white;" title='Click to upload exam questions'> 
+						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Upload Questions </button>
+						</a>
+						
+					</td>
+					<td>
+						
+						<input type="button" class="selectbut" id="create_pdf" value='PDF'>
+						
+						
+						
+					</td>
+					<td>
+						<button  onclick="positioning()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
+						<span class="glyphicon glyphicon-record"></span>
+						</button>
+					</td>
+					<td>
+						<button onclick="refresh()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-refresh" title="refresh page"></span></button>
+						
+						
+					</td>
+					</tr>                                                                                                                             
+					<tfoot>
+						<tr>
+						<th colspan="11" id="foot">
+							<div id="buttons"></div>
+						</th>
+						</tr>
+					</tfoot>
+					</table>
+					<script>
+					var sum, average, raw, copy, dom, Class, Subject, Term, time, dim;
+					var time = new Date();
+					$("#date").html(time);
+					dom = {'Class':0,'Subject':0,'Term':0, 'flow':"fromHtml", 'len':$(".oneBox, .newBox").length, 'last_updated':new Date(), 'sum':0, 'avg':0};
+					sum = x => eval(x.join("+"));
+					average = arr => Number(arr.reduce((p, c) => p + c, 0)/arr.length);
+
+					function del(i){
+						var arr, each, x; arr = [];
+						x = i.length;
+						while(x != 0){
+							each = i.shift();
+							if (each != 0){arr.push(each);}; 
+							x = i.length}
+							return arr;};
+
+					function reload(data, classCat){
+						raw = []; copy = []; dim = [];
+						for (var i = 1; i < data.list.length; i++) 
+						{
+						var itr = ""+i;
+						if (data.list[i][0] != "Student Name")
+							{
+							document.getElementById("name_"+itr).value = data.list[i][0];
+							$("#states_"+itr).html(data.list[i][1]);
+							document.getElementById("test_"+itr).value = data.list[i][2];
+							document.getElementById("agn_"+itr).value = data.list[i][3];
+							document.getElementById("atd_"+itr).value = data.list[i][4];
+							$("#total_"+itr).html(sum([data.list[i][2],data.list[i][3],data.list[i][4]]));
+							document.getElementById("exam_"+itr).value = data.list[i][5];
+							document.getElementById("grade_"+itr).value = data.list[i][6];
+							dim.push(data.list[i][6]);
+							$("#posi_"+itr).html(data.list[i][7]);
+							$("#agr_"+itr).html(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
+                            grades(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]), "grade_"+itr, classCat[0]);
+							raw.push(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
+							copy.push(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
+							$("#tb_"+itr).show();
+							$("#tb_"+itr).addClass("oneBox");
+							$("#tb_"+itr).addClass(data.list[i][6]);
+							$("#tb_"+itr).addClass("gen_"+data.list[i][8]);
+							dom.gender = data.list[i][8];
+							}
+						};pages()
+							localStorage.setItem("raw", JSON.stringify(raw));
+							countGrade(dim);
+							if (classCat[0] == 'J'){
+								$("#Senior").hide();
+								$("#Junior").show()
+								}
+                            else{
+								$("#Senior").show();
+								$("#Junior").hide()
+								}		
+					};
+
+						function go_to_load_data(tutor_id){
+							 	$.ajax({
+								url: 'http://127.0.0.1:8838/result/responsive_updates/0/',
+								data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"toHtml", 'tutor_id':tutor_id},
+								dataType: 'json',
+								success: function(data) {
+								if (data.status){
+								reload(data, $("#Class").val());
+									}
+										}
+									})};
+					
+                        $("#Subject").change(function(){
+							$("#subject").html($(this).val());
+							$("#Term").show();});
+                        $("#Term").change(function(){
+							$("#term").html($(this).val());
+							$("#Class").show()});
+
+                        $("#Class").change(function(){
+							$.ajax({
+							url:'http://127.0.0.1:8838/result/responsive_updates/0/',
+							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
+							dataType: 'json',
+							success: function(data){
+								if (data.status == true){
+									$("#dated").html(data.status);
+									$("#tutor_name").html(data.tutor_name);
+									dom.tutor_id = data.tutor_id;
+									go_to_load_data(data.tutor_id)
+								}
+								else{
+									var create = confirm("No record! Do you  want to create one?");
+									if (create == true){
+										$.ajax({
+											url: 'http://127.0.0.1:8838/result/responsive_updates/0/',
+											data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"create"},
+											dataType: 'json',
+											success: function(data) {
+											if (data.status){
+		
+												$("#dated").html(data.status);
+												$("#tutor_name").html(data.tutor_name);
+												dom.tutor_id = data.tutor_id;
+												go_to_load_data(data.tutor_id)}
+												
+												}
+								})}}
+							}
+							});
+								dom.Class = $("#Class").val(), dom.Subject = $("#Subject").val(), dom.Term = $("#Term").val();
+								cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+                            	if ($(this).val()[0] == 'J'){
+									$("#Senior").hide();
+									$("#Junior").show()
+									}
+                            	else{
+									$("#Senior").show();
+									$("#Junior").hide()
+									};
+                            	$("#class").html($(this).val());$("#list").show();
+								
+                            });
+					function cls(len){
+							for (var i = 1; i < len; i++) { 
+                                var itr = ""+i;
+								$("#tb_"+itr).removeClass(document.getElementById("grade_"+itr).value);
+                                document.getElementById("name_"+itr).value = "Student Name";
+								document.getElementById("test_"+itr).value = 0;
+								document.getElementById("atd_"+itr).value = 0;
+								document.getElementById("agn_"+itr).value = 0;
+								document.getElementById("exam_"+itr).value = 0;
+								document.getElementById("grade_"+itr).value = '';
+								$("#total_"+itr).html(40);
+								$("#agr_"+itr).html(100);
+                                $("#tb_"+itr).hide();
+                                $("#tb_"+itr).removeClass("newBox");
+                            };
+							document.getElementById('buttons').innerHTML = '';
+						};
+
+						
+						function mini(x){
+							var parm = [['20%', '61%', '10', '15'], ['25%', '55%', '6', '11']]
+							$(".third").toggle();
+							$(".sidenavs").css('width', parm[x][0]);
+							$(".inport").css('width', parm[x][1]);
+							document.getElementById("grade_no").colSpan = parm[x][2];
+							document.getElementById("tutor").colSpan = parm[x][2];
+							document.getElementById("foot").colSpan = parm[x][3];
+							$("#min").toggle();
+							$("#max").toggle();		
+						};
+						
+						function pagging(x){
+							$(".page_"+x).toggle();
+							document.getElementById("header").scrollTop;
+						};
+						
+						function pages(){
+						var seed = [];var dimed = [0]
+						var page = 36;
+						document.getElementById('buttons').innerHTML += "<button "+ "  onclick="+"'pagging(1)'"+">"+ ""+ 1 +"</button>" ;
+						if ($(".oneBox").length > 36){
+							var torem = Array.from(document.querySelectorAll('tbody.oneBox'));
+							while(torem.length != 0){
+									seed.push(36);
+									var each = $("#tb_"+""+seed.length);
+									each.removeClass("oneBox");
+									each.addClass("newBox");
+										if (seed.length == page){
+											if (torem.length < 36){
+												page += torem.length
+											}else{
+												page += seed[0];
+											};
+											dimed.push(0);
+											pg_no = 'page_'+dimed.length;
+											var str = "<button "+ "  onclick="+"'pagging(2)'"+">"+ ""+ dimed.length +"</button>";
+											document.getElementById('buttons').innerHTML += str.replace(2, dimed.length);			
+										} 	
+										each.addClass("page_"+dimed.length);
+										$(".page_"+dimed.length).hide()
+										torem = Array.from(document.querySelectorAll('tbody.oneBox'));
+							}  	
+							}$(".page_1").show();
+						};
+						
+                        function grades(x, y, z){
+                            switch(z){
+                            case "S":
+                                if (x >=0 && x <=39){document.getElementById(y).value = "F9";};
+                                if (x >=40 && x <=44){document.getElementById(y).value = "E8";}; 
+                                if (x >=45 && x <=49){document.getElementById(y).value = "D7";}; 
+                                if (x >=50 && x <=54){document.getElementById(y).value = "C6";};
+                                if (x >=55 && x <=59){document.getElementById(y).value = "C5";};
+                                if (x >=60 && x <=64){document.getElementById(y).value = "C4";};
+                                if (x >=65 && x <=69){document.getElementById(y).value ="B3";};
+                                if (x >=70 && x <=74){document.getElementById(y).value = "B2";};
+                                if (x >=75 && x <=100){document.getElementById(y).value = "A1";};
+                                break
+                            case "J":
+                                if (x >=0 && x <=39){document.getElementById(y).value = "F";};
+                                if (x >=40 && x <=49){document.getElementById(y).value = "P";};
+                                if (x >=50 && x <=69){document.getElementById(y).value = "C";};
+                                if (x >=70 && x <=100){document.getElementById(y).value = "A";};
+                                break
+                                };
+								return document.getElementById(y).value; 
+                            };
+						function done(x, y){
+							$("#all_"+""+x+"_"+""+y).click(function(){
+								$("#all_"+""+x+"_"+""+y).addClass("highlight");
+							});
+							$("#all_"+""+x+"_"+""+y).change(function(){
+							$(this).addClass("selected");
+							$(this).removeClass("highlight");
+							}) 	
+							};
+							$("#Subject").change(function(){$("#min, #max").html($(this).val())});
+						function upload(){
+							location.replace('http://127.0.0.1:8838/result/upload_txt/'+ dom.tutor_id +'/')
+						};
+						function doOneach(x){
+							var total, annual, avg, itr;
+							itr = ""+x;
+                            total = sum([$("#test_"+itr).val(), $("#agn_"+itr).val(), $("#atd_"+itr).val()]);
+                            	$("#total_"+itr).html(total);
+                            	$("#agr_"+itr).html(sum([total, $("#exam_"+itr).val()]));
+                            	grades(sum([total, $("#exam_"+itr).val()]), "grade_"+itr, $("#Class").val()[0]);
+							if ($("#Term").val() == "4rd Term"){
+								annual = sum([$("#first_"+itr).val(), $("#second_"+itr).val(), sum([total, $("#exam_"+itr).val()])]);
+							avg = average(del([annual])).toFixed(2);
+									$("#avg_"+itr).html(avg);
+									grades(avg, "grd_"+itr, $("#Class").val()[0]);};
+									};
+							rel = JSON.parse(localStorage.getItem("refresh"));
+							dom.Class = rel.Class; dom.Subject = rel.Subject; dom.Term = rel.Term;
+							Class = rel.Class; Subject = rel.Subject; Term = rel.Term; time = rel.last_updated;
+							var callBack = ['default'];
+							for (var i = 1; i < rel['len']+1; i++){
+							var itr = ""+i;
+							callBack.push([rel['id_'+itr]['name'], rel['id_'+itr]['states'], rel['id_'+itr]['test'], rel['id_'+itr]['agn'], rel['id_'+itr]['atd'], rel['id_'+itr]['exam'], rel['id_'+itr]['grade'], rel['id_'+itr]['posi'], rel['id_'+itr]['gender']])
+								};$("#min, #max").html(rel.Subject)
+							if (rel.len != 0){reload({'info':0, list:callBack}, Class);
+							$("#dated").html(rel.last_updated);};
+							$("#agr").html(rel.sum);
+							$("#avr").html(rel.avg);
+						function refresh(){
+                            var allRaw = $(".newBox, .oneBox");
+                            for (var i = 1; i < allRaw.length+1; i++){
+                                var itr = ""+i;
+                                $("#total_"+itr).html(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]));
+								$("#agr_"+itr).html(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]));
+								grades(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]), "grade_"+itr, dom.Class[0]);  
+                            } };	
+                    	$("button[name='submit']").click(function() {
+                            var inputs = $("input[name='list']");
+                            var arr = inputs.val().split(",");
+                            arr.unshift("Defualt");
+                            cls(dom.len + 1)
+							for (var i = 1; i < arr.length; i++) { 
+                                var itr = ""+i;
+							document.getElementById("name_"+itr).value = arr[i].toUpperCase();
+							$("#tb_"+itr).show();
+                            $("#tb_"+itr).addClass("newBox");
+						}
+                        });
+						var allChecked= []; var allarray = [];					
+						function getNames(){
+							if ($("#search").val().split(",").length == 2){
+								var newBox = $(".newBox");
+								for (var i = 0; i < newBox.length+1; i++) {
+									var itr = ""+i;
+									$("#tb_"+itr).hide();
+									$("#tb_"+itr).removeClass("newBox");
+								};
+							$.ajax({
+									url:'http://127.0.0.1:8838/result/responsive_updates/1/',
+									data: {'Class': $("#search").val().split(",")[0],'Subject': $("#search").val().split(",")[1].trim(), 'flow':"names"},
+										dataType: 'json',
+										success: function(data) {
+											if (data.status <= 100){
+												var namesRet = data.list; 
+												$("#searchResult").show();
+												document.getElementById("resultTable").innerHTML += "<thead><tr><th>SN</th><th>Student Name</th><th>Admin No.</th><th>tick</th></tr></thead>";
+												for (var i =1; i < namesRet.length; i++){
+													allarray.push(data.list[i][0]);
+													var thss = namesRet[i][0].split(' ')[0]+'_'+ namesRet[i][0].split(' ')[1]; 
+													document.getElementById("resultTable").innerHTML += '<tr>'+'<td>'+ ""+i +'</td>'+'<td>'+""+namesRet[i][0]+'</td><td>'+ namesRet[i][1]+ "</td><td><input type='checkbox'"+ "value="+thss  +" > " + '</td></tr>';
+													
+												};
+												document.getElementById("resultTable").innerHTML += "<tfoot><th colspan='3'>Tick none when all names are applicable, then click</th><th><button onclick='next()' style='line-height:65%;border:2px solid blue;color:black;border-radius:5px;'>Next</button></th></tfoot>";
+												
+												$('input:checkbox').change(function(){
+												var value = $(this).val();
+												if ($(this).prop('checked')){
+													allChecked.push(value.split('_')[0]+' '+ value.split('_')[1]);
+													}
+												});
+											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
+										},
+										
+									})
+                         }else{alert("Enter class then subject to search eg JSS 1, ARB.")}   
+                        };
+
+						function next(){
+							if (allChecked.length == 0){allChecked = allarray};
+							var itr = "";
+							itr += allChecked[0];
+							for (var i = 1; i < allChecked.length; i++) { 
+								itr += ","+ allChecked[i];
+											}; 
+							document.getElementById("list").value = itr;};
+
+                        function positioning(){
+							doPosi();if ($("#Term").val() == "3rd Term"){doPosi(thirdR, thirdC, "#Posi_")};
+							$("#agr").html(dom.sum);
+							$("#avr").html(dom.avg);
+						};
+                        function positions(size){
+                            posi = []
+                            for (var i = 1; i < size.length+1;  i++){
+                                var it = ""+i;
+                                if (i == 11 || i == 12 || i == 13){posi.push(""+i+'th');
+                                }
+                                else{
+                                    if (it.endsWith("1") || it.endsWith("2") || it.endsWith("3") || i == 1 || i == 2 || i == 3){
+                                        if (it.endsWith("1") || i == 1){posi.push(""+i+'st');};
+                                        if (it.endsWith("2") || i == 2){posi.push(""+i+'nd');};
+                                        if (it.endsWith("3") || i == 3){posi.push(""+i+'rd');};}  
+                                    else{posi.push(""+i+'th');}};}
+                            return posi;};
+							//Setting states to the DOM
+							var arrayOne, copyArray, dom, agr, allRaw;
+							arrayOne = [];copyArray = [];
+						function saveState(){
+							dom.len = $(".oneBox, .newBox").length;
+                            for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
+                                itr = ""+i;
+                                agr = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), $("#exam_"+itr).val()]);
+                                arrayOne.push(agr);
+								copyArray.push(agr);
+								dom['id_'+itr] = {
+									'name':$("#name_"+itr).val(), 
+									'states':"AA/J/24/1436",
+									'test':Number($("#test_"+itr).val()), 
+									'agn':Number($("#agn_"+itr).val()), 
+									'atd':Number($("#atd_"+itr).val()), 
+									'exam':Number($("#exam_"+itr).val()), 
+									'posi':'th',
+									'grade':document.getElementById("grade_"+itr).value,
+									'total':sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]), 
+									'agr': sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]),
+									'sn':i};}
+									return dom;
+                            };//doPosi(raw, copy, "#posi_");if ($("#Term").val() == "3rd Term"){doPosi(thirdR, thirdC, "#Posi_")};
+                        function doPosi(){
+							dom = saveState(); dim = [];
+							var posi, result, idx, itr;
+							posi = positions(raw);
+                            function find(needle, haystack, i) {
+                                results = [];
+                                idx = haystack.indexOf(needle);
+                                while (idx != -1) {
+                                    results.push(idx);
+                                    idx = haystack.indexOf(needle, idx + 1);};
+                                itr = ""+i;
+                                $("#posi_"+itr).html(posi[results[0]]);
+								dom['id_'+itr]['posi'] = posi[results[0]];
+								dim.push(dom['id_'+itr]['grade']);
+								$("#tb_"+itr).addClass(dom['id_'+itr]['grade']);
+								if (dom['id_'+itr]['name'] != "Student Name"){
+								$.ajax({
+										url:'http://127.0.0.1:8838/result/responsive_updates/0/',
+										data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'name':dom['id_'+itr]['name'], 'id':dom['id_'+itr]['states'],'test':dom['id_'+itr]['test'], 'agn':dom['id_'+itr]['agn'], 'atd':dom['id_'+itr]['atd'], 'total':dom['id_'+itr]['total'], 'exam':dom['id_'+itr]['exam'], 'agr':dom['id_'+itr]['agr'], 'grade':dom['id_'+itr]['grade'], 'posi':dom['id_'+itr]['posi'], 'sn':i},
+										dataType: 'json',
+										success: function(data) {
+											if (data.count){
+												$(data.status).html(data.id);
+												dom['id_'+itr]['states'] = data.id;
+											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
+										}
+									})} 
+                            return results ;}countGrade(dim);
+                            for (var i = 0; i < arrayOne.length;  i++){
+                                find(arrayOne[i], copyArray.sort((a, b) => b - a), i+1);};
+							dom.sum = sum(arrayOne);dom.avg = average(del(arrayOne)).toFixed(2);
+                            localStorage.setItem("refresh", JSON.stringify(dom));
+							};
+							pages()
+							function showOnly(x){$("."+x).hide();$(".oneBox, .newBox").toggle();};
+							function countGrade(dim){
+								var grades = dim.reduce(function(prev, cur){prev[cur] = (prev[cur] || 0) + 1; return prev;},{});
+								$("#A").html(grades.A);$("#C").html(grades.C);$("#P").html(grades.P);$("#F").html(grades.F);
+								$("#F9").html(grades.F9);$("#E8").html(grades.E8);$("#D7").html(grades.D7);$("#C6").html(grades.C6);$("#C5").html(grades.C5);$("#C4").html(grades.C4);$("#B3").html(grades.B3);$("#B2").html(grades.B2);$("#A1").html(grades.A1);
+							}
+                    </script>    
+		</div>
+        </div>
+		</div>
+		
+					
+		<div class="sidenavs" id="sidenav">
+				<div style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>SEARCH RESULTs</div>	
+				<table style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	
+			   	<em style="margin-left:23%;border:2px solid blue;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;">JUNIOR SUBJECT LIST</em>	
+                    <ol value="" id="Subject" style="border:2px solid blue;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;color:white;">
+						<li value="AGR">AGR:Agric.Sc</li>
+						<li value="ARB">ARB:Arabic</li>
+						<li value="BST">BST:Basic Sc. and Technology</li>
+						<li value="BUS">BUS:Business Studies</li>
+						<li value="ENG">ENG:English Language</li>
+						<li value="HIS">HIS:History</li>
+						<li value="IRS">IRS:Islamic Religion Studies</li>
+						<li value="MAT">MAT:Mathematics</li>
+						<li value="NAV">NAV:Regional and National Value</li>
+						<li value="PRV">PRV:Pre-Vocational Studies</li>
+						<li value="YOR">YOR:Yoruba Language</li>
+			</ol>
+                
+				
+				<em style="margin-left:23%;border:2px solid blue;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;">SENIOR SUBJECT LIST</em>	
+                    <ol value="" id="Subject" style="border:2px solid blue;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;color:white;">
+						
+						<li value="ACC">ACC:Account</li>
+						<li value="AGR">AGR:Agric.Sc</li>
+						<li value="ARB">ARB:Arabic</li>
+						<li value="BIO">BIO:Biology</li>
+						<li value="CHE">CHE:Chemistry</li>
+						<li value="CIV">CIV:Civic Education</li>
+						<li value="COM">COM:Commerce</li>
+						<li value="CTR">CTR:Catring Services</li>
+						<li value="ECO">ECO:Economics</li>
+						<li value="ELE">ELE:Electrical</li>
+						<li value="ENG">ENG:English Language</li>
+						<li value="FUR">FUR:Further Mathematics</li>
+						<li value="GEO">GEO:Geography</li>
+						<li value="GOV">GOV:Government</li>
+						<li value="GRM">GRM:Germent Maiking</li>
+						<li value="ICT">ICT:Information Technology</li>
+						<li value="IRS">IRS:Islamic Religion Studies</li>
+						<li value="LIT">LIT:Literature</li>
+						<li value="MAT">MAT:Mathematics</li>
+						<li value="PHY">PHY:Physics</li>
+						<li value="YOR">YOR:Yoruba Language</li>
+			</ol>
+			
+                
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+            </div>
+			
+		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;"><em style="margin-left:-26%;"><i>Contact</i>: 08053776177, 07042412052</em></div>
+		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;"
+		><em style="margin-left:-26%;"><i>E-mail</i>: ummulqura@marktoob.com, ummulqr@yahoo.com</em></div>
+   </body>
+   
+</html>

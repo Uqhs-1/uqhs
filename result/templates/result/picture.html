@@ -3,7 +3,9 @@
 {% block content %}
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="myfile">
-    <button type="submit">Upload</button>
+    <div class='capt' style="font-weight:bold;">PICTURE UPLOAD</div>
+      <input type="file" name="myfile" required="True" style="border:2px solid white;border-radius:5px;background-color:Maroon;color:white;margin-left:30%;">
+      <button type="submit" style="border:2px solid white;border-radius:5px;background-color:Maroon;color:white;margin-left:61%;">Upload</button>
+    
   </form>
 {% endblock %}

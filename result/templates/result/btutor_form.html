@@ -37,18 +37,21 @@
     </div>
     <strong style="width:230px; line-height:15px; color:purple;">Enter inputs as required</strong>
     <div class="row">
-      <div class="col-xs-4" >
+      <div class="col-xs-2" >
         {{ form.males|as_crispy_field }}
       </div>
-      <div class="col-xs-4">
+      <div class="col-xs-2">
         {{ form.females|as_crispy_field }}
       </div>
-      <div class="col-xs-4">
+      <div class="col-xs-3">
         {{ form.status|as_crispy_field }}
       </div>
+      <div class="col-xs-5">
+        {{ form.resumption|as_crispy_field }}
+      </div>
     </div>
-    	<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Done</span></button>
-	Create new subject <a href="{% url 'create_subject' %}"> <em style="font-family:Helvetica; color:purple; font-size: 10px;">here.</em></a>
+    	<button type="submit" style="border:2px solid white;border-radius:5px;background-color:Maroon;margin-left:40%;color:white;"><span class="glyphicon glyphicon-check">Done</span></button>
+	<em style="font-family:Helvetica;color:grey;font-size: 10px;">Create new subject</em> <a href=""> here.</a>
   </form>
    {% endblock %} 
 </body>

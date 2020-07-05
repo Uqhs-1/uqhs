@@ -1,8 +1,9 @@
-from .models import TUTOR_HOME, SESSION
+from result.models import TUTOR_HOME, SESSION
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 import xhtml2pdf.pisa as pisa
+
 
 def session():
     if SESSION.objects.all().count() == 0:
@@ -40,7 +41,7 @@ def do_grades(scores, cader):#list
         s = len(scores)
         if s >= 1:
             for r in range(0, len(dr)):
-                if scores[0] in dr[r]:
+                if set_limit(scores[0], 39, 99) in dr[r]:
                     grd[1].append(grd[grd[4].index(cader)][r])
             del(scores[0])
         elif s == 0:
@@ -99,6 +100,41 @@ def do_positions(df):
     results = marg_marks_positions(testlist, first_last_th, mark_orde)
     return results[1]
     
+from django.conf import settings
+import os
+class Render:
+    @staticmethod
+    def render(path: str, params: dict):
+        template = get_template(path)
+        html = template.render(params)
+        response = BytesIO()
+        links = lambda uri, rel:os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL,''))
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), dest=response, link_callback=links)#"utf-8"
+        if not pdf.err:
+            return HttpResponse(response.getvalue(), content_type='application/pdf')
+        else:
+            return HttpResponse("Error Rendering PDF", status=400)
+
+import math
+def round_half_up(n, decimals=0):
+    multiplier = 10**decimals
+    return math.floor(n*multiplier + 0.5)/multiplier
+
+def set_limit(x, Min, Max):
+    if x < Min:
+        x = Min
+    elif x > Max: 
+        x = Max
+    else:
+        x = x
+    return x
+
+def may_not(r, dg):
+   if len([i for i in dg if i[-1] == r]) != 0:
+       return [dg.index([i for i in dg if i[-1] == r][x])+1 for x in range(len([i for i in dg if i[-1] == r]))]
+   else:
+       return [0]
+   
 
 class Render:
     @staticmethod
@@ -106,50 +142,8 @@ class Render:
         template = get_template(path)
         html = template.render(params)
         response = BytesIO()
-        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)#"utf-8"
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
         if not pdf.err:
             return HttpResponse(response.getvalue(), content_type='application/pdf')
         else:
             return HttpResponse("Error Rendering PDF", status=400)
-
-
-
-    
-def parent_id(tutor):
-    tutor_id = [x[0] for x in [list(TUTOR_HOME.objects.filter(tutor__exact=tutor.accounts, teacher_name__exact=tutor.teacher_name).values_list('first_term', 'second_term', 'third_term'))]]
-    if tutor.term == '1st Term':
-        tutors = TUTOR_HOME.objects.get(first_term = tutor)
-        tutors.first_term = None
-        tutors.save()
-    elif tutor.term == '2nd Term':
-        tutors = TUTOR_HOME.objects.get(second_term = tutor)
-        tutors.second_term = None
-        tutors.save()
-    elif tutor.term == '3rd Term':
-        tutors = TUTOR_HOME.objects.get(third_term = tutor)
-        tutors.third_term = None
-        tutors.save()
-    return tutor_id[0]
-
-def remarks(anuual):
-    remarks = ['Best results, keep it up.', 'Very good results, keep it up.', 'Good results, put more efforts.', 'Above average, try to improve.', 'Satisfactorily, you need to work harder.', 'Below average, you need to work harder.', 'Poor results.', 'Very poor results.']
-    if anuual >= 0.9:
-        remark = remarks[0]
-    elif anuual >= 0.8:
-        remark = remarks[1]
-    elif anuual >= 0.7:
-        remark = remarks[2]
-    elif anuual >= 0.6:
-        remark = remarks[3]
-    elif anuual >= 0.5:
-        remark = remarks[4]
-    elif anuual >= 0.4:
-        remark = remarks[5]
-    elif anuual >= 0.3:
-        remark = remarks[6]
-    elif anuual >= 0.2:
-        remark = remarks[7] 
-    elif anuual >= 0.1:
-        remark = remarks[8]
-    return remark
-

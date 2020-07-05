@@ -13,19 +13,19 @@
   
         <table>
           <thead>         	          
-            <tr><th>Unique_Id</th><th>STUDENT NAME ({{ all_page.count }}{{ counts }})</th><th>Created</th><th>Session</th></tr>           
+            <tr><th>S/N</th><th>Student_Id</th><th>STUDENT NAME ({{ all_page.count }}{{ counts }})</th><th>Class</th><th>Session</th></tr>           
           </thead>
           {% if all_page %}
           {% for scr in all_page %} 
           <tr>
-            <td>{% if counts != None %}<a href="{% url 'student_subject_list' pk=scr.id %}" title="{{ scr.student_name }}">{% endif %}{{ scr.student_id }}</a></td><td>{{ scr.student_name }}</td><td title={{Jo}}>{{ scr.tutor.Class }}{{ scr.student_class }}</h6></td><td><h6>{{ scr.tutor.session }}{{ scr.session }}</h6></td>
+            <td>{{ forloop.counter }}</td><td>{% if counts != None %}<a href="{% url 'student_subject_list' pk=scr.id %}" title="{{ scr.student_name }}">{% endif %}{{ scr.student_id }}</a></td><td><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_name }}">{{ scr.student_name }}</a></td><td title={{Jo}}>{{ scr.tutor.Class }}{{ scr.student_class }}</h6></td><td><h6>{{ scr.tutor.session }}{{ scr.session }}</h6></td>
           </tr>
           {% endfor %}
           {% else %}
               <p>There are no records.</p>
           {% endif %}
           <tfoot>
-                <tr><th colspan="4"><div style="color:white; font-size:13px;">Summary</div>|<em Class= "jss_one" title="Click to download JSS1 names"><a href="{% url 'extract_name' pk=1 ty=0 %}">{{Jo}}</a></em>--<em Class= "jss_two" title="Click to download JSS2 names"><a href="{% url 'extract_name' pk=2 ty=0 %}">{{Jt}}</a></em>--<em Class= "jss_three" title="Click to download JSS3 names"><a href="{% url 'extract_name' pk=3 ty=0 %}">{{Jh}}</a></em>--<em Class= "jss_one" title="Click to download SSS1 names"><a href="{% url 'extract_name' pk=4 ty=0 %}">{{So}}</a></em>--<em Class= "jss_two" title="Click to download SSS2 names"><a href="{% url 'extract_name' pk=5 ty=0 %}">{{St}}</a></em>--<em Class= "jss_three" title="Click to download SSS3 names"><a href="{% url 'extract_name' pk=6 ty=0 %}">{{Sh}}</a></em>| <div style="color:white;font-size:13px;">{{ counts }} listed names</div></th></tr>
+                <tr><th colspan="5"><div style="color:white; font-size:13px;">Summary</div>|<em Class= "jss_one" title="Click to download JSS1 names"><a href="{% url 'extract_name' pk=1 ty=0 %}">{{Jo}}</a></em>--<em Class= "jss_two" title="Click to download JSS2 names"><a href="{% url 'extract_name' pk=2 ty=0 %}">{{Jt}}</a></em>--<em Class= "jss_three" title="Click to download JSS3 names"><a href="{% url 'extract_name' pk=3 ty=0 %}">{{Jh}}</a></em>--<em Class= "jss_one" title="Click to download SSS1 names"><a href="{% url 'extract_name' pk=4 ty=0 %}">{{So}}</a></em>--<em Class= "jss_two" title="Click to download SSS2 names"><a href="{% url 'extract_name' pk=5 ty=0 %}">{{St}}</a></em>--<em Class= "jss_three" title="Click to download SSS3 names"><a href="{% url 'extract_name' pk=6 ty=0 %}">{{Sh}}</a></em>| <div style="color:white;font-size:13px;">{{ counts }} listed names</div></th></tr>
           </tfoot>
         </table>
   

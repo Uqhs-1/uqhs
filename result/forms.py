@@ -53,7 +53,7 @@ class SignUpForm(UserCreationForm):
 class subject_class_term_Form(forms.ModelForm):
     class Meta:
         model = BTUTOR
-        fields = ('Class', 'subject', )
+        fields = ('Class', 'subject',)
         
 class class_term(forms.ModelForm):
     class Meta:
@@ -79,13 +79,13 @@ class PostForm(forms.ModelForm):
 class a_student_form_new(forms.ModelForm):
     class Meta:
         model = QSUBJECT
-        fields = ('student_name','test', 'agn','atd', 'exam','tutor', 'Class',)
+        fields = ('student_name','test', 'agn','atd', 'exam','tutor',)
         
 
 class student_name(forms.ModelForm):
     class Meta:
         model = CNAME
-        fields = ('last_name', 'first_name', 'gender',)
+        fields = ('last_name', 'first_name', 'gender', "birth_date",)
 
 class new_student_name(forms.Form):
     student_name = forms.CharField(help_text="enter student's surename to search.")

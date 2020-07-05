@@ -48,4 +48,33 @@ class Staff_SignUp(generic.CreateView):
     
 
 ###############################################################################
-
+from django.http import JsonResponse
+from result.models import REGISTERED_ID
+from django.shortcuts import redirect
+def user_qury(request):
+    if request.GET.get('username', None) != None:
+        if User.objects.filter(username__iexact=request.GET.get('username', None)).exists() == True:
+            data = {'is_taken': User.objects.filter(username__iexact=request.GET.get('username', None)).exists()}
+            if data['is_taken']:
+                data['error_message'] = 'A user with this username already exists.'
+        else:
+            data = {'is_taken': 'null'}
+            data['error_message'] = 'Username does not exist.' 
+        query = User.objects.all()
+        for i in range(query.count()):
+            data[query[i].username] = query[i].email
+    else:
+        if request.POST.get('username', None) != None:
+                userObj = User.objects.create_user(username=request.POST.get('username'), email=request.POST.get('email'), password=request.POST.get('password'))
+                userObj.is_active = True
+                userObj.save()
+                profile = userObj.profile
+                profile.save()
+                return redirect('home')
+        else:
+            if request.GET.get('student_id', None) != None:
+                data = {'valid_id': REGISTERED_ID.objects.filter(student_id__iexact=request.GET.get('student_id')).exists()}
+                if data['valid_id'] == False:
+                    data['error_message'] = 'The student ID entered is either not correct or does not exists.'
+    return JsonResponse(data)
+    

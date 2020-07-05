@@ -1,11 +1,11 @@
 {% extends "base_generic.html" %}
 {% block content %}
 	<title>{% block title %} logged in {% endblock %}</title>
-    <form class="content">
+    <form class="content" id="admin">
         <div class="section-inner clearfix">
 
         <div class="fc">
-          <div class="capt">Welcome <a href="{% url 'home'  %}" style="font-family:Helvetica; color:blue; font-size: 12px;">{{ request.user.username }} !</a></div>
+          <div class="capt">Welcome <a href="{% url 'home'  %}" style="font-family:Helvetica; color:blue; font-size: 12px;"><strong style="background-color:white;border:2px solid blue;color:black;border-radius:5px;">{{ request.user.username }}!</strong></a></div>
         </div>
 	
         <em style="width:89%;margin-left:59px; font-size:12">Account Details:</em>
@@ -20,12 +20,38 @@
             <li><em style="font-family:Helvetica; color:red; font-size: 12px;">SuperUser:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.is_superuser }}</em></li>
             <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Staff:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.is_staff }}</em></li>
             <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Date Joined:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.date_joined }}</em></li>
-            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">Last Login:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.last_login }}</em></li>
-	    <li>You have visited this page <em style="font-family:Helvetica; color:red; font-size: 12px;">{{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}</em>.</li>
-	    
+    	     <li>You have visited this page on this browser <span id="report"></span> times.</li>
+            <li>Your last visit on this browser was <span id="lastVisitDate"></span></li>
+            <li>You have visited this site <span id="modelVisits">{{ request.user.profile.login_count }}</span> times</li>
+            <li><em style="font-family:Helvetica; color:red; font-size: 12px;">YourLast Login to this site:</em> <em style="font-family:Helvetica; color:white; font-size: 12px;">{{ request.user.last_login }}</em></li>
         </ul>
-        <em><a href="{% url 'home' %}"><em class="capt"><em style="font-family:Helvetica; font-size:19px; margin-left:36%;"><span class="glyphicon glyphicon-chevron-right"></span></em></a><a href="{% url 'log_out' %}"><em class="capt"><em style="font-family:Helvetica; font-size:19px;"><span class="glyphicon glyphicon-chevron-left"></span></em></a></em></em>
+        <script>
+            var timesVisited = 0;
+            var lastVisitDate = 'never';
+            if (localStorage.getItem('{{ request.user.username }}')) {
+            var lastVisit = JSON.parse(localStorage.getItem('{{ request.user.username }}'));
+            timesVisited = lastVisit.numVisits;
+            lastVisitDate = lastVisit.date;
+            }
+            document.getElementById('lastVisitDate').innerHTML = lastVisitDate;
+            timesVisited++;
+            document.getElementById('report').innerHTML = timesVisited;
+            var myLastVisit = { }
+            myLastVisit.date = new Date();
+            myLastVisit.numVisits = timesVisited;
+            localStorage.setItem('{{ request.user.username }}', JSON.stringify(myLastVisit));
+            if (timesVisited > 100) {
+                report.style.backgroundColor = 'red';
+                report.style.color = 'white';
+                admin.style.backgroundColor = 'orange';
+                modelVisits.style.backgroundColor = 'red';
+                }
+            localStorage.removeItem('current_data')
+        </script>
+        
+        <div><em><a href="{% url 'log_out' %}" style="font-family:Helvetica;font-size:9px;background-color:red;border-radius:5px;color:cornsilk;" title="Click previous to logout">Previous</a></em><e><a href="{% url 'home' %}" style="font-family:Helvetica; font-size:9px;margin-left:89%;background-color:red;border-radius:5px;color:cornsilk;" title="Click next to continue">Next</a></e></div>
         </div>
     </form>
 
 {% endblock %}
+

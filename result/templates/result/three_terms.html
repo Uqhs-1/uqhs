@@ -3,15 +3,14 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %} {{ a.first.student_name }}/{{ a.first.tutor.Class }} {% endblock %}</title>
+        <title>{% block title %}{% if a.first == None %}{{ a.first.student_name }}/{{ a.first.tutor.Class }}{% else %}{{ a.second.student_name }}/{{ a.second.tutor.Class }}{% else %}{{ a.third.student_name }}/{{ a.third.tutor.Class }}{% endif %}{% endblock %}</title>
     </head>
     {% block content %}
     <table>
-	<div class="capt"font-size:13"><a href="" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{{ a.first.student_name }}:</a></strong> PERFORMANCE IN SUBJECTS <em style="font-family:Helvetica; color:white; font-size: 15px;">{{ scr.tutor.Class }}!</em></div>
+	<div class="capt"font-size:13"><a href="" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">{% if a.first == None %}{{ a.first.student_name }}{% else %}{{ a.first }}{% endif %}:</a></strong> PERFORMANCE IN SUBJECTS</div>
         
-        <tr>
-            <th><em></em></th>
-            <thead><td>{{ a.first.tutor.Class }}:{{ a.first.tutor.term }}</td><td>Obt. Mark</td><td>{{ a.first.tutor.subject.name }}</td><td>{{ b.first.tutor.subject.name }}</td><td>{{ c.first.tutor.subject.name }}</td><td>{{ d.first.tutor.subject.name }}</td><td>{{ e.first.tutor.subject.name }}</td><td>{{ f.first.tutor.subject.name }}</td><td>{{ g.first.tutor.subject.name }}</td><td>{{ h.first.tutor.subject.name }}</td><td>{{ i.first.tutor.subject.name }}</td><td>{{ j.first.tutor.subject.name }}</td><td>{{ k.first.tutor.subject.name }}</td></thead>
+        <tr>{% if a.first == None %}{% else %}{% endif %}
+            <thead><td>{% if a.first == None %}{{ a.first.tutor.Class }}:{{ a.first.tutor.term }}{% else %}{{ a.first }}:{{ a.first }}{% endif %}</td><td>Obt. Mark</td><td>{% if a.first == None %}{{ a.first.tutor.subject.name }}{% else %}{{ a.first }}{% endif %}</td><td>{% if a.first == None %}{{ b.first.tutor.subject.name }}{% else %}{{ b.first }}{% endif %}</td><td>{{ c.first.tutor.subject.name }}</td><td>{{ d.first.tutor.subject.name }}</td><td>{{ e.first.tutor.subject.name }}</td><td>{{ f.first.tutor.subject.name }}</td><td>{{ g.first.tutor.subject.name }}</td><td>{{ h.first.tutor.subject.name }}</td><td>{{ i.first.tutor.subject.name }}</td><td>{{ j.first.tutor.subject.name }}</td><td>{{ k.first.tutor.subject.name }}</td></thead>
         </tr>
         <tr>
             <th style="font-family:Helvetica; color:blue;">Grade</th>

@@ -8,14 +8,14 @@
     {% block content %}
     <body>
         <table>
-    		<div class="capt" style="font-size:13px;text-align: center;"><a href="{% url 'created_subject_list' pk=0 %}" style="color:blue;">{{ tutor.count }}</a> subjects</div>
+    		<div class="capt"><span style="font-size:13px;text-align:center;border:2px solid white;border-radius:5px;background-color:brown;color:white;font-weight:bold;"> TERM LIST </span></div>
                 <thead>
-                    <tr><th>Teacher</th><th>Subject_model</th><th>Names</th><th>Review</th><th>Created</th><th>Updated</th><th>No. in Class</th></tr>      
+                    <tr><th>Teacher</th><th><u style="color:white;">{{ tutor.count }} </u>Subject</th><th>Names</th><th>Review</th><th>Created</th><th>Updated</th><th>No. in Class</th></tr>      
                 </thead>
                 <tbody>
                     {% if tutor %}
                     {% for sub in tutor %}
-                        <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_update' sub.id %}" title="Click to update subject-teacher info">{{ sub.teacher_name }}</a></td><td><a href="{% url 'ques_subject_updates' sub.id %}" title="Click to load {{ sub.subject }} subject-model">{{ sub.subject }}</a></td><td><a href="{% url 'extract_name' pk=sub.id ty=1 %}" title="Click to download {{ sub.Class }} student-names">{{ sub.Class }}</a></td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}" title="Lunch {{ sub.Class }} {{ sub.term }} {{ sub.subject }}">{{ sub.term }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td><td>{{ sub.males|add:sub.females }}</td></tr>
+                        <tr><td><a href="{% url 'tutor_update' sub.id %}" title="Click to update subject-teacher info" style="color:#F5F5F5">{{ sub.teacher_name }}</a></td><td><a href="" title="Click to load {{ sub.subject }} subject-model" style="color:#F5F5F5">{{ sub.subject }}</a></td><td><a href="" title="Click to download {{ sub.Class }} student-names" style="color:#F5F5F5">{{ sub.Class }}</a></td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}" title="Lunch {{ sub.Class }} {{ sub.term }} {{ sub.subject }}" style="color:#F5F5F5;">{{ sub.term }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td><td>{{ sub.males|add:sub.females }}</td></tr>
                     {% endfor %}
                     {% else %}
                         <pre style="width:70%;text-align: center;">There are no records in your account yet.</pre>

@@ -1,0 +1,592 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'result/css/result.css' %}">
+        <script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <title>{% block title %}{{ a.student_name }}{% endblock %}</title>
+        <style type="text/css">
+        
+            @page {
+                size: A4;
+                margin-top:2.5cm;
+                margin-left:1cm;
+                margin-right:1cm;
+                margin-bottom:cm;
+            }
+
+            table, th, td {
+            border: 1px solid #0000CD;
+            border-radius: 89%;
+            font-family: Baskerville Old Face;
+            text-align: center;
+            font-size: 98%;
+            }
+            table {border-collapse: collapse;
+                margin-left: 89%;
+                width: 89%;
+                }
+
+            th, td {padding: 0px;
+                    
+                    vertical-align: bottom;
+                    text-align: center;}
+
+            table {
+            border-spacing: 89%;
+            }
+            
+                
+            .capt{
+                border-radius: 1px;
+                background-color: red;
+                text-align: center;
+                color: white;
+                width: 100%;
+                line-height: 10px;
+                font-weight:bold;
+                
+                }
+            
+            body {
+                    
+                    font-family: "Helvetica Neue" , "Lucida Grande" , "Segoe UI" , Arial, Helvetica, Verdana, sans-serif;
+                    margin: 5px 5px;
+                    padding: 0px;
+                    height: 21px;
+                    width: 89%;
+                    background-color: #20B2AA;
+                    
+                }
+
+            
+        </style>
+    </head>
+    <body>
+        <div id="car">
+            <em style="font-size:16px;background-color:black;color:white;text-align:center;font-weight:bold;">REPORT CARD</em>  
+            <em style="margin-left:40%;background-color:white;color:black;border-radius:1px;width:12%;text-align:center;font-weight:bold;">
+                {{ this.tutor.term }}{{ this.third.tutor.term }}
+            </em> 
+            <em style="color:#20B2AA;">._________________________________________</em> 
+            <label><u>STUDENT's NAME: </u>{{ this.student_name }}{{ this.third.student_name }}</label>
+        </div>
+        <div>
+            <em style="font-size:20px;font-weight:bold;">UMMUL QURA HIGH SCHOOL</em>
+            <em style="margin-left:1%;"><em style="color:#20B2AA;">.___________________</em>
+            <u>ADMISSION NO.: </u>{{ this.student_id }}{{ this.third.student_id }}</em>
+            <em style="color:#20B2AA;">.______________</em>
+            <em><u>CLASS: </u>{{ this.tutor.Class }}{{ this.third.tutor.Class }}</em>
+        </div>
+        <div>
+            <i style="font-size:12px">AROWONA BUS-STOP, AKANRAN ROAD, IBADAN</i>
+            <em style="color:#20B2AA;">____________________</em>
+            <u>DATE OF BIRTH: </u>{{info.student_name.birth_date}}{{this.third.info.student_name.birth_date}}</em>
+            <em style="color:#20B2AA;">.___</em>
+            <em><u> SEX: </u>{{info.gender}}{{this.third.info.gender}}</em>
+            <em style="color:#20B2AA;">.___</em>
+            <em><u>YEAR: </u>{{ this.tutor.session }}{{ this.third.tutor.session }}</em>
+        </div>
+        <div class="capt">1. ATTENDANCE (REGULARITY & PUNCTUALITY)</div>
+        <table>
+            <tr>
+                <th></th>
+                <th>School</th>
+                <th>Sport & Athletics</th>
+                <th>Other Organized Activities</th>
+            </tr>
+            <tr>
+                <td>No. of times School opened/Activities</td>
+                <td>{{info.no_open}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td >No. of times Present</td>
+                <td>{{info.no_present}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>No. of times Punctual</td>
+                <td>{{info.no_absent}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <div class="capt">2. CONDUCT:Special Report During the Term</div>
+        <table>
+            <tr>
+                <th>GREEN FOR EXEMPLARY CONDUCT</th>
+                <th>RED for Bad Conduct</th>
+                <th>Comment</th>
+            </tr>
+            <tr>
+                <td>Deed</td>
+                <td>Number</td>
+                <td>{{info.comment}}</td>
+            </tr>
+        </table>
+        <div class="capt">3. PHYSICAL DEVELOPMENT, HEALTH & CLEANLINESS</div>
+        <table>
+            <tr>
+                <th colspan="2">HEIGHT</th>
+                <th colspan="2">WEIGHT</th>
+                <th>NO. of Days Absent</th>
+                <th rowspan="3">Purpose of Absence {{info.purpose}} </th>
+            </tr>
+            <tr>
+                <td>Beginning of term</td>
+                <td>End of term</td>
+                <td>Beginning of term</td>
+                <td>End of term</td>
+                <td>{{info.no_of_day_abs}}</td>
+            </tr>
+            <tr>
+                <td>{{info.H_begin}}m</td>
+                <td>{{info.H_end}}m</td>
+                <td>{{info.W_begin}}kg</td>
+                <td>{{info.W_end}}kg</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6">Please tick cleanlines rating as Good_____
+                    {% if info.good != 'None' %}
+                        <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>
+                    {% endif %} Fair _____
+                    {% if info.fair != 'None' %}
+                        <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>
+                    {% endif %} Poor _____
+                    {% if info.poor != 'None' %}
+                        <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>
+                    {% endif %} Remark: {{info.remarkss}}
+                </td>
+            </tr>
+        </table>
+        <div class="capt">4. PERFORMANCE IN SUBJECT</div>
+        {% if this.tutor.term == "1st Term" or this.tutor.term == "2nd Term" %}
+        <table>
+            <tr>
+                <td><img src="/office/jango_env/uqi/result/static/result/iiro.jpg" height="30"  width="30"/></td>
+                <td>Obt. Mark</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ a.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ b.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ c.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ d.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ e.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ f.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ g.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ h.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ i.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ j.tutor.subject.name }}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{{ k.tutor.subject.name }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Grade</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td>{{ a.grade }}</td>
+                <td>{{ b.grade }}</td>
+                <td>{{ c.grade }}</td>
+                <td>{{ d.grade }}</td>
+                <td>{{ e.grade }}</td>
+                <td>{{ f.grade }}</td>
+                <td>{{ g.grade }}</td>
+                <td>{{ h.grade }}</td>
+                <td>{{ i.grade }}</td>
+                <td>{{ j.grade }}</td>
+                <td>{{ k.grade }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Cont. Asst Test [CA]</th>
+                <td style="font-family:Helvetica; color:red;" >40</td>
+                <td>{{ a.total }}</td>
+                <td>{{ b.total }}</td>
+                <td>{{ c.total }}</td>
+                <td>{{ d.total }}</td>
+                <td>{{ e.total }}</td>
+                <td>{{ f.total }}</td>
+                <td>{{ g.total }}</td>
+                <td>{{ h.total }}</td>
+                <td>{{ i.total }}</td>
+                <td>{{ j.total }}</td>
+                <td>{{ k.total }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Exam Score</th>
+                <td style="font-family:Helvetica; color:red;" >60</td>
+                <td>{{ a.exam }}</td>
+                <td>{{ b.exam }}</td>
+                <td>{{ c.exam }}</td>
+                <td>{{ d.exam }}</td>
+                <td>{{ e.exam }}</td>
+                <td>{{ f.exam }}</td>
+                <td>{{ g.exam }}</td>
+                <td>{{ h.exam }}</td>
+                <td>{{ i.exam }}</td>
+                <td>{{ j.exam }}</td>
+                <td>{{ k.exam }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Total Scores</th>
+                <td style="font-family:Helvetica; color:red;" >100</td>
+                <td>{{ a.agr }}</td>
+                <td>{{ b.agr }}</td>
+                <td>{{ c.agr }}</td>
+                <td>{{ d.agr }}</td>
+                <td>{{ e.agr }}</td>
+                <td>{{ f.agr }}</td>
+                <td>{{ g.agr }}</td>
+                <td>{{ h.agr }}</td>
+                <td>{{ i.agr }}</td>
+                <td>{{ j.agr }}</td>
+                <td>{{ k.agr }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">No in Class</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td>{% if a != None %}{{ a.tutor.males |add:a.tutor.females }}{% endif %}</td>
+                <td>{% if b != None %}{{ b.tutor.males |add:b.tutor.females }}{% endif %}</td>
+                <td>{% if c != None %}{{ c.tutor.males |add:c.tutor.females }}{% endif %}</td>
+                <td>{% if d != None %}{{ d.tutor.males |add:d.tutor.females }}{% endif %}</td>
+                <td>{% if e != None %}{{ e.tutor.males |add:e.tutor.females }}{% endif %}</td>
+                <td>{% if f != None %}{{ f.tutor.males |add:f.tutor.females }}{% endif %}</td>
+                <td>{% if g != None %}{{ g.tutor.males |add:g.tutor.females }}{% endif %}</td>
+                <td>{% if h != None %}{{ h.tutor.males |add:h.tutor.females }}{% endif %}</td>
+                <td>{% if i != None %}{{ i.tutor.males |add:i.tutor.females }}{% endif %}</td>
+                <td>{% if j != None %}{{ j.tutor.males |add:j.tutor.females }}{% endif %}</td>
+                <td>{% if k != None %}{{ k.tutor.males |add:k.tutor.females }}{% endif %}</td>
+            </tr>
+            <tr>    								
+                <th style="font-family:Helvetica; color:blue;">Position</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td>{{ a.posi }}</td>
+                <td>{{ b.posi }}</td>
+                <td>{{ c.posi }}</td>
+                <td>{{ d.posi }}</td>
+                <td>{{ e.posi }}</td>
+                <td>{{ f.posi }}</td>
+                <td>{{ g.posi }}</td>
+                <td>{{ h.posi }}</td>
+                <td>{{ i.posi }}</td>
+                <td>{{ j.posi }}</td>
+                <td>{{ k.posi }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Teacher's sign</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if a.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if b.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if c.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if d.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if e.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if f.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if g.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if h.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if i.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if j.posi != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if k.posi != None %}Signed{% endif %}</td>
+            </tr>    
+        </table> 
+        {% else %}
+        <table>
+            <tr>
+                <td><img src="/office/jango_env/uqi/result/static/result/iiro.jpg" height="30"  width="30"/>
+                </td>
+                <td>Obt. Mark</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if a.third != None %}
+                    {{ a.third.tutor.subject.name }}{% else %}{{ a.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if b.third != None %}
+                    {{ b.third.tutor.subject.name }}{% else %}{{ b.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if c.third != None %}
+                    {{ c.third.tutor.subject.name }}{% else %}{{ c.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if d.third != None %}
+                    {{ d.third.tutor.subject.name }}{% else %}{{ d.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if e.third != None %}
+                    {{ e.third.tutor.subject.name }}{% else %}{{ e.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if f.third != None %}
+                    {{ f.third.tutor.subject.name }}{% else %}{{ f.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if g.third != None %}
+                    {{ g.third.tutor.subject.name }}{% else %}{{ g.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if h.third != None %}
+                    {{ h.third.tutor.subject.name }}{% else %}{{ h.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if i.third != None %}
+                    {{ i.third.tutor.subject.name }}{% else %}{{ i.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if j.third != None %}
+                    {{ j.third.tutor.subject.name }}{% else %}{{ j.third }}{% endif %}
+                </td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if k.third != None %}
+                    {{ k.third.tutor.subject.name }}{% else %}{{ k.third }}{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Grade</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td>{% if a.third != None %}{{ a.Grade }}{% else %}{{ a.third }}{% endif %}</td>
+                <td>{% if b.third != None %}{{ b.Grade }}{% else %}{{ b.third }}{% endif %}</td>
+                <td>{% if c.third != None %}{{ c.Grade }}{% else %}{{ c.third }}{% endif %}</td>
+                <td>{% if d.third != None %}{{ d.Grade }}{% else %}{{ d.third }}{% endif %}</td>
+                <td>{% if e.third != None %}{{ e.Grade }}{% else %}{{ e.third }}{% endif %}</td>
+                <td>{% if f.third != None %}{{ f.Grade }}{% else %}{{ f.third }}{% endif %}</td>
+                <td>{% if g.third != None %}{{ g.Grade }}{% else %}{{ g.third }}{% endif %}</td>
+                <td>{% if h.third != None %}{{ h.Grade }}{% else %}{{ h.third }}{% endif %}</td>
+                <td>{% if i.third != None %}{{ i.Grade }}{% else %}{{ i.third }}{% endif %}</td>
+                <td>{% if j.third != None %}{{ j.Grade }}{% else %}{{ j.third }}{% endif %}</td>
+                <td>{% if k.third != None %}{{ k.Grade }}{% else %}{{ k.third }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Cont. Asst Test [CA]</th>
+                <td style="font-family:Helvetica; color:red;" >40</td>
+                <td>{% if a.third != None %}{{ a.third.total }}{% else %}{{ a.third }}{% endif %}</td>
+                <td>{% if b.third != None %}{{ b.third.total }}{% else %}{{ b.third }}{% endif %}</td>
+                <td>{% if c.third != None %}{{ c.third.total }}{% else %}{{ c.third }}{% endif %}</td>
+                <td>{% if d.third != None %}{{ d.third.total }}{% else %}{{ d.third }}{% endif %}</td>
+                <td>{% if e.third != None %}{{ e.third.total }}{% else %}{{ e.third }}{% endif %}</td>
+                <td>{% if f.third != None %}{{ f.third.total }}{% else %}{{ f.third }}{% endif %}</td>
+                <td>{% if g.third != None %}{{ g.third.total }}{% else %}{{ g.third }}{% endif %}</td>
+                <td>{% if h.third != None %}{{ h.third.total }}{% else %}{{ h.third }}{% endif %}</td>
+                <td>{% if i.third != None %}{{ i.third.total }}{% else %}{{ i.third }}{% endif %}</td>
+                <td>{% if j.third != None %}{{ j.third.total }}{% else %}{{ j.third }}{% endif %}</td>
+                <td>{% if k.third != None %}{{ k.third.total }}{% else %}{{ k.third }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Exam Score</th>
+                <td style="font-family:Helvetica; color:red;" >60</td>
+                <td>{% if a.third != None %}{{ a.third.exam }}{% else %}{{ a.third }}{% endif %}</td>
+                <td>{% if b.third != None %}{{ b.third.exam }}{% else %}{{ b.third }}{% endif %}</td>
+                <td>{% if c.third != None %}{{ c.third.exam }}{% else %}{{ c.third }}{% endif %}</td>
+                <td>{% if d.third != None %}{{ d.third.exam }}{% else %}{{ d.third }}{% endif %}</td>
+                <td>{% if e.third != None %}{{ e.third.exam }}{% else %}{{ e.third }}{% endif %}</td>
+                <td>{% if f.third != None %}{{ f.third.exam }}{% else %}{{ f.third }}{% endif %}</td>
+                <td>{% if g.third != None %}{{ g.third.exam }}{% else %}{{ g.third }}{% endif %}</td>
+                <td>{% if h.third != None %}{{ h.third.exam }}{% else %}{{ h.third }}{% endif %}</td>
+                <td>{% if i.third != None %}{{ i.third.exam }}{% else %}{{ i.third }}{% endif %}</td>
+                <td>{% if j.third != None %}{{ j.third.exam }}{% else %}{{ j.third }}{% endif %}</td>
+                <td>{% if k.third != None %}{{ k.third.exam }}{% else %}{{ k.third }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">3rd</th>
+                <td style="font-family:Helvetica; color:red;" >100</td>
+                <td>{% if a.third != None %}{{ a.third.agr }}{% else %}{{ a.third }}{% endif %}</td>
+                <td>{% if b.third != None %}{{ b.third.agr }}{% else %}{{ b.third }}{% endif %}</td>
+                <td>{% if c.third != None %}{{ c.third.agr }}{% else %}{{ c.third }}{% endif %}</td>
+                <td>{% if d.third != None %}{{ d.third.agr }}{% else %}{{ d.third }}{% endif %}</td>
+                <td>{% if e.third != None %}{{ e.third.agr }}{% else %}{{ e.third }}{% endif %}</td>
+                <td>{% if f.third != None %}{{ f.third.agr }}{% else %}{{ f.third }}{% endif %}</td>
+                <td>{% if g.third != None %}{{ g.third.agr }}{% else %}{{ g.third }}{% endif %}</td>
+                <td>{% if h.third != None %}{{ h.third.agr }}{% else %}{{ h.third }}{% endif %}</td>
+                <td>{% if i.third != None %}{{ i.third.agr }}{% else %}{{ i.third }}{% endif %}</td>
+                <td>{% if j.third != None %}{{ j.third.agr }}{% else %}{{ j.third }}{% endif %}</td>
+                <td>{% if k.third != None %}{{ k.third.agr }}{% else %}{{ k.third }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">2nd</th>
+                <td style="font-family:Helvetica; color:red;" >100</td>
+                <td>{% if a.second != None %}{{ a.second.agr }}{% else %}{{ a.second }}{% endif %}</td>
+                <td>{% if b.second != None %}{{ b.second.agr }}{% else %}{{ b.second }}{% endif %}</td>
+                <td>{% if c.second != None %}{{ c.second.agr }}{% else %}{{ c.second }}{% endif %}</td>
+                <td>{% if d.second != None %}{{ d.second.agr }}{% else %}{{ d.second }}{% endif %}</td>
+                <td>{% if e.second != None %}{{ e.second.agr }}{% else %}{{ e.second }}{% endif %}</td>
+                <td>{% if f.second != None %}{{ f.second.agr }}{% else %}{{ f.second }}{% endif %}</td>
+                <td>{% if g.second != None %}{{ g.second.agr }}{% else %}{{ g.second }}{% endif %}</td>
+                <td>{% if h.second != None %}{{ h.second.agr }}{% else %}{{ h.second }}{% endif %}</td>
+                <td>{% if i.second != None %}{{ i.second.agr }}{% else %}{{ i.second }}{% endif %}</td>
+                <td>{% if j.second != None %}{{ j.second.agr }}{% else %}{{ j.second }}{% endif %}</td>
+                <td>{% if k.second != None %}{{ k.second.agr }}{% else %}{{ k.second }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">1st</th>
+                <td style="font-family:Helvetica; color:red;" >100</td>
+                <td>{% if a.first != None %}{{ a.first.agr }}{% else %}{{ a.first }}{% endif %}</td>
+                <td>{% if b.first != None %}{{ b.first.agr }}{% else %}{{ b.first }}{% endif %}</td>
+                <td>{% if c.first != None %}{{ c.first.agr }}{% else %}{{ c.first }}{% endif %}</td>
+                <td>{% if d.first != None %}{{ d.first.agr }}{% else %}{{ d.first }}{% endif %}</td>
+                <td>{% if e.first != None %}{{ e.first.agr }}{% else %}{{ e.first }}{% endif %}</td>
+                <td>{% if f.first != None %}{{ f.first.agr }}{% else %}{{ f.first }}{% endif %}</td>
+                <td>{% if g.first != None %}{{ g.first.agr }}{% else %}{{ g.first }}{% endif %}</td>
+                <td>{% if h.first != None %}{{ h.first.agr }}{% else %}{{ h.first }}{% endif %}</td>
+                <td>{% if i.first != None %}{{ i.first.agr }}{% else %}{{ i.first }}{% endif %}</td>
+                <td>{% if j.first != None %}{{ j.first.agr }}{% else %}{{ j.first }}{% endif %}</td>
+                <td>{% if k.first != None %}{{ k.first.agr }}{% else %}{{ k.first }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Annual</th>
+                <td style="font-family:Helvetica; color:red;" >300</td>
+                <td>{{ a.anual }}</td>
+                <td>{{ b.anual }}</td>
+                <td>{{ c.anual }}</td>
+                <td>{{ d.anual }}</td>
+                <td>{{ e.anual }}</td>
+                <td>{{ f.anual }}</td>
+                <td>{{ g.anual }}</td>
+                <td>{{ h.anual }}</td>
+                <td>{{ i.anual }}</td>
+                <td>{{ j.anual }}</td>
+                <td>{{ k.anual }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">AVG %</th>
+                <td style="font-family:Helvetica; color:red;" >100</td>
+                <td>{{ a.Agr }}</td>
+                <td>{{ b.Agr }}</td>
+                <td>{{ c.Agr }}</td>
+                <td>{{ d.Agr }}</td>
+                <td>{{ e.Agr }}</td>
+                <td>{{ f.Agr }}</td>
+                <td>{{ g.Agr }}</td>
+                <td>{{ h.Agr }}</td>
+                <td>{{ i.Agr }}</td>
+                <td>{{ j.Agr }}</td>
+                <td>{{ k.Agr }}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">No in Class</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td>{% if a != None %}{{ a.third.tutor.males |add:a.third.tutor.females }}{% endif %}</td>
+                <td>{% if b != None %}{{ b.third.tutor.males |add:b.third.tutor.females }}{% endif %}</td>
+                <td>{% if c != None %}{{ c.third.tutor.males |add:c.third.tutor.females }}{% endif %}</td>
+                <td>{% if d != None %}{{ d.third.tutor.males |add:d.third.tutor.females }}{% endif %}</td>
+                <td>{% if e != None %}{{ e.third.tutor.males |add:e.third.tutor.females }}{% endif %}</td>
+                <td>{% if f != None %}{{ f.third.tutor.males |add:f.third.tutor.females }}{% endif %}</td>
+                <td>{% if g != None %}{{ g.third.tutor.males |add:g.third.tutor.females }}{% endif %}</td>
+                <td>{% if h != None %}{{ h.third.tutor.males |add:h.third.tutor.females }}{% endif %}</td>
+                <td>{% if i != None %}{{ i.third.tutor.males |add:i.third.tutor.females }}{% endif %}</td>
+                <td>{% if j != None %}{{ j.third.tutor.males |add:j.third.tutor.females }}{% endif %}</td>
+                <td>{% if k != None %}{{ k.third.tutor.males |add:k.third.tutor.females }}{% endif %}</td>
+            </tr>
+            <tr>    								
+                <th style="font-family:Helvetica; color:blue;">Position</th>
+                <td style="font-family:Helvetica; color:red;" ></td>
+                <td>{% if a.third != None %}{{ a.Posi }}{% else %}{{ a.third }}{% endif %}</td>
+                <td>{% if b.third != None %}{{ b.Posi }}{% else %}{{ b.third }}{% endif %}</td>
+                <td>{% if c.third != None %}{{ c.Posi }}{% else %}{{ c.third }}{% endif %}</td>
+                <td>{% if d.third != None %}{{ d.Posi }}{% else %}{{ d.third }}{% endif %}</td>
+                <td>{% if e.third != None %}{{ e.Posi }}{% else %}{{ e.third }}{% endif %}</td>
+                <td>{% if f.third != None %}{{ f.Posi }}{% else %}{{ f.third }}{% endif %}</td>
+                <td>{% if g.third != None %}{{ g.Posi }}{% else %}{{ g.third }}{% endif %}</td>
+                <td>{% if h.third != None %}{{ h.Posi }}{% else %}{{ h.third }}{% endif %}</td>
+                <td>{% if i.third != None %}{{ i.Posi }}{% else %}{{ i.third }}{% endif %}</td>
+                <td>{% if j.third != None %}{{ j.Posi }}{% else %}{{ j.third }}{% endif %}</td>
+                <td>{% if k.third != None %}{{ k.Posi }}{% else %}{{ k.third }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Teacher's sign</th><td></td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if a.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if b.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if c.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if d.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if e.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if f.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if g.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if h.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if i.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if j.third != None %}Signed{% endif %}</td>
+                <td style="font-weight:bold;background-color:black;color:white;">{% if k.third != None %}Signed{% endif %}</td>
+            </tr>
+        </table>
+        {% endif %}
+        <div class="capt">5. SPORT</div>
+        <table>
+            <tr>
+                <th>Events</th>
+                <th>Indoor Games</th>
+                <th>Ball Games</th>
+                <th>Combative Game</th>
+                <th>Tracts</th>
+                <th>Jumps</th>
+                <th>Throw</th>
+                <th>Swim</th>
+                <th>Weight Lifting</th>
+            </tr>
+            <tr>
+                <td>{% if info.event == 'event' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.indoor == 'indoor' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.ball == 'ball' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.combat == 'combat' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.track == 'track' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.jump == 'jump' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.throw == 'throw' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.swim == 'swim' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+                <td>{% if info.lift == 'lift' %}
+                    <em style="background-color:black:color:white:width:1%;border-radius:5px;">td</em>{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Coment:</td>
+                <td colspan="8" style="margin-left:0px;">{{info.sport_comment}}</td>
+            </tr>
+        </table>   
+            <div class="capt">6. CLUB, SOCIETY,ETC</i></div>
+        <table>
+            <tr>
+                <th>Clubs/Societies</th>
+                <th>Office Held</th>
+                <th>Significant Contribution</th>
+                <th>Signature</th>
+            </tr>
+            <tr>
+                <td>{{info.club_one}}</td>
+                <td>{{info.office_one}}</td>
+                <td>{{info.contrib_one}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>{{info.club_two}}</td>
+                <td>{{info.office_two}}</td>
+                <td>{{info.contrib_two}}</td>
+                <td></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;width:20%">Master's Remark </th>
+                <th><i>{{ this.master_comment }}</i></th> 
+            </tr>
+            <tr>
+                <th style="font-family:Helvetica; color:blue;">Principal's Remark </th>
+                <th><i>{{ this.principal_comment }} </i>Sign:___________________Date:_________.</th><img src="/office/jango_env/uqi/result/static/result/iiro.jpg" height="30"  width="30"/> <em style="font-size:300%;line-height:2px;color:white;"> <em style="color:#20B2AA;">---------</em>MASTER AND PRINCIPAL REMARKS</em>
+            </tr>
+            <tr>
+                <td style="font-family:Helvetica; color:blue;">Next term begins on </td>
+                <td><i>{{ this.tutor.resumption }}</i></td>
+            </tr>
+        </table>
+        <h3 style="text-align:center;margin-bottom:0px;"> Report card generated on: - 
+            <em style="text-align:center;background-color:black;color:white;border-radius:5px;border:2px solid white;">
+                {{ today | date:"d/m/Y" }}
+            </em> By:- 
+            <em style="text-align:center;background-color:black;color:white;border-radius:5px;border:2px solid white;">
+                {{ request.user.profile.last_name }} {{ request.user.profile.first_name }} 
+            </em>
+        </h3>
+    </body>
+</html>

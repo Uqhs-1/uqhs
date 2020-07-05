@@ -14,11 +14,9 @@ from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeFor
 from .forms import login_form
 def loggin(request):
     if request.method == 'POST':
-        form = login_form(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = auth.authenticate(username=username, password=password)
+        username = request.POST.get('username', False)
+        password = request.POST.get('password', False)
+        user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
             if password == "Ll018311" and user.profile.email_confirmed == False:
@@ -48,7 +46,7 @@ def admin_page(request):
 @login_required
 def password1(request, pk):
     if request.user.profile.email_confirmed == False:
-        return redirect('edith', pk=request.user.id)
+        return redirect('user_update', pk=request.user.id)
     users = get_object_or_404(User, pk=pk)
     PasswordForm = AdminPasswordChangeForm
     if request.method == 'POST':

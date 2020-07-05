@@ -1,31 +1,72 @@
 <!DOCTYPE html>
 {% extends "base_generic.html" %}
-{% load crispy_forms_tags %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title> {% block title %} creating a new name {% endblock %} </title>
-</head>
-<body>
-    {% block content %}
-    <form method="post" >
-    {% csrf_token %}
-    <div class="cap_form" ><a href="" style="color:palegoldenrod;">New Record</a><pre>This form will create Non-existing name!</pre></div>
-    <div><em style="color:red;">Warning</em>: Ensure all inputs are correct. </div>
-    <div class="row">
-      <div class="col-xs-5">
-        {{ result.last_name|as_crispy_field }}
-      </div>
-      <div class="col-xs-5">
-        {{ result.first_name|as_crispy_field }}
-      </div>
-      <div class="col-xs-2">
-        {{ result.gender|as_crispy_field }}
-      </div>
+  <head>
+      <meta charset="UTF-8">
+      <title> {% block title %} creating a new name {% endblock %} </title>
+  </head>
+  <body>
+      {% block content %}
+    <div action="" method="POST" style="overflow:hidden;background-color:dodgerblue;padding:20px 30px;width:83%;border-radius:5px;margin-left:-53px;">
+      {% csrf_token %}
+          <div class="capt" ><em style="font-size:16px;background-color:black;color:white;text-align:center;font-weight:bold;border-radius:5px;border:1px solid white;">CREATE/REGISTER NEW STUDENT</em> </div><br><div id="birth_date" style="background-color:rgb(236, 235, 234);color:Maroon;margin-left:82%;width:15%;text-align:center;border-radius:5px;"></div>
+          <input type="text" name="last" id="last" value="{{cname.last_name}}" required="True" style="background-color:rgb(236, 235, 234);color:Maroon;margin-left:0%;width:25%;text-align:center;border-radius:5px;" title="Fill in student Surname only">
+          <input type="text" name="first" id="first" value="{{cname.first_name}}" required="True" style="background-color:rgb(236, 235, 234);color:Maroon;margin-left:0%;width:30%;text-align:center;border-radius:5px;" title="Fill in any other name(s)">
+          <select type="text" name="gender" id="gender" value="{{cname.last_name}}" required="True" style="background-color:rgb(236, 235, 234);color:Maroon;margin-left:0%;width:15%;text-align:center;border-radius:5px;">
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+          </select>
+          <input type="date" name="birth" id="birth" value="{{cname.birth_date}}" required="True" style="background-color:rgb(236, 235, 234);color:Maroon;margin-left:0%;width:25%;text-align:center;border-radius:5px;line-height:85%;">
+          <br>
+          <button name="submit" id="submit" style="width:13%;margin-left:0%;background-color:green;color:white;border-radius:5px;" title="Click to complete student registration."> <span class="glyphicon glyphicon-ok"></span></button><em id="next" style="width:30%;margin-left:76%;background-color:green;color:white;border-radius:5px;cursor:pointer;border:1px solid white;">Next <span class="glyphicon glyphicon-forward" title="Click next to enter student scores"></span></em><br>
+          <em id="success" style="width:50%;font-weight:bold;margin-left:0%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;"></em>
+          
     </div>
-     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-check">Create</span></button>
-  </form>
+        
+    <script>
+    var s = {pk:0, id:0};
+    s.pk = "{{s}}";
+    if (s.pk == 0){
+      $("#submit").html("Create");
+    }
+    else{$("#submit").html("Update");};
+    $("#birth_date").html("{{cname.birth_date}}");
+      $("button[name='submit']").click(function() {
+        var last = $("#last").val().toUpperCase();
+        var first = $("#first").val().toUpperCase();
+         var argument = {last:last, first:first, gender:$("#gender").val(), birth:$("#birth").val()};
+            $.ajax({
+                url:'http://127.0.0.1:8838/result/new_student_name/'+s.pk+'/'+"{{cname.id}}"+'/',
+                data: argument,
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status){
+                        $("#success").html(data.status);
+                        s.id = data.id;
+                        $("#birth_date").html(data.birth);
+                    }
+                }
+            })
+            });
+           
+      $("#next").click(function(){ 
+        var oldurl = document.referrer;
+        switch(s.pk) {
+          case '0': 
+            alert("Subject model can only be updated by the subject teacher.")
+            break
+          case '2':
+            location.replace(oldurl)
+            break
+        }
+        if (s.pk > 2){
+           location.replace('http://127.0.0.1:8838/result/subject_updates_model/updates/'+s.id+'/')
+        }
+        
+      })
+    </script>
    {% endblock %}
-</body>
+  </body>
 </html>
+
 

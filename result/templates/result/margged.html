@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+{% extends "base_generic.html" %}
+<html lang="en">
+	<head>
+		<title> {% block title %} {{qry.term}}/{{qry.Class}}/{{qry.subject}}{% endblock %}</title>
+	</head>
+	 {% block content %}
+	<body>				
+	    <table>
+        <div class="capt">
+          <a href="{% url 'subject_home' pk=pk cl=3 %}" class="red_white"> SUBJECT 
+          </a>
+          <u class="red_black">{{qry.subject}}</u>
+          <a href="{% url 'subject_home' pk=pk cl=1 %}" class="red_white">CLASS
+          </a>
+          <u class="red_black">{{ qry.Class }}</u>
+          <a href="{% url 'subject_home' pk=pk cl=2 %}" class="red_white">Term
+          </a>
+          <u class="red_black">{{ qry.term }}</u>
+          <pre style="line-height: 1px;background-color:white;border:2px solid blue;color:black;border-radius:5px;">
+            {{ qry.updated }}</pre>
+      </div>
+        <style>
+            .extral{
+                width:100%;background-color:green;color:white;border-radius:5px;
+            }
+          </style>
+      <script>
+        var dim = [];
+      </script>
+      <thead>
+            <tr>
+              <th>S/N</th>
+              <th>
+                  {% if all_page.count != 0 %}
+                <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
+                {% if user.is_authenticated %}
+                <a href="{% url 'pdf' pk=pk ty=2 sx=2 %}">
+                  <span class="glyphicon glyphicon-print" title="print"></span>
+                </a>
+                {% endif %}|
+                <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
+                {% if user.is_authenticated %}
+                <a href="{% url 'pdf' pk=pk ty=2 sx=1 %}">
+                  <span class="glyphicon glyphicon-print" title="print"></span>
+                </a>
+                  {% endif %}
+                  {% endif %}
+              </th>
+              <th>Student_Names</th>
+              <th>Test</th>
+              <th>Clw</th>
+              <th>Prat</th>
+              <th>Total</th>
+              <th>Exam</th>
+              {% if qry.third_term == "3rd Term" %}<th>3rd</th>{% endif %}
+              {% if qry.second_term == "2nd Term" %}<th>2nd</th>{% endif %}
+              {% if qry.first_term == "1st Term" %}<th>1st</th>{% endif %}
+              <th>Agr</th>
+              <th>Avg</th>
+              <th>Grd</th>
+              <th>Pos</th> 
+            </tr> 
+      </thead>  
+       {% if all_page %}
+       {% for scr in all_page %}
+      <tr id="toAll_{{ forloop.counter }}" class="{{ scr.grade }}" hidden>
+            <script>
+                dim.unshift("{{ scr.grade }}");
+                $("#toAll_{{ forloop.counter }}").addClass("oneBox")
+                $("#toAll_{{ forloop.counter }}").addClass("gen_{{ scr.student_name.gender }}");
+            </script>
+       	  <td style="width:1%;">{{ forloop.counter }}</td>
+           <td>
+            <a href="{% url 'student_subject_detail_one_subject' pk=scr.id %}" title="{{ scr.student_id }}" style="color:white;">
+              {{ scr.student_name }}
+            </a>
+           </td>
+           <td style="color:sienna;" title="{{ scr.student_name }}">{{ scr.student_id }}</td>
+           <td id="edith_name_td{{ forloop.counter }}" hidden><input  id="edith_name_{{ forloop.counter }}" type="text" value="{{ scr.student_name }}"></td>
+           <td style="color:sienna;" title="{{ scr.test }},{{ scr.test }},{{ scr.test }}" id='test_{{ forloop.counter }}'  class='raw_{{ forloop.counter }}'>
+            {{ scr.test }}
+           </td><td style="color:black;width:5%font-size:200%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_test_{{ forloop.counter }}" type="number" min="0" max="20" value="{{ scr.test }}"></td>
+           <td style="color:sienna;" title="{{ scr.agn }},{{ scr.agn }},{{ scr.agn }}" id='agn_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
+            {{ scr.agn }}
+           </td><td style="color:black;width:5%font-size:200%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_agn_{{ forloop.counter }}"  type="number" min="0" max="10" value="{{ scr.agn }}"></td>
+           <td style="color:sienna;" title="{{ scr.atd }},{{ scr.atd }},{{ scr.atd }}" id='atd_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
+            {{ scr.atd }}
+           </td><td style="color:black;width:5%font-size:200%;"  class='edith_{{ forloop.counter }}' hidden><input id="edith_atd_{{ forloop.counter }}" type="number" min="0" max="10" value="{{ scr.atd }}"></td>
+           <td style="color:sienna;" title="{{ scr.total }},{{ scr.total }},{{ scr.total }}">
+            {{ scr.total }}
+           </td>
+           <td style="color:sienna;" title="{{ scr.exam }},{{ scr.exam }},{{ scr.exam }}" id='exam_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
+            {{ scr.exam }}
+           </td><td style="color:black;width:5%font-size:200%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_exam_{{ forloop.counter }}" type="number" min="0" max="60" value="{{ scr.exam }}"></td>
+             {% if scr.tutor.third_term == "3rd Term" %}<td>{{ scr.agr }}</td>{% endif %}
+             {% if scr.tutor.second_term == "2nd Term" %}<td>{{ scr.sagr }}{% endif %}</td>
+             {% if scr.tutor.first_term == "1st Term" %}<td>{{ scr.fagr }}</td>{% endif %}
+            <td>{{ scr.aagr }}</td>
+           <td id="success{{ forloop.counter }}">{{ scr.avr }}</td>
+           <td>{{ scr.grade }}</td>
+           <td style="color:white;">
+            <button class="grade_no" onclick='edith({{ forloop.counter }})' id="show_ed{{ forloop.counter }}">{{ scr.posi }}</button>
+            <button class="grade_no" onclick='save({{ forloop.counter }})'  id="show_sa{{ forloop.counter }}" hidden>save</button>
+
+ </td>
+      </tr>
+       {% endfor %}
+       {% else %}
+       	<pre class="empty">There are no records.</pre>
+       {% endif %}
+       <tr id="toAll" class="{{ scr.grade }}">
+          <script>
+		  $(".oneBox").show();
+            dim.unshift("{{ scr.grade }}");
+            $("#toAll").addClass("oneBox")
+            $("#toAll").addClass("gen_{{ scr.student_name.gender }}");
+          </script>
+        
+          <tbody id="extral" hidden>
+       	   <td style="width:1%;" id="sn"></td>
+           <td>
+               <select name="dropDown" id="edith_name_1" class="extral">
+                <option value="student_name">Student_Name</option>
+                {% if classNames %}
+                {% for scr in classNames %}
+                    <option name="dropDownOpt" id="edith_name" value="{{ scr.student_name }}">{{ scr.student_name }}</option>
+                {% endfor %}
+                {% endif %}
+            </select> 
+           </td>
+           <td id="student_id">AK/43/897/J</td>
+           <td ><input type="number" min="0" max="20" class="extral" id="edith_test_1" value="0"></td>
+           <td ><input type="number" min="0" max="10" class="extral" id="edith_agn_1" value="0"></td>
+           <td ><input type="number" min="0" max="10" class="extral" id="edith_atd_1" value="0"></td>
+           <td  id="total">40</td>
+           <td><input type="number" min="0" max="60" class="extral" id="edith_exam_1" value="0"></td>
+           <td id="agr">100</td>
+           <td id="sagr">100</td>
+           <td id="fagr">100</td>
+           <td id="aagr">300</td>
+           <td id="avg">100</td>
+           <td>D7</td>
+           <td id="posi"><button class="grade_no" onclick="save(1)">save</button></td>
+           </tbody>
+           <script>
+                colset();
+                $("#sn").html(dim.length);
+           </script>
+      </tr>
+      <tr class="capt">
+        <td colspan="10" id='ten'>grades Summary 
+          <em id="Junior" hidden> 
+			<button class="grade_no" onclick="showOnly('A')">A:<span  id="A" style="color:orange;"></span></button>
+		        <button class="grade_no" onclick="showOnly('C')">C:<span  id="C" style="color:gray;"></span></button>
+			<button class="grade_no" onclick="showOnly('P')">P:<span  id="P" style="color:black;"></span></button>
+		        <button class="grade_no" onclick="showOnly('F')">F:<span  id="F" style="color:pink;"></span></button>
+		</em>
+		<em id="Senior" hidden>
+			<button class="grade_no" onclick="showOnly('A1')">A1:<span  id="A1" style="color:orange;"></span></button>
+			<button class="grade_no" onclick="showOnly('B2')">B2:<span  id="B2" style="color:gray;"></span></button>
+			<button class="grade_no" onclick="showOnly('B3')">B3:<span  id="B3"style="color:black;"></span></button>
+			<button class="grade_no" onclick="showOnly('C4')">C4:<span  id="C4" style="color:yellow;"></span></button>
+			<button class="grade_no" onclick="showOnly('C5')">C5:<span  id="C5" style="color:green;"></span></button>
+			<button class="grade_no" onclick="showOnly('C6')">C6:<span  id="C6" style="color:red;"></span></button>
+			<button class="grade_no" onclick="showOnly('D7')">D7:<span  id="D7" style="color:brown;"></span></button>
+			<button class="grade_no" onclick="showOnly('E8')">E8:<span  id="E8" style="color:blue;"></span></button>
+			<button class="grade_no" onclick="showOnly('F9')">F9:<span  id="F9" style="color:pink;"></span></button>
+		</em>
+        <td>
+              <button style="line-height:65%;border-radius:5px;" onclick="$('#extral').show()">
+                <span class="glyphicon glyphicon-plus" title="add a student's score"></span>
+              </button>
+        </td>
+        <td> <strong>AGR:</td>
+        <td style="color:white;">{{ subject_scores }}</td>
+        <td><strong>PER:</strong></td>
+        <td style="color:white;">{{ subject_pert }}%</td>
+      </tr>
+      <tr class="capt">
+        <td class="capt" style="color:white; width: 200px;" colspan="2">Annual grades
+            <a href="" title='Click for details'><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{qry.subject.name}}</button>
+            </a>
+        </td>
+        <td colspan="10" id='ten'>
+          <a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>
+            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{ qry.teacher_name }}</button>
+            </a> |{% if user.is_authenticated %}
+          <a href="" style="color:white;" title='Click to upload exam questions'> 
+            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Upload Questions </button>
+          </a>
+          {% endif %}
+        </td>
+        <td>{% if user.is_authenticated %}
+          <a href="{% url 'pdf' pk=pk ty=2 sx=0 %}">
+            <span class="glyphicon glyphicon-print" title="PDF"></span>
+          </a>{% endif %}
+        </td>
+        <td>{% if cl != None and user.is_authenticated %}
+          <a href="{% url 'past_csvs' Class=cl subject=26 term=3 session=qry.session formats=2 %}" title="{{ qry.Class }} Broadsheet ">
+            <span class="glyphicon glyphicon-record"></span>
+          </a>{% endif %}
+        </td>
+        <td>{% if qry.term == '3rd Term' %}
+          <a href="{% url 'html_csv' pk=pk ty=0 gd=0 %}">
+            <span class="glyphicon glyphicon-export"></span>
+          </a>{% else %}
+          <a href="">
+            <span class="glyphicon glyphicon-export" title="CSV"></span>
+          </a>{% endif %}
+        </td>
+      </tr>  
+      <tfoot>
+      <tr>
+        <th colspan="15" id='fifteen'>
+          <div>
+            <a href="{% url 'subject_view_all' pk=pk md=14 %}" style="color:green;">
+              <span class="glyphicon glyphicon-list-alt" title='all'></span>
+            </a>{% if request.user.is_authenticated %}
+            <a href="{% url 'subject_view' pk=pk md=2 %}" style="color:red;">{% endif %}
+              <span class="glyphicon glyphicon-th-large" title='small'></span>
+            </a>            
+        </div>
+          
+        </th>
+      </tr>
+      </tfoot>  
+  </table>
+  <script>
+  function colset(){
+                 if ("{{ qry.third_term }}" == '1st Term'){
+		if ("{{ qry.second_term }}" == '2nd Term'){
+			document.getElementById("ten").colSpan = "8";
+			document.getElementById("ten").colSpan = '8';
+			document.getElementById("fifteen").colSpan = '13';}
+                else{
+			document.getElementById("ten").colSpan = "9";
+			document.getElementById("ten").colSpan = '9';
+			document.getElementById("fifteen").colSpan = '14';}
+}}
+        function edith(i){
+	$(".raw_"+""+i).hide(); 
+	$(".edith_"+""+i).show();
+        $("#show_ed"+""+i).hide();
+        $("#show_sa"+""+i).show();
+	
+}
+
+        function save(i){
+	  var test = $("#edith_test_"+""+i).val();
+	  var agn = $("#edith_agn_"+""+i).val();
+	  var atd = $("#edith_atd_"+""+i).val();
+	  var exam = $("#edith_exam_"+""+i).val();
+	  var request  = $.ajax({
+ 	  url: 'http://127.0.0.1:8838/result/responsive_updates/0/',
+	  data: {'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
+                   'name': $("#edith_name_"+""+i).val(),
+                    'test': Number(test),
+	 	    'agn': Number(agn),
+	 	    'atd': Number(atd), 
+	 	    'total': eval([Number(test), Number(atd), Number(agn)].join('+')),
+	 	    'exam': Number(exam),
+	 	    'agr': eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')),
+	 	    'grade': 'D7', 
+	 	    'posi': 'th'
+	 	    },
+	 dataType: 'json',
+	 
+	});
+	 request.done(function(data) {
+          alert(data.id);
+     });
+      request.fail(function( jqXHR, textStatus) {
+          alert(textStatus)
+	});
+ 
+}
+
+        var grades = dim.reduce(function(prev, cur){prev[cur] = (prev[cur] || 0) + 1; return prev;},{});
+          $("#A").html(grades.A);$("#C").html(grades.C);$("#P").html(grades.P);$("#F").html(grades.F);
+          $("#F9").html(grades.F9);$("#E8").html(grades.E8);$("#D7").html(grades.D7);$("#C6").html(grades.C6);$("#C5").html(grades.C5);$("#C4").html(grades.C4);$("#B3").html(grades.B3);$("#B2").html(grades.B2);$("#A1").html(grades.A1);
+          $(".oneBox").show();
+          function showOnly(x){$("."+x).hide();$(".oneBox").toggle();};
+          if ("{{qry.Class}}"[0] == 'J'){
+            $("#Junior").show()
+          }
+          else{
+            $("#Senior").show()
+          }
+     </script>    
+      {% if all_page.has_other_pages %}
+              <em class="pagination" style="width:80%;margin-left:-50px;">
+                {% if all_page.has_previous %}
+                  <li>
+                    <a href="?page={{ users.previous_page_number }}">&laquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled">
+                    <span>&laquo;</span>
+                  </li>
+                {% endif %}
+                {% for i in all_page.paginator.page_range %}
+                  {% if all_page.number == i %}
+                    <li class="active">
+                      <span>{{ i }} <span class="sr-only">(current)</span></span>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% if all_page.has_next %}
+                  <li>
+                    <a href="?page={{ users.next_page_number }}">&raquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled">
+                    <span>&raquo;</span>
+                  </li>
+                {% endif %}
+              </em>
+            {% endif %}
+  </body>
+	{% endblock %}
+
+ 
+
