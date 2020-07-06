@@ -112,7 +112,6 @@ class Users_update(UpdateView):#New teacher form for every new term, class, subj
 @login_required
 def subject_position_updates(request, pk, term):#all 
     from django.http import HttpResponse
- #
     query = QSUBJECT.objects.select_related('tutor').filter(tutor__exact=BTUTOR.objects.get(pk=pk))
     students = [x for x in list(query.values_list('agr', 'id')) if x[0] != None]
     agr = [r[0] for r in students]###############news 

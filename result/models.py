@@ -183,7 +183,7 @@ class STUDENT_INFO(models.Model):
     no_open = models.IntegerField(blank=True, null=True, default= 122,)
     no_present = models.IntegerField(blank=True, null=True, default= 122,)
     no_absent = models.IntegerField(blank=True, null=True, default= 0,)
-    contact = models.IntegerField(blank=True, null=True, default= 2348090456789,)
+    contact = models.IntegerField(blank=True, null=True, default= 0,)
     address = models.CharField(max_length=200, default='23, Akogun Street Olunloyo, Ibadan, Oyo State.', null=True, blank=True)
     comment = models.CharField(max_length=200, default='Satisfactory', null=True, blank=True)
     H_begin = models.FloatField(max_length=4, blank=True, null=True, default= 1.76,)
@@ -221,7 +221,7 @@ class STUDENT_INFO(models.Model):
     def save(self):
         from .utils import session 
         self.gender = ['', 'Male', 'Female'][self.student_name.gender]
-        self.session = self.tutor.session
+        self.session = session()
         super(STUDENT_INFO, self).save()
     
        

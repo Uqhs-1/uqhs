@@ -1,4 +1,4 @@
-from result.models import TUTOR_HOME, SESSION
+from .models import TUTOR_HOME, SESSION
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -97,8 +97,8 @@ def do_positions(df):
     testlist = df#mark_list(df)
     w = sort_pos(testlist)
     first_last_th = pos_t(w)
-    results = marg_marks_positions(testlist, first_last_th, mark_orde)
-    return results[1]
+    responses = marg_marks_positions(testlist, first_last_th, mark_orde)
+    return responses[1]
     
 from django.conf import settings
 import os
@@ -138,9 +138,12 @@ def may_not(r, dg):
 
 class Render:
     @staticmethod
-    def render(path: str, params: dict):
+    def render(path: str, params: dict, filename):
         template = get_template(path)
         html = template.render(params)
+        result = open(filename+'.pdf', 'wb')
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+        result.close()
         response = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
         if not pdf.err:

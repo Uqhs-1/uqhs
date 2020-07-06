@@ -25,10 +25,21 @@ def home_page(request, pk):#Step 1:: list of tutor's subjects with class, term
         return render(request, 'result/tutor.html', {'tutor':tutor})
     else:#general login page
         return redirect('logins') 
-        
+
 def offline(request, pk):
     mains = [BTUTOR.objects.filter(Class__exact=i).order_by('id') for i in ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
-    return render(request, 'result/inputs.html',{'pk':1, 'names':[i for i in range(100)], 'jss1':mains[0], 'jss2':mains[1], 'jss3':mains[2], 'sss1':mains[3], 'sss2':mains[4], 'sss3':mains[5]})
+    return render(request, 'result/desktops.html',{'pk':1, 'names':[i for i in range(100)], 'jss1':mains[0], 'jss2':mains[1], 'jss3':mains[2], 'sss1':mains[3], 'sss2':mains[4], 'sss3':mains[5]})
+
+def mobiles(request, pk):
+    mains = [BTUTOR.objects.filter(Class__exact=i).order_by('id') for i in ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
+    return render(request, 'result/mobiles.html',{'pk':1, 'names':[i for i in range(100)], 'jss1':mains[0], 'jss2':mains[1], 'jss3':mains[2], 'sss1':mains[3], 'sss2':mains[4], 'sss3':mains[5]})
+
+def uniqueness(request, pk): 
+    tutor = BTUTOR.objects.get(pk=pk) 
+    unique = TUTOR_HOME.objects.filter(first_term__accounts__exact=tutor.accounts, first_term__session__exact = tutor.session)
+    return render(request, 'result/page.html', {'page':unique})
+
+
 def home(request):#Step 1:: list of tutor's subjects with class, term
     """
     Home page for every tutor!
@@ -85,6 +96,7 @@ def subject_home(request, pk, cl):#Step 1:: list of tutor's subjects with class,
     """
     Home page for every subject!
     """
+    tutor = BTUTOR.objects.get(pk=pk)
     if cl == '1':#class
         detail = 'Results filtered by Class'
         tutor = BTUTOR.objects.filter(Class__exact=tutor.Class).order_by('session')
@@ -104,24 +116,13 @@ def save(posi, pk):
     obj.save()
 
 def detailView(request, pk, md):##Step 2::  every tutor home detail views all_search_lists
-    from .utils import do_positions
-    from django.utils import timezone
-    from django.core.files import File
-    from io import BytesIO
     tutor = get_object_or_404(BTUTOR, pk=pk)
+    from .utils import do_positions
     th = [i[0] for i in list(QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id').values_list('posi'))]
     if 'th' in th:
         posi = do_positions([int(i.agr) for i in QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id')])
         [save(posi[i], QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id')[i].id) for i in range(0, len(posi))]
     mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id')
-    sumed = round(mains.aggregate(Sum('agr'))['agr__sum'], 1)
-    average = round(mains.aggregate(Avg('agr'))['agr__avg'], 2)
-    params = {
-                'subjects' : mains, 'qry':tutor,'request': request, 'today': timezone.now(), 'sum':sumed, 'avg':average
-            }
-    pdf = Render.render('result/forPdf.html', params)
-    #tutor.pdf = pdf
-    #tutor.pdf.save('result.pdf', File(pdf))
     if mains.count() != 0 and md == '1':
         return render(request, 'result/margged.html',  {'urs':mains.count(), 'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': paginator(request, mains), 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk, 'classNames':REGISTERED_ID.objects.filter(student_class__exact=tutor.Class, session__exact=tutor.session)})
     else:
@@ -130,23 +131,10 @@ def detailView(request, pk, md):##Step 2::  every tutor home detail views all_se
 def all_View(request, pk, md):##Step 2::  every tutor home detail views all_search_lists 
     tutor = get_object_or_404(BTUTOR, pk=pk)
     mains = QSUBJECT.objects.filter(tutor__exact=tutor)#.order_by('gender')#request.user 
-    if mains.count() != 0 and int(md) < 7:
-        if md == '1':#scores
-            return render(request, 'result/margged.html',  {'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
-        if md == '3' or md == '4' or md == '2' or md == '5' or md == '6'or md == '6':#males
-            mains = QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = int(md)-2).order_by('student_name')#genders
-            if md == '2':#scores pdf
-                return render(request, 'result/margged_pdf.html',  {'all_page': QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender')})#, gender__exact = 1
-            elif md == '5' or md == '6':#scores pdf by_sex
-                return render(request, 'result/margged_pdf.html',  {'all_page': QSUBJECT.objects.filter(tutor__exact=tutor, gender__exact = int(md)-4).order_by('gender')})
-            else:
-                if mains.count() != 0:
-                    return render(request, 'result/margged.html',  {'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
-                else:
-                    return redirect('home')
+    if mains.count() != 0 and int(md) == 2:
+        return render(request, 'result/margged.html',  {'males' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 1).count(), 'females' : QSUBJECT.objects.filter(tutor__exact=tutor, student_name__gender__exact = 2).count(), 'all_page': mains, 'subject_scores':round(mains.aggregate(Sum('agr'))['agr__sum'], 1), 'subject_pert':round(mains.aggregate(Avg('agr'))['agr__avg'],2), 'qry' : tutor, 'pk': pk})
     else:
         return redirect('home')
-
     if mains.count() == 0 and md == '1':
         return redirect('upload_txt', pk=tutor.id)
 #########################################################################################################################
@@ -338,13 +326,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class Pdf(LoginRequiredMixin, View):
     def get(self, request, pk, ty, sx):
         from django.utils import timezone
-        from reportlab.pdfbase import pdfmetrics
-        from reportlab.pdfbase.ttfonts import TTFont
-        pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
-        pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
-        pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
         if ty == '1':
             many = get_object_or_404(QSUBJECT, pk = pk)
+            term = [int(i) for i in [many.tutor.first_term[0], many.tutor.second_term[0], many.tutor.third_term[0]]]
+            filename = many.tutor.subject.name+"_"+many.tutor.Class+'_'+str(term[-1])+'_'+many.student_name.full_name+'_'+many.tutor.session[-2:]
+            path = os.path.join(settings.MEDIA_ROOT, 'pdf/cards/'+filename)
             info = STUDENT_INFO.objects.filter(student_id__exact=many.student_id, Class__exact=many.tutor.Class, term__exact=many.tutor.term, session__exact=session).first()
             subjects = QSUBJECT.objects.filter(student_name__exact = many.student_name, tutor__Class__exact=many.tutor.Class, tutor__term__exact=many.tutor.term, tutor__session__exact=session)
             lists = [x for x in subjects]
@@ -353,16 +339,19 @@ class Pdf(LoginRequiredMixin, View):
             params = {
                 'a' : lists[0], 'b':lists[1], 'c':lists[2], 'd':lists[3], 'e':lists[4], 'f' : lists[5], 'g':lists[6], 'h':lists[7], 'i':lists[8], 'j':lists[9], 'k':lists[10], 'this':many, 'today': timezone.now(), 'request': request, 'info':info
             }
-            return Render.render('result/card.html', params)
+            return Render.render('result/card.html', params, path)
         if ty == '2':
             tutor = get_object_or_404(BTUTOR, pk = pk)
+            term = [int(i) for i in [tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]]]
+            filename = tutor.subject.name+"_"+tutor.Class+'_'+str(term[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
+            path = os.path.join(settings.MEDIA_ROOT, 'pdf/marksheets/'+filename)
             subjects = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__gender=sx)
             sumed = round(subjects.aggregate(Sum('agr'))['agr__sum'], 1)
             average = round(subjects.aggregate(Avg('agr'))['agr__avg'], 2)
             params = {
                 'subjects' : subjects, 'qry':tutor,'request': request, 'today': timezone.now(), 'sum':sumed, 'avg':average
             }
-            return Render.render('result/forPdf.html', params)
+            return Render.render('result/forPdf.html', params, path)
     
 def do_a_write(request, pk):
     url = 'http://127.0.0.1:8838/result/render/pdf/'+str(pk)+'/'
