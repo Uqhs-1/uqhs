@@ -252,7 +252,7 @@
 	  var atd = $("#edith_atd_"+""+i).val();
 	  var exam = $("#edith_exam_"+""+i).val();
 	  var request  = $.ajax({
- 	  url: 'http://127.0.0.1:8838/result/responsive_updates/0/',
+ 	  url: 'http://uqhi.herokuapp.com/result/responsive_updates/0/',
 	  data: {'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
                    'name': $("#edith_name_"+""+i).val(),
                     'test': Number(test),
