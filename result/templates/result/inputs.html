@@ -160,7 +160,7 @@
 				
 		</div>
 		<div style="height:100%;width:10%;top:0px;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;position:fixed;background-color:blue;right:0;color:white;text-align:center;"> <br>
-			<a href="http://127.0.0.1:8838/result/" title="Home Page" >Main Page</a>
+			<a href="http://uqhs.herokuapp.com/result/" title="Home Page" >Main Page</a>
 			<br>
 			<br>
 			<br>
@@ -257,7 +257,7 @@
 			</ol>
 			<script>
 				$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
-					location.replace('http://127.0.0.1:8838/result/'+ ""+$(this).val() + '/1/')
+					location.replace('http://uqhs.herokuapp.com/result/'+ ""+$(this).val() + '/1/')
 				})
 			</script>
 			
@@ -547,7 +547,7 @@
 
 						function go_to_load_data(tutor_id){
 							 	$.ajax({
-								url: 'http://127.0.0.1:8838/result/responsive_updates/0/',
+								url: 'http://uqhs.herokuapp.com/result/responsive_updates/0/',
 								data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"toHtml", 'tutor_id':tutor_id},
 								dataType: 'json',
 								success: function(data) {
@@ -566,7 +566,7 @@
 
                         $("#Class").change(function(){
 							$.ajax({
-							url:'http://127.0.0.1:8838/result/responsive_updates/0/',
+							url:'http://uqhs.herokuapp.com/result/responsive_updates/0/',
 							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
 							dataType: 'json',
 							success: function(data){
@@ -580,7 +580,7 @@
 									var create = confirm("No record! Do you  want to create one?");
 									if (create == true){
 										$.ajax({
-											url: 'http://127.0.0.1:8838/result/responsive_updates/0/',
+											url: 'http://uqhs.herokuapp.com/result/responsive_updates/0/',
 											data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"create"},
 											dataType: 'json',
 											success: function(data) {
@@ -706,7 +706,7 @@
 							};
 							$("#Subject").change(function(){$("#min, #max").html($(this).val())});
 						function upload(){
-							location.replace('http://127.0.0.1:8838/result/upload_txt/'+ dom.tutor_id +'/')
+							location.replace('http://uqhs.herokuapp.com/result/upload_txt/'+ dom.tutor_id +'/')
 						};
 						function doOneach(x){
 							var total, annual, avg, itr;
@@ -763,7 +763,7 @@
 									$("#tb_"+itr).removeClass("newBox");
 								};
 							$.ajax({
-									url:'http://127.0.0.1:8838/result/responsive_updates/1/',
+									url:'http://uqhs.herokuapp.com/result/responsive_updates/1/',
 									data: {'Class': $("#search").val().split(",")[0],'Subject': $("#search").val().split(",")[1].trim(), 'flow':"names"},
 										dataType: 'json',
 										success: function(data) {
@@ -860,7 +860,7 @@
 								$("#tb_"+itr).addClass(dom['id_'+itr]['grade']);
 								if (dom['id_'+itr]['name'] != "Student Name"){
 								$.ajax({
-										url:'http://127.0.0.1:8838/result/responsive_updates/0/',
+										url:'http://uqhs.herokuapp.com/result/responsive_updates/0/',
 										data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'name':dom['id_'+itr]['name'], 'id':dom['id_'+itr]['states'],'test':dom['id_'+itr]['test'], 'agn':dom['id_'+itr]['agn'], 'atd':dom['id_'+itr]['atd'], 'total':dom['id_'+itr]['total'], 'exam':dom['id_'+itr]['exam'], 'agr':dom['id_'+itr]['agr'], 'grade':dom['id_'+itr]['grade'], 'posi':dom['id_'+itr]['posi'], 'sn':i},
 										dataType: 'json',
 										success: function(data) {
