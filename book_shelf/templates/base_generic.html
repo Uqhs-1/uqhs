@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 {% load static %}
+{% load crispy_forms_tags %}
 <html lang="en">
    <head>
         <div id="head">
@@ -7,14 +8,14 @@
             <title>
                 uqhs |{% block title %} uqhs {% endblock %}
              </title>
-             <link rel="icon" type="image/png" href="http://example.com/myicon.png">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
             <link rel="stylesheet" href="{% static 'result/css/result.css' %}">
-            <script src="{% static 'result/js/result.js' %}"></script>
+            <script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
             <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
             <div class="navbar">
                 <div class="dropdown">
@@ -50,17 +51,17 @@
                 <div class="dropdown">
                   <span class="dropbtn">Students</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'student_names' pk=1 %}" title="Male name list">Male</a>
-                    <a href="{% url 'student_names' pk=2 %}" title="Female name list">Female</a>
+                    <a href="" title="Male name list">Male</a>
+                    <a href="" title="Female name list">Female</a>
                     <a href="{% url 'search_pdf' %}" title="Search for past results"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span></a>
                   </div>
                 </div>
                 <div class="navbar-header">
                     <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  width="30"/></a>
                 </div>
-                <form method="GET" action="{% url 'searchs' %}"  class="search">
+                <form method="GET" action=""  class="search">
                 <div class="input-group">{% csrf_token %}
-                  <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control">
+                  <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control" style="border-radius:5px;border:2px solid white;background-color:blue;text-align:center;">
                 <span class="input-group-btn">
                 <button type="submit" class="btn btn-primary"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span> </button>
                 </span>
@@ -77,14 +78,13 @@
                 <span class="dropbtns"><img class="rounded-circle" src="{% static request.user.profile.image %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
                 <div class="dropdown-contents">
                 <a href="{% url 'pro_detail' request.user.id %}" class="top-menu" title="Edit personal information"><span class="glyphicon glyphicon-edit"></a>
-                <a href="{% url 'teacher_create' %}" title="1st term file upload"><span class="glyphicon glyphicon-tasks"></a>
+                <a href="{% url 'offline' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-tasks"></a>
                 <a href="{% url 'transfers' %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
-                <a href="{% url 'student_in_none' %}" title="Deleted/Canceled scores"><span class="glyphicon glyphicon-trash"></a>
+                <a href="" title="Deleted/Canceled scores"><span class="glyphicon glyphicon-trash"></a>
                 
 
                 {% if perms.catalog.can_mark_returned %}
                 <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
-                <a href="{% url 'mass_upload'  %}" title="folder uploads"><span class="glyphicon glyphicon-book"></a>
                 <a href="{% url 'post_draft_list'  %}">Posts</a>
                 <a href="{% url 'all_accounts' %}" title='List of accounts'><span class="glyphicon glyphicon-user"></a>
                 <a href="{% url 'author_create'  %}">Authors</a>
@@ -97,7 +97,7 @@
                 <a href="{% url 'qeuing'  %}">Grant Requests</a>
                 {% endif %}
                 {% if request.user.profile.class_in != None %}
-                <a href="{% url 'broadsheet_last_stage' %}" title="Compute {{ request.user.profile.class_in }}'s Broadsheet "><span class="glyphicon glyphicon-list-alt"></a>
+                <a href="" title="Compute {{ request.user.profile.class_in }}'s Broadsheet "><span class="glyphicon glyphicon-list-alt"></a>
                 {% endif %}
             </div>
             <a href="{% url 'log_out' %}" style="font-family:Helvetica; color:red; font-size: 9px;" title="Do you want to logout?"><span class="glyphicon glyphicon-log-out"></span><em class=""><em style="font-family:Helvetica; font-size:9px;">Logout</em></em></a>                                              
@@ -276,6 +276,13 @@
                 <div class="col-md-8">
                 {% block content %}
                 {% endblock %}
+                <div style="color:white;cursor:pointer;background-color:black;border-radius:5px;border:1px solid white;width:6%;text-align:center;font-weight:bold;" id="back"><span class="glyphicon glyphicon-backward" title="Click next to enter student scores"></span>Back</div>
+                <script>
+                    $("#back").click(function() {
+                    var oldurl = document.referrer;
+                    location.replace(oldurl)
+                    })
+                </script>
                 </div>
             </div>
         </div>
@@ -286,7 +293,7 @@
             {% if user.is_authenticated %}
              <div class="ft" style="font-family:Helvetica; color:red; font-size: 10px;"> {{ user.username }}|logged as {% if user.is_staff == True and user.is_superuser == False %} Staff {% else %} Admin {% endif %}<small><a href="{% url 'log_out' %}" title="Do you want to logout?"><span class="glyphicon glyphicon-log-out"></span></a></small></div>
                  {% if request.user.profile.email_confirmed == False %}
-                 <div class="ft"><a href="{% url 'pro_detail' request.user.id %}"><small><span class="glyphicon glyphicon-flag" style="color:white;"></small></span><h6>{{ request.user.profile.bio|default:"Action required!" }}</h6></a></div>
+                 <div class="ft"><a href="{% url 'pro_detail' request.user.id %}"><small><span class="glyphicon glyphicon-flag" style="color:white;border-radius:5px;"></small></span><h6>{{ request.user.profile.bio|default:"Action required!" }}</h6></a></div>
                  {% endif %}
             {% endif %}
         <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Contact: </strong>Arowona Bus-Stop, Akanran Road, Ibadan-Oyo state.</div>
