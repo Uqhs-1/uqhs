@@ -145,9 +145,9 @@
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.atd}}</td>
                 <td style="color:black;width:5%;background-color:#dfe39d;">{{scr.total}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.exam}}</td>
-                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.third_term == '3rd Term' %}{{scr.agr}}{% else %}None{% endif %}</td>
-                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.second_term == '2nd Term' %}{{scr.sagr}}{% else %}None{% endif %}</td>
-				<td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.first_term == '1st Term' %}{{scr.fagr}}{% else %}None{% endif %}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.third_term == '3rd Term' %}{{scr.agr}}{% else %}0{% endif %}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{{scr.sagr}}</td>
+				<td style="color:black;width:5%;background-color:#dfe39d;">{{scr.fagr}}</td>
 				<td id="annual_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{{scr.aagr}}</td>
 				<td id="avg_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{{scr.avr}}</td>
                 <td style="color:black;width:5%;background-color:#eacdcc;">{{scr.grade}}</td>
@@ -176,7 +176,7 @@
 				<pre><strong>No OF STUDENT EXAMINED:</strong>{{ subjects.count }}</pre><pre><strong>TOTAL SCORES:</strong>{{sum}}</pre><pre><strong>AVERAGE:</strong>{{avg}}%</pre>
 			</th>
 			<th style="background-color:#b77a7a;color:white;" colspan='8'>
-				<pre><strong>APPROVED BY:</strong>{{qry.teacher_name}}</pre><pre><strong>SIGN:</strong>________________</pre><pre><strong>DATE:</strong>________________</pre>
+				<pre><strong>APPROVED BY:</strong>{{myHod.profile.title}} {{myHod.profile.last_name}} {{myHod.profile.first_name}}</pre><pre><strong>SIGN:</strong>________________</pre><pre><strong>DATE:</strong>________________</pre>
 			</th>   
         </tr> 
         <th  style="background-color:#d84848;"colspan="15" id="foot"></th>

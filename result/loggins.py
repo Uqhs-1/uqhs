@@ -12,21 +12,23 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required#, @permission_required
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
 from .forms import login_form
+from django.http import JsonResponse
 def loggin(request):
-    if request.method == 'POST':
-        username = request.POST.get('username', False)
-        password = request.POST.get('password', False)
+    if request.GET.get('username', None)  != None:
+        username = request.GET.get('username')
+        password = request.GET.get('password')
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
             if password == "Ll018311" and user.profile.email_confirmed == False:
-                return redirect('user_update', pk=user.id)
+                data = {'redirect': 'user/updates/'+str(user.id)}
             elif password == "Ll018311":
-                return redirect('password')
+                data = {'redirect':'password'}
             else:
-                return redirect('admin_page')
+                data = {'redirect':'admin_page'}
         else:
-            return redirect('home')
+            data = {'redirect':'home'}
+        return JsonResponse(data)
     else:
         form = login_form()
     return render(request, 'registration/log_in.html', {'form': form})

@@ -1,7 +1,7 @@
 ######################STAGE 2 ::: UPLOAD SCORES##################STARTS
 from .forms import new_student_name, student_name
 from collections import Counter
-from .models import QSUBJECT, CNAME, BTUTOR, ASUBJECTS, ANNUAL, REGISTERED_ID, TUTOR_HOME, QUESTION, STUDENT_INFO
+from .models import QSUBJECT, CNAME, BTUTOR, QUESTION
 from django.shortcuts import render, redirect, get_object_or_404
 from .utils import do_grades, do_positions, cader, round_half_up, session
 from django.contrib.auth.decorators import login_required
@@ -42,17 +42,10 @@ def check_repeated_names(valid_input):
     return valid_input
 
 
-def trim(Genders):
-    splited = sorted([x[0].split(' ') for x in Genders])
-    for r in range(0, len(splited)):
-        unspaced = [i for i in splited[r] if len(i) > 2]
-        Genders[r][0] = unspaced[0] +" "+ unspaced[1]
-    return Genders  
-
-
 @login_required
-def upload_new_subject_scores(request, pk):
+def upload_new_subject_scores(request):
     start_time = time.time()
+    pk = int(request.user.profile.account_id)
     tutor = get_object_or_404(BTUTOR, pk=pk) 
     if request.method == "POST":
         my_file = request.FILES['files'] # get the uploaded file
@@ -65,11 +58,11 @@ def upload_new_subject_scores(request, pk):
             each_student = [new.strip() for new in line.split(',')]
             named_scores[0] += [each_student]
         valid_input = [n[:] for n in named_scores[0] if len(n) > 2]
-        #####################REPEATED NAMES######################################
+                #####################REPEATED NAMES######################################
         valid_input = check_repeated_names(valid_input)
         ##########################ERROR CHECK##########
         for i in range(0, len(valid_input)):
-            output = [check(s) for s in valid_input[i]]
+            output = [check(s) for s in valid_input[i][1:]]
             if len(output) == 9:
                 if output != [False, True, True, True, True, True, True, True, True]:
                     return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
@@ -79,16 +72,16 @@ def upload_new_subject_scores(request, pk):
             else:
                 return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
         if not QSUBJECT.objects.filter(tutor__subject__name__exact='BST', tutor__Class__exact=tutor.Class, tutor__first_term__exact='1st Term', tutor__session__exact=tutor.session): 
-            if len(valid_input[0]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
-                valid_input = [[x[0], round_half_up(mean([int(i) for i in x[1:3]])), round_half_up(mean([int(i) for i in x[3:5]])), round_half_up(mean([int(i) for i in x[5:7]])), round_half_up(mean([int(i) for i in x[7:9]]))] for x in valid_input]
+            if len(valid_input[0][1:]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
+                valid_input = [[x[0], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
         x = cader(tutor.Class)
-        raw_scores = [[x[0], int(x[1]), int(x[2]), int(x[3]), sum([int(i) for i in x[1:4]]), int(x[4]), sum([sum([int(i) for i in x[1:4]]), int(x[4])])] for x in valid_input]
-        trimedNames = trim(raw_scores)
-        posi = do_positions([int(i[-1]) for i in trimedNames][:])
-        grade = do_grades([int(i[-1]) for i in trimedNames][:], x)
-        final = [x+[y]+[z] for x,y,z in zip(trimedNames, grade, posi)]
+        raw_scores = [[x[0],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]
+        
+        posi = do_positions([int(i[-1]) for i in raw_scores][:])
+        grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
+        final = [x+[y]+[z] for x,y,z in zip(raw_scores, grade, posi)]
         from .updates import get_or_create
-        [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(full_name__exact=i[0]).exists()]
+        [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(id__exact=i[0]).exists()]
         elapsed_time_secs = time.time() - start_time
         msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
         messages.success(request, msg)
@@ -121,71 +114,44 @@ def setup_questions(request):
         return render(request, 'result/question_loader.html')
     return redirect('home') 
 
-@login_required
-def search_to_load(request, pk):
-    if request.method == 'POST':
-        result =  new_student_name(request.POST)
-        if result.is_valid():
-            reg = REGISTERED_ID.objects.filter(student_name__in=CNAME.objects.filter(last_name__icontains = result.cleaned_data['student_name']), session__exact=session)
-            return render(request, 'result/searched_names.html',  {'all_page' : reg}) 
-    else:
-        result = new_student_name()
-    return render(request, 'result/existing_name.html', {'result': result, 'pk': pk})
 
-def upload_a_score(request, pk):
-    exist_student = QSUBJECT(student_name=CNAME.objects.get(pk=pk))
-    exist_student.save() 
-    return redirect('subject_updates_model', pk=exist_student.id)
-
-
-def annual_reload(request, pk):
-    an = ANNUAL.objects.select_related('subject_by').filter(subject_by__id__exact=pk).delete()
-    print('previous'+str(an)+'deleted!')
-    qs = QSUBJECT.objects.select_related('tutor').filter(tutor__id__exact=pk)
-    [ANNUAL(student_name = x.student_name, third = x, subject_by = BTUTOR.objects.get(pk=pk)).save() for x in qs]
-    return redirect('position_updates', pk=pk, term=4)
-
-def add_annual_score(request, pk):
-    get_student = QSUBJECT.objects.get(pk=pk) 
-    if QSUBJECT.objects.select_related('student_id').filter(student_id__exact=get_student.student_id, tutor__subject__exact=get_student.tutor.subject, tutor__Class__exact=get_student.tutor.Class, tutor__term__exact='1st Term', tutor__session__exact=get_student.tutor.session).count() != 0:
-        first = QSUBJECT.objects.get(student_id=get_student.student_id, tutor__subject=get_student.tutor.subject, tutor__Class=get_student.tutor.Class, tutor__term='1st Term', tutor__session=get_student.tutor.session)
-    else:
-        first = None
-    if QSUBJECT.objects.select_related('student_id').filter(student_id__exact=get_student.student_id, tutor__subject__exact=get_student.tutor.subject, tutor__Class__exact=get_student.tutor.Class, tutor__term__exact='2nd Term', tutor__session__exact=get_student.tutor.session).count() != 0:
-        second = QSUBJECT.objects.get(student_id=get_student.student_id, tutor__subject=get_student.tutor.subject, tutor__Class=get_student.tutor.Class, tutor__term='2nd Term', tutor__session=get_student.tutor.session)
-    else:
-        second = None
-    annual = ANNUAL(subject_by = get_student.tutor, student_name=get_student.student_name, first = first, second=second, third = get_student)
-    annual.save() 
-    return redirect('position_updates', pk=get_student.tutor.id, term=4)
-
-def upload_a_name(request, s, pk):
-    if request.GET.get('last') and request.GET.get('first') and request.GET.get('gender') and request.GET.get('birth'):
-        if CNAME.objects.filter(full_name__exact=request.GET.get('last')+' '+request.GET.get('first')):
-            edit = CNAME.objects.get(full_name=request.GET.get('last')+' '+request.GET.get('first'))
-        else:
-            edit = CNAME.objects.get(full_name='Surname')
-        edit.full_name, edit.gender, edit.birth_date = request.GET.get('last')+' '+request.GET.get('first'), request.GET.get('gender'), request.GET.get('birth')#adding new student_name
-        edit.save()
-        if int(s) > 2:
-            if QSUBJECT.objects.filter(student_name__exact=edit, tutor__exact=BTUTOR.objects.get(pk=int(s))).exists():
-                data = {"status":edit.full_name+' records updated.', "pk":QSUBJECT.objects.get(student_name=edit, tutor=BTUTOR.objects.get(pk=int(s))).id, 'birth':edit.birth_date}
+def massRegistration(request):
+    start_time = time.time()
+    if request.method == "POST":
+        my_file = request.FILES['files'] # get the uploaded file
+        if not my_file.name.endswith('.txt'):
+            return render(request, 'result/file_extension_not_txt.html', {'input':'not .txt'})
+        file_txt = my_file.read().decode("utf-8")
+        contents = file_txt.split('\n');
+        names = []
+        for line in contents:
+            each_student = [new.strip() for new in line.split(',')]
+            names += [each_student]
+        valid_names = [n[:] for n in names]
+        for i in range(0, len(valid_names)):
+            output = [check(s) for s in valid_names[i]]
+            if len(output) == 5:
+                if output != [False, False, False, False, True]:
+                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_names[i]})
             else:
-                a_student = QSUBJECT(student_name=edit, tutor=BTUTOR.objects.get(pk=int(s)))
-                a_student.save()
-                data = {"status":edit.full_name+' records updated.', "id":a_student.id, 'birth':edit.birth_date}
+                return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_names[i]})
+        if request.POST.get('Class'):
+                    valid_names = [i + [request.POST.get('Class')] for i in valid_names]
+                    reged = [regMe(i) for i in valid_names]
+                    cname = CNAME.objects.filter(id__in= reged)
+                    student_id = [i.last_name[0]+i.first_name[0]+'/'+i.Class[0]+'/'+i.session[-2:]+'/'+str(i.id) for i in cname]
         else:
-            data = {"status":edit.full_name+' record updated successfully.', 'birth':edit.birth_date}
-        return JsonResponse(data) 
-    if int(pk) == 0:#new name registration
-        if not CNAME.objects.filter(birth_date__exact= '2000-10-01'):
-            cname = CNAME(gender=1)
-            cname.save()
-        else:
-            cname = CNAME.objects.filter(birth_date__exact= '2000-10-01').first()
+               return render(request, 'result/names_loader.html')
+        elapsed_time_secs = time.time() - start_time
+        msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
+        messages.success(request, msg)
+        print(msg)
     else:
-        cname = CNAME.objects.get(pk=pk)#edit old
-    return render(request, 'result/a_student_name.html', {"pk":pk, 's':s, 'cname':cname})   
-    
+        return render(request, 'result/names_loader.html')
+    ######################STAGE 2 ::: UPLOAD SCORES##################ENDS
+    return render(request, 'result/regSuccessful.html', {'reged':zip(cname, student_id)})
 
-
+def regMe(dim):#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 1
+    reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
+    reged.save()
+    return reged.id

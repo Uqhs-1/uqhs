@@ -14,7 +14,7 @@
     </script>
 	{% block content %}
 	<body>
-        <div id="see_result" style="margin-left:-53px;overflow:hidden;padding:20px 10px;width:83%;border-radius:5px;background-color:rgb(168, 218, 32);" hidden>
+        <div id="see_result" style="margin-left:0;overflow:hidden;padding:20px 10px;width:100%;border-radius:5px;background-color:rgb(168, 218, 32);" hidden>
                 <div class="capt"><a href="" style="color:white;"><strong>{{ name }}--:<span id="student_id"></span></strong></a><a href="" style="color:white;margin-left:35%;" title="Refresh"><span class="glyphicon glyphicon-refresh"></span></a></div>
           
           {% if query %}
@@ -23,9 +23,9 @@
           <ul type="">
                 <li><div style="width:5%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);">{{ forloop.counter }}</div>
                     <span style="margin-left:2%"><button style="width:9%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);background-color: purple;color:beige;">{{ scr.first.tutor.subject }}</button></span>       
-                    <a href="{% url 'student_subject_detail_one_subject' pk=scr.first.id %}"><button class="result_list" style="margin-left:7%;">1st</button></a>
-                    <a href="{% url 'student_subject_detail_one_subject' pk=scr.second.id %}"><button class="result_list" style="margin-left:3%;">2nd</button></a>        
-                    <a href="{% url 'student_subject_detail_one_subject' pk=scr.third.id %}"><button class="result_list" style="margin-left:3%;">3rd</button></a>        
+                    <a href="{% url 'student_subject_detail_one_subject' pk=0 %}"><button class="result_list" style="margin-left:7%;">1st</button></a>
+                    <a href="{% url 'student_subject_detail_one_subject' pk=0 %}"><button class="result_list" style="margin-left:3%;">2nd</button></a>        
+                    <a href="{% url 'student_subject_detail_one_subject' pk=0 %}"><button class="result_list" style="margin-left:3%;">3rd</button></a>        
                     <a href="{% url 'quest_filter' tm='0' cl=scr.first.id sj=scr.first.tutor.subject.name %}"><button class="result_list" style="margin-left:3%;" >Que1</button></a>  
                     <a href="{% url 'quest_filter' tm='1' cl=scr.first.id sj=scr.first.tutor.subject.name %}"><button class="result_list" style="margin-left:3%;">Que2</button></a>
                     <a href="{% url 'quest_filter' tm='2' cl=scr.first.id sj=scr.first.tutor.subject.name %}"><button class="result_list" style="margin-left:3%;">Que3</button></a>
@@ -56,7 +56,7 @@
                 </div>
         </form>
 
-        <div style="margin-left:-53px;width:83%;border-radius:5px;padding:20px 10px;" id="take_science" hidden>
+        <div style="margin-left:0;width:100%;border-radius:5px;padding:20px 10px;" id="take_science" hidden>
                 <div class="capt"><strong>SCIENCE-SUBJECTS FOR : {{ name }}</strong></div>                                                                
                 <button class="subject_list" name ="submit"  id="bio" value="bio"><strong>BIO</strong></button>
                 <button class="subject_list" name ="submit"  id="che" value="che"><strong>CHE</strong></button>
@@ -74,7 +74,7 @@
                 
         </div>
 
-        <div style="margin-left:-53px;width:83%;border-radius:5px;padding:20px 10px;" id="take_comercial" hidden>
+        <div style="margin-left:0;width:100%;border-radius:5px;padding:20px 10px;" id="take_comercial" hidden>
                 <div class="capt"><strong>COMMERCIAL-SUBJECTS FOR : {{ name }}</strong></div>                                                               
                 <button class="subject_list" name ="submit"  id="acc" value="acc"><strong>ACC</strong></button>
                 <button class="subject_list" name ="submit"  id="agr" value="agr"><strong>AGR</strong></button>
@@ -91,7 +91,7 @@
                 <label for=""><a href="{% url 'student_login' %}" style="background-color:blue;border-radius:5px;color:cornsilk">Back</a></label>
         </div>
 
-        <div style="margin-left:-53px;width:83%;border-radius:5px;padding:20px 10px;" id="take_art" hidden>
+        <div style="margin-left:0width:100%;border-radius:5px;padding:20px 10px;" id="take_art" hidden>
                 <div class="capt"><strong>ART-SUBJECTS FOR : {{ name.student_name }}</strong></div>                                                                                                                                                                                             
                 <button class="subject_list" name ="submit"  id="arb" value="arb"><strong>ARB</strong></button>
                 <button class="subject_list" name ="submit"  id="civ" value="civ"><strong>CIV</strong></button>
@@ -108,7 +108,7 @@
                 <label for=""><a href="{% url 'student_login' %}" style="background-color:blue;border-radius:5px;color:cornsilk">Back</a></label>
         </div>
 
-        <div style="margin-left:-53px;width:83%;border-radius:5px;padding:20px 10px;" id="take_junior" hidden>
+        <div style="margin-left:0;width:100%;border-radius:5px;padding:20px 10px;" id="take_junior" hidden>
                 <div class="capt"><strong>JUNIOR-SUBJECTS FOR : {{ name }}</strong></div>                                                                                                                                                                             
                 <button class="subject_list" name ="submit"  id="agr" value="agr"><strong>AGR</strong></button>
                 <button class="subject_list" name ="submit"  id="arb" value="arb"><strong>ARB</strong></button>
@@ -125,7 +125,7 @@
                 <label for=""><a href="{% url 'student_login' %}" style="background-color:blue;border-radius:5px;color:cornsilk">Back</a></label>
         </div>
 
-        <div style="margin-left:-53px;width:83%;border-radius:5px;padding:20px 10px;" id="take_ent" hidden>
+        <div style="margin-left:0;width:100%;border-radius:5px;padding:20px 10px;" id="take_ent" hidden>
                 <div class="capt"><strong>ENT-SUBJECTS FOR : {{ name }}</strong></div>                                                                                                                                                                             
                 <button class="subject_list" name ="submit"  id="ctr" value="ctr"><strong>CAT</strong></button>
                 <button class="subject_list" name ="submit"  id="ele" value="ele"><strong>ELE</strong></button>
@@ -233,5 +233,3 @@
         })
     </script>
      {% endblock %}
-        
-     

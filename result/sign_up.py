@@ -49,7 +49,7 @@ class Staff_SignUp(generic.CreateView):
 
 ###############################################################################
 from django.http import JsonResponse
-from result.models import REGISTERED_ID
+from .models import QSUBJECT
 from django.shortcuts import redirect
 def user_qury(request):
     if request.GET.get('username', None) != None:
@@ -73,8 +73,9 @@ def user_qury(request):
                 return redirect('home')
         else:
             if request.GET.get('student_id', None) != None:
-                data = {'valid_id': REGISTERED_ID.objects.filter(student_id__iexact=request.GET.get('student_id')).exists()}
-                if data['valid_id'] == False:
-                    data['error_message'] = 'The student ID entered is either not correct or does not exists.'
+                aunty = QSUBJECT.objects.filter(student_id__iexact=request.GET.get('student_id'))
+                if aunty:
+                      data = {'valid_id': aunty.exists(), 'name': aunty.first().student_name.full_name}
+                data['error_message'] = 'The student ID entered is either not correct or does not exists.'
     return JsonResponse(data)
     

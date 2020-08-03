@@ -10,7 +10,7 @@ Created on Wed Jan 23 08:25:37 2019
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import BTUTOR, CNAME, ASUBJECTS, Edit_User, QSUBJECT, Post, SESSION, DOWNLOADFORMAT
+from .models import BTUTOR, CNAME, ASUBJECTS, Edit_User, QSUBJECT, Post
 
 
 class subjectforms(forms.ModelForm):
@@ -59,17 +59,6 @@ class class_term(forms.ModelForm):
     class Meta:
         model = BTUTOR
         fields = ('Class', 'term', )
-        
-class sessions(forms.ModelForm):
-    class Meta:
-        model = SESSION
-        fields = ('new',)
-        
-
-class FORMARTS(forms.ModelForm):
-    class Meta:
-        model = DOWNLOADFORMAT
-        fields = ('formats',)
         
 class PostForm(forms.ModelForm):
     class Meta:

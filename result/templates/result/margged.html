@@ -16,7 +16,7 @@
           <u class="red_black">{{ qry.Class }}</u>
           <a href="{% url 'subject_home' pk=pk cl=2 %}" class="red_white">Term
           </a>
-          <u class="red_black">{{ qry.term }}</u>
+          <u class="red_black">{{ term }}</u>
           <pre style="line-height: 1px;background-color:white;border:2px solid blue;color:black;border-radius:5px;">
             {{ qry.updated }}</pre>
       </div>
@@ -35,13 +35,13 @@
                   {% if all_page.count != 0 %}
                 <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
                 {% if user.is_authenticated %}
-                <a href="{% url 'pdf' pk=pk ty=2 sx=2 %}">
+                <a href="{% url 'pdf' ty=2 sx=2 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
                 {% endif %}|
                 <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
                 {% if user.is_authenticated %}
-                <a href="{% url 'pdf' pk=pk ty=2 sx=1 %}">
+                <a href="{% url 'pdf' ty=2 sx=1 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
                   {% endif %}
@@ -71,12 +71,13 @@
                 $("#toAll_{{ forloop.counter }}").addClass("gen_{{ scr.student_name.gender }}");
             </script>
        	  <td style="width:1%;">{{ forloop.counter }}</td>
-           <td>
-            <a href="{% url 'student_subject_detail_one_subject' pk=scr.id %}" title="{{ scr.student_id }}" style="color:white;">
-              {{ scr.student_name }}
-            </a>
+           <td style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.student_name }}
+            <div id="hid_{{ forloop.counter }}" hidden>
+              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_subject_detail_one_subject' pk=scr.student_name_id %}" title="{{ scr.student_id }}" style="color:white;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.student_name.id %}" title="{{ scr.student_id }}" style="color:white;">Profile</a></button>
+            </div>
            </td>
-           <td style="color:sienna;" title="{{ scr.student_name }}">{{ scr.student_id }}</td>
+           <td style="color:sienna;" title="{{ scr.student_name }}"  id="id_{{ forloop.counter }}">{{ scr.student_id }}</td>
+            <td id="edith_student_id_td{{ forloop.counter }}" hidden><input  id="edith_name_id_{{ forloop.counter }}" type="text" value="{{ scr.student_id }}"></td>
            <td id="edith_name_td{{ forloop.counter }}" hidden><input  id="edith_name_{{ forloop.counter }}" type="text" value="{{ scr.student_name }}"></td>
            <td style="color:sienna;" title="{{ scr.test }},{{ scr.test }},{{ scr.test }}" id='test_{{ forloop.counter }}'  class='raw_{{ forloop.counter }}'>
             {{ scr.test }}
@@ -102,6 +103,8 @@
            <td style="color:white;">
             <button class="grade_no" onclick='edith({{ forloop.counter }})' id="show_ed{{ forloop.counter }}">{{ scr.posi }}</button>
             <button class="grade_no" onclick='save({{ forloop.counter }})'  id="show_sa{{ forloop.counter }}" hidden>save</button>
+            <button style="line-height:65%;border-radius:5px;background-color:red;color:white;" class="delete" hidden><a href="{%  url 'delete_warning' pk=scr.id %}"><span class="glyphicon glyphicon-remove" title="remove a student from the table"></span></a></button>
+
 
  </td>
       </tr>
@@ -120,36 +123,35 @@
           <tbody id="extral" hidden>
        	   <td style="width:1%;" id="sn"></td>
            <td>
-               <select name="dropDown" id="edith_name_1" class="extral">
+               <select name="dropDown" id="edith_name_id_0" class="extral">
                 <option value="student_name">Student_Name</option>
                 {% if classNames %}
                 {% for scr in classNames %}
-                    <option name="dropDownOpt" id="edith_name" value="{{ scr.student_name }}">{{ scr.student_name }}</option>
+                    <option name="dropDownOpt" id="edith_name" value="{{ scr.id }}">{{ scr.full_name }}</option>
                 {% endfor %}
                 {% endif %}
             </select> 
            </td>
-           <td id="student_id">AK/43/897/J</td>
-           <td ><input type="number" min="0" max="20" class="extral" id="edith_test_1" value="0"></td>
-           <td ><input type="number" min="0" max="10" class="extral" id="edith_agn_1" value="0"></td>
-           <td ><input type="number" min="0" max="10" class="extral" id="edith_atd_1" value="0"></td>
-           <td  id="total">40</td>
-           <td><input type="number" min="0" max="60" class="extral" id="edith_exam_1" value="0"></td>
-           <td id="agr">100</td>
-           <td id="sagr">100</td>
-           <td id="fagr">100</td>
+           <td id="student_id" id="id_0">AK/43/897/J</td>
+           <td ><input type="number" min="0" max="20" class="extral" id="edith_test_0" value="0"></td>
+           <td ><input type="number" min="0" max="10" class="extral" id="edith_agn_0" value="0"></td>
+           <td ><input type="number" min="0" max="10" class="extral" id="edith_atd_0" value="0"></td>
+           <td  id="total_0">40</td>
+           <td><input type="number" min="0" max="60" class="extral" id="edith_exam_0" value="0"></td>
+            {% if qry.third_term == "3rd Term" %}<td id="agr_0">100</td>{% endif %}
+             {% if qry.second_term == "2nd Term" %}<td id="fagr_0">100</td>{% endif %}
+             {% if qry.first_term == "1st Term" %}<td id="sagr_0">100</td>{% endif %}
            <td id="aagr">300</td>
            <td id="avg">100</td>
            <td>D7</td>
-           <td id="posi"><button class="grade_no" onclick="save(1)">save</button></td>
+           <td id="posi"><button class="grade_no" onclick="save(0)">save</button></td>
            </tbody>
            <script>
-                colset();
                 $("#sn").html(dim.length);
            </script>
       </tr>
       <tr class="capt">
-        <td colspan="10" id='ten'>grades Summary 
+        <td colspan="10" id='tena'>grades Summary 
           <em id="Junior" hidden> 
 			<button class="grade_no" onclick="showOnly('A')">A:<span  id="A" style="color:orange;"></span></button>
 		        <button class="grade_no" onclick="showOnly('C')">C:<span  id="C" style="color:gray;"></span></button>
@@ -168,21 +170,26 @@
 			<button class="grade_no" onclick="showOnly('F9')">F9:<span  id="F9" style="color:pink;"></span></button>
 		</em>
         <td>
-              <button style="line-height:65%;border-radius:5px;" onclick="$('#extral').show()">
+              <button style="line-height:65%;border-radius:5px;background-color:green;" onclick="$('#extral').toggle()">
                 <span class="glyphicon glyphicon-plus" title="add a student's score"></span>
+              </button>
+        </td>
+   ..      <td>
+              <button style="line-height:65%;border-radius:5px;background-color:red;" onclick="$('.delete').toggle()">
+                <span class="glyphicon glyphicon-remove" title="remove a student from the table"></span>
               </button>
         </td>
         <td> <strong>AGR:</td>
         <td style="color:white;">{{ subject_scores }}</td>
-        <td><strong>PER:</strong></td>
-        <td style="color:white;">{{ subject_pert }}%</td>
+        <td colspan="2"><strong>{{ subject_pert }}%</strong></td>
+     
       </tr>
       <tr class="capt">
         <td class="capt" style="color:white; width: 200px;" colspan="2">Annual grades
-            <a href="" title='Click for details'><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{qry.subject.name}}</button>
+            <a href="{% url 'offline' pk=0 %}" title='Click for details'><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{qry.subject.name}}</button>
             </a>
         </td>
-        <td colspan="10" id='ten'>
+        <td colspan="10" id='tenb'>
           <a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>
             <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{ qry.teacher_name }}</button>
             </a> |{% if user.is_authenticated %}
@@ -192,20 +199,20 @@
           {% endif %}
         </td>
         <td>{% if user.is_authenticated %}
-          <a href="{% url 'pdf' pk=pk ty=2 sx=0 %}">
+          <a href="{% url 'pdf' ty=2 sx=0 %}">
             <span class="glyphicon glyphicon-print" title="PDF"></span>
           </a>{% endif %}
         </td>
         <td>{% if cl != None and user.is_authenticated %}
-          <a href="{% url 'past_csvs' Class=cl subject=26 term=3 session=qry.session formats=2 %}" title="{{ qry.Class }} Broadsheet ">
+          <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}" title="{{ qry.Class }} Broadsheet ">
             <span class="glyphicon glyphicon-record"></span>
           </a>{% endif %}
         </td>
-        <td>{% if qry.term == '3rd Term' %}
-          <a href="{% url 'html_csv' pk=pk ty=0 gd=0 %}">
+        <td>{% if qry.term == '1st Term' %}
+          <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}">
             <span class="glyphicon glyphicon-export"></span>
           </a>{% else %}
-          <a href="">
+          <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}">
             <span class="glyphicon glyphicon-export" title="CSV"></span>
           </a>{% endif %}
         </td>
@@ -230,14 +237,15 @@
   function colset(){
                  if ("{{ qry.third_term }}" == '1st Term'){
 		if ("{{ qry.second_term }}" == '2nd Term'){
-			document.getElementById("ten").colSpan = "8";
-			document.getElementById("ten").colSpan = '8';
-			document.getElementById("fifteen").colSpan = '13';}
-                else{
-			document.getElementById("ten").colSpan = "9";
-			document.getElementById("ten").colSpan = '9';
+			document.getElementById("tena").colSpan = "9";
+			document.getElementById("tenb").colSpan = '9';
 			document.getElementById("fifteen").colSpan = '14';}
-}}
+                else{
+			document.getElementById("tena").colSpan = "8";
+			document.getElementById("tenb").colSpan = '8';
+			document.getElementById("fifteen").colSpan = '13';}
+}};
+                colset();
         function edith(i){
 	$(".raw_"+""+i).hide(); 
 	$(".edith_"+""+i).show();
@@ -251,11 +259,15 @@
 	  var agn = $("#edith_agn_"+""+i).val();
 	  var atd = $("#edith_atd_"+""+i).val();
 	  var exam = $("#edith_exam_"+""+i).val();
+            $("#total_0").html(eval([Number(test), Number(atd), Number(agn)].join('+')));
+           $("#fagr_0").html(eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')));
 	  var request  = $.ajax({
- 	  url: 'http://uqhi.herokuapp.com/result/responsive_updates/0/',
-	  data: {'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
-                   'name': $("#edith_name_"+""+i).val(),
-                    'test': Number(test),
+ 	  url: "{% url 'responsive_updates' pk=0 %}",
+	  data: {
+        'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
+        'student_id': 'XX/S/19/'+$("#edith_name_id_"+""+i).val(),
+        'student_name': "AMINU ISMAIL",
+        'test': Number(test),
 	 	    'agn': Number(agn),
 	 	    'atd': Number(atd), 
 	 	    'total': eval([Number(test), Number(atd), Number(agn)].join('+')),
@@ -268,7 +280,8 @@
 	 
 	});
 	 request.done(function(data) {
-          alert(data.id);
+          $("#id_"+""+i).html(data.id);
+            $("#id_"+""+i).css('color', '#670A53');
      });
       request.fail(function( jqXHR, textStatus) {
           alert(textStatus)
@@ -323,6 +336,4 @@
             {% endif %}
   </body>
 	{% endblock %}
-
- 
-
+</html>

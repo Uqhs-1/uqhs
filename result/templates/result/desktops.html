@@ -1,204 +1,243 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 {% load static %}
 <html lang="en">
    <head>
-		<title>{% block title %}Offline{% endblock %}</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-		<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
-		<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-		
+	<title>{% block title %}Result Processing {% endblock %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+     
 		<style>
 		body, html { margin: 0px; padding: 0px; background-color: #2CA17B ; font-family: 'Trebuchet MS'; }
 		Container { width: 90%; min-width: 500px; margin: auto; }
-			.input{
-			text-align:center;
-			width:100%;
-			background-color:white;
-			color:black;
-			border-radius:5px;
-			}
-			table, th, td {
-			border: 1px solid #0000CD;
-			border-radius: 5px;
-			font-family: Baskerville Old Face;
-			text-align: center;
-			font-size: 11px;
-			
-            }
-            .forTd {
-                 width:6%;
-                 color:white;
-            }
-			.inport{
-				height:1176px;
-				top:10%;
-				border:1px solid white;
-				border:2px solid blue;color:black;border-radius:5px;
-				background-color:red;
-				margin-left:10%;
-				width:55%;
-				bottom:10%;
-				margin-right:10%;
-				overflow-x:hidden;
-				
-			}
-			table {border-collapse: collapse;
-				margin-left:1%;
-				width: 98%;
-				}
-
-			th, td {padding: 2px;}
-
-			table {
-			border-spacing: 1px;
-			}
-
-			thead, tfoot {background-color: #FFA07A;}
-
-			tbody {background-color: #20B2AA;}
-			tr:nth-child(even) {background-color:#90EE90;}
-			.capt{margin-left: 1%;
-				border-radius: 5px;
-				background-color:green;
-				text-align: center;
-				color: white;
-				font-size:11px;
-				width: 98%;
-				}
-			.sidenavs {
-				height: 100%; /* Full-height: remove this if you want "auto" height */
-				width:25%; /* Set the width of the sidebar */
-				position:fixed; /* Fixed Sidebar (stay in place on scroll) */
-				z-index: 1; /* Stay on top */
-				top: 0px; /* Stay at the top */
-				right: 0;
-				background-color: #f1f1f1; /* Black */
-				overflow-x: hidden; /* Disable horizontal scroll */
-				padding-top: 20px;
-				background: #408000;
-				box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
-				margin-top: 89px;
-				right:10%;
-				border:2px solid blue;color:black;border-radius:5px;
-				}
-				.sidenavs.nav {
-				margin-top: 20px;
-				display: block;
-				}
-				/* The navigation menu links */
-				.sidenavs a {
-				padding: 6px 8px 6px 16px;
-				text-decoration: none;
-				font-size: 25px;
-				color: #818181;
-				display: block;
-				}
-
-				/* When you mouse over the navigation links, change their color */
-				.sidenavs a:hover {
+		.input{
+			text-align:center;width:100%;background-color:white;color:black;border-radius:5px;
+		}
+		table, th, td {
+			border: 1px solid #0000CD;border-radius: 5px;font-family: Baskerville Old Face;text-align: center;font-size: 11px;
+            	}
+          	img{
+        	    border: 2px solid rgba(247, 238, 238, 0.918);padding: 2px;
+    		}
+            	.forTd {width:6%;color:white;
+            	}
+		.inport{
+			height:1176px;top:10%;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;background-color:red;margin-left:10%;width:55%;bottom:10%;margin-right:10%;overflow-x:hidden;
+		}
+		table {
+			border-collapse: collapse;margin-left:1%;width: 98%;
+		}
+		th, td {padding: 2px;}
+		table {border-spacing: 1px;
+		}
+		thead, tfoot {background-color: #FFA07A;}
+		tbody {background-color: #20B2AA;}
+		tr:nth-child(even) {background-color:#90EE90;}
+		.capt{margin-left:1%;border-radius: 5px;background-color:green;text-align: center;color: white;font-size:11px;width: 98%;
+		}
+		#sidenav {
+			height: 100%;width:25%;position:fixed;z-index: 1;top: 0px;right: 0;background-color: #f1f1f1;overflow-x:hidden;padding-top: 20px;background: #408000;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);margin-top: 89px;right:10%;border:2px solid blue;color:black;border-radius:5px;
+		}
+		.sidenavs.nav {
+				margin-top: 20px;display: block;
+		}
+		.sidenavs a {
+			padding: 6px 8px 6px 16px;text-decoration: none;font-size: 25px;color: #818181;display: block;
+		}
+		.sidenavs a:hover {
 				color: #f1f1f1;
-				}
-				.grade_no {
-				background-color:white;
-				border:2px solid blue;color:black;border-radius:5px;
-				border:1px solid blue;
-				color:blue;
-				}
-				.red_black {
-				color:white;
-				border-radius:4px;
-				background-color:black;
-				border:2px solid white;
-				
-				}
+		}
+		.grade_no {
+			background-color:white;border:2px solid blue;color:black;border-radius:5px;border:1px solid blue;color:blue;
+		}
+		.red_black {
+				color:white;border-radius:4px;background-color:black;border:2px solid white;
+		}
+		.red_white {
+				color:white;border-radius:4px;background-color:black;border:2px solid white;
+		}
+		.highlight{
+				background-color:pink;border:2px solid red;
+		}
+		.selected{
+				border:2px solid green;background-color:blue;
+		}
+		.selectbut{
+			border:2px solid blue;color:black;border-radius:5px;width:60%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;font-family:Bodoni MT Condensed;line-height:16px;
+		}
+		.images{
+       			height:40px;wdith:40px;border-radius:4px;padding: 1px;border:2px solid blue;
+  		}
+	    	.forReg{
+		 	width:60%;background-color:hsla(71, 78%, 87%, 0.294);color:white;border:3px solid hsla(70, 34%, 63%, 0.863);border-radius:5px;font-family:Broadway;font-size:10px;line-height:16px;
+	    	}
+    		#header {
+        		border:1px solid white;border:2px solid blue;color:black;border-radius:5px;margin-left:10%;color:white;width:80%;font-size:285%;
+    		}
+    		#headern {
+        		margin-left:27%;
+    		}
 
-				.red_white {
-				color:white;
-				border-radius:4px;
-				background-color:black;
-				border:2px solid white;
-				
-				}
-
-				.highlight{
-					background-color:pink;
-					border:2px solid red;
-				}
-
-				.selected{
-					border:2px solid green;
-					background-color:blue;
-				}
-				.selectbut{
-					border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;
-				}
-				.images{
-       height:40px;
-       wdith:40px;
-       border-radius:4px;
-       padding: 1px;
-       border:2px solid blue;
-  }
-		</style>
+    		#right {
+        		height:100%;width:10%;top:0px;border:2px solid blue;border-radius:5px;position:fixed;background-color:blue;right:0;color:white;text-align:center;
+ 	 	}
+    		#left {
+        		height:100%;width:10%;top:0px;border:2px solid blue;border-radius:5px;position:fixed;background-color:blue;left:0;color:white;text-align:center;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+    		}
+    
+    		#header2 {
+        		border-radius:2px;height:30px;background-color:red;border:2px solid red;color:white;width:45%;font-size:18px;
+    		}
+    		#header3 {
+       	 		border-radius:2px;height:30px;background-color:white;border:2px solid red;color:black;width:45%;font-size:18px;
+    		}
+    		#address {
+        		color:white;border:3px solid blue;border-radius:5px;text-align:center;width:80%;margin-left:10%;margin-right:10%;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+    		}
+    		#address1 {
+        	color:white;border:2px solid blue;color:white;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;font-size:19px;padding:2px;
+    		}
+    		#contact {
+                	color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;
+            	}
+            	#contact1 {
+                	margin-left:-26%;
+            	}
+		#middle {background-color:gray;border:1px solid white;border-radius:3px;color:white;
+		}
+    		@media (max-width: 900px) 
+		{
+  			#right, #left, #sidenav {
+    				width: 0;overflow-x: hidden;background-color:gray;border:none;margin-top:0;
+ 				}
+  			#rightm {
+        			height:50px;width:10%;top:0px;border:1px solid red;border-radius:5px;position:fixed;background-color:gray;right:0;color:white;text-align:center;
+    				}
+			#leftm {
+        			height:50px;width:10%;top:0px;border:1px solid red;border-radius:5px;position:fixed;background-color:gray;left:0;color:white;text-align:center;
+    				}
+			#closebtn {
+      				color:red;border-radius:1px solid white;background-color:hsla(71, 78%, 87%, 0.294);
+  				}
+  			#header {
+      				font-size:185%
+  				}
+  			#header2, header3 {
+      				font-size:15px;
+  				}
+  			#headern {
+        			margin-left:5%;
+    				}
+   
+    			.capt{
+        			width:100%;font-size:9px;
+    				}
+    			.inport{
+        			width:100%;font-size:9px;margin-left:0;
+    				}
+    			#address, #address1, #contact {
+        			width:100%;margin-left:0;margin-right:0;border:1px solid red;text-align:center;
+    				}
+     			#contact1 {
+                		margin-left:0;
+            			}
+    			table, th, td {font-size:8px;border-spacing:none;padding:0px;}
+    			.forTd {
+                 		width:10%;font-size:10px;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+            			}
+    			.tth {
+                 		width:6%;font-size:10px;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+            			}
+		}
+	</style>
    </head>
    <body>
-		<div style="border:1px solid white;border:2px solid blue;color:black;border-radius:5px;margin-left:10%;color:white;width:80%;font-size:285%;"><img src="{% static "result/iiro.jpg" %}" class='images'/><em style="margin-left:27%;">UMMUL-QURA INSTITUTE</em>
+		<div id="header"><img src="{% static "result/iiro.jpg" %}" height="30" style="border-radius:5px;" width="30"/><em id="headern">UMMUL-QURA INSTITUTE</em>
 		</div>
-		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;width:80%;margin-left:10%;margin-right:10%;">
+		<div id="address">
 			Akanran Road, Amuloko Arowona Bus-stop, Oyo State, Ibadan.
 		</div>
-		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;font-size:19px;"><em >RESULT PORTAL</em>
+		<div id="address1"><em >RESULT PORTAL</em>
 				
 		</div>
-		<div style="height:100%;width:10%;top:0px;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;position:fixed;background-color:blue;right:0;color:white;text-align:center;"> <br>
-			<a href="http://uqhi.herokuapp.com/result/" title="Home Page" >Main Page</a>
+                <button id="rightm" onclick="openNav('right')"><span class="glyphicon glyphicon-tasks"></span><br>
+                Menu</button>
+        
+		<div id="right">      
+            <div onclick="closeNav('right')" id="rightbtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div> <br>
+			<a href="http://127.0.0.1:8838/result/" title="Home Page" style="color:white;font-weight:bold;">Main Page</a>
 			<br>
 			<br>
 			<br>
+			<u style="font-weight:bold;font-size:10px;">REGISTERATION</u>
 			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
+			<button style="font-size:9px;border:2px solid orange;color:black;border-radius:5px;width:40%;line-height:6px;"><a href="{% url 'massRegistration' %}">MULTIPLE</a></button>
 			<br>
 			
-			<input type="text" placeholder="SSS 1, ENG"  name="search" id="search" placeholder="search" value="Serches" style="text-align:center;border:1px solid red;border:2px solid orange;color:black;border-radius:5px;width:60%;"><button onclick="getNames()" style="border:2px solid orange;color:black;border-radius:5px;" ><span class="glyphicon glyphicon-search"></span></button>
+			<button style="font-size:9px;border:2px solid orange;color:black;border-radius:5px;width:40%;line-height:6px;" onclick="$('#form').toggle()">SINGLE</button>
+                             <select value="-1" id='export' name='export' style="font-size:9px;border:2px solid orange;color:black;border-radius:5px;width:50%;height:16px;">
+					<option value="">Downloads</option>
+					<option value="1" class="selectbut" onclick="namDld('1')">csv</option>
+					<option value="2" class="selectbut" onclick="namDld('2')">pdf</option>
+                                        <option value="3" class="selectbut" onclick="namDld('3')">text</option>
+				</select> 
+            		<form id='form' hidden>
+				<div>
+				  <label for="uname">First Name</label><br>
+				<input type="text" id="fname" placeholder='First name's minlength="4" maxlength="15" class="forReg" required> <br>
+				<label for="uname">Other Name</label> <br>
+				 <input type="text" id="oname" placeholder='Middlen ame' minlength="4" maxlength="15" class="forReg" required> <br>
+				<label for="uname">Last Name</label> <br>
+				<input type="text" id="lname" placeholder='Surname' minlength="4" maxlength="15" class="forReg" required> <br>
+				<label for="uname">Date of birth</label> <br>
+				<input type="date" id="birth"  name='age'  max="2011-01-30" class="forReg" value='{{request.GET.age}}' required>/<span id="age"></span><br>
+				<label for="uname">Gender</label> <br>
+				 <select value="" id='gender' class="forReg" required>
+					<option value=""></option>
+					<option value="1" class="selectbut">Male</option>
+					<option value="2" class="selectbut">Female</option>
+				</select> <br>
+				<label for="uname">Class</label> <br>
+				<select value="" id='class' class="forReg" required>
+					<option value=""></option>
+					<option value="JSS 1" class="selectbut">JSS 1</option>
+					<option value="JSS 2" class="selectbut">JSS 2</option>
+					<option value="JSS 3" class="selectbut">JSS 3</option>
+					<option value="SSS 1" class="selectbut">SSS 1</option>
+					<option value="SSS 2" class="selectbut">SSS 2</option>
+					<option value="SSS 3" class="selectbut">SSS 3</option>
+				 </select> <br>
+				</div>
+			       <input type="submit" style="background-color:#A75050;color:white;border-radius:3px;border:1px solid white;"><br>
+                            
+			    </form> 
+			<div style="margin-top:78%;">
+			<input type="text" placeholder="SSS 1, ENG"  name="search" id="search" placeholder="search" value="" style="text-align:center;border:2px solid orange;color:black;border-radius:5px;width:80%;"><button onclick="getNames()" style="text-align:center;border:2px solid orange;color:black;border-radius:5px;width:20%;height:23px;" ><span class="glyphicon glyphicon-search"></span></button>
+            
+			<button id='middle' onclick="openNav('middle')" hidden>Display</button>
+            </div>
 			<br>
+         
+
+<br>
 		</div>
-	    <div style="height:100%;width:10%;top:0px;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;position:fixed;background-color:blue;left:0;color:white;text-align:center;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);">
+       <button id="leftm" onclick="openNav('left')"><span class="glyphicon glyphicon-list"></span><br>
+                Main</button>
+	    <div id="left">
+               <div onclick="closeNav('left')" id="leftbtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div>
 			<br>
-			<a href="{% url 'home' %}" title="Loggeg in Staffs"><span class="glyphicon glyphicon-home"></span></a>	<br>
+			<a href="{% url 'home' %}" title="home" style="color:white;font-weight:bold;"><span class="glyphicon glyphicon-home"></span></a>	<br>
 			<br>
-		RESULTS
+		<u style="font-weight:bold;">RESULTS</u>
 			<ol>
 				<li>
 					<select name="results" id="Jone" class="selectbut">
@@ -257,7 +296,7 @@
 			</ol>
 			<script>
 				$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
-					location.replace('http://uqhs.herokuapp.com/result/'+ ""+$(this).val() + '/1/')
+					location.replace('http://127.0.0.1:8838/result/'+ ""+$(this).val() + '/1/')
 				})
 			</script>
 			
@@ -310,7 +349,7 @@
 				<option value="SSS 3">SSS 3</option>
 			</select>
 			<br>
-			NEW ENTRY
+			<u style="font-weight:bold;">NEW ENTRY</u>
 			<u>Instructions.</u>	
 			<br>
 			<label>Enter all student names separated with comma.</label>
@@ -343,29 +382,39 @@
 				<u class="red_black" id="subject">ENG</u>
 				<a href="" class="red_white">CLASS
 				</a>
-				<u class="red_black" id="class">JSS 3</u>
+				<u class="red_black" id="sub_class">JSS 3</u>
 				<a href="" class="red_white">Term
 				</a>
 				<u class="red_black" id="term">First Term</u>
 				<div>
-				<label id="header" style="border-radius:2px;height:30px;background-color:red;border:2px solid red;color:white;width:45%;font-size:18px;">UMMUL-QURA HIGH SCHOOL</label><label style="border-radius:2px;height:30px;background-color:white;border:2px solid red;color:black;width:45%;font-size:18px;">SUBJECT SCORES@{<span style="font-size:8px;" id="dated"></span>}</label><img src="{% static "result/iiro.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
+				<label id="header2">UMMUL-QURA HIGH SCHOOL</label><label id="header3">{<span style="font-size:14px;" id="dated"></span>}</label><img src="{% static "result/iiro.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
 				</div>
 			</div>
 				<div>
 					<table class="qsubject">
 					<thead>
 						<tr>
-						<th style="width:2%;">S/N</th>
-						<th style="width:28%;">
-							<button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
-							<a href="{% url 'home' %}">
-							<span class="glyphicon glyphicon-print" title="print"></span>
-							</a>
-							|
-							<button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
-							<a href="{% url 'home' %}">
-							<span class="glyphicon glyphicon-print" title="print"></span>
-							</a>
+						<th style="width:2%;">
+							<select id="rowNum" placeholder='sn' style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
+                        	{% for scr in names %}
+								<option value="{{ forloop.counter }}">
+									{{ forloop.counter }}
+								</option>
+							{% endfor %}
+				            </select> 
+						</th>
+						<th style="width:30%;">
+							  <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
+             
+                <a href="{% url 'pdf' ty=2 sx=2 %}">
+                  <span class="glyphicon glyphicon-print" title="print"></span>
+                </a>
+              |
+                <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
+            
+                <a href="{% url 'pdf' ty=2 sx=1 %}">
+                  <span class="glyphicon glyphicon-print" title="print"></span>
+                </a>
 						</th>
 						<th>Student_id</th>
 						<th>Test</th>
@@ -388,19 +437,27 @@
                             <tbody id="tb_{{ forloop.counter }}" onclick="doOneach({{ forloop.counter }})" hidden>
                                 <td id="sn_{{ forloop.counter }}" style="width:5%;">{{ forloop.counter }}</td>
                                 <td>
-                                <input class="input" value="ABDULRAHEEM ABDUL'SALAM" id="name_{{ forloop.counter }}" disabled>
+                                <input class="input" value="Student Name" id="name_{{ forloop.counter }}" disabled>
                                 </td>
-                                <td id="states_{{ forloop.counter }}" style="color:white;width:10%;" title="Connection required">AA/J/24/1436</td>
+                                <td style="color:white;width:10%;" title="Connection required"><em id="states_{{ forloop.counter }}"></em><br>
+                                <em id="oky_{{ forloop.counter }}" hidden><span class="glyphicon glyphicon-ok" style="background-color:white;color:green;border-radius:5px;border:1px solid green;" ></span></em>
+                                <em id="error_{{ forloop.counter }}" hidden><span class="glyphicon glyphicon-remove" style="background-color:white;color:red;border-radius:5px;border:1px solid red;" ></span></em>
+                                </td>
+                                <input type="text" id="student_id_{{ forloop.counter }}" value="AA/J/24/1436" hidden>
                                 <td class="forTd" id="all_{{ forloop.counter }}_1"><input type="number" min="0" max="20" class="input" id="test_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 1)"></td>
                                 <td class="forTd" id="all_{{ forloop.counter }}_2"><input type="number" min="0" max="10" class="input" id="agn_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 2)"></td>
                                 <td class="forTd" id="all_{{ forloop.counter }}_3"><input type="number" min="0" max="10" class="input" id="atd_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 3)"></td>
-                                <td id="total_{{ forloop.counter }}" style="color:white;width:5%;">40</td>
+                                <td id="total_{{ forloop.counter }}" class="tth">40</td>
                                 <td class="forTd"  id="all_{{ forloop.counter }}_4"><input type="number" min="0" max="60" class="input" id="exam_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 4)"></td>
-                                <td id="agr_{{ forloop.counter }}" style="color:white;width:5%;">100</td>
-								<td  class="third" style="color:white;width:5%;" hidden><input type="number" min="0" max="100" class="input" id="second_{{ forloop.counter }}" value="0"  disabled></td>
-								<td class="third" style="color:white;width:5%;" hidden><input type="number" min="0" max="100" class="input" id="first_{{ forloop.counter }}" value="0"  disabled></td>
-								<td id="annual_{{ forloop.counter }}" class="third" style="color:white;width:5%;" hidden>300</td>
-								<td id="avg_{{ forloop.counter }}" class="third" style="color:white;width:5%;" hidden>96.51</td>
+                                <td id="agr_{{ forloop.counter }}" class="tth">100</td>
+								<td id="first_{{ forloop.counter }}" class="third" class="tth" hidden>100</td>
+								<input type="text" id="fagr_{{ forloop.counter }}" value="0" hidden>
+								<td id="second_{{ forloop.counter }}" class="third" class="tth" hidden>100</td>
+								<input type="text" id="sagr_{{ forloop.counter }}" value="0" hidden>
+								<td id="anual_{{ forloop.counter }}" class="third" class="tth" hidden>300</td>
+								<input type="text" id="aagr_{{ forloop.counter }}" value="0" hidden>
+								<td id="average_{{ forloop.counter }}" class="third" class="tth" hidden>96.51</td>
+								<input type="text" id="avr_{{ forloop.counter }}" value="0" hidden>
 								<td class="forTd"><input type="text" value="D7" id="grade_{{ forloop.counter }}" style="width:100%;text-align:center;border-radius:5px;color:black;"  disabled></td>
 								<td class="forTd">
 									<button class="grade_no">
@@ -436,8 +493,8 @@
 						<button class="grade_no" onclick="showOnly('F9')">F9:<span  id="F9" style="color:pink;"></span></button>
 					</em>
 					<td>
-						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="upload()">
-							<span class="glyphicon glyphicon-upload" title="add a student's score"></span>
+						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="go_to('pdf', 'none')">
+							 <a href="{% url 'upload_txt'  %}"><span class="glyphicon glyphicon-upload" title="add a student's score" class='glh'></span></a>
 						</button>
 					</td>
 					<td> <strong>AGR:</td>
@@ -463,8 +520,9 @@
 						
 					</td>
 					<td>
-						
-						<input type="button" class="selectbut" id="create_pdf" value='PDF'>
+						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
+						   <a href="{% url 'pdf' ty=2 sx=0 %}"><span class="glyphicon glyphicon-print"></span></a>
+						</button>
 						
 						
 						
@@ -475,7 +533,7 @@
 						</button>
 					</td>
 					<td>
-						<button onclick="refresh()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-refresh" title="refresh page"></span></button>
+						<button onclick="refresh()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-refresh" title="refresh page" class='glh'></span></button>
 						
 						
 					</td>
@@ -488,14 +546,157 @@
 						</tr>
 					</tfoot>
 					</table>
-					<script>
-					var sum, average, raw, copy, dom, Class, Subject, Term, time, dim;
+				<script>
+                 function namDld(fmt){
+		 			var pair_subject =  [' ', 'CHE', 'ACC', 'ARB', 'GOV', 'ICT', 'GEO', 'AGR', 'YOR', 'BIO', 'ECO', 'PHY', 'LIT', 'COM', 'ELE', 'CTR', 'GRM'];
+		 			var Class = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']; 	
+		 	 		if (pair_subject.indexOf($("#Subject").val()) != -1){
+ 			 			var ind = ""+Class.indexOf($("#Class").val())+'/' + fmt +'/' + ""+pair_subject.indexOf($("#Subject").val());
+		 	 			location.replace("http://127.0.0.1:8838/result/name_down/"+ind+'/')
+ 					}else{var ind = ""+Class.indexOf($("#Class").val())+ '/' +fmt +'/0/';
+ 			 				window.open("http://127.0.0.1:8838/result/name_down/"+ind)
+ 						}
+					};
+					$("#export").change(function(){
+              		if ($(this).val() != '') {
+               			if ($("#Class").val()){
+                      namDld($(this).val())
+                 		}}
+                        });
+				$('#form').submit(function (evt) {
+		    		evt.preventDefault();
+                    var promp = confirm('You are about to register a candidate with the following details:' +' First Name :'+ $("#fname").val() + " " + $("#oname").val()+
+				   ', Last Name:' + $("#lname").val()+ ', Gender: '+ $("#gender").val()+', Birth :'+ $("#birth").val()+ ', Class :'+ $("#class").val() +', Click OK to continue.')
+		                   if (promp == true){
+            		var request  = $.ajax({
+			   							url: "{% url 'responsive_updates' pk=0 %}",   
+			   							data: { 'flow':'registration',  
+				       					'first': $("#fname").val(), 'middlename':$("#oname").val(),
+				       					'last' : $("#lname").val(),
+				       					'gender': $("#gender").val() ,
+				       					'birth': $("#birth").val(),
+				       					'Class': $("#class").val() ,
+				    					},
+			   							dataType: 'json',
+										});
+			 			request.done(function(data) {
+                           				if (data.failed){alert(data.failed)}else{
+			  								document.getElementById('success').innerHTML += '<li>'+'Student ID: '+data.student_id+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'Created: '+data.created+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'Updated: '+data.updated+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'Surname: '+$("#lname").val()+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'First Name: '+$("#fname").val()+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'Class: '+$("#class").val()+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'Gender: '+$("#gender").val()+'</li>';
+											document.getElementById('success').innerHTML += '<li>'+'Birth: '+$("#birth").val()+'</li>';
+                         				$("#response").show();}        
+		     								});
+		      			request.fail(function( jqXHR, textStatus) {
+			  					errors(jqXHR, textStatus)
+																});}
+		    									}); 
+						$("#birth").change(function(){
+						var button = (date_diff_indays($("#birth").val(), new Date()))
+						$("#age").html(Math.floor(button/365))
+
+						})
+						var date_diff_indays = function(date1, date2) {
+							dt1 = new Date(date1);
+							dt2 = new Date(date2);
+							return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
+						};
+						function errors(x, y){
+								var statusErrorMap = {
+									'0': "Not connected.\nPlease verify your network connection.",
+								'400' : "Server understood the request, but request content was invalid.",
+								'401' : "Unauthorized access.",
+								'403' : "Forbidden resource can't be accessed.",
+								'404': "The requested page not found.",
+								'500' : "Internal server error.",
+								'503' : "Service unavailable.",
+								'parsererror' : "Requested JSON parse failed.",
+								'timeout': "Time out error.",
+								'abort': "Ajax request aborted.",
+								};
+								if (x.status){
+								if (statusErrorMap[x.status]){
+									alert(statusErrorMap[x.status])
+								}
+								else{
+									alert('Uncaught Error.\n' + x.responseText);
+								}
+								}
+								else{
+									if (statusErrorMap[y]){
+									alert(statusErrorMap[y])
+								}
+								else{
+									alert('Uncaught Error.\n' + y);
+								}
+								};
+
+								};
+            
+					function save(){
+						alert($("#birth").val())
+						}
+							//$("#tb_1, #tb_2,  #tb_3,  #tb_4,  #tb_5,  #tb_6,  #tb_7,  #tb_8,  #tb_9,  #tb_10").show();
+							function openNav(x) { 
+								$(".glh").css('color', 'gray');                       
+								$("#"+x+'m').css('color', 'blue');
+								$("#"+x+"btn").show()
+								if (x == 'right') {
+								var right = document.getElementById( 
+								"right");
+								right.style.width = "30%";  
+								$("#middle").show();
+							};
+					
+							if (x == 'middle'){
+								var sidenav = document.getElementById( 
+								"sidenav");
+								sidenav.style.width = "70%";
+								sidenav.style.marginRight = "0";
+							};
+							if (x == 'left') {
+								var left = document.getElementById( 
+								"left");
+								left.style.width = "30%";
+							};
+							};
+						
+							function closeNav(x) { 
+								$("#"+x+"btn").hide()
+								$(".glh").css('color', 'blue');
+								$("#"+x+'m').css('color', 'white');
+								if (x == 'right') {
+								var right = document.getElementById( 
+								"right");
+								right.style.width = "0";
+								$("#middle").hide();
+							};
+					
+							if (x == 'middle'){
+								var sidenav = document.getElementById( 
+								"sidenav");
+								sidenav.style.width = "0";
+								sidenav.style.marginRight = "0";
+							};
+							if (x == 'left') {
+								var left = document.getElementById( 
+								"left");
+								left.style.width = "0";
+							};
+							}; 
+                    var sum, average, raw, copy, dom, Class, Subject, Term, time, dim;
+                    var arrayOne, copyArray, dom, agr, allRaw;
+					arrayOne = [];copyArray = [];
 					var time = new Date();
 					$("#date").html(time);
 					dom = {'Class':0,'Subject':0,'Term':0, 'flow':"fromHtml", 'len':$(".oneBox, .newBox").length, 'last_updated':new Date(), 'sum':0, 'avg':0};
 					sum = x => eval(x.join("+"));
 					average = arr => Number(arr.reduce((p, c) => p + c, 0)/arr.length);
-
+                    
 					function del(i){
 						var arr, each, x; arr = [];
 						x = i.length;
@@ -506,7 +707,7 @@
 							return arr;};
 
 					function reload(data, classCat){
-						raw = []; copy = []; dim = [];
+						arrayOne = [];dim = [];
 						for (var i = 1; i < data.list.length; i++) 
 						{
 						var itr = ""+i;
@@ -514,6 +715,7 @@
 							{
 							document.getElementById("name_"+itr).value = data.list[i][0];
 							$("#states_"+itr).html(data.list[i][1]);
+							document.getElementById("student_id_"+itr).value = data.list[i][1];
 							document.getElementById("test_"+itr).value = data.list[i][2];
 							document.getElementById("agn_"+itr).value = data.list[i][3];
 							document.getElementById("atd_"+itr).value = data.list[i][4];
@@ -522,18 +724,24 @@
 							document.getElementById("grade_"+itr).value = data.list[i][6];
 							dim.push(data.list[i][6]);
 							$("#posi_"+itr).html(data.list[i][7]);
-							$("#agr_"+itr).html(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
-                            grades(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]), "grade_"+itr, classCat[0]);
-							raw.push(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
-							copy.push(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
+                            $("#agr_"+itr).html(sum([data.list[i][2],data.list[i][3],data.list[i][4],data.list[i][5]]));
+							arrayOne.push(data.list[i][12])
+                            $("#first_"+itr).html(data.list[i][9]);
+							document.getElementById("fagr_"+itr).value = data.list[i][9];
+                            $("#second_"+itr).html(data.list[i][10]);
+							document.getElementById("sagr_"+itr).value = data.list[i][10];
+                            $("#anual_"+itr).html(data.list[i][11]);
+							document.getElementById("aagr_"+itr).value = data.list[i][11];
+                            $("#average_"+itr).html(data.list[i][12]);
+							document.getElementById("avr_"+itr).value = data.list[i][12];
+                            grades(data.list[i][12], "grade_"+itr, classCat[0]);
 							$("#tb_"+itr).show();
 							$("#tb_"+itr).addClass("oneBox");
 							$("#tb_"+itr).addClass(data.list[i][6]);
 							$("#tb_"+itr).addClass("gen_"+data.list[i][8]);
 							dom.gender = data.list[i][8];
 							}
-						};pages()
-							localStorage.setItem("raw", JSON.stringify(raw));
+						};pages();
 							countGrade(dim);
 							if (classCat[0] == 'J'){
 								$("#Senior").hide();
@@ -542,12 +750,14 @@
                             else{
 								$("#Senior").show();
 								$("#Junior").hide()
-								}		
+								}	
+							$('#agr').html(sum(arrayOne));
+			    			$("#avr").html(average(arrayOne).toFixed(2));	
 					};
 
 						function go_to_load_data(tutor_id){
-							 	$.ajax({
-								url: 'http://uqhs.herokuapp.com/result/responsive_updates/0/',
+							var request = $.ajax({
+								url: "{% url 'responsive_updates' pk=0 %}",
 								data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"toHtml", 'tutor_id':tutor_id},
 								dataType: 'json',
 								success: function(data) {
@@ -555,7 +765,10 @@
 								reload(data, $("#Class").val());
 									}
 										}
-									})};
+									});
+							request.fail(function( jqXHR, textStatus) {
+		errors(jqXHR, textStatus)
+											})};
 					
                         $("#Subject").change(function(){
 							$("#subject").html($(this).val());
@@ -565,36 +778,46 @@
 							$("#Class").show()});
 
                         $("#Class").change(function(){
-							$.ajax({
-							url:'http://uqhs.herokuapp.com/result/responsive_updates/0/',
+							if ($(this).val() != ''){
+                            $("#sub_class").html($(this).val());
+						var request = $.ajax({
+							url:"{% url 'responsive_updates' pk=0 %}",
 							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
 							dataType: 'json',
 							success: function(data){
 								if (data.status == true){
-									$("#dated").html(data.status);
+									$("#dated").html(data.updated);
 									$("#tutor_name").html(data.tutor_name);
 									dom.tutor_id = data.tutor_id;
+                                                                        dom.tutor_name = data.tutor_name;
 									go_to_load_data(data.tutor_id)
 								}
 								else{
-									var create = confirm("No record! Do you  want to create one?");
+									var create = confirm("No "+  $("#Class").val() + '/'+ $("#Subject").val() +" in your accoount! Do you  want to create it?");
 									if (create == true){
-										$.ajax({
-											url: 'http://uqhs.herokuapp.com/result/responsive_updates/0/',
+										var request = $.ajax({
+											url: "{% url 'responsive_updates' pk=0 %}",
 											data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"create"},
 											dataType: 'json',
 											success: function(data) {
 											if (data.status){
 		
-												$("#dated").html(data.status);
+												$("#dated").html(data.updated);
 												$("#tutor_name").html(data.tutor_name);
 												dom.tutor_id = data.tutor_id;
 												go_to_load_data(data.tutor_id)}
 												
 												}
-								})}}
+								});
+								request.fail(function(jqXHR, textStatus) {
+			  					errors(jqXHR, textStatus)
+																})}}
 							}
+							
 							});
+							request.fail(function( jqXHR, textStatus) {
+			  					errors(jqXHR, textStatus)
+																})
 								dom.Class = $("#Class").val(), dom.Subject = $("#Subject").val(), dom.Term = $("#Term").val();
 								cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
                             	if ($(this).val()[0] == 'J'){
@@ -607,7 +830,17 @@
 									};
                             	$("#class").html($(this).val());$("#list").show();
 								
-                            });
+                            }});
+                             $("#rowNum").change(function(){
+                        cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+		 	var index = Number($(this).val());
+		 	for (var i = 1; i < index+1; i++){
+ 				var itr = ""+i;
+ 				 $("#tb_"+itr).show();
+				  $("#tb_"+itr).addClass("oneBox");
+                
+ 			}
+                                            });
 					function cls(len){
 							for (var i = 1; i < len; i++) { 
                                 var itr = ""+i;
@@ -621,7 +854,7 @@
 								$("#total_"+itr).html(40);
 								$("#agr_"+itr).html(100);
                                 $("#tb_"+itr).hide();
-                                $("#tb_"+itr).removeClass("newBox");
+                                $("#tb_"+itr).removeClass("newBox");var doc = localStorage.getItem("refresh");doc.tutor_id = 0;
                             };
 							document.getElementById('buttons').innerHTML = '';
 						};
@@ -630,8 +863,6 @@
 						function mini(x){
 							var parm = [['20%', '61%', '10', '15'], ['25%', '55%', '6', '11']]
 							$(".third").toggle();
-							$(".sidenavs").css('width', parm[x][0]);
-							$(".inport").css('width', parm[x][1]);
 							document.getElementById("grade_no").colSpan = parm[x][2];
 							document.getElementById("tutor").colSpan = parm[x][2];
 							document.getElementById("foot").colSpan = parm[x][3];
@@ -639,10 +870,7 @@
 							$("#max").toggle();		
 						};
 						
-						function pagging(x){
-							$(".page_"+x).toggle();
-							document.getElementById("header").scrollTop;
-						};
+						
 
 						function pages(){
 						var seed = [];var dimed = [0]
@@ -705,15 +933,21 @@
 							}) 	
 							};
 							$("#Subject").change(function(){$("#min, #max").html($(this).val())});
-						function upload(){
-							location.replace('http://uqhs.herokuapp.com/result/upload_txt/'+ dom.tutor_id +'/')
-						};
+						function go_to(key, i){
+                            if (I == 'none') {
+                            	window.open('http://127.0.0.1:8838/result/upload_txt/'+ dom.tutor_id +'/', 'newWin');
+                                    }
+                            else{
+                                window.open('http://127.0.0.1:8838/result/'+key+'/'+ dom.tutor_id +'/'+i+'/', 'newWin');
+                                    }
+							};
 						function doOneach(x){
 							var total, annual, avg, itr;
 							itr = ""+x;
                             total = sum([$("#test_"+itr).val(), $("#agn_"+itr).val(), $("#atd_"+itr).val()]);
                             	$("#total_"+itr).html(total);
                             	$("#agr_"+itr).html(sum([total, $("#exam_"+itr).val()]));
+                                document.getElementById("avr_"+itr).value = sum([total, $("#exam_"+itr).val()]);
                             	grades(sum([total, $("#exam_"+itr).val()]), "grade_"+itr, $("#Class").val()[0]);
 							if ($("#Term").val() == "4rd Term"){
 								annual = sum([$("#first_"+itr).val(), $("#second_"+itr).val(), sum([total, $("#exam_"+itr).val()])]);
@@ -722,27 +956,32 @@
 									grades(avg, "grd_"+itr, $("#Class").val()[0]);};
 									};
 							rel = JSON.parse(localStorage.getItem("refresh"));
-							dom.Class = rel.Class; dom.Subject = rel.Subject; dom.Term = rel.Term;
-							Class = rel.Class; Subject = rel.Subject; Term = rel.Term; time = rel.last_updated;
-							var callBack = ['default'];
-							for (var i = 1; i < rel['len']+1; i++){
-							var itr = ""+i;
-							callBack.push([rel['id_'+itr]['name'], rel['id_'+itr]['states'], rel['id_'+itr]['test'], rel['id_'+itr]['agn'], rel['id_'+itr]['atd'], rel['id_'+itr]['exam'], rel['id_'+itr]['grade'], rel['id_'+itr]['posi'], rel['id_'+itr]['gender']])
-								};$("#min, #max").html(rel.Subject)
-							if (rel.len != 0){
-                                reload({'info':0, list:callBack}, Class);
-                                $("#dated").html(rel.last_updated);
-                            }else{
-                                $("#tb_1, #tb_2,  #tb_3,  #tb_4,  #tb_5,  #tb_6,  #tb_7,  #tb_8,  #tb_9,  #tb_10").show();
-                            };
-							$("#agr").html(rel.sum);
-							$("#avr").html(rel.avg);
+							if (rel){
+								dom.Class = rel.Class; dom.Subject = rel.Subject; dom.Term = rel.Term;
+								Class = rel.Class; Subject = rel.Subject; Term = rel.Term; time = rel.last_updated;
+                                document.getElementById('Class').value = Class;document.getElementById('Subject').value = Subject;document.getElementById('Term').value = Term;
+                                $('#sub_class').html(Class);$('#subject').html(Subject);$('#term').html(Term);$("#Class").show();$("#Term").show();$("#tutor_name").html(rel.tutor_name);
+								var callBack = ['default'];
+								for (var i = 1; i < rel['len']+1; i++){
+								var itr = ""+i;
+								callBack.push([rel['id_'+itr]['name'], rel['id_'+itr]['student_id'], rel['id_'+itr]['test'], rel['id_'+itr]['agn'], rel['id_'+itr]['atd'], rel['id_'+itr]['exam'], rel['id_'+itr]['grade'], rel['id_'+itr]['posi'], rel['id_'+itr]['gender'], rel['id_'+itr]['fagr'], rel['id_'+itr]['sagr'], rel['id_'+itr]['aagr'], rel['id_'+itr]['avr']])
+								};
+								$("#min, #max").html(rel.Subject);
+											if (rel.len != 0){
+								reload({'info':0, list:callBack}, Class);
+								$("#dated").html(rel.last_updated);
+							    }else{
+								$("#tb_1, #tb_2,  #tb_3,  #tb_4,  #tb_5,  #tb_6,  #tb_7,  #tb_8,  #tb_9,  #tb_10").show();
+							    };};
+                        
+							
 						function refresh(){
                             var allRaw = $(".newBox, .oneBox");
                             for (var i = 1; i < allRaw.length+1; i++){
                                 var itr = ""+i;
                                 $("#total_"+itr).html(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]));
 								$("#agr_"+itr).html(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]));
+                                                               document.getElementById("avr_"+itr).value = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]);
 								grades(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]), "grade_"+itr, dom.Class[0]);  
                             } };	
                     	$("button[name='submit']").click(function() {
@@ -766,8 +1005,8 @@
 									$("#tb_"+itr).hide();
 									$("#tb_"+itr).removeClass("newBox");
 								};
-							$.ajax({
-									url:'http://uqhs.herokuapp.com/result/responsive_updates/1/',
+							var request = $.ajax({
+									url:"{% url 'responsive_updates' pk=1 %}",
 									data: {'Class': $("#search").val().split(",")[0],'Subject': $("#search").val().split(",")[1].trim(), 'flow':"names"},
 										dataType: 'json',
 										success: function(data) {
@@ -776,39 +1015,46 @@
 												$("#searchResult").show();
 												document.getElementById("resultTable").innerHTML += "<thead><tr><th>SN</th><th>Student Name</th><th>Admin No.</th><th>tick</th></tr></thead>";
 												for (var i =1; i < namesRet.length; i++){
-													allarray.push(data.list[i][0]);
-													var thss = namesRet[i][0].split(' ')[0]+'_'+ namesRet[i][0].split(' ')[1]; 
+													allarray.push(data.list[i]);
+													var thss = namesRet[i][0].split(' ')[0]+'_'+ namesRet[i][0].split(' ')[1]+'_'+namesRet[i][1]; 
 													document.getElementById("resultTable").innerHTML += '<tr>'+'<td>'+ ""+i +'</td>'+'<td>'+""+namesRet[i][0]+'</td><td>'+ namesRet[i][1]+ "</td><td><input type='checkbox'"+ "value="+thss  +" > " + '</td></tr>';
 													
 												};
 												document.getElementById("resultTable").innerHTML += "<tfoot><th colspan='3'>Tick none when all names are applicable, then click</th><th><button onclick='next()' style='line-height:65%;border:2px solid blue;color:black;border-radius:5px;'>Next</button></th></tfoot>";
 												
-												$('input:checkbox').change(function(){
-												var value = $(this).val();
-												if ($(this).prop('checked')){
-													allChecked.push(value.split('_')[0]+' '+ value.split('_')[1]);
-													}
-												});
-											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
+												
+											alert(allarray)}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
 										},
 										
-									})
+									});
+								request.fail(function( jqXHR, textStatus) {
+			  					errors(jqXHR, textStatus)
+																})
                          }else{alert("Enter class then subject to search eg JSS 1, ARB.")}   
                         };
 
 						function next(){
-							if (allChecked.length == 0){allChecked = allarray};
-							var itr = "";
-							itr += allChecked[0];
-							for (var i = 1; i < allChecked.length; i++) { 
-								itr += ","+ allChecked[i];
-											}; 
-							document.getElementById("list").value = itr;};
+							var checks = $('input:checkbox'); 
+							for (var i = 0; i < checks.length; i++){
+							var item = checks[i];
+							if (checks[i].checked){
+								allChecked.push([item.value.split('_')[0]+' '+ item.value.split('_')[1], item.value.split('_')[2]]);
+													}
+								};
+                            cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+							if (allChecked.length == 0){allChecked = allarray};							
+							for (var i = 1; i < allChecked.length+1; i++) { 
+								var itr = ""+i;
+                            document.getElementById("name_"+itr).value = allChecked[i-1][0];
+							$("#states_"+itr).html(allChecked[i-1][1]);
+							document.getElementById("student_id_"+itr).value = allChecked[i-1][1]; 
+                            $("#tb_"+itr).show();
+				            $("#tb_"+itr).addClass("oneBox");
+							}; 
+							};
 
                         function positioning(){
-							doPosi();if ($("#Term").val() == "3rd Term"){doPosi(thirdR, thirdC, "#Posi_")};
-							$("#agr").html(dom.sum);
-							$("#avr").html(dom.avg);
+							doPosi();
 						};
                         function positions(size){
                             posi = []
@@ -824,18 +1070,16 @@
                                     else{posi.push(""+i+'th');}};}
                             return posi;};
 							//Setting states to the DOM
-							var arrayOne, copyArray, dom, agr, allRaw;
-							arrayOne = [];copyArray = [];
+							
 						function saveState(){
-							dom.len = $(".oneBox, .newBox").length;
+							dom.len = $(".oneBox, .newBox").length;dom.Subject = $("#Subject").val();
                             for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
                                 itr = ""+i;
-                                agr = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), $("#exam_"+itr).val()]);
                                 arrayOne.push(agr);
 								copyArray.push(agr);
 								dom['id_'+itr] = {
 									'name':$("#name_"+itr).val(), 
-									'states':"AA/J/24/1436",
+									'student_id':$("#student_id_"+itr).val(),
 									'test':Number($("#test_"+itr).val()), 
 									'agn':Number($("#agn_"+itr).val()), 
 									'atd':Number($("#atd_"+itr).val()), 
@@ -843,41 +1087,61 @@
 									'posi':'th',
 									'grade':document.getElementById("grade_"+itr).value,
 									'total':sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]), 
-									'agr': sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]),
+                                    'agr': sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]),
+                                    'fagr':Number($("#fagr_"+itr).val()), 
+									'sagr':Number($("#sagr_"+itr).val()), 
+									'aagr':Number($("#aagr_"+itr).val()), 
+									'avr':Number($("#avr_"+itr).val()),
 									'sn':i};}
 									return dom;
-                            };//doPosi(raw, copy, "#posi_");if ($("#Term").val() == "3rd Term"){doPosi(thirdR, thirdC, "#Posi_")};
+                            };
                         function doPosi(){
 							dom = saveState(); dim = [];
 							var posi, result, idx, itr;
-							posi = positions(raw);
-                            function find(needle, haystack, i) {
+							posi = positions(arrayOne);
+                            function find(score, listed, i) {
                                 results = [];
-                                idx = haystack.indexOf(needle);
+                                idx = listed.indexOf(score);
                                 while (idx != -1) {
                                     results.push(idx);
-                                    idx = haystack.indexOf(needle, idx + 1);};
-                                itr = ""+i;
+                                    idx = listed.indexOf(score, idx + 1);};
+                                var itr = ""+i;
                                 $("#posi_"+itr).html(posi[results[0]]);
 								dom['id_'+itr]['posi'] = posi[results[0]];
 								dim.push(dom['id_'+itr]['grade']);
 								$("#tb_"+itr).addClass(dom['id_'+itr]['grade']);
 								if (dom['id_'+itr]['name'] != "Student Name"){
-								$.ajax({
-										url:'http://uqhs.herokuapp.com/result/responsive_updates/0/',
-										data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'name':dom['id_'+itr]['name'], 'id':dom['id_'+itr]['states'],'test':dom['id_'+itr]['test'], 'agn':dom['id_'+itr]['agn'], 'atd':dom['id_'+itr]['atd'], 'total':dom['id_'+itr]['total'], 'exam':dom['id_'+itr]['exam'], 'agr':dom['id_'+itr]['agr'], 'grade':dom['id_'+itr]['grade'], 'posi':dom['id_'+itr]['posi'], 'sn':i},
+								var request = $.ajax({
+										url:"{% url 'responsive_updates' pk=0 %}",
+										data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'name':dom['id_'+itr]['name'], 'student_id':dom['id_'+itr]['student_id'],'test':dom['id_'+itr]['test'], 'agn':dom['id_'+itr]['agn'], 'atd':dom['id_'+itr]['atd'], 'total':dom['id_'+itr]['total'], 'exam':dom['id_'+itr]['exam'], 'agr':dom['id_'+itr]['agr'], 'grade':dom['id_'+itr]['grade'], 'posi':dom['id_'+itr]['posi'], 'sn':i},
 										dataType: 'json',
 										success: function(data) {
 											if (data.count){
-												$(data.status).html(data.id);
-												dom['id_'+itr]['states'] = data.id;
+												$(data.status).show();
+												
 											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
 										}
-									})} 
-                            return results ;}countGrade(dim);
-                            for (var i = 0; i < arrayOne.length;  i++){
-                                find(arrayOne[i], copyArray.sort((a, b) => b - a), i+1);};
-							dom.sum = sum(arrayOne);dom.avg = average(del(arrayOne)).toFixed(2);
+									});
+								request.fail(function(jqXHR, textStatus) {
+									errors(jqXHR, textStatus);
+			  						})} 
+                            return results ;}
+                            countGrade(dim);
+                            function listening(data){
+		              var scr = [];var sdr = [];
+	                      for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
+		              var itr = ""+i;
+		              scr.push(data['id_'+itr].avr);
+		              sdr.push(data['id_'+itr].avr)
+		              }return [scr, sdr]
+	                      }
+	                    
+                            var data = listening(saveState());
+                            for (var i = 0; i < data[0].length;  i++){
+                                find(data[0][i], data[1].sort((a, b) => b - a), i+1);};
+                            dom.sum = sum(data[1]);dom.avg = average(del(data[1])).toFixed(2);
+                            $('#agr').html(dom.sum);
+			    			$("#avr").html(dom.avg);
                             localStorage.setItem("refresh", JSON.stringify(dom));
 							};
 							pages()
@@ -894,7 +1158,10 @@
 		
 					
 		<div class="sidenavs" id="sidenav">
-				<div style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>SEARCH RESULTs</div>	
+                   <div onclick="closeNav('middle')" id="middlebtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div>
+                   <em id='response' style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>
+                   <ol id='success' style="border:2px solid blue;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;color:white;"></ol>
+				<div style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>SEARCH RESULTs <em id='count'></em></div>	
 				<table style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	
 			   	<em style="margin-left:23%;border:2px solid blue;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;">JUNIOR SUBJECT LIST</em>	
                     <ol value="" id="Subject" style="border:2px solid blue;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;color:white;">
@@ -955,11 +1222,9 @@
 				<br>
             </div>
 			
-		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;"><em style="margin-left:-26%;"><i>Contact</i>: 08053776177, 07042412052</em></div>
-		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;"
-		><em style="margin-left:-26%;"><i>E-mail</i>: ummulqura@marktoob.com, ummulqr@yahoo.com</em></div>
-		<div style="color:white;border:1px solid black;border:2px solid blue;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;"
-		><button style="background_color:red;color:white;border:1px solid white;color:black;border-radius:5px;text-align:center;margin-left:-30%;"><span class="glyphicon glyphicon-switch" title="refresh page"><a href="{% url 'mobiles' pk=0 %}" title="switch to Mobile views">Switch to Mobile View</a></span></button></div>
+		<div id="contact"><em id="contact1"><i>Contact</i>: 08053776177, 07042412052</em></div>
+		<div id="contact"
+		><em id="contact1"><i>E-mail</i>: ummulqura@marktoob.com, ummulqr@yahoo.com</em></div>
    </body>
-   
+    
 </html>

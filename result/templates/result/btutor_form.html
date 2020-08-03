@@ -14,14 +14,20 @@
     <div><strong>Teachers</strong>: To transfer account, correct destination account should be selected. </div>
      <strong style="width:230px; line-height:15px; color:purple;">Select approprately</strong>
     <div class="row">
-      <div class="col-xs-4">
+      <div class="col-xs-2">
         {{ form.subject|as_crispy_field }}
       </div>
-      <div class="col-xs-4">
+      <div class="col-xs-2">
         {{ form.Class|as_crispy_field }}
       </div>
-      <div class="col-xs-3">
-        {{ form.term|as_crispy_field }}
+      <div class="col-xs-2">
+        {{ form.first_term|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.second_term|as_crispy_field }}
+      </div>
+      <div class="col-xs-2">
+        {{ form.third_term|as_crispy_field }}
       </div>
     </div>
     <div class="row">
@@ -46,9 +52,7 @@
       <div class="col-xs-3">
         {{ form.status|as_crispy_field }}
       </div>
-      <div class="col-xs-5">
-        {{ form.resumption|as_crispy_field }}
-      </div>
+      
     </div>
     	<button type="submit" style="border:2px solid white;border-radius:5px;background-color:Maroon;margin-left:40%;color:white;"><span class="glyphicon glyphicon-check">Done</span></button>
 	<em style="font-family:Helvetica;color:grey;font-size: 10px;">Create new subject</em> <a href=""> here.</a>

@@ -11,7 +11,7 @@ label {
 }
 
 body {
-    background-color: hsla(209, 31%, 49%, 0.295);
+    background-color: hsla(70, 34%, 63%, 0.863)
     font-size: 13px;
     font-family: "Helvetica Neue" , "Lucida Grande" , "Segoe UI" , Arial, Helvetica, Verdana, sans-serif;
     margin: 0px;
@@ -169,7 +169,9 @@ table, th, td {
         border-radius: 5px;
         font-family: Baskerville Old Face;
         text-align: center;
-        font-size: 11px;
+        font-size: 10px;
+        width:10px;
+        line-height:10px;
 }
 table {border-collapse: collapse;
        margin-left: -54px;
@@ -636,6 +638,12 @@ p{ margin: 0px;
   background-color: orange;
 }
 
+.info_tab_marg{
+  width:100%;margin-left:0.5%;
+}
+#info_form{
+  overflow:hidden;background-color:dodgerblue;padding:20px 10px;width:80%;border-radius:5px;margin-left:-36px;
+}
 @media (max-width: 900px) 
 {
   .sidenavs {
@@ -647,7 +655,13 @@ p{ margin: 0px;
     display: none;
     visibility: hidden;
   }
-  
+  #info_form{
+    margin-left:0;
+    width:100%;
+  }
+  .info_tab_marg{
+    margin-left:0;
+  }
   .footer {
     width: 100%;
     font-size: 8px;

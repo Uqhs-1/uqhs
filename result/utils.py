@@ -1,15 +1,12 @@
-from .models import TUTOR_HOME, SESSION
+from .models import TUTOR_HOME
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 import xhtml2pdf.pisa as pisa
-
+from django.contrib.auth.models import User
 
 def session():
-    if SESSION.objects.all().count() == 0:
-        return '2024'
-    else:
-        return SESSION.objects.get(pk=[x.id for x in SESSION.objects.all()][0]).new
+    return User.objects.filter(is_superuser__exact=True).first()
 
 def cader(qry):
     clas = [['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'], ['', 'jss_one', 'jss_two', 'jss_three', 'sss_one', 'sss_two', 'sss_three']]
@@ -99,21 +96,6 @@ def do_positions(df):
     first_last_th = pos_t(w)
     responses = marg_marks_positions(testlist, first_last_th, mark_orde)
     return responses[1]
-    
-from django.conf import settings
-import os
-class Render:
-    @staticmethod
-    def render(path: str, params: dict):
-        template = get_template(path)
-        html = template.render(params)
-        response = BytesIO()
-        links = lambda uri, rel:os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL,''))
-        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), dest=response, link_callback=links)#"utf-8"
-        if not pdf.err:
-            return HttpResponse(response.getvalue(), content_type='application/pdf')
-        else:
-            return HttpResponse("Error Rendering PDF", status=400)
 
 import math
 def round_half_up(n, decimals=0):
@@ -134,19 +116,22 @@ def may_not(r, dg):
        return [dg.index([i for i in dg if i[-1] == r][x])+1 for x in range(len([i for i in dg if i[-1] == r]))]
    else:
        return [0]
-   
-
+from django.conf import settings
+import os
 class Render:
     @staticmethod
     def render(path: str, params: dict, filename):
         template = get_template(path)
         html = template.render(params)
-        result = open(filename+'.pdf', 'wb')
+        path = os.path.join(settings.MEDIA_ROOT, 'pdf/marksheets/'+filename)
+        result = open(path+'.pdf', 'wb')
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
         result.close()
         response = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
         if not pdf.err:
-            return HttpResponse(response.getvalue(), content_type='application/pdf')
+             response = HttpResponse(response.getvalue(), content_type = "application/pdf")
+             response['Content-Disposition'] = "attachment; filename={name}.pdf".format(name=filename)
+             return response
         else:
             return HttpResponse("Error Rendering PDF", status=400)
