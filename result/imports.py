@@ -94,7 +94,9 @@ def upload_new_subject_scores(request, pk):
         messages.success(request, msg)
         print(msg)
     else:#
-        return render(request, 'result/loader.html', {'pk':pk, 'qry':tutor})
+        term = [int(i) for i in [tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]]]
+        term = ['-', '1st Term', '2nd Term', '3rd Term'][sorted(term)[-1]]
+        return render(request, 'result/loader.html', {'pk':pk, 'qry':tutor, 'term':term})
     ######################STAGE 2 ::: UPLOAD SCORES##################ENDS
     return redirect('subject_view', pk=pk, md=1)#summarise all tutor's uploads
 ###############################################################################

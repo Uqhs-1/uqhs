@@ -104,7 +104,7 @@
 				<i>E-mail</i>: ummulqura@marktoob.com, ummulqr@yahoo.com<br>
 				</Address>
 				<strong style="font-size:18px;">EXAMINATION SCORE SHEET</strong><br>
-				<aside><strong>SUBJECT:</strong><u>{{ qry.subject.name }}</u></aside><aside> <strong>CLASS:</strong><u>{{ qry.Class }}</u> </aside><aside><strong>TERM:</strong><u>{{ qry.term }}</u></aside>
+				<aside><strong>SUBJECT:</strong><u>{{ qry.subject.name }}</u></aside><aside> <strong>CLASS:</strong><u>{{ qry.Class }}</u> </aside><aside><strong>TERM:</strong><u>{{ term }}</u></aside>
 				</div>
 			</div>
     <table class="table">
@@ -145,11 +145,11 @@
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.atd}}</td>
                 <td style="color:black;width:5%;background-color:#dfe39d;">{{scr.total}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.exam}}</td>
-                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.term == '3rd Term' %}{{scr.agr}}{% else %}None{% endif %}</td>
-                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.term == '2nd Term' %}{{scr.agr}}{% else %}{{scr.sagr}}{% endif %}</td>
-				<td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.term == '1st Term' %}{{scr.agr}}{% else %}{{scr.fagr}}{% endif %}</td>
-				<td id="annual_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{% if qry.term != '3rd Term' %}{{scr.agr}}{% else %}{{scr.aagr}}{% endif %}</td>
-				<td id="avg_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{% if qry.term != '3rd Term' %}{{scr.agr}}{% else %}{{scr.avr}}{% endif %}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.third_term == '3rd Term' %}{{scr.agr}}{% else %}None{% endif %}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.second_term == '2nd Term' %}{{scr.sagr}}{% else %}None{% endif %}</td>
+				<td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.first_term == '1st Term' %}{{scr.fagr}}{% else %}None{% endif %}</td>
+				<td id="annual_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{{scr.aagr}}</td>
+				<td id="avg_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{{scr.avr}}</td>
                 <td style="color:black;width:5%;background-color:#eacdcc;">{{scr.grade}}</td>
                 <td style="width:7%;background-color:#a4c9d2;">{{scr.posi}}</td>
             </tbody>
