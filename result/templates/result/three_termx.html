@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{{ this.student_name }}/{{ this.tutor.Class }}{{ this.student_name }}/{{ term }}{% endblock %}</title>
+        <title>{% block title %}{{ info.full_name }}/{{ info.Class }}/{{ term }}{% endblock %}</title>
     </head>
     <body>
     {% block content %}
@@ -24,19 +24,23 @@
             });          
          </script>
          <select name="dropDown" id="dropDown" style="width:30%;margin-left:20%;background-color:green;color:white;border-radius:5px;">
-            <option name="infoOpt" id="infoOpt" value="{{ this.id }}">{{ this.student_name }}</option>
+            <option name="infoOpt" id="infoOpt" value="{{ info.id }}">{{ info.full_name }}</option>
                 {% if margged %}
                 {% for inclass in margged %}
                 <a href="" style="font-family:Helvetica; color:palegoldenrod; font-size: 10px;">
-                    <option name="infoOpt" id="infoOpt" value="{{ inclass.student_name_id }}">{{ inclass.student_name }}</option>
+                    <option name="infoOpt" id="infoOpt" value="{{ inclass.id }}">{{ inclass.full_name }}</option>
                 </a>
                 {% endfor %}
                 {% endif %}
             </select>
             <script>
+                function redirect(to) {
+                    var next = window.location.href.split('render/pdf/4/')[0]+to+'/';
+                    location.replace(next)
+                    };
                 $("#dropDown").change(function(){
                         var pk = $("#dropDown").val();
-                        location.replace('http://127.0.0.1:8838/result/student_subject_detail_one_subject/'+pk+'/')
+                        redirect('render/pdf/4/'+pk)
                     });
             </script>
     </div>
@@ -48,18 +52,18 @@
             <em style="margin-left:5%;background:white;color:black;border-radius:5px;width:12%;text-align:center;font-weight:bold;">
                 {{ term }}
             </em>
-            <em style="margin-left:20.5%;font-size:9px;"><u>STUDENT's NAME: </u>{{ info.full_name }}</em>
+            <em style="margin-left:12.5%;font-size:9px;"><u>STUDENT's NAME: </u>{{ info.full_name }}</em>
         </div>
         <div>
             <em style="font-size:20px">UMMUL QURA HIGH SCHOOL</em>
-            <em style="margin-left:5%;font-size:9px;"><u>ADMISSION NO.:</u> {{ this.student_id }}</em> 
-            <em style="font-size:9px;"><u>CLASS: </u>{{ this.tutor.Class }}</em>
+            <em style="margin-left:5.5%;font-size:9px;"><u>ADMISSION NO.:</u> {{ info.uid }}</em> 
+            <em style="font-size:9px;"><u>CLASS: </u>{{ info.Class }}</em>
         </div>
         <div>
             <em style="font-size:12px">AROWONA BUS-STOP, AKANRAN ROAD, IBADAN</em>
-            <em style="margin-left:5%;font-size:9px;"><u>DATE OF BIRTH:</u>{{this.student_name.birth_date}}</em> 
+            <em style="margin-left:5%;font-size:9px;"><u>DATE OF BIRTH:</u>{{info.birth_date}}</em> 
             <em style="font-size:9px;"> <u> SEX: </u>{{info.sex }}</em>  
-            <em style="font-size:9px;">   <u>YEAR:</u>{{ this.tutor.session }}</em>
+            <em style="font-size:9px;">   <u>YEAR:</u>{{ info.session }}</em>
         </div>
         <div class="capt">1. ATTENDANCE (REGULARITY & PUNCTUALITY)</div>
         <table>
@@ -145,21 +149,21 @@
                         <a href="{% url 'student_info' pk=a.student_name.id %}">{{ a.tutor.Class }}:{{ term }}</a>               
                </td>
                 <td>Obt. Mark</td>
-                <td>{{ a.tutor.subject.name }}</td>
-                <td>{{ b.tutor.subject.name }}</td>
-                <td>{{ c.tutor.subject.name }}</td>
-                <td>{{ d.tutor.subject.name }}</td>
-                <td>{{ e.tutor.subject.name }}</td>
-                <td>{{ f.tutor.subject.name }}</td>
-                <td>{{ g.tutor.subject.name }}</td>
-                <td>{{ h.tutor.subject.name }}</td>
-                <td>{{ i.tutor.subject.name }}</td>
-                <td>{{ j.tutor.subject.name }}</td>
+                <td>{{ a.tutor.subject }}</td>
+                <td>{{ b.tutor.subject }}</td>
+                <td>{{ c.tutor.subject }}</td>
+                <td>{{ d.tutor.subject }}</td>
+                <td>{{ e.tutor.subject }}</td>
+                <td>{{ f.tutor.subject }}</td>
+                <td>{{ g.tutor.subject }}</td>
+                <td>{{ h.tutor.subject }}</td>
+                <td>{{ i.tutor.subject }}</td>
+                <td>{{ j.tutor.subject }}</td>
              
             </thead>
         </tr>
         <tr>
-            <th style="font-family:Helvetica; color:blue;">grade</th>
+            <th style="font-family:Helvetica; color:blue;width:20%;">grade</th>
             <td style="font-family:Helvetica; color:red;" ></td>
             <td>{{ a.grade }}</td>
             <td>{{ b.grade }}</td>
@@ -317,34 +321,34 @@
         <tr>
             <th style="font-family:Helvetica; color:blue;">Teacher's sign</th>
             <td style="font-family:Helvetica; color:red;" ></td>
-            <td title="{{ a.tutor.teacher_name }}">
+            <td title="{{ a.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ b.tutor.teacher_name }}">
+            <td title="{{ b.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ c.tutor.teacher_name }}">
+            <td title="{{ c.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ d.tutor.teacher_name }}">
+            <td title="{{ d.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ e.tutor.teacher_name }}">
+            <td title="{{ e.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ f.tutor.teacher_name }}">
+            <td title="{{ f.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ g.tutor.teacher_name }}">
+            <td title="{{ g.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ h.tutor.teacher_name }}">
+            <td title="{{ h.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ i.tutor.teacher_name }}">
+            <td title="{{ i.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
-            <td title="{{ j.tutor.teacher_name }}">
+            <td title="{{ j.tutor.model_summary }}">
                 <span class="glyphicon glyphicon-check"></span>
             </td>
             
@@ -390,7 +394,8 @@
         </tr>
         <tr>
             <td>{{info.club_one}}</td>
-            <td>{{info.office_one}}</td>
+            <td>{{info.office_one}}
+            </td>
             <td>{{info.contrib_one}}</td>
             <td></td>
         </tr>
@@ -420,10 +425,17 @@
     <table>
     <tr>
         <thead>
-            <th  colspan="7" style="font-family:Helvetica;color:blue;width:5%;">Class-Teacher's Remark </th>
-            <th  style="font-family:Helvetica;font-size:10px;color:white;width:85%">
+            <th  colspan="9" style="font-family:Helvetica;color:blue;width:15%;">Class-Teacher's Remark </th>
+            <th  style="font-family:Helvetica;font-size:10px;color:white;width:75%">
                 <i>
-                    <input type="text" Value="{{ info.master_comment }}" id = "master" style="margin-left:-4px;width:87%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);color: beige;color:black">
+                    <select name="" Value="{{ info.master_comment }}" id = "master" style="width:87%;background-color:green;color:white;border-radius:5px;">
+                        <option type="text" value="{{ info.master_comment }}" >{{ info.master_comment }}</option>
+                        <option value="He/She is a responsible and reliable student.">He/She is a responsible and reliable student.</option>
+                        <option value="He/She is a hard working student.">He/She is a hard working student.</option>
+                        <option value="He/She is perpetual late to school.">He/She is perpetual late to school.</option>
+                        <option value="He/She is gentle and friendly in class.">He/She is gentle and friendly in class.</option>
+                        <option value="Others">Others.</option>
+                    </select>
                 </i>
                 <button name="save" style="background:Khaki;margin-left:-4px;width:13%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);font-size:8px;">Save
                     <span class="glyphicon glyphicon-ok"></span>
@@ -433,13 +445,26 @@
     </tr>
     <tr>
         <thead>
-            <th colspan="7" style="font-family:Helvetica; color:blue;width:15%;">Principal's Remark </th>
+            <th colspan="9" style="font-family:Helvetica; color:blue;width:30%;">Principal's Remark </th>
             <th colspan="12" style="font-family:Helvetica;font-size:10px;color:white;width:85%;">
             <i>
-                <input type="text" Value="{{ info.principal_comment }}" id = "principal" style="margin-left:-4px;width:87%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);color: beige;color:black">
-                <button name="saved" style="margin-left:-4px;background:orange;width:13%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);font-size:8px;">Save
-                    <span class="glyphicon glyphicon-ok"></span>
-                </button>
+                
+                <select name="" Value="{{ info.principal_comment }}" id = "principal" style="width:87%;background-color:green;color:white;border-radius:5px;">
+                <option type="text" value="{{ info.principal_comment }}" >{{ info.principal_comment }}</option>
+                <option value="Fairly good result, you can do better.">Fairly good result, you can do better.</option>
+                <option value="Good result, keep it up.">Good result, keep it up.</option>
+                <option value="You are promoted on trial, you need to work harder.">You are promoted on trial, you need to work harder.</option>
+                <option value="Excellent performance, promoted to JSS 2.">Excellent performance, promoted to JSS 2.</option>
+                <option value="Excellent performance, promoted to JSS 3.">Excellent performance, promoted to JSS 3.</option>
+                <option value="Excellent performance, promoted to SSS 2.">Excellent performance, promoted to SSS 2.</option>
+                <option value="Excellent performance, promoted to SSS 3.">Excellent performance, promoted to SSS 3.</option>
+                <option value="Excellent performance, keep it up.">Excellent performance, keep it up.</option>
+                <option value="Others">Others.</option>
+                </select>
+
+                <a href="{% url 'pdf' ty=1 sx=info.id %}" target="_blank"><button name="saved" style="margin-left:-4px;background:orange;width:13%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);font-size:8px;">Ok
+                    <span class="glyphicon glyphicon-print"></span>
+                </button></a>
             </i>
             </th>
         </thead>
@@ -460,7 +485,7 @@
             var master_comment = $("#master").val();
             var principal_comment = $("#principal").val();
             $.ajax({
-                url: 'http://127.0.0.1:8838/result/card_comments/',
+                url: "{% url 'card_comments' %}",
                 data: {'uid':student_id,
                         'master_comment':master_comment,
                         'principal_comment':principal_comment
@@ -488,20 +513,7 @@
                         }
                     });
                 });
-        $("button[name='saved']").click(function() {
-            var student_id = "{{this.id}}";
-            $.ajax({
-                url: 'http://127.0.0.1:8838/result/do_a_write/pdf/url/'+student_id+'/',
-                data: {'pk':student_id
-                        },
-                dataType: 'json',
-                success: function(data) {
-                if (data.status){
-                    $("#success").html(data.status)
-                    }
-                        }
-                    })
-                });
+        
     </script>
     {% endblock %}
     </body>

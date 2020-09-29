@@ -36,7 +36,7 @@
             <label for="" style="font-size:60%">Birth: </label>
                 <input type="date" id="birth"  name='age'  max="2011-1-30" style="line-height:5px;background-color:#9DC0AF;color:white;width:15%;text-align:center;border-radius:5px;line-height:5px;font-size:10px;" value='{{birth_date}}'>
             <label for="" style="font-size:60%">Age</label>
-                <span id="age" style="line-height:5px;background-color:#9DC0AF;color:white;width:20%;text-align:center;border-radius:5px;line-height:5px;font-size:10px;">13</span>
+                <span style="line-height:5px;background-color:#9DC0AF;color:white;width:20%;text-align:center;border-radius:5px;line-height:5px;font-size:10px;">{{info.age}}</span>
             </div>
                 <div style="font-size:100%;font-weight:bold;background-color:black;color:white;border-radius:5px;border:1px solid blue;text-align:center;width:20%;">Parent info; </div>
                 <label for="" style="font-size:60%">Title:</label>
@@ -222,16 +222,94 @@
                 <th>Signature</th>
             </tr>
             <tr>
-                <td><input type="text" value="{{ info.club_one }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="club_one" id="club_one" required="True"></td>
-                <td><input type="text" value="{{ info.office_one }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="office_one" id="office_one" required="True"></td>
-                <td><input type="text" value="{{ info.contrib_one }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;"
-                name="contrib_one" id="contrib_one" required="True"></td>
+                <td>
+                    <select name="club_one" id="club_one" required="True" value="{{ info.club_one }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;">
+                        <option value="{{ info.club_one }}">{{ info.club_one }}</option>
+                        <option value="ARTS">Arts & Craft</option>
+                        <option value="CHY">Choreography</option>
+                        <option value="LDS">Literary and Debating Society</option>
+                        <option value="JETS">The JETS club</option>
+                        <option value="SCOUT">Scout of Nigeria</option>
+                        <option value="PRESS">The Press club</option>
+                        <option value="AGRO">The Young Agriculturist</option>
+                        <option value="MSSN">Muslim Student Society of Nigeria</option>
+                        <option value="HMC">The Home makers club</option>
+                    </select>
+                </td>
+                <td>
+                <select name="" value="{{ info.office_one }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="office_one" id="office_one" required="True">
+                    <option type="text" value="{{info.office_one}}" >{{info.office_one}}</option>
+                    <option value="Member.">Member.</option>
+                    <option value="Time Keeper.">Time Keeper.</option>
+                    <option value="Group Coordinator.">Group Coordinator.</option>
+                    <option value="Mosque Coordinator.">Mosque Coordinator.</option>
+                    <option value="Da'wah Coordinator.">Da'wah Coordinator.</option>
+                    <option value="Ameer.">Ameer.</option>
+                    <option value="Ameerah.">Ameerah.</option>
+                    <option value="Secretary.">Secretary.</option>
+                    <option value="Asset maintnance officer.">AMO.</option>
+                    <option value="Attendance Monitor.">Attendance Monitor.</option>
+                    <option value="Financial secretary.">Financial secretary.</option>
+                    <option value="Mu'ahdhin.">Mu'ahdhin.</option>
+                    <option value="Farm manager/coordinator.">Farm manager/coordinator.</option>
+                    <option value="Chief Press.">Chief Press.</option>
+                </select>
+                </td>
+                <td>
+                <select name="" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;"
+                name="contrib_one" id="contrib_one" required="True">
+                    <option type="text" value="{{info.contrib_one}}" >{{info.contrib_one}}</option>
+                    <option value="Efficient and effective participation in all activities.">Efficient and effective participation in all activities.</option>
+                    <option value="Very active in his/her desgnative office/role.">Very active in his/her desgnative office/role.</option>
+                    <option value="Active member.">Active member.</option>
+                    <option value="Non-active member.">Non-active member.</option>
+                </select>
+                </td>
                 <td></td>
             </tr>
             <tr>
-                <td><input type="text" value="{{ info.club_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="club_two" id="club_two" required="True"></td>
-                <td><input type="text" value="{{ info.office_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="office_two" id="office_two" required="True"></td>
-                <td><input type="text" value="{{ info.contrib_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="contrib_two" id="contrib_two" required="True"></td>
+                <td>
+                    <select name="club_two" id="club_two" required="True" value="{{ info.club_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;">
+                        <option value="{{ info.club_two }}">{{ info.club_two }}</option>
+                        <option value="ARTS">Arts & Craft</option>
+                        <option value="CHY">Choreography</option>
+                        <option value="LDS">Literary and Debating Society</option>
+                        <option value="JETS">The JETS club</option>
+                        <option value="SCOUT">Scout of Nigeria</option>
+                        <option value="PRESS">The Press club</option>
+                        <option value="AGRO">The Young Agriculturist</option>
+                        <option value="MSSN">Muslim Student Society of Nigeria</option>
+                        <option value="HMC">The Home makers club</option>
+                    </select>
+                </td>
+                <td>
+                <select name="" value="{{ info.office_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="office_two" id="office_two" required="True">
+                    <option type="text" value="{{ info.office_two }}" >{{ info.office_two }}</option>
+                    <option value="Member.">Member.</option>
+                    <option value="Time Keeper.">Time Keeper.</option>
+                    <option value="Group Coordinator.">Group Coordinator.</option>
+                    <option value="Mosque Coordinator.">Mosque Coordinator.</option>
+                    <option value="Da'wah Coordinator.">Da'wah Coordinator.</option>
+                    <option value="Ameer.">Ameer.</option>
+                    <option value="Ameerah.">Ameerah.</option>
+                    <option value="Secretary.">Secretary.</option>
+                    <option value="Asset maintnance officer.">AMO.</option>
+                    <option value="Attendance Monitor.">Attendance Monitor.</option>
+                    <option value="Financial secretary.">Financial secretary.</option>
+                    <option value="Mu'ahdhin.">Mu'ahdhin.</option>
+                    <option value="Farm manager/coordinator.">Farm manager/coordinator.</option>
+                    <option value="Chief Press.">Chief Press.</option>
+                </select>
+                </td>
+                <td>
+                <select name="" value="{{ info.contrib_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;" name="contrib_two" id="contrib_two" required="True">
+                    <option type="text" value="{{ info.contrib_two }}" >{{ info.contrib_two }}</option>
+                    <option value="Efficient and effective participation in all activities.">Efficient and effective participation in all activities.</option>
+                    <option value="Very active in his/her desgnative office/role.">Very active in his/her desgnative office/role.</option>
+                    <option value="Active member.">Active member.</option>
+                    <option value="Non-active member.">Non-active member.</option>
+                </select>
+                </td>
                 <td></td>
             </tr>
         </table>
@@ -246,30 +324,35 @@
                 {% endif %}
             </select>
             <button class="btn-btn-primary" name='Save' style="background-color:green;color:white;border-radius:5px;font-size:10px;">Save<span class="glyphicon glyphicon-ok"> </span></button><br>
-            <div style="width:100%;font-weight:bold;margin-left:0%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;" id="outcome" hidden><em id="success"></em><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_subject_detail_one_subject' pk=info.id %}" title="{{ scr.student_id }}" style="color:white;">Go to Report Card</a></button></div>
+            <div style="width:100%;font-weight:bold;margin-left:0%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;" id="outcome" hidden><em id="success"></em> <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=info.id %}" title="{{ scr.student_id }}" style="color:white;">Go to Report Card</a></button></div>
         </div>
         
     </div>   
     <script>
+        function redirect(to) {
+		var next = window.location.href.split('student_info')[0]+to+'/';
+        location.replace(next)
+		};
         $("#dropDown").change(function(){
                 var pk = $("#dropDown").val();
-                location.replace('http://127.0.0.1:8838/result/student_info/'+pk+'/')
+                redirect('student_info/'+pk)
             });
         
         $("button[name='Save']").click(function(){
             var argument = {pk:{{ info.id }}, name:$("#nameh").val(), class:$("#class").val(), term:$("#term").val(), opened:$("#opened").val(), presence:$("#presence").val(), punctual:$("#punctual").val(), comment:$("#comment").val(), hbegin:$("#hbegin").val(), hend:$("#hend").val(), wbegin:$("#wbegin").val(), wend:$("#wend").val(), daysAbsent:$("#opened").val() - $("#presence").val(), purpose:$("#purpose").val(), good:$("#good").val(), fair:$("#fair").val(), poor:$("#poor").val(), remark:$("#remark").val(), event:$("#event").val(), indoor:$("#indoor").val(), ball:$("#ball").val(), combat:$("#combat").val(), track:$("#track").val(), jump:$("#jump").val(), throw:$("#throw").val(), swim:$("#swim").val(), lift:$("#lift").val(), sport_comment:$("#sport_comment").val(), club_one:$("#club_one").val(), office_one:$("#office_one").val(), contrib_one:$("#contrib_one").val(), club_two:$("#club_two").val(), office_two:$("#office_two").val(), contrib_two:$("#contrib_two").val(),birth:$("#birth").val(),title:$("#title").val(),pname:$("#pname").val(),pocp:$("#pocp").val(),contact1:$("#contact1").val(),contact2:$("#contact2").val(),address:$("#address").val()
                             };
-            $.ajax({
-                url:'http://127.0.0.1:8838/result/student_info_json/',
+           var request = $.ajax({
+                url:"{% url 'student_info_json' %}",
                 data: argument,
                 dataType: 'json',
-                success: function(data) {
-                    if (data.status){
-                        $("#outcome").show();
-                        $("#success").html("{{ info.full_name }}"+" information was saved successfully!");
-                    }
-                }
-            })
+               });
+                 request.done(function(data) {
+                         $("#outcome").show();
+                        $("#success").html("{{ info.full_name }}"+" data saved!");
+            });     
+                   request.fail(function( jqXHR, textStatus ) {
+                       alert( "Request failed: " + jqXHR.status );
+});
             });
     </script>
 </body>

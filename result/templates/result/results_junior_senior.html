@@ -11,46 +11,58 @@
     </head>
     <body>
             <table>
-                 <div class="capt" style="font-size:13;"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;">SUBJECT LIST</strong></div>
+                 <div class="capt" style="font-size:13;"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;"><u style="color:white;">{{ counts }} </u> SUBJECTS SHORTLISTED</strong></div>
                 <thead>
-                    <tr><th>S/N</th><th>Teachers</th><th><u style="color:white;">{{ counts }} </u>Subject</th><th>Review</th><th>Males</th><th>Females</th><th>Accounts</th>{% if request.user.is_superuser == True  and user.is_staff == True %}<th>Delete</th>{% endif %}<th>Session</th></tr>      
+                    <tr><th>S/N</th><th>Teachers</th><th>Class</th><th>Subject</th><th>Review</th><th>Males</th><th>Females</th><th>Accounts</th>{% if request.user.is_superuser == True  and user.is_staff == True %}<th>Delete</th>{% endif %}<th>Session</th></tr>      
                 </thead>
                 <tbody>
                     {% if all_page %}
                     {% for sub in all_page %}
-                        <tr><td>{{ forloop.counter }}</td><td style="font-family:Helvetica; color:#FFFAFA; font-size: 10px;width:30%;">{{ sub.teacher_name }}</td><td>{{ sub.subject }}</td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}">{{ sub.term }}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td style="color:#FFFAFA">{{ sub.accounts }}</td>{% if request.user.is_superuser == True  and user.is_staff == True %}<td><a href="{% url 'warning_delete' pk=sub.id %}"><span class="glyphicon glyphicon-remove"></span></a></td>{% endif %}<td>{{ sub.session }}</td></tr>
+                        <tr><td>{{ forloop.counter }}</td><td style="font-family:Helvetica; color:#FFFAFA; font-size: 10px;width:30%;">{{ sub.teacher_name }}</td><td>{{ sub.Class }}</td><td>{{ sub.subject }}</td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}"> {% if sub.second_term == '2nd Term' and  sub.third_term == '1st Term'  %}{{ sub.second_term }}{% else %}{{ sub.third_term }}{% endif %}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td style="color:#FFFAFA">{{ sub.accounts }}</td>{% if request.user.is_superuser == True  and user.is_staff == True %}<td><a href="{% url 'warning_delete' pk=sub.id %}"><span class="glyphicon glyphicon-remove"></span></a></td>{% endif %}<td>{{ sub.session }}</td></tr>
                     {% endfor %}
                     {% else %}
                         <pre style="width:70%;" >There are no records.</pre>
                     {% endif %}       
                 </tbody>
                 <tfoot>
-                    <tr><th colspan="10"><div><a href="" style="color:green;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'results_junior_senior' pk=pk %}" style="color:red;"><span class="glyphicon glyphicon-th-large"></span></a></div></th></tr>
+                    <tr><th colspan="10">
+                    {% if all_page.has_other_pages %}
+              <em class="pagination" >
+                {% if all_page.has_previous %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.previous_page_number }}" style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</span>
+                  </li>
+                {% endif %}
+                {% for i in all_page.paginator.page_range %}
+                  {% if all_page.number == i %}
+                    <li class="active" style="width:5%;line-height:65%;">
+                      <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;font-weight:bold;font-size:11px;line-height:65%;">{{ i }} <span class="sr-only">(current)</span></span>
+                    </li>
+                  {% else %}
+                    <li style="width:5%;line-height:65%;">
+                      <a href="?page={{ i }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% if all_page.has_next %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.next_page_number }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</span>
+                  </li>
+                {% endif %}
+              </em>
+            {% endif %}
+                <div><a href="" style="color:green;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'results_junior_senior' pk=pk %}" style="color:red;"><span class="glyphicon glyphicon-th-large"></span></a></div></th></tr>
                 </tfoot>
             </table>
     </body>
-    <div>
-  {% if all_page.has_other_pages %}
-      <ul class="pagination">
-        {% if all_page.has_previous %}
-          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in all_page.paginator.page_range %}
-          {% if all_page.number == i %}
-            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-          {% else %}
-            <li><a href="?page={{ i }}">{{ i }}</a></li>
-          {% endif %}
-        {% endfor %}
-        {% if all_page.has_next %}
-          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </ul>
-    {% endif %}
-    </div>
+
     {% endblock %}
 </html>

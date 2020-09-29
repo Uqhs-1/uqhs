@@ -2,7 +2,7 @@
 {% extends "base_generic.html" %}
 <html lang="en">
 	<head>
-		<title> {% block title %} {{qry.term}}/{{qry.Class}}/{{qry.subject}}{% endblock %}</title>
+		<title> {% block title %} {{term}}/{{qry.Class}}/{{qry.subject}}{% endblock %}</title>
 	</head>
 	 {% block content %}
 	<body>				
@@ -20,11 +20,6 @@
           <pre style="line-height: 1px;background-color:white;border:2px solid blue;color:black;border-radius:5px;">
             {{ qry.updated }}</pre>
       </div>
-        <style>
-            .extral{
-                width:100%;background-color:green;color:white;border-radius:5px;
-            }
-          </style>
       <script>
         var dim = [];
       </script>
@@ -33,13 +28,13 @@
               <th>S/N</th>
               <th>
                   {% if all_page.count != 0 %}
-                <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
+                <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.males}}">Males</button>
                 {% if user.is_authenticated %}
                 <a href="{% url 'pdf' ty=2 sx=2 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
                 {% endif %}|
-                <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
+                <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.females}}">Females</button>
                 {% if user.is_authenticated %}
                 <a href="{% url 'pdf' ty=2 sx=1 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
@@ -47,7 +42,7 @@
                   {% endif %}
                   {% endif %}
               </th>
-              <th>Student_Names</th>
+              <th>Student_id</th>
               <th>Test</th>
               <th>Clw</th>
               <th>Prat</th>
@@ -73,27 +68,27 @@
        	  <td style="width:1%;">{{ forloop.counter }}</td>
            <td style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.student_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
-              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_subject_detail_one_subject' pk=scr.student_name_id %}" title="{{ scr.student_id }}" style="color:white;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.student_name.id %}" title="{{ scr.student_id }}" style="color:white;">Profile</a></button>
+              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.student_name_id %}" title="{{ scr.student_id }}" style="color:blue;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.student_name.id %}" title="{{ scr.student_id }}" style="color:blue;">Profile</a></button>
             </div>
            </td>
            <td style="color:sienna;" title="{{ scr.student_name }}"  id="id_{{ forloop.counter }}">{{ scr.student_id }}</td>
             <td id="edith_student_id_td{{ forloop.counter }}" hidden><input  id="edith_name_id_{{ forloop.counter }}" type="text" value="{{ scr.student_id }}"></td>
            <td id="edith_name_td{{ forloop.counter }}" hidden><input  id="edith_name_{{ forloop.counter }}" type="text" value="{{ scr.student_name }}"></td>
-           <td style="color:sienna;" title="{{ scr.test }},{{ scr.test }},{{ scr.test }}" id='test_{{ forloop.counter }}'  class='raw_{{ forloop.counter }}'>
+           <td style="color:sienna;" title="{{ scr.test }}" id='test_{{ forloop.counter }}'  class='raw_{{ forloop.counter }}'>
             {{ scr.test }}
-           </td><td style="color:black;width:5%font-size:200%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_test_{{ forloop.counter }}" type="number" min="0" max="20" value="{{ scr.test }}"></td>
-           <td style="color:sienna;" title="{{ scr.agn }},{{ scr.agn }},{{ scr.agn }}" id='agn_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
+           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_test_{{ forloop.counter }}" type="number" min="0" max="20" value="{{ scr.test }}" class="extral"></td>
+           <td style="color:sienna;" title="{{ scr.agn }}" id='agn_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
             {{ scr.agn }}
-           </td><td style="color:black;width:5%font-size:200%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_agn_{{ forloop.counter }}"  type="number" min="0" max="10" value="{{ scr.agn }}"></td>
-           <td style="color:sienna;" title="{{ scr.atd }},{{ scr.atd }},{{ scr.atd }}" id='atd_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
+           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_agn_{{ forloop.counter }}"  type="number" min="0" max="10" value="{{ scr.agn }}" class="extral"></td>
+           <td style="color:sienna;" title="{{ scr.atd }}" id='atd_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
             {{ scr.atd }}
-           </td><td style="color:black;width:5%font-size:200%;"  class='edith_{{ forloop.counter }}' hidden><input id="edith_atd_{{ forloop.counter }}" type="number" min="0" max="10" value="{{ scr.atd }}"></td>
-           <td style="color:sienna;" title="{{ scr.total }},{{ scr.total }},{{ scr.total }}">
+           </td><td style="color:black;width:5%;"  class='edith_{{ forloop.counter }}' hidden><input id="edith_atd_{{ forloop.counter }}" type="number" min="0" max="10" value="{{ scr.atd }}" class="extral"></td>
+           <td style="color:sienna;" title="{{ scr.total }}">
             {{ scr.total }}
            </td>
-           <td style="color:sienna;" title="{{ scr.exam }},{{ scr.exam }},{{ scr.exam }}" id='exam_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
+           <td style="color:sienna;" title="{{ scr.exam }}" id='exam_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
             {{ scr.exam }}
-           </td><td style="color:black;width:5%font-size:200%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_exam_{{ forloop.counter }}" type="number" min="0" max="60" value="{{ scr.exam }}"></td>
+           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_exam_{{ forloop.counter }}" type="number" min="0" max="60" value="{{ scr.exam }}" class="extral"></td>
              {% if scr.tutor.third_term == "3rd Term" %}<td>{{ scr.agr }}</td>{% endif %}
              {% if scr.tutor.second_term == "2nd Term" %}<td>{{ scr.sagr }}{% endif %}</td>
              {% if scr.tutor.first_term == "1st Term" %}<td>{{ scr.fagr }}</td>{% endif %}
@@ -186,7 +181,7 @@
       </tr>
       <tr class="capt">
         <td class="capt" style="color:white; width: 200px;" colspan="2">Annual grades
-            <a href="{% url 'offline' pk=0 %}" title='Click for details'><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{qry.subject.name}}</button>
+            <a href="{% url 'offline' pk=pk %}" title='Click for details'><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{qry.subject}}</button>
             </a>
         </td>
         <td colspan="10" id='tenb'>
@@ -219,7 +214,40 @@
       </tr>  
       <tfoot>
       <tr>
-        <th colspan="15" id='fifteen'>
+        <th colspan="15" id='fifteen' style="line-height:68%;">
+            {% if all_page.has_other_pages %}
+              <em class="pagination" >
+                {% if all_page.has_previous %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.previous_page_number }}" style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</span>
+                  </li>
+                {% endif %}
+                {% for i in all_page.paginator.page_range %}
+                  {% if all_page.number == i %}
+                    <li class="active" style="width:5%;line-height:65%;">
+                      <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;font-weight:bold;font-size:11px;line-height:65%;">{{ i }} <span class="sr-only">(current)</span></span>
+                    </li>
+                  {% else %}
+                    <li style="width:5%;line-height:65%;">
+                      <a href="?page={{ i }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% if all_page.has_next %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.next_page_number }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</span>
+                  </li>
+                {% endif %}
+              </em>
+            {% endif %}
           <div>
             <a href="{% url 'subject_view_all' pk=pk md=2 %}" style="color:green;">
               <span class="glyphicon glyphicon-list-alt" title='all'></span>
@@ -265,16 +293,16 @@
  	  url: "{% url 'responsive_updates' pk=0 %}",
 	  data: {
         'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
-        'student_id': 'XX/S/19/'+$("#edith_name_id_"+""+i).val(),
-        'student_name': "AMINU ISMAIL",
-        'test': Number(test),
-	 	    'agn': Number(agn),
-	 	    'atd': Number(atd), 
-	 	    'total': eval([Number(test), Number(atd), Number(agn)].join('+')),
-	 	    'exam': Number(exam),
-	 	    'agr': eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')),
-	 	    'grade': 'D7', 
-	 	    'posi': 'th'
+        'student_id_1': 'XX/S/19/'+$("#edith_name_id_"+""+i).val(), 'size':2,
+        'student_name_1': "AMINU ISMAIL",
+        'test_1': Number(test),
+	 	    'agn_1': Number(agn),
+	 	    'atd_1': Number(atd), 
+	 	    'total_1': eval([Number(test), Number(atd), Number(agn)].join('+')),
+	 	    'exam_1': Number(exam),
+	 	    'agr_1': eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')),
+	 	    'grade_1': 'D7', 
+	 	    'posi_1': 'th'
 	 	    },
 	 dataType: 'json',
 	 
@@ -301,39 +329,7 @@
             $("#Senior").show()
           }
      </script>    
-      {% if all_page.has_other_pages %}
-              <em class="pagination" style="width:80%;margin-left:-50px;">
-                {% if all_page.has_previous %}
-                  <li>
-                    <a href="?page={{ users.previous_page_number }}">&laquo;</a>
-                  </li>
-                {% else %}
-                  <li class="disabled">
-                    <span>&laquo;</span>
-                  </li>
-                {% endif %}
-                {% for i in all_page.paginator.page_range %}
-                  {% if all_page.number == i %}
-                    <li class="active">
-                      <span>{{ i }} <span class="sr-only">(current)</span></span>
-                    </li>
-                  {% else %}
-                    <li>
-                      <a href="?page={{ i }}">{{ i }}</a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-                {% if all_page.has_next %}
-                  <li>
-                    <a href="?page={{ users.next_page_number }}">&raquo;</a>
-                  </li>
-                {% else %}
-                  <li class="disabled">
-                    <span>&raquo;</span>
-                  </li>
-                {% endif %}
-              </em>
-            {% endif %}
+    
   </body>
 	{% endblock %}
 </html>

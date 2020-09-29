@@ -10,13 +10,8 @@ Created on Wed Jan 23 08:25:37 2019
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import BTUTOR, CNAME, ASUBJECTS, Edit_User, QSUBJECT, Post
+from .models import BTUTOR, CNAME, Edit_User, QSUBJECT, Post
 
-
-class subjectforms(forms.ModelForm):
-    class Meta:
-        model = ASUBJECTS
-        fields = ( 'name',)
             
 class login_form(forms.Form):
     username = forms.CharField(max_length=18)#, help_text="Just type 'renew'")

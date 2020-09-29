@@ -2,43 +2,68 @@
 {% extends "base_generic.html" %}
 <html lang="en">
 	<head>
-		<title> {% block title %}{{ request.user.username }}|Subject Transfer {% endblock %}</title>
+		<title> {% block title %}{{ request.user.username }}|Transfer {% endblock %}</title>
 	</head>
 	<body>
 	{% block content %}
        <table>
 				 <div class="capt"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;">SUBJECT LIST-{{ counts }}</strong></div><tr>
-            <thead><tr><th>Move Account</th><th>Subject</th><th>1ST</th><th>2ND</th><th>3RD</th><th>Updated</th><th>Accounts</th></tr></thead>      
+            <thead><tr><th>SN</th><th>To</th><th>Subject</th><th>Detail</th><th colspan="3">Counts</th><th>Created</th><th>Updated</th><th>From</th></tr></thead>      
           {% if all_page %}
           {% for sub in all_page %}
-          <tr><td style="color:palegoldenrod;"><a href="{% url 'tutor_home_view' pk=sub.id %}" style="color:#F5F5F5">{{ sub.teacher_name }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}" style="color:#F5F5F5">{{ sub.first_term.subject }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}" style="color:#F5F5F5">{{ sub.first_term.Class }}</a></td><td>{% if sub.second_term.Class == None %}<a href="" style="color:#F5F5F5">{% else %}<a href="{% url 'subject_view' pk=sub.second_term.id md=1 %}" style="color:#F5F5F5">{% endif %}{{ sub.second_term.Class|default:'Update' }}</a></td><td>{% if sub.third_term.Class == None %}<a href="" style="color:#F5F5F5">{% else %}<a href="{% url 'subject_view' pk=sub.third_term.id md=1 %}" style="color:#F5F5F5">{% endif %}{{ sub.third_term.Class|default:'Update' }}</a></td><td>{{sub.created}}</td><td>{{sub.updated}}</td></tr>
+            <tr><td>{{ forloop.counter }}</td><td style="color:palegoldenrod;"><a href="{% url 'tutor_update' pk=sub.first_term.id %}" style="color:#F5F5F5">{{ sub.tutor }}</a></td><td><a href="" style="color:#F5F5F5">{{ sub.first_term.subject }}</a></td><td><a href="{% url 'subject_view' pk=sub.first_term.id md=1 %}" style="color:#F5F5F5">{{ sub.first_term.Class }}</a></td><td>{{ sub.first_term.males }}</<td><td>{{ sub.first_term.females }}</<td><td>{{ sub.first_term.males|add:sub.first_term.females }}</<td><td style="color:palegoldenrod;width:25%;">{{sub.created}}</td><td style="color:palegoldenrod;width:25%;">{{sub.updated}}</td><td>{{ sub.first_term.accounts }}<td></tr>
           {% endfor %}
           {% else %}
               <pre style="width:70%;">There are no records.</pre>
           {% endif %} 
-          <tfoot><th colspan="10"><a href="" style="font-family:Helvetica; margin-left:36%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-list-alt"></span></a><a href="{% url 'home' %}" style="font-family:Helvetica; margin-left:0%; color:green; font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a></th></tfoot>
+          <tfoot><th colspan="10">
+          {% if all_page.has_other_pages %}
+              <em class="pagination" >
+                {% if all_page.has_previous %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.previous_page_number }}" style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</span>
+                  </li>
+                {% endif %}
+                {% for i in all_page.paginator.page_range %}
+                  {% if all_page.number == i %}
+                    <li class="active" style="width:5%;line-height:65%;">
+                      <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;font-weight:bold;font-size:11px;line-height:65%;">{{ i }} <span class="sr-only">(current)</span></span>
+                    </li>
+                  {% else %}
+                    <li style="width:5%;line-height:65%;">
+                      <a href="?page={{ i }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% if all_page.has_next %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.next_page_number }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</span>
+                  </li>
+                {% endif %}
+              </em>
+            {% endif %}
+             <div>
+            <em href="" style="color:green;">
+              <span class="glyphicon glyphicon-list-alt" title='all'></span>
+            </em>
+            <em href="" style="color:red;">
+              <span class="glyphicon glyphicon-th-large" title='small'></span>
+            </em>            
+        </div>
+        </th>
+        </tfoot>
        </table>
          </body> 
 	 {% if all_page.has_other_pages %}
-      <em class="pagination" style="width:80%;margin-left:-50px;">
-        {% if all_page.has_previous %}
-          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in all_page.paginator.page_range %}
-          {% if all_page.number == i %}
-            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-          {% else %}
-            <li><a href="?page={{ i }}">{{ i }}</a></li>
-          {% endif %}
-        {% endfor %}
-        {% if all_page.has_next %}
-          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </em>
+    
     {% endif %}
  
     {% endblock %}

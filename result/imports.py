@@ -1,5 +1,4 @@
 ######################STAGE 2 ::: UPLOAD SCORES##################STARTS
-from .forms import new_student_name, student_name
 from collections import Counter
 from .models import QSUBJECT, CNAME, BTUTOR, QUESTION
 from django.shortcuts import render, redirect, get_object_or_404
@@ -46,7 +45,8 @@ def check_repeated_names(valid_input):
 def upload_new_subject_scores(request):
     start_time = time.time()
     pk = int(request.user.profile.account_id)
-    tutor = get_object_or_404(BTUTOR, pk=pk) 
+    tutor = get_object_or_404(BTUTOR, pk=pk)
+    term = sorted([tutor.first_term, tutor.second_term, tutor.third_term])[-1] 
     if request.method == "POST":
         my_file = request.FILES['files'] # get the uploaded file
         if not my_file.name.endswith('.txt'):
@@ -71,7 +71,7 @@ def upload_new_subject_scores(request):
                     return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
             else:
                 return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
-        if not QSUBJECT.objects.filter(tutor__subject__name__exact='BST', tutor__Class__exact=tutor.Class, tutor__first_term__exact='1st Term', tutor__session__exact=tutor.session): 
+        if QSUBJECT.objects.filter(tutor__subject__exact='BST', tutor__Class__exact=tutor.Class, tutor__first_term__exact='1st Term', tutor__session__exact=tutor.session): 
             if len(valid_input[0][1:]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
                 valid_input = [[x[0], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
         x = cader(tutor.Class)
@@ -82,16 +82,18 @@ def upload_new_subject_scores(request):
         final = [x+[y]+[z] for x,y,z in zip(raw_scores, grade, posi)]
         from .updates import get_or_create
         [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(id__exact=i[0]).exists()]
+        if tutor.subject == 'BST1' or tutor.subject == 'BST2':
+            tutor.subject = 'BST'
+        tutor.save()
         elapsed_time_secs = time.time() - start_time
         msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
         messages.success(request, msg)
         print(msg)
-    else:#
-        term = [int(i) for i in [tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]]]
-        term = ['-', '1st Term', '2nd Term', '3rd Term'][sorted(term)[-1]]
+    else:
         return render(request, 'result/loader.html', {'pk':pk, 'qry':tutor, 'term':term})
     ######################STAGE 2 ::: UPLOAD SCORES##################ENDS
-    return redirect('subject_view', pk=pk, md=1)#summarise all tutor's uploads
+    return redirect('offline', pk=pk)
+
 ###############################################################################
 ###
 def setup_questions(request): 

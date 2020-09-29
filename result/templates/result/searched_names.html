@@ -17,7 +17,7 @@
             <td>{{ forloop.counter }}</td>
             <td style="cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.full_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
-              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_subject_detail_one_subject' pk=scr.id %}" title="{{ scr.student_id }}" style="color:white;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:white;">Profile</a></button>
+              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Profile</a></button>
             </div>
             </td>
             <td>{{ scr.uid }}
@@ -29,36 +29,50 @@
               <pre style="width:70%;" >There are no records.</pre>
           {% endif %}
           <tfoot>
-                <tr><th colspan="5"><div style="color:white; font-size:13px;">Summary</div>|<em Class= "jss_one" title="Click to download JSS1 names"><a href="{% url 'name_down' pk=0 fm=3 ps=0 %}">{{Jo}}</a></em>--<em Class= "jss_two" title="Click to download JSS2 names"><a href="{% url 'name_down' pk=1 fm=3 ps=0 %}">{{Jt}}</a></em>--<em Class= "jss_three" title="Click to download JSS3 names"><a href="{% url 'name_down' pk=2 fm=3 ps=0 %}">{{Jh}}</a></em>--<em Class= "jss_one" title="Click to download SSS1 names"><a href="{% url 'name_down' pk=3 fm=3 ps=0 %}">{{So}}</a></em>--<em Class= "jss_two" title="Click to download SSS2 names"><a href="{% url 'name_down' pk=4 fm=3 ps=0 %}">{{St}}</a></em>--<em Class= "jss_three" title="Click to download SSS3 names"><a href="{% url 'name_down' pk=5 fm=3 ps=0 %}">{{Sh}}</a></em>| <div style="color:white;font-size:13px;">{{ counts }} listed names</div></th></tr>
+                <tr><th colspan="5">
+                     {% if all_page.has_other_pages %}
+              <em class="pagination" >
+                {% if all_page.has_previous %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.previous_page_number }}" style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&laquo;</span>
+                  </li>
+                {% endif %}
+                {% for i in all_page.paginator.page_range %}
+                  {% if all_page.number == i %}
+                    <li class="active" style="width:5%;line-height:65%;">
+                      <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;font-weight:bold;font-size:11px;line-height:65%;">{{ i }} <span class="sr-only">(current)</span></span>
+                    </li>
+                  {% else %}
+                    <li style="width:5%;line-height:65%;">
+                      <a href="?page={{ i }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% if all_page.has_next %}
+                  <li style="width:5%;line-height:65%;">
+                    <a href="?page={{ users.next_page_number }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</a>
+                  </li>
+                {% else %}
+                  <li class="disabled" style="width:5%;line-height:65%;">
+                    <span style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</span>
+                  </li>
+                {% endif %}
+              </em>
+            {% endif %}
+               <div style="color:white; font-size:13px;">Summary</div>|<em Class= "jss_one" title="Click to download JSS1 names"><a href="{% url 'name_down' pk=0 fm=3 ps=0 %}">{{Jo}}</a></em>--<em Class= "jss_two" title="Click to download JSS2 names"><a href="{% url 'name_down' pk=1 fm=3 ps=0 %}">{{Jt}}</a></em>--<em Class= "jss_three" title="Click to download JSS3 names"><a href="{% url 'name_down' pk=2 fm=3 ps=0 %}">{{Jh}}</a></em>--<em Class= "jss_one" title="Click to download SSS1 names"><a href="{% url 'name_down' pk=3 fm=3 ps=0 %}">{{So}}</a></em>--<em Class= "jss_two" title="Click to download SSS2 names"><a href="{% url 'name_down' pk=4 fm=3 ps=0 %}">{{St}}</a></em>--<em Class= "jss_three" title="Click to download SSS3 names"><a href="{% url 'name_down' pk=5 fm=3 ps=0 %}">{{Sh}}</a></em>| <div style="color:white;font-size:13px;">{{ counts }} names returned </div></th></tr>
           </tfoot>
         </table>
         <script>
           function clet(x){
                  var ind = x.split(' ')[1];
-                 window.open('http://127.0.0.1:8838/result/results_junior_senior/'+ind+'/')
+                 redirect('results_junior_senior/'+ind)
                   }
         </script>
- {% if all_page.has_other_pages %}
-      <div class="pagination" style="width:80%;margin-left:-50px;">
-        {% if all_page.has_previous %}
-          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in all_page.paginator.page_range %}
-          {% if all_page.number == i %}
-            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-          {% else %}
-            <li><a href="?page={{ i }}">{{ i }}</a></li>
-          {% endif %}
-        {% endfor %}
-        {% if all_page.has_next %}
-          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </div> 
-{% endif %}
+
 {% endblock %}
 
 

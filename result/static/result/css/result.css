@@ -11,13 +11,14 @@ label {
 }
 
 body {
-    background-color: hsla(70, 34%, 63%, 0.863)
+    background-color: hsla(70, 34%, 63%, 0.863);
     font-size: 13px;
     font-family: "Helvetica Neue" , "Lucida Grande" , "Segoe UI" , Arial, Helvetica, Verdana, sans-serif;
     margin: 0px;
     padding: 0px;
     height: 780px;
     width: 100%;
+    
 }
 
 .red_black {
@@ -152,6 +153,7 @@ body {
   background-color: dodgerblue; /* Grey background */
   width: 57%;
   margin-top: 600px;
+  background-color: rgb(229, 226, 226)
 }
 
 form {
@@ -620,6 +622,7 @@ p{ margin: 0px;
   margin-left: 10px;
   font-size: 13px;
   z-index: 1;
+  line-height: 15%;
   
 }
   
@@ -805,4 +808,39 @@ sswidth:100%; /* Width of the outside container */
   border-radius:5px;
   border:1px solid blue;
   color:blue;
+}
+.temp{
+  width:100%;border-radius:3px;background-color:green;color:white;font-size:14px;
+}
+.form_control {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size:14px;
+  line-height:1.42857143;
+  color:white;
+  background-color:rgb(69, 223, 22);
+  background-image: none;
+  border: 1px solid rgb(187, 53, 53);
+  border-radius: 4px;
+  
+}
+textarea.form-control {
+height: auto;
+}
+.disp{
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size:14px;
+  line-height:1.42857143;
+  color:white;
+  background-color:rgb(69, 223, 22);
+  background-image: none;
+  border: 1px solid white;
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(235, 110, 110, 0.2);
+}
+.extral{
+  width:100%;background-color:green;color:white;border-radius:5px;
 }

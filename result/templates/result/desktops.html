@@ -77,6 +77,10 @@
 		.images{
        			height:40px;wdith:40px;border-radius:4px;padding: 1px;border:2px solid blue;
   		}
+
+		.doned{
+			background-color:white;color:green;border-radius:5px;border:1px solid green;
+		}
 	    	.forReg{
 		 	width:60%;background-color:hsla(71, 78%, 87%, 0.294);color:white;border:3px solid hsla(70, 34%, 63%, 0.863);border-radius:5px;font-family:Broadway;font-size:10px;line-height:16px;
 	    	}
@@ -174,7 +178,7 @@
         
 		<div id="right">      
             <div onclick="closeNav('right')" id="rightbtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div> <br>
-			<a href="http://127.0.0.1:8838/result/" title="Home Page" style="color:white;font-weight:bold;">Main Page</a>
+			<a href="{% url 'flexing' %}" title="Home Page" style="color:white;font-weight:bold;">Main Page</a>
 			<br>
 			<br>
 			<br>
@@ -188,7 +192,8 @@
 					<option value="">Downloads</option>
 					<option value="1" class="selectbut" onclick="namDld('1')">csv</option>
 					<option value="2" class="selectbut" onclick="namDld('2')">pdf</option>
-                                        <option value="3" class="selectbut" onclick="namDld('3')">text</option>
+                    <option value="3" class="selectbut" onclick="namDld('3')">text</option>
+					<option value="4" class="selectbut" onclick="namDld('4')">Demo</option>
 				</select> 
             		<form id='form' hidden>
 				<div>
@@ -244,7 +249,7 @@
 						<option value="">JSS 1</option>
 						{% if jss1 %}
 						{% for scr in jss1 %}
-						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						<option value="{{ scr.id }}">{{ scr.subject }}/{{ scr.term }}</option>
 						{% endfor %}{% endif %}
 					</select>
 				</li>
@@ -253,7 +258,7 @@
 						<option value="">JSS 2</option>
 						{% if jss2 %}
 						{% for scr in jss2 %}
-						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						<option value="{{ scr.id }}">{{ scr.subject }}/{{ scr.term }}</option>
 						{% endfor %}{% endif %}
 					</select>
 				</li>
@@ -262,7 +267,7 @@
 						<option value="">JSS 3</option>
 						{% if jss3 %}
 						{% for scr in jss3 %}
-						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						<option value="{{ scr.id }}">{{ scr.subject }}/{{ scr.term }}</option>
 						{% endfor %}{% endif %}
 					</select>
 				</li>
@@ -271,7 +276,7 @@
 						<option value="">SSS 1</option>
 						{% if sss1 %}
 						{% for scr in sss1 %}
-						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						<option value="{{ scr.id }}">{{ scr.subject }}/{{ scr.term }}</option>
 						{% endfor %}{% endif %}
 					</select>
 				</li>
@@ -280,7 +285,7 @@
 						<option value="">SSS 2</option>
 						{% if sss2 %}
 						{% for scr in sss2 %}
-						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						<option value="{{ scr.id }}">{{ scr.subject }}/{{ scr.term }}</option>
 						{% endfor %}{% endif %}
 					</select>
 				</li>
@@ -289,17 +294,11 @@
 						<option value="">SSS 3</option>
 						{% if sss3 %}
 						{% for scr in sss3 %}
-						<option value="{{ scr.id }}">{{ scr.subject.name }}/{{ scr.term }}</option>
+						<option value="{{ scr.id }}">{{ scr.subject }}/{{ scr.term }}</option>
 						{% endfor %}{% endif %}
 					</select>
 				</li>
 			</ol>
-			<script>
-				$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
-					location.replace('http://127.0.0.1:8838/result/'+ ""+$(this).val() + '/1/')
-				})
-			</script>
-			
 			
 			<select value="" id="Subject" class="selectbut">
 				<option value="">Subject</option>
@@ -309,6 +308,7 @@
 				<option value="BIO">Biology</option>
 				<option value="BST1">Basic Science</option>
 				<option value="BST2">Basic Technology</option>
+                <option value="BST">Basic Science & Technology</option>
 				<option value="BUS">Business Studies</option>
 				<option value="CHE">Chemistry</option>
 				<option value="CIV">Civic Education</option>
@@ -353,13 +353,10 @@
 			<u>Instructions.</u>	
 			<br>
 			<label>Enter all student names separated with comma.</label>
-            <input type="text" placeholder="Enter Names..." style="text-align:center;border:1px solid red;border:2px solid blue;color:black;border-radius:5px;width:100%;" name="list" id="list">
+			<textarea name="list" id="list" cols="110" rows="5" placeholder="Enter Names..." style="border:1px solid red;border:2px solid blue;color:black;border-radius:5px;width:100%;font-size:10px;"></textarea>
             <button name="submit" id="submit" style="text-align:center;border:1px solid red;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-forward"></span></button>
 			  <br>
-			<br>
-			<br>
-			<br>
-			<br>
+			
 			<br>
 			<br>
 			<span id="date"></span>
@@ -387,9 +384,11 @@
 				</a>
 				<u class="red_black" id="term">First Term</u>
 				<div>
-				<label id="header2">UMMUL-QURA HIGH SCHOOL</label><label id="header3">{<span style="font-size:14px;" id="dated"></span>}</label><img src="{% static "result/iiro.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
+				<label id="header2">UMMUL-QURA HIGH SCHOOL</label><label id="header3">{<span style="font-size:14px;" id="dated"></span>}</label><img src="{% static "result/uqhs.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
 				</div>
 			</div>
+							 
+				
 				<div>
 					<table class="qsubject">
 					<thead>
@@ -439,8 +438,8 @@
                                 <td>
                                 <input class="input" value="Student Name" id="name_{{ forloop.counter }}" disabled>
                                 </td>
-                                <td style="color:white;width:10%;" title="Connection required"><em id="states_{{ forloop.counter }}"></em><br>
-                                <em id="oky_{{ forloop.counter }}" hidden><span class="glyphicon glyphicon-ok" style="background-color:white;color:green;border-radius:5px;border:1px solid green;" ></span></em>
+                                <td  id="tb_{{ forloop.counter }}" style="color:white;width:10%;" title="Connection required">
+								<em id="states_{{ forloop.counter }}"></em>
                                 <em id="error_{{ forloop.counter }}" hidden><span class="glyphicon glyphicon-remove" style="background-color:white;color:red;border-radius:5px;border:1px solid red;" ></span></em>
                                 </td>
                                 <input type="text" id="student_id_{{ forloop.counter }}" value="AA/J/24/1436" hidden>
@@ -494,7 +493,7 @@
 					</em>
 					<td>
 						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="go_to('pdf', 'none')">
-							 <a href="{% url 'upload_txt'  %}"><span class="glyphicon glyphicon-upload" title="add a student's score" class='glh'></span></a>
+							<span class="glyphicon glyphicon-upload" title="add a student's score" class='glh'></span>
 						</button>
 					</td>
 					<td> <strong>AGR:</td>
@@ -528,7 +527,7 @@
 						
 					</td>
 					<td>
-						<button  onclick="positioning()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
+						<button  onclick="positioning()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="uploading">
 						<span class="glyphicon glyphicon-record"></span>
 						</button>
 					</td>
@@ -547,14 +546,39 @@
 					</tfoot>
 					</table>
 				<script>
+				var counter = {count:0};
+				function waring(targer){
+				var cot = 0;
+				var id = setInterval(frame , 450);
+				function frame(){
+					if (counter.count == 1){
+						clearInterval(id);
+					}
+					else{
+						cot++;
+						$(targer).toggle(); 
+					}
+				} 
+				};
+				function redirect(to) {
+					var next = window.location.href.split('offline')[0]+to+'/';
+        			location.replace(next);
+					};
+			
+				$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
+					redirect($(this).val()+'/1')
+				})
+			
                  function namDld(fmt){
-		 			var pair_subject =  [' ', 'CHE', 'ACC', 'ARB', 'GOV', 'ICT', 'GEO', 'AGR', 'YOR', 'BIO', 'ECO', 'PHY', 'LIT', 'COM', 'ELE', 'CTR', 'GRM'];
+		 			var pair_subject =  ["ACC", "AGR", "ARB", "BIO", "BST", "BUS", "CHE", "CIV", "COM", "CTR", "ECO", "ELE", "ENG", "FUR", "GEO", "GOV", "GRM", "HIS", "ICT", "IRS", "LIT", "MAT", "NAV", "PHY", "PRV", "YOR"];
 		 			var Class = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']; 	
 		 	 		if (pair_subject.indexOf($("#Subject").val()) != -1){
  			 			var ind = ""+Class.indexOf($("#Class").val())+'/' + fmt +'/' + ""+pair_subject.indexOf($("#Subject").val());
-		 	 			location.replace("http://127.0.0.1:8838/result/name_down/"+ind+'/')
- 					}else{var ind = ""+Class.indexOf($("#Class").val())+ '/' +fmt +'/0/';
- 			 				window.open("http://127.0.0.1:8838/result/name_down/"+ind)
+		 	 			redirect("name_down/"+ind)
+ 					}
+					else{
+						var ind = ""+Class.indexOf($("#Class").val())+ '/' +fmt+'/0/';
+ 			 			redirect("name_down/"+ind)
  						}
 					};
 					$("#export").change(function(){
@@ -620,18 +644,18 @@
 								};
 								if (x.status){
 								if (statusErrorMap[x.status]){
-									alert(statusErrorMap[x.status])
+									document.getElementById("failed").innerHTML += statusErrorMap[x.status]
 								}
 								else{
-									alert('Uncaught Error.\n' + x.responseText);
+									document.getElementById("failed").innerHTML += 'Not connected.\nPlease verify your network connection.' + x.responseText;
 								}
 								}
 								else{
 									if (statusErrorMap[y]){
-									alert(statusErrorMap[y])
+									document.getElementById("failed").innerHTML += statusErrorMap[y]
 								}
 								else{
-									alert('Uncaught Error.\n' + y);
+									document.getElementById("failed").innerHTML += 'Not connected.\nPlease verify your network connection.' + y;
 								}
 								};
 
@@ -640,7 +664,7 @@
 					function save(){
 						alert($("#birth").val())
 						}
-							//$("#tb_1, #tb_2,  #tb_3,  #tb_4,  #tb_5,  #tb_6,  #tb_7,  #tb_8,  #tb_9,  #tb_10").show();
+							
 							function openNav(x) { 
 								$(".glh").css('color', 'gray');                       
 								$("#"+x+'m').css('color', 'blue');
@@ -767,13 +791,15 @@
 										}
 									});
 							request.fail(function( jqXHR, textStatus) {
-		errors(jqXHR, textStatus)
+							errors(jqXHR, textStatus)
 											})};
 					
                         $("#Subject").change(function(){
+							document.getElementById("Class").value = '';
 							$("#subject").html($(this).val());
 							$("#Term").show();});
                         $("#Term").change(function(){
+							document.getElementById("Class").value = '';
 							$("#term").html($(this).val());
 							$("#Class").show()});
 
@@ -785,33 +811,37 @@
 							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
 							dataType: 'json',
 							success: function(data){
-								if (data.status == true){
-									$("#dated").html(data.updated);
-									$("#tutor_name").html(data.tutor_name);
-									dom.tutor_id = data.tutor_id;
-                                                                        dom.tutor_name = data.tutor_name;
-									go_to_load_data(data.tutor_id)
-								}
-								else{
-									var create = confirm("No "+  $("#Class").val() + '/'+ $("#Subject").val() +" in your accoount! Do you  want to create it?");
-									if (create == true){
-										var request = $.ajax({
-											url: "{% url 'responsive_updates' pk=0 %}",
-											data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"create"},
-											dataType: 'json',
-											success: function(data) {
-											if (data.status){
-		
-												$("#dated").html(data.updated);
-												$("#tutor_name").html(data.tutor_name);
-												dom.tutor_id = data.tutor_id;
-												go_to_load_data(data.tutor_id)}
-												
-												}
-								});
-								request.fail(function(jqXHR, textStatus) {
-			  					errors(jqXHR, textStatus)
-																})}}
+								if (data.redirect){
+									redirect(data.redirect)
+									}else{
+									if (data.status == true){
+										$("#dated").html(data.updated);
+										$("#tutor_name").html(data.tutor_name);
+										dom.tutor_id = data.tutor_id;
+										dom.tutor_name = data.tutor_name;
+										go_to_load_data(data.tutor_id)
+									}
+									else{
+										var create = confirm("No "+  $("#Class").val() + '/'+ $("#Subject").val() +" in your accoount! Do you  want to create it?");
+										if (create == true){
+											var request = $.ajax({
+												url: "{% url 'responsive_updates' pk=0 %}",
+												data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"create"},
+												dataType: 'json',
+												success: function(data) {
+												if (data.status){
+			
+													$("#dated").html(data.updated);
+													$("#tutor_name").html(data.tutor_name);
+													dom.tutor_id = data.tutor_id;
+													go_to_load_data(data.tutor_id)}
+													
+													}
+									});
+									request.fail(function(jqXHR, textStatus) {
+									errors(jqXHR, textStatus)
+																	})}}
+																}
 							}
 							
 							});
@@ -833,14 +863,14 @@
                             }});
                              $("#rowNum").change(function(){
                         cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
-		 	var index = Number($(this).val());
-		 	for (var i = 1; i < index+1; i++){
- 				var itr = ""+i;
- 				 $("#tb_"+itr).show();
-				  $("#tb_"+itr).addClass("oneBox");
-                
- 			}
-                                            });
+						var index = Number($(this).val());
+						for (var i = 1; i < index+1; i++){
+							var itr = ""+i;
+							$("#tb_"+itr).show();
+							$("#tb_"+itr).addClass("oneBox");
+							
+						}
+						});
 					function cls(len){
 							for (var i = 1; i < len; i++) { 
                                 var itr = ""+i;
@@ -871,7 +901,7 @@
 						};
 						
 						
-
+						function pagging(x){$(".page_"+x).toggle()};
 						function pages(){
 						var seed = [];var dimed = [0]
 						var page = 36;
@@ -934,11 +964,10 @@
 							};
 							$("#Subject").change(function(){$("#min, #max").html($(this).val())});
 						function go_to(key, i){
-                            if (I == 'none') {
-                            	window.open('http://127.0.0.1:8838/result/upload_txt/'+ dom.tutor_id +'/', 'newWin');
+                            if (i == 'none') {
+								redirect('upload_txt/'+ dom.tutor_id)
                                     }
-                            else{
-                                window.open('http://127.0.0.1:8838/result/'+key+'/'+ dom.tutor_id +'/'+i+'/', 'newWin');
+                            else{redirect(+key+'/'+ dom.tutor_id +'/'+i)
                                     }
 							};
 						function doOneach(x){
@@ -955,25 +984,51 @@
 									$("#avg_"+itr).html(avg);
 									grades(avg, "grd_"+itr, $("#Class").val()[0]);};
 									};
-							rel = JSON.parse(localStorage.getItem("refresh"));
-							if (rel){
-								dom.Class = rel.Class; dom.Subject = rel.Subject; dom.Term = rel.Term;
-								Class = rel.Class; Subject = rel.Subject; Term = rel.Term; time = rel.last_updated;
-                                document.getElementById('Class').value = Class;document.getElementById('Subject').value = Subject;document.getElementById('Term').value = Term;
-                                $('#sub_class').html(Class);$('#subject').html(Subject);$('#term').html(Term);$("#Class").show();$("#Term").show();$("#tutor_name").html(rel.tutor_name);
+						function forRef(data){
+										dom.Class = data.Class; 
+										dom.Subject = data.Subject; 
+										dom.Term = data.Term;
+										document.getElementById('Class').value = data.Class;
+										document.getElementById('Subject').value = data.Subject;
+										document.getElementById('Term').value = data.Term;
+										$('#sub_class').html(data.Class);
+										$('#subject').html(data.Subject);
+										$("#min, #max").html(data.Subject)
+										$('#term').html(data.Term);
+										$("#Class").show();
+										$("#Term").show();
+										$("#tutor_name").html(data.tutor_name);
+							} 
+							if ('{{qry}}' !='None'){
+								var data = {
+									Class:'{{ qry.Class }}', 
+									Subject:'{{ qry.subject }}',
+									tutor_name:'{{ qry.teacher_name }}'};
+								$("#dated").html('{{ qry.updated }}');
+								if ('{{ qry.second_term }}' == '2nd Term' && '{{ qry.third_term }}' == '1st Term'){
+									data.Term = '{{ qry.second_term }}';
+								}
+								else{
+								data.Term = '{{ qry.third_term }}';
+								};forRef(data)
+								dom.tutor_id = '{{qry.id}}';
+								go_to_load_data('{{qry.id}}')
+								}
+							else{
+								rel = JSON.parse(localStorage.getItem("refresh"));
+								if (rel){
+								forRef(rel)
 								var callBack = ['default'];
 								for (var i = 1; i < rel['len']+1; i++){
 								var itr = ""+i;
 								callBack.push([rel['id_'+itr]['name'], rel['id_'+itr]['student_id'], rel['id_'+itr]['test'], rel['id_'+itr]['agn'], rel['id_'+itr]['atd'], rel['id_'+itr]['exam'], rel['id_'+itr]['grade'], rel['id_'+itr]['posi'], rel['id_'+itr]['gender'], rel['id_'+itr]['fagr'], rel['id_'+itr]['sagr'], rel['id_'+itr]['aagr'], rel['id_'+itr]['avr']])
 								};
-								$("#min, #max").html(rel.Subject);
-											if (rel.len != 0){
-								reload({'info':0, list:callBack}, Class);
-								$("#dated").html(rel.last_updated);
-							    }else{
-								$("#tb_1, #tb_2,  #tb_3,  #tb_4,  #tb_5,  #tb_6,  #tb_7,  #tb_8,  #tb_9,  #tb_10").show();
-							    };};
-                        
+								reload({'info':0, list:callBack}, rel.Class);
+								}
+								else{
+									$("#tb_1, #tb_2,  #tb_3,  #tb_4,  #tb_5,  #tb_6,  #tb_7,  #tb_8,  #tb_9,  #tb_10").show();}
+									};
+
 							
 						function refresh(){
                             var allRaw = $(".newBox, .oneBox");
@@ -985,8 +1040,8 @@
 								grades(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]), "grade_"+itr, dom.Class[0]);  
                             } };	
                     	$("button[name='submit']").click(function() {
-                            var inputs = $("input[name='list']");
-                            var arr = inputs.val().split(",");
+							cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+                            var arr = $("#list").val().split(',');
                             arr.unshift("Defualt");
                             cls(dom.len + 1)
 							for (var i = 1; i < arr.length; i++) { 
@@ -1054,7 +1109,7 @@
 							};
 
                         function positioning(){
-							doPosi();
+							doPosi();waring("#uploading");
 						};
                         function positions(size){
                             posi = []
@@ -1096,6 +1151,7 @@
 									return dom;
                             };
                         function doPosi(){
+							var jdata = {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'size':$(".oneBox, .newBox").length+1};
 							dom = saveState(); dim = [];
 							var posi, result, idx, itr;
 							posi = positions(arrayOne);
@@ -1110,21 +1166,6 @@
 								dom['id_'+itr]['posi'] = posi[results[0]];
 								dim.push(dom['id_'+itr]['grade']);
 								$("#tb_"+itr).addClass(dom['id_'+itr]['grade']);
-								if (dom['id_'+itr]['name'] != "Student Name"){
-								var request = $.ajax({
-										url:"{% url 'responsive_updates' pk=0 %}",
-										data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'name':dom['id_'+itr]['name'], 'student_id':dom['id_'+itr]['student_id'],'test':dom['id_'+itr]['test'], 'agn':dom['id_'+itr]['agn'], 'atd':dom['id_'+itr]['atd'], 'total':dom['id_'+itr]['total'], 'exam':dom['id_'+itr]['exam'], 'agr':dom['id_'+itr]['agr'], 'grade':dom['id_'+itr]['grade'], 'posi':dom['id_'+itr]['posi'], 'sn':i},
-										dataType: 'json',
-										success: function(data) {
-											if (data.count){
-												$(data.status).show();
-												
-											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
-										}
-									});
-								request.fail(function(jqXHR, textStatus) {
-									errors(jqXHR, textStatus);
-			  						})} 
                             return results ;}
                             countGrade(dim);
                             function listening(data){
@@ -1136,9 +1177,36 @@
 		              }return [scr, sdr]
 	                      }
 	                    
-                            var data = listening(saveState());
+							var data = listening(saveState());
                             for (var i = 0; i < data[0].length;  i++){
-                                find(data[0][i], data[1].sort((a, b) => b - a), i+1);};
+								find(data[0][i], data[1].sort((a, b) => b - a), i+1);
+								};
+							for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
+									var itr = ""+i;
+									jdata['name_'+itr] = $("#name_"+itr).val(); 
+									jdata['student_id_'+itr] = $("#student_id_"+itr).val();
+									jdata['test_'+itr] = $("#test_"+itr).val(); 
+									jdata['agn_'+itr] = $("#agn_"+itr).val(); 
+									jdata['atd_'+itr] = $("#atd_"+itr).val(); 
+									jdata['total_'+itr] = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]); 
+									jdata['exam_'+itr] = $("#exam_"+itr).val(); 
+									jdata['agr_'+itr] = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]); 
+									jdata['grade_'+itr] = document.getElementById("grade_"+itr).value; 
+									jdata['posi_'+itr] = dom['id_'+itr]['posi']
+									};
+								var request = $.ajax({
+										url:"{% url 'responsive_updates' pk=0 %}",
+										data:jdata,
+										dataType: 'json',
+										success: function(data) {
+											counter.count = 1;
+											var next = window.location.href.split('/')[0]+"render/pdf/2/0/";
+        									window.open(next);
+										}
+									});
+								request.fail(function(jqXHR, textStatus, data) {
+									errors(jqXHR, textStatus);
+			  						}) 
                             dom.sum = sum(data[1]);dom.avg = average(del(data[1])).toFixed(2);
                             $('#agr').html(dom.sum);
 			    			$("#avr").html(dom.avg);
@@ -1160,6 +1228,7 @@
 		<div class="sidenavs" id="sidenav">
                    <div onclick="closeNav('middle')" id="middlebtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div>
                    <em id='response' style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>
+				   <ol id='failed' style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;"></ol>
                    <ol id='success' style="border:2px solid blue;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid blue;color:black;border-radius:5px;color:white;"></ol>
 				<div style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>SEARCH RESULTs <em id='count'></em></div>	
 				<table style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	

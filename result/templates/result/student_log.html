@@ -203,6 +203,10 @@
     </script>
     
     <script>
+        function redirect(to) {
+		var next = window.location.href.split('logins')[0]+to+'/';
+        location.replace(next)
+		};
         $("button[name='submit']").click(function() {
             if ($(this).val() == 'ent'){
                 $("#take_ent").show();
@@ -218,7 +222,7 @@
                 var pk = parseInt(localStorage.getItem('passward'))
                 var small = $(this).val();
                 var cap = small.toUpperCase();
-                location.replace('http://127.0.0.1:8838/result/student_exam_page/'+pk+'/'+cap+'/')
+                redirect('student_exam_page/'+pk+'/'+cap+'/')
              
             }
         });

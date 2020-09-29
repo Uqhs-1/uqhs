@@ -120,10 +120,10 @@ from django.conf import settings
 import os
 class Render:
     @staticmethod
-    def render(path: str, params: dict, filename):
+    def render(path: str, params: dict, filepath, filename):
         template = get_template(path)
         html = template.render(params)
-        path = os.path.join(settings.MEDIA_ROOT, 'pdf/marksheets/'+filename)
+        path = os.path.join(settings.MEDIA_ROOT, 'static/result/pdf/'+filepath)
         result = open(path+'.pdf', 'wb')
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
         result.close()
@@ -135,3 +135,16 @@ class Render:
              return response
         else:
             return HttpResponse("Error Rendering PDF", status=400)
+
+from django.http import JsonResponse
+class Rendered:
+    @staticmethod
+    def render(path: str, params: dict, filepath, filename):
+        template = get_template(path)
+        html = template.render(params)
+        path = os.path.join(settings.MEDIA_ROOT, 'static/result/pdf/'+filepath)
+        result = open(path+'.pdf', 'wb')
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+        result.close()
+        data = {'status': filename}
+        return JsonResponse(data)

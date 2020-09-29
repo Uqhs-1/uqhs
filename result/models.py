@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse 
+from datetime import date
 import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -8,22 +9,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 ################################################################################################'18/19'
-
-
-class ASUBJECTS(models.Model):#######################REMOVEABLE######################################
-    codex = tuple([('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
-    name = models.CharField(max_length=30, choices= codex, blank=True, null=True, default='ENG', help_text='select subject NAME',)
-    model_in = models.CharField(max_length=8, default='subject', blank=True, null=True)
-    class Meta:
-          ordering = ('name',)
-    
-    def __str__(self):
-         return self.name
         
 class BTUTOR(models.Model):
     accounts = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, help_text='loggon-account:move account here', related_name='btutor')
     teacher_name = models.CharField(max_length=50, blank=True, null=True, help_text='Subject Teacher')###
-    subject = models.ForeignKey(ASUBJECTS, on_delete=models.CASCADE, null=True, help_text='select subject NAME')
+    codex = tuple([('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
+    subject = models.CharField(max_length=30, choices= codex, blank=True, null=True, default='ENG', help_text='select subject NAME',)
     class_status = (('JSS 1', 'jss_one'), ('JSS 2', 'jss_two'), ('JSS 3', 'jss_three'), ('SSS 1', 'sss_one'), ('SSS 2', 'sss_two'), ('SSS 3', 'sss_three'))
     Class = models.CharField(max_length=30, choices=class_status, null=True, default='JSS 1', help_text='select subject CLASS')
     term_status = (('1st Term', 'first term'), ('2nd Term', 'second term'), ('3rd Term', 'third term'))
@@ -47,22 +38,18 @@ class BTUTOR(models.Model):
     class Meta:
           ordering = ('teacher_name',) # helps in alphabetical listing. Sould be a tuple
     def __str__(self):
-        """String for representing the Model object."""
-        return f'{self.accounts.username}:{self.id}/{self.Class}/{self.subject}/{self.term}_{self.updated.day}/{self.updated.month}/{self.updated.year}_{self.updated.hour}:{self.updated.minute}:{self.updated.second}'
+        """String for representing the Model object."""#marksheets/2/3rd/BUS_18_0.pdf
+        return f'{self.subject}_{self.session[-2:]}_0.pdf:{self.accounts.username}:/{self.id}/{self.updated.day}/{self.updated.month}/{self.updated.year}_{self.updated.hour}:{self.updated.minute}:{self.updated.second}'
     
     def save(self):
         from .utils import session
-        if self.status == 'delete':
-            from django.shortcuts import redirect
-            TUTOR_HOME.objects.get(first_term__accounts = self.accounts).delete()
-            super(BTUTOR, self).delete()
-            redirect('home')
         if not self.id:
             self.created = datetime.date.today()
             self.session = session().profile.session
         if self.accounts is not None:
             self.teacher_name = f'{self.accounts.profile.title} {self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
         self.updated = datetime.datetime.today()
+        self.model_summary = self.accounts.profile.last_name[0]+self.accounts.profile.first_name[0]
         if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() is not 0:
             males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.filter(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session).first(), student_name__gender__exact = 1).count()
             females = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.filter(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session).first(), student_name__gender__exact = 2).count()
@@ -162,14 +149,29 @@ class CNAME(models.Model):
     master_comment = models.CharField(max_length=115, blank=True, null=True, default= 'He is a responsible and reliable student.')
     principal_comment = models.CharField(max_length=115, blank=True, null=True, default= 'Fairly good performance, you can do better.')
     resumption = models.DateTimeField(editable=False, blank=True, null=True,)
+
+    annual_scores = models.IntegerField(blank=True, null=True, default=0)
+    annual_avr = models.FloatField(max_length=4, blank=True, null=True, default=0)
+    posi = models.CharField(max_length=5, blank=True, null=True)
+
+
     class Meta:
           ordering = ('full_name',) # helps in alphabetical listing. Sould be a tuple
     
     def save(self):
         from .utils import session
+        from .models import QSUBJECT 
+        today = datetime.date.today()
+        if self.birth_date:
+            self.age = str(int((today - date(int(str(self.birth_date).split('-')[0]), int(str(self.birth_date).split('-')[1]), int(str(self.birth_date).split('-')[2]))).days/365))
         if not self.id:
-            self.created = datetime.date.today()
+            self.created = today
             self.session = session().profile.session
+        bsheet = QSUBJECT.objects.filter(student_id__exact=self.uid, tutor__Class__exact=self.Class, tutor__session__exact=session().profile.session)
+        if bsheet.count() >= 9:
+            all_avg = [i.avr for i in bsheet if i.avr is not None]
+            self.annual_scores = round(sum(all_avg), 2)
+            self.annual_avr = round((sum(all_avg)/sum(x > 0 for x in all_avg)), 2)
         self.resumption = session().profile.resumption
         self.updated = datetime.datetime.today()
         self.sex = ['', 'Male', 'Female'][self.gender]
@@ -243,12 +245,6 @@ class QSUBJECT(models.Model):#step5-subject
         if self.student_name is not None:
             self.student_id = self.student_name.last_name[0]+self.student_name.first_name[0]+'/'+self.tutor.Class[0]+'/'+self.student_name.session[-2:]+'/'+str(self.student_name.id)
             self.gender = self.student_name.gender
-        bsheet = QSUBJECT.objects.filter(student_name__exact=self.student_name, tutor__Class__exact=self.tutor.Class, tutor__session__exact=self.tutor.session)
-        if bsheet.count() == 10:
-            self.term = self.tutor.third_term
-            all_avg = [i for i in [i[0] for i in list(bsheet.values_list('avr'))] if i is not None]
-            self.annual_scores = round(sum(all_avg), 2)
-            self.annual_avr = round((sum(all_avg)/sum(x > 0 for x in all_avg)), 2)
         cname = CNAME.objects.get(pk=self.student_name.id)
         cname.Class = self.tutor.Class
         cname.term = self.tutor.term
@@ -379,34 +375,5 @@ class QUESTION(models.Model):
     def __str__(self):
         return self.subjects 
 
-   
-class STUDENT(models.Model):
-    student_name = models.ForeignKey(CNAME, on_delete=models.CASCADE, null=True)#
-    student_id = models.CharField(max_length=200, default='2019/JS_1/10', null=True)
-    subject = models.CharField(max_length=20, default='2019/JS_1/10', null=True)
-    first = models.ForeignKey(QSUBJECT, on_delete=models.SET_NULL, null=True, related_name='s_first')
-    second = models.ForeignKey(QSUBJECT, on_delete=models.SET_NULL, null=True, related_name='s_second')
-    third = models.ForeignKey(QSUBJECT, on_delete=models.SET_NULL, null=True, related_name='s_third')
-    save_1 = models.CharField(max_length=1000, blank=True, null=True)
-    save_2 = models.CharField(max_length=1000, blank=True, null=True)
-    save_3 = models.CharField(max_length=1000, blank=True, null=True)
-    
-    class Meta:
-          ordering = ('id',) # helps in alphabetical listing. Sould be a tuple
-    
-    def save(self):
-        if not self.id:
-            self.student_name = self.first.student_name
-        if self.first is not None:
-            self.subject = self.first.tutor.subject
-            self.student_id = self.first.student_id
-            self.second = QSUBJECT.objects.filter(tutor__subject__exact=self.first.tutor.subject, tutor__Class__exact=self.first.tutor.Class, tutor__term__exact='2nd Term', student_id__exact=self.student_id).first()
-            self.third = QSUBJECT.objects.filter(tutor__subject__exact=self.first.tutor.subject, tutor__Class__exact=self.first.tutor.Class, tutor__term__exact='3rd Term', student_id__exact=self.student_id).first()
-        super(STUDENT, self).save()
-
-    def __str__(self):
-        return self.student_id
-
-    
 
 

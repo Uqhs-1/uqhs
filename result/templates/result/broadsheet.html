@@ -9,11 +9,11 @@
 	<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js">
-    //background-image: url("/office/jango_env/uqi/result/static/result/iiro.jpg");</script>
-    <title>{% block title %}{{ qry.subject.name }}:{{ qry.Class }}:{{ qry.term }}{% endblock %}</title>
+    //background-image: url("/office/jango_env/uqi/result/result/static/result/iiro.jpg");</script>
+    <title>{% block title %}{{ request.user.profile.class_in }} BROADSHEET{% endblock %}</title>
     <style>
             @page {
-				
+				background-image: url("/app/result/static/result/iiro.jpg");
                 opacity:0.3;
                 size: A4 landscape;
                 margin-top:1.5cm;
@@ -41,8 +41,8 @@
 			border-radius: 2px;
 			font-family: Baskerville Old Face;
 			text-align: center;
-			font-size: 8px;
-			line-height:5px;
+			font-size: 11px;
+			line-height:7px;
 			
             }
             .forTd {
@@ -95,22 +95,27 @@
 				
 		</style>
 </head>
-<body>
-    <div class="capt">
-				<div id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;"><strong style="font-size:28px;">UMMUL-QURA HIGH SCHOOL</strong><br>
-				<Address>
-				<State class="br">Arowona Bus-Stop, Amuloko Akanran Road, Ibadan, Oyo </State><br>
-				<strong>Contact</strong>: 08053776177, 07042412052<br>
-				<strong>E-mail</strong>: ummulqura@marktoob.com, ummulqr@yahoo.com<br>
-				</Address>
-				<strong style="font-size:18px;">EXAMINATION SCORE SHEET</strong>
-                <br>
-				<aside><strong>{{ Class }}:</strong><u>{{ term }}</u></aside>
-				</div>
-			</div>
+<body style="background-color:#ddd;text-align:center;">
+   <div class="capt">
+				<table>
+					<td style="width:10%;"><img src="/app/result/static/result/iiro.jpg" height="80"  width="80" alt=""/></td><td id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;"><strong style="font-size:28px;">UMMUL-QURA HIGH SCHOOL</strong></td>
+					<td>
+						<div id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;">
+							<Address>
+							<State class="br">Arowona Bus-Stop, Amuloko Akanran Road, Ibadan, Oyo State</State><br>
+							<i>Contact</i>: 08053776177, 07042412052<br>
+							<i>E-mail</i>: ummulqura@marktoob.com, ummulqr@yahoo.com<br>
+							</Address>
+							<strong style="font-size:18px;">EXAMINATION SCORE SHEET</strong><br>
+							<aside><strong>SUBJECT:</strong><u>{{ subject_count }}</u></aside><aside> <strong>CLASS:</strong><u>{{ Class }}</u> </aside><aside><strong>TERM:</strong><u>{{ term }}</u></aside>
+						</div>
+					</td>
+					<td style="width:10%;"><img src="/app/result/static/result/uqhs.jpg" height="80"  width="80" alt=""/></td>
+				</table>		
+	</div>
     <table class="table">
 			<tr style="background:#7c84df;">
-				<th style="background-color:#FFA07A;width:5%;">sn</th>
+				<th style="background-color:#FFA07A;">SN</th>
 				<th style="background-color:#FFA07A;width:15%;">
 				<button onclick="$('.gen_2').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;">Males</button>
 				<a href="">
@@ -126,7 +131,7 @@
               <th colspan="4" style="background-color:#FFA07A;"> REMARKS</th>
             </tr> 
             <tr>  
-       	  <td style="width:1%;">-</td>
+       	  <td style="">-</td>
        	  <td style="color:black;width:15%;">terms</td>
                <td>3</td>
                <td>2</td>
@@ -148,36 +153,18 @@
                <td>2</td>
                <td>1</td>
                <td>A</td> 
-               <td>3</td>
-               <td>2</td>
-               <td>1</td>
-               <td>A</td> 
-               <td>3</td>
-               <td>2</td>
-               <td>1</td>
-               <td>A</td> 
-               <td>3</td>
-               <td>2</td>
-               <td>1</td>
-               <td>A</td> 
-               <td>3</td>
-               <td>2</td>
-               <td>1</td>
-               <td>A</td> 
-               <td>3</td>
-               <td>2</td>
-               <td>1</td>
-               <td>A</td> 
-               <td>T</td>
-               <td>A</td>
-               <td>P</td> 
+               
+               <td>Sum</td> 
+               <td>Avg</td>
+               <td>Pos</td>
+               <td>Student ID</td> 
         </tr>
 				
                         
             <tbody>
-             <tr>{% for a, b, c, d, e, f, g, h, i, j, posi in subjects %}
+             <tr>{% for a, b, c, d, e in subjects %}
                <td style="background-color:#FFA07A;">{{ forloop.counter }}</td>
-       	  <td style="font:VeraIt;font-size:9px;background-color:#ebe1c6;">{{ a.student_name }}</td>
+       	  <td style="font:VeraIt;font-size:9px;background-color:#ebe1c6;width:16%;">{{ a.student_name }}</td>
                <td style="color:black;background-color:#9ad9c4;">{{ a.agr }}</td>
                <td style="color:black;background-color:#9ad9c4;">{{ a.sagr }}</td>
                <td style="color:black;background-color:#9ad9c4;">{{ a.fagr }}</td>
@@ -198,56 +185,37 @@
                <td style="color:black;background-color:#9ad9c4;">{{ e.sagr }}</td>
                <td style="color:black;background-color:#9ad9c4;">{{ e.fagr }}</td>
                <td style="color:black;background-color:#dfe39d;">{{ e.avr }}</td> 
-               <td style="color:black;background-color:#9ad9c4;">{{ f.agr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ f.sagr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ f.fagr }}</td>
-               <td style="color:black;background-color:#dfe39d;">{{ f.avr }}</td> 
-               <td style="color:black;background-color:#9ad9c4;">{{ g.agr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ g.sagr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ g.fagr }}</td>
-               <td style="color:black;background-color:#dfe39d;">{{ g.avr }}</td> 
-               <td style="color:black;background-color:#9ad9c4;">{{ h.agr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ h.sagr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ h.fagr }}</td>
-               <td style="color:black;background-color:#dfe39d;">{{ h.avr }}</td> 
-               <td style="color:black;background-color:#9ad9c4;">{{ i.agr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ i.sagr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ i.fagr }}</td>
-               <td style="color:black;background-color:#dfe39d;">{{ i.avr }}</td> 
-               <td style="color:black;background-color:#9ad9c4;">{{ j.agr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ j.sagr }}</td>
-               <td style="color:black;background-color:#9ad9c4;">{{ j.fagr }}</td>
-               <td style="color:black;background-color:#dfe39d;">{{ j.avr }}</td> 
-               <td style="color:black;background-color:#989c5b;color:white;">{{a.annual_scores}}</td>
-               <td style="color:black;background-color:#989c5b;color:white;">{{a.annual_avr}}</td>
-               <td style="color:black;background-color:#989c5b;color:white;">{{posi}}</td>
-               <td style="background-color:#FFA07A;">{{ forloop.counter }}</td>
+                
+               <td style="color:black;background-color:#989c5b;color:white;">{{a.student_name.annual_scores}}</td>
+               <td style="color:black;background-color:#989c5b;color:white;">{{a.student_name.annual_avr}}</td>
+               <td style="color:black;background-color:#989c5b;color:white;">{{a.student_name.posi}}</td>
+               <td style="background-color:#FFA07A;width:10%;">{{ a.student_name.uid }}</td>
             </tr>
                {% endfor %}
         <tr>    
         <th style="background-color:#FFA07A;">-</th>        
-        <td  style="background-color:#FFA07A;" colspan="23">Result Summary</td>
-		<td  style="background-color:#FFA07A;"colspan="4"><strong>AGR:</strong></td>
-		<td  style="background-color:#FFA07A;"colspan="4">{{sum}}</td>
-		<td  style="background-color:#FFA07A;"colspan="6"><strong>PER:</strong></td>
-        <td  style="background-color:#FFA07A;"colspan="8">{{avg}}%</td>
+        <td  style="background-color:#FFA07A;" colspan="13">Result Summary</td>
+		<td  style="background-color:#FFA07A;"colspan="2"><strong>AGR:</strong></td>
+		<td  style="background-color:#FFA07A;"colspan="2">{{sum}}</td>
+		<td  style="background-color:#FFA07A;"colspan="3"><strong>PER:</strong></td>
+        <td  style="background-color:#FFA07A;"colspan="5">{{avg}}%</td>
         </tr> 
 		<tr>
 			<th style="background-color:#b77a7a;color:white;">-</th>
-			<th style="background-color:#b77a7a;color:white;" colspan='16'>
+			<th style="background-color:#b77a7a;color:white;" colspan='8'>
 				<pre><strong>CLASS TEACHER:</strong>{{request.user.profile.title}} {{request.user.profile.last_name}} {{request.user.profile.first_name}}</pre><pre><strong>SIGN:</strong>________________</pre><pre><strong>DATE:</strong>________________</pre>
 
 			</th> 
-			<th style="background-color:#b77a7a;color:white;" colspan='8'>
+			<th style="background-color:#b77a7a;color:white;" colspan='5'>
 				<pre><strong>No OF STUDENT EXAMINED:</strong>{{ subjects.count }}</pre><pre><strong>TOTAL SCORES:</strong>{{sum}}</pre><pre><strong>AVERAGE:</strong>{{avg}}%</pre>
 
 			</th>
-			<th style="background-color:#b77a7a;color:white;" colspan='21'>
+			<th style="background-color:#b77a7a;color:white;" colspan='12'>
 				<pre><strong>APPROVED BY:</strong>{{myHod.profile.title}} {{myHod.profile.last_name}} {{myHod.profile.first_name}}</pre><pre><strong>SIGN:</strong>________________</pre><pre><strong>DATE:</strong>________________</pre>
 
 			</th>   
         </tr> 
-        <th  style="background-color:#d84848;"colspan="41" id="foot"></th>
+        <th  style="background-color:#d84848;"colspan="26" id="foot"></th>
 		
 		
 		
