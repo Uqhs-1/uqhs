@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 {% load static %}
 {% load crispy_forms_tags %}
 <html lang="en">
@@ -17,24 +17,29 @@
             <link rel="stylesheet" href="{% static 'result/css/result.css' %}">
             <script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
             <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+            <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+     
             <div class="navbar">
                 <div class="dropdown">
                 <a href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span></a>
                 <a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'results_junior_senior' pk=0 %}" title="JSS 1 results">JSS 1</a>
-                    <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 2 results">JSS 2</a>
-                    <a href="{% url 'results_junior_senior' pk=2 %}" title="JSS 3 results">JSS 3</a>
+                    <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 1 results">JSS 1</a>
+                    <a href="{% url 'results_junior_senior' pk=2 %}" title="JSS 2 results">JSS 2</a>
+                    <a href="{% url 'results_junior_senior' pk=3 %}" title="JSS 3 results">JSS 3</a>
                     <a href="{% url 'post_list' %}" title="Post Lists">Info</a>
                   </div>
                 </div>
                 <div class="dropdown">
                   <span class="dropbtn">Seniors</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'results_junior_senior' pk=3 %}" title="SSS 1 results">SSS 1</a>
-                    <a href="{% url 'results_junior_senior' pk=4 %}" title="SSS 2 results">SSS 2</a>
-                    <a href="{% url 'results_junior_senior' pk=5 %}" title="SSS 3 results">SSS 3</a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}" title="SSS 1 results">SSS 1</a>
+                    <a href="{% url 'results_junior_senior' pk=5 %}" title="SSS 2 results">SSS 2</a>
+                    <a href="{% url 'results_junior_senior' pk=6 %}" title="SSS 3 results">SSS 3</a>
                     <a href="{% url 'flexing' %}" title="Home Page">info</a>
                   </div>
                 </div>
@@ -51,15 +56,15 @@
                 <div class="dropdown">
                   <span class="dropbtn">Students</span>
                   <div class="dropdown-content">
-                    <a href="" title="Male name list">Male</a>
-                    <a href="" title="Female name list">Female</a>
-                    <a href="{% url 'search_pdf' %}" title="Search for past results"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span></a>
+                    <a href="{% url 'student_names' pk=2 %}" title="Male name list">Male</a>
+                    <a href="{% url 'student_names' pk=1 %}" title="Female name list">Female</a>
+                   <a href="{% url 'student_names' pk=0 %}" title="Students name list">All</a>
                   </div>
                 </div>
                 <div class="navbar-header">
                     <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  width="30"/></a>
                 </div>
-                <form method="GET" action=""  class="search">
+                <form method="GET" action="{% url 'searchs'%}"  class="search">
                 <div class="input-group">{% csrf_token %}
                   <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control" style="border-radius:5px;border:2px solid white;background-color:blue;text-align:center;">
                 <span class="input-group-btn">
@@ -80,13 +85,14 @@
                 <a href="{% url 'pro_detail' request.user.id %}" class="top-menu" title="Edit personal information"><span class="glyphicon glyphicon-edit"></a>
                 <a href="{% url 'offline' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-tasks"></a>
                 <a href="{% url 'transfers' %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
-                <a href="" title="Deleted/Canceled scores"><span class="glyphicon glyphicon-trash"></a>
-                
-
-                {% if perms.catalog.can_mark_returned %}
+                <a href="{% url 'pdf' ty=5 sx=0 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
+                <a href="{% url 'pdf' ty=6 sx=0 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
+                {% if request.user.is_superuser == True %}
                 <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
+                {% endif %}
+                {% if perms.catalog.can_mark_returned and request.username == "?" %}
                 <a href="{% url 'post_draft_list'  %}">Posts</a>
-                <a href="{% url 'all_accounts' %}" title='List of accounts'><span class="glyphicon glyphicon-user"></a>
+                <a href="{% url 'all_accounts' %}" title='List of accounts'><span class="glyphicon glyphicon-user"></span></a>
                 <a href="{% url 'author_create'  %}">Authors</a>
                 <a href="{% url 'book_create'  %}">Books</a>
                 <a href="{% url 'genre_create'  %}">Genres</a>
@@ -97,7 +103,11 @@
                 <a href="{% url 'qeuing'  %}">Grant Requests</a>
                 {% endif %}
                 {% if request.user.profile.class_in != None %}
-                <a href="" title="Compute {{ request.user.profile.class_in }}'s Broadsheet "><span class="glyphicon glyphicon-list-alt"></a>
+                <em style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ request.user.profile.class_in }}<span class="glyphicon glyphicon-export"></span>
+                    <div id="hid_{{ forloop.counter }}" hidden>
+                    <em style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">pdf:<a href="{% url 'pdf' ty=3 sx=2 %}" title="bsheet 1-2" style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">1-2</a><a href="{% url 'pdf' ty=3 sx=3 %}" title="bsheet 3-4" style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">3-4</a></em><a href="{% url 'pdf' ty=3 sx=0 %}" title="PDF download" style="color:blue;">csv</a></button>
+                    </div>
+                </em>
                 {% endif %}
             </div>
             <a href="{% url 'log_out' %}" style="font-family:Helvetica; color:red; font-size: 9px;" title="Do you want to logout?"><span class="glyphicon glyphicon-log-out"></span><em class=""><em style="font-family:Helvetica; font-size:9px;">Logout</em></em></a>                                              
@@ -267,7 +277,7 @@
             <!-- Page content -->
             <!--<div class="mains">-->
             <!--...-->
-            <!--</div>-->
+            <!--alert(oldurl.split('/')[2])</div>-->
         </div>
     </head>
     <body>
@@ -276,7 +286,7 @@
                 <div class="col-md-8">
                 {% block content %}
                 {% endblock %}
-                <div style="color:white;cursor:pointer;background-color:black;border-radius:5px;border:1px solid white;width:6%;text-align:center;font-weight:bold;" id="back"><span class="glyphicon glyphicon-backward" title="Click next to enter student scores"></span>Back</div>
+                <div style="color:white;cursor:pointer;background-color:black;border-radius:5px;border:1px solid white;width:6%;text-align:center;font-weight:bold;line-height:65%;" id="back"><span class="glyphicon glyphicon-backward" title="Click next to enter student scores"></span></div>
                 <script>
                     $("#back").click(function() {
                     var oldurl = document.referrer;
