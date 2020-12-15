@@ -150,6 +150,10 @@ def responsive_updates(request, pk):
                         tutor.subject = 'BST'
                         tutor.save()
                     data = {"status":str(len(response))}
+                if request.GET.get('flow') == "fromHtml1":#fetching from the html page and save to the database.
+                    list = [request.GET.get('id'), request.GET.get('test'),request.GET.get('agn'),request.GET.get('atd'),request.GET.get('total'), request.GET.get('exam'),request.GET.get('agr'),request.GET.get('grade'),request.GET.get('posi')]
+                    tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
+                    data = {"status":"#states_"+request.GET.get('sn'), 'count':str(len([i for i in list if i != None])), "id":str(get_or_create(tutor, request.GET.get('name'), list))}
 
                 if request.GET.get('flow') == "confirm":
                     exist = BTUTOR.objects.filter(accounts__exact = request.user, subject__exact = request.GET.get('Subject'), Class__exact = request.GET.get('Class'), term__exact = '1st Term')
