@@ -24,7 +24,7 @@
 		<input style="background-color:#61C0BF;color:white;border-radius:5px;border:1px solid gray;width:15%;" required type="text" name="username" placeholder ="username" id="user_name" value =""></input>
 		<label for="passward">Password</label>
 		<input style="background-color:#61C0BF;color:white;border-radius:5px;border:1px solid graywidth:15%;" required type="password" name="password" placeholder="***********" id="user_password"></input> 
-		<button type='submit' name="staffSubmit" style="line-height:35%;margin-left:43%;background-color:crimson;color:white;border-radius:5px;width:70px;text-align:center;" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span><strong>Login</strong></button><br>
+		<button type='submit' name="staffSubmit" style="line-height:35%;margin-left:43%;background-color:crimson;color:white;border-radius:5px;width:70px;text-align:center;" class="btn btn-success" id="stafflogged"><span class="glyphicon glyphicon-log-in" ></span><strong>Login</strong></button><br>
 		<span style="font-size:10px;color:#BF3C89;opacity:0.9;margin-left:0%;">*Staff loggings: Enter User name and password, then <u>double</u> click the submit button </span>
 </form>
 <form method="post" action="{% url 'user_qury' %}" id="Sign_up" class='form' style="width:0%" hidden>
@@ -69,7 +69,7 @@
 		<input style="background-color:#61C0BF;color:white;border-radius:5px;border:1px solid gray;width:15%;" required type="studentname" name="studentname" placeholder ="Surname first" id="student_name" value =""></input>
 		<label for="id">Student ID</label> 
 		<input style="background-color:#61C0BF;color:white;border-radius:5px;border:1px solid gray;width:15%;" required type="password" name="studentid" placeholder ="***********" id="student_id" title="AA/J/24/1423"></input>
-		<button type='submit' name="studentSubmit" style="line-height:35%;margin-left:43%;background-color:crimson;color:white;border-radius:5px;width:70px;text-align:center;" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span><strong>Login</strong></button><br>
+		<button type='submit' name="studentSubmit"  id="studentSubmit" style="line-height:35%;margin-left:43%;background-color:crimson;color:white;border-radius:5px;width:70px;text-align:center;" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span><strong>Login</strong></button><br>
 		<span style="font-size:10px;color:#BF3C89;opacity:0.9;margin-left:0;">*Student loggings: Enter full name, Identification Number and <u>double</u> click the submit button </span>
 </form>
 <script>
@@ -205,10 +205,10 @@
 			$("#confirm").removeClass("errorBox").addClass("goodBox");
 		}
 		else {       counter.count = 0;
-                                $('#signupSubmit').hide();
-                                $("#confirm").removeClass("goodBox").addClass("errorBox");
-                                waring("#mismatched");
-				$("#Oky").hide();}
+            $('#signupSubmit').hide();
+            $("#confirm").removeClass("goodBox").addClass("errorBox");
+            waring("#mismatched");
+			$("#Oky").hide();}
 	});
 			
 	
@@ -222,8 +222,9 @@ $('.form').submit(function (evt) {
 			dataType: 'json',
 			success: function(data) {
 				if (data.is_taken != 'null'){
-                                        var con = confirm('Logging in as '+datas.username); 
+                    var con = confirm('Logging in as '+datas.username); 
 					if (con == true){
+						$("#stafflogged").hide()
 						$.ajax({
 									url: "{% url 'logins' %}",
 									data: datas,		                      
@@ -242,6 +243,7 @@ $('.form').submit(function (evt) {
           });
 $("button[name='signupSubmit']").click(function() {
          if (username.unique == true && username.ref == true){
+		$("#signupSubmit").hide()
           var request = $.ajax({
 			url: "{% url  'user_qury' %}",
 			data:{'signupname': $("#signup").val(), 'email':$('#email').val(), 'password':$('#sign_passward').val(), 'password2': $("#confirm").val()},
@@ -264,6 +266,7 @@ $("button[name='signupSubmit']").click(function() {
    $("button[name='studentSubmit']").click(function() {
 		var pas = $("#student_id").val();
 		if (/^[A-Z]*[/][A-Z][/][0-9]*[/][0-9]*$/.test(pas) == true){
+					$("#studentSubmit").hide()
                       $.ajax({
                           url:"{% url  'user_qury' %}",
                          data: {'student_id':pas},

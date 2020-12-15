@@ -85,7 +85,7 @@
 		 	width:60%;background-color:hsla(71, 78%, 87%, 0.294);color:white;border:3px solid hsla(70, 34%, 63%, 0.863);border-radius:5px;font-family:Broadway;font-size:10px;line-height:16px;
 	    	}
     		#header {
-        		border:1px solid white;border:2px solid blue;color:black;border-radius:5px;margin-left:10%;color:white;width:80%;font-size:285%;
+        		border:1px solid white;border:2px solid blue;color:black;border-radius:5px;margin-left:10%;color:white;width:80%;font-size:275%;
     		}
     		#headern {
         		margin-left:27%;
@@ -444,10 +444,10 @@
                                 </td>
                                 <input type="text" id="student_id_{{ forloop.counter }}" value="AA/J/24/1436" hidden>
                                 <td class="forTd" id="all_{{ forloop.counter }}_1"><input type="number" min="0" max="20" class="input" id="test_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 1)"></td>
-                                <td class="forTd" id="all_{{ forloop.counter }}_2"><input type="number" min="0" max="10" class="input" id="agn_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 2)"></td>
-                                <td class="forTd" id="all_{{ forloop.counter }}_3"><input type="number" min="0" max="10" class="input" id="atd_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 3)"></td>
-                                <td id="total_{{ forloop.counter }}" class="tth">40</td>
-                                <td class="forTd"  id="all_{{ forloop.counter }}_4"><input type="number" min="0" max="60" class="input" id="exam_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 4)"></td>
+                                <td class="forTd" id="all_{{ forloop.counter }}_2"><input type="number" min="0" max="5" class="input" id="agn_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 2)"></td>
+                                <td class="forTd" id="all_{{ forloop.counter }}_3"><input type="number" min="0" max="5" class="input" id="atd_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 3)"></td>
+                                <td id="total_{{ forloop.counter }}" class="tth">30</td>
+                                <td class="forTd"  id="all_{{ forloop.counter }}_4"><input type="number" min="0" max="70" class="input" id="exam_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 4)"></td>
                                 <td id="agr_{{ forloop.counter }}" class="tth">100</td>
 								<td id="first_{{ forloop.counter }}" class="third" class="tth" hidden>100</td>
 								<input type="text" id="fagr_{{ forloop.counter }}" value="0" hidden>
@@ -553,6 +553,7 @@
 				function frame(){
 					if (counter.count == 1){
 						clearInterval(id);
+						$("#uploading").show()
 					}
 					else{
 						cot++;
@@ -900,21 +901,25 @@
 							$("#max").toggle();		
 						};
 						
-						
-						function pagging(x){$(".page_"+x).toggle()};
+						next_page = {npg:1}
+						function pagging(x){
+								$(".page_"+next_page.npg).hide();
+								$(".page_"+x).show();
+								next_page.npg = x
+							};
 						function pages(){
 						var seed = [];var dimed = [0]
-						var page = 36;
+						var page = 27;
 						document.getElementById('buttons').innerHTML += "<button "+ "  onclick="+"'pagging(1)'"+">"+ ""+ 1 +"</button>" ;
-						if ($(".oneBox").length > 36){
+						if ($(".oneBox").length > 27){
 							var torem = Array.from(document.querySelectorAll('tbody.oneBox'));
 							while(torem.length != 0){
-									seed.push(36);
+									seed.push(27);
 									var each = $("#tb_"+""+seed.length);
 									each.removeClass("oneBox");
 									each.addClass("newBox");
 										if (seed.length == page){
-											if (torem.length < 36){
+											if (torem.length < 27){
 												page += torem.length
 											}else{
 												page += seed[0];
@@ -964,11 +969,15 @@
 							};
 							$("#Subject").change(function(){$("#min, #max").html($(this).val())});
 						function go_to(key, i){
+							if (dom.tutor_id){
                             if (i == 'none') {
-								redirect('upload_txt/'+ dom.tutor_id)
+								if ('{{qry}}' !='None'){
+									var conf = confirm("Do you want to overwrite "+ data.Term + ' scores?')
+								if (conf == true){redirect('upload_txt/'+ dom.tutor_id)}
+								}else{redirect('upload_txt/'+ dom.tutor_id)}
                                     }
                             else{redirect(+key+'/'+ dom.tutor_id +'/'+i)
-                                    }
+                                    }}
 							};
 						function doOneach(x){
 							var total, annual, avg, itr;
@@ -1109,7 +1118,11 @@
 							};
 
                         function positioning(){
-							doPosi();waring("#uploading");
+							if ('{{qry}}' !='None'){
+									var conf = confirm("Do you want to overwrite "+ data.Term + ' scores?')
+								if (conf == true){doPosi();waring("#uploading");}
+								}else{doPosi();waring("#uploading");}
+							
 						};
                         function positions(size){
                             posi = []
@@ -1150,8 +1163,12 @@
 									'sn':i};}
 									return dom;
                             };
+						var varTotal = {start:0, end:1};
                         function doPosi(){
-							var jdata = {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'size':$(".oneBox, .newBox").length+1};
+							counter.count = 0;
+							varTotal.start = varTotal.end
+							varTotal.end += $(".page_"+next_page.npg).length;
+							var jdata = {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'start':varTotal.start, 'end':varTotal.end};
 							dom = saveState(); dim = [];
 							var posi, result, idx, itr;
 							posi = positions(arrayOne);
@@ -1181,7 +1198,9 @@
                             for (var i = 0; i < data[0].length;  i++){
 								find(data[0][i], data[1].sort((a, b) => b - a), i+1);
 								};
-							for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
+								
+								
+							for (var i = varTotal.start; i < varTotal.end;  i++){
 									var itr = ""+i;
 									jdata['name_'+itr] = $("#name_"+itr).val(); 
 									jdata['student_id_'+itr] = $("#student_id_"+itr).val();
@@ -1200,8 +1219,11 @@
 										dataType: 'json',
 										success: function(data) {
 											counter.count = 1;
-											var next = window.location.href.split('/')[0]+"render/pdf/2/0/";
-        									window.open(next);
+											if (varTotal.end > $(".oneBox, .newBox").length){
+												var next = window.location.href.split('/')[0]+"render/pdf/2/0/";
+        										window.open(next);
+											}
+								
 										}
 									});
 								request.fail(function(jqXHR, textStatus, data) {

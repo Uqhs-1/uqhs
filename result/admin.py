@@ -15,7 +15,7 @@ class model_teacher(admin.ModelAdmin):
 @admin.register(CNAME)
 class model_names(admin.ModelAdmin):
     list_display = ('uid', 'Class','term','full_name', 'created', 'updated', 'session', 'age', 'annual_scores', 'annual_avr', 'posi')
-    fields = [('last_name', 'first_name', 'full_name', 'session'), ('sex', 'birth_date'), ('no_open', 'no_present', 'no_absent', 'comment'), ('H_begin', 'H_end', 'W_begin', 'W_end', 'no_of_day_abs', 'purpose'), ('good', 'fair', 'poor', 'remark'), ('event', 'indoor', 'ball', 'combat', 'track', 'jump', 'throw', 'swim', 'lift', 'sport_comment'), ('club_one', 'club_two', 'office_one', 'office_two', 'contrib_one', 'contrib_two')]
+    fields = [('last_name', 'first_name', 'full_name', 'Class'), ('gender', 'birth_date'), ('no_open', 'no_present', 'no_absent', 'comment'), ('H_begin', 'H_end', 'W_begin', 'W_end', 'no_of_day_abs', 'purpose'), ('good', 'fair', 'poor', 'remark'), ('event', 'indoor', 'ball', 'combat', 'track', 'jump', 'throw', 'swim', 'lift', 'sport_comment'), ('club_one', 'club_two', 'office_one', 'office_two', 'contrib_one', 'contrib_two')]
 
 @admin.register(Edit_User)
 class model_profile(admin.ModelAdmin):

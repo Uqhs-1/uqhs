@@ -181,7 +181,7 @@ def student_info (request, pk):
              birth = "{:%Y-%m-%d}".format(CNAME.objects.get(pk=pk).birth_date)
     else:
           birth = '2011-02-23'
-    return render(request, 'result/student_info.html',  {'info':CNAME.objects.get(pk=pk), 'birth_date':birth, 'current':CNAME.objects.filter(full_name__in=[i.student_name.full_name for i in query if i.student_name is not None]), 'pk':pk})    
+    return render(request, 'result/student_info.html',  {'info':CNAME.objects.get(pk=pk), 'birth_date':birth, 'current':CNAME.objects.filter(Class__exact=CNAME.objects.get(pk=pk).Class), 'pk':pk})    
 
 def student_info_json (request):
         names = ["name", "class", "term", "opened", "presence", "punctual", "comment", "hbegin", "hend", "wbegin", "wend", "daysAbsent", "purpose", "good", "fair", "poor", "remark", "event", "indoor", "ball", "combat", "track", "jump", "throw", "swim", "lift", "sport_comment", "club_one", "office_one", "contrib_one", "club_two", "office_two", "contrib_two", 'birth', 'title','pname','pocp','contact1','contact2','address']
@@ -252,8 +252,9 @@ class Pdf(LoginRequiredMixin, View):
         from django.utils import timezone
         if ty == '1' or ty == '4':
               this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('updated')
-              term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term]) 
-              if this:           
+               
+              if this:  
+                 term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])       
                  lists = [x for x in this][:10]
                  if len(lists) != 10:
                     lists = lists + [None]*(10-len(lists))
@@ -291,9 +292,9 @@ class Pdf(LoginRequiredMixin, View):
                 eng = CNAME.objects.filter(Class__exact=request.user.profile.class_in).exclude(annual_scores__exact = 0)             
                 sub = [["CHE, ACC, ARB", "GOV, ICT", "GEO, AGR, YOR", "BIO, ECO", "PHY, LIT, COM", "ELE, CTR, GRM", 'MAT', 'IRS', 'CIV', 'ENG'], ['YOR', 'BST', 'ARB', 'HIS', 'PRV', 'MAT', 'NAV', 'BUS', 'IRS', 'ENG']]
                 if eng:
-                    #return HttpResponse([eng.count(), eng], content_type='text/plain')
                     posi = do_positions([i.annual_avr for i in eng.order_by('id')])
                     [save(CNAME, i, k.id) for i, k in zip(posi, eng.order_by('id'))]
+                    #return HttpResponse([posi], content_type='text/plain')
                     if sx == '1':
                         ai, bn, cs, dd, ed, fc, gv, hs, iw, jd  = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'full_name')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x) for x in [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])]]
                         sd = [[r, a.student_name, a.agr, a.sagr, a.fagr, a.avr, b.agr, b.sagr,  b.fagr, b.avr, c.agr, c.sagr, c.fagr, c.avr, d.agr, d.sagr, d.fagr, d.avr, e.agr, e.sagr, e.fagr, e.avr, f.agr, f.sagr, f.fagr, f.avr, g.agr, g.sagr, g.fagr, g.avr, h.agr, g.sagr, h.fagr, h.avr, i.agr, i.sagr, i.fagr, i.avr, j.agr, j.sagr, j.fagr, j.avr, a.student_name.annual_scores, a.student_name.annual_avr, a.student_name.posi]  for r, a, b, c, d, e, f, g, h, i, j in zip([r for r in range(1, eng.count()+1)], ai, bn, cs, dd, ed, fc, gv, hs, iw, jd)]
@@ -316,7 +317,7 @@ class Pdf(LoginRequiredMixin, View):
                     params = {
                         'subjects':zip(ai, bn, cs, dd, ed), 'Class':request.user.profile.class_in,'request': request, 'today': timezone.now(), 'sum':sumed, 'avg':average, 'term':'BROADSHEET', 'subs':tit[int(sx)], 'myHod':myHod.first(), 'males':eng.filter(gender__exact=1).count(), 'females':eng.filter(gender__exact=2).count(), 'subject_count':5
                         }
-                    return Render.render('result/broadsheet.html', params, 'broadsheets/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.user.profile.class_in))+'/'+cls, cls)
+                    return Render.render('result/broadsheet.html', params, 'broadsheets/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.user.profile.class_in))+'/'+cls+sx+session.profile.session, cls+sx+session.profile.session)
                 else:
                     return redirect('home')
             else:

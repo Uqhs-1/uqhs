@@ -240,6 +240,12 @@
                 {% if all_page.has_next %}
                   <li style="width:5%;line-height:65%;">
                     <a href="?page={{ users.next_page_number }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</a>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'subject_view_all' pk=pk md=2 %}" style="color:green;">
+                      <span class="glyphicon glyphicon-list-alt" title='all'></span>
+                      </a>
+                      
+                    {% endif %}          
                   </li>
                 {% else %}
                   <li class="disabled" style="width:5%;line-height:65%;">
@@ -248,13 +254,20 @@
                 {% endif %}
               </em>
             {% endif %}
+            
           <div>
-            <a href="{% url 'subject_view_all' pk=pk md=2 %}" style="color:green;">
-              <span class="glyphicon glyphicon-list-alt" title='all'></span>
-            </a>{% if request.user.is_authenticated %}
-            <a href="{% url 'subject_view' pk=pk md=1 %}" style="color:red;">{% endif %}
-              <span class="glyphicon glyphicon-th-large" title='small'></span>
-            </a>            
+            <div style="color:white;">EXAMINATION QUESTIONS</div> <br>
+            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('{{ qry.subject }}', '{{ qry.Class }}', 1)">1ST TERM</button>
+          <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('{{ qry.subject }}', '{{ qry.Class }}', 2)">2ND TERM</button>
+          </a>
+          <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('{{ qry.subject }}', '{{ qry.Class }}', 3)">3RD TERM</button>
+          </a> 
+            <br> .
+            <div style="color:white;">OLD</div> <br>
+            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('all', 'old', 1)">1</button>
+          <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('all', 'old', 2)">2</button>
+          </a>
+          <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('all', 'old', 3)">3</button>
         </div>
           
         </th>
@@ -293,7 +306,7 @@
  	  url: "{% url 'responsive_updates' pk=0 %}",
 	  data: {
         'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
-        'student_id_1': 'XX/S/19/'+$("#edith_name_id_"+""+i).val(), 'size':2,
+        'student_id_1': 'XX/S/19/'+$("#edith_name_id_"+""+i).val(), 'start':1, 'end':2,
         'student_name_1': "AMINU ISMAIL",
         'test_1': Number(test),
 	 	    'agn_1': Number(agn),
@@ -327,9 +340,16 @@
           }
           else{
             $("#Senior").show()
-          }
+          };
+          function pastquestions(y, z, x){
+        var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
+        var next = window.location.href.split('/')[0]+"/static/result/pdf/pastquestions/"+y+'_'+argt[z]+'_'+x+'.pdf';
+        window.open(next, '_blank');
+        }
      </script>    
-    
+    <a href="{% url 'subject_view' pk=pk md=1 %}" style="color:red">
+          <span class="glyphicon glyphicon-th-large" title='small'></span>
+        </a>
   </body>
 	{% endblock %}
 </html>

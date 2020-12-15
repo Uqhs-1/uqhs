@@ -65,12 +65,12 @@ def upload_new_subject_scores(request):
             output = [check(s) for s in valid_input[i][1:]]
             if len(output) == 9:
                 if output != [False, True, True, True, True, True, True, True, True]:
-                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
+                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject})
             elif len(output) == 5:
                 if output != [False, True, True, True, True]:
-                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
+                    return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject})
             else:
-                return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject.name})
+                return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject})
         if QSUBJECT.objects.filter(tutor__subject__exact='BST', tutor__Class__exact=tutor.Class, tutor__first_term__exact='1st Term', tutor__session__exact=tutor.session): 
             if len(valid_input[0][1:]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
                 valid_input = [[x[0], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
@@ -153,7 +153,7 @@ def massRegistration(request):
     ######################STAGE 2 ::: UPLOAD SCORES##################ENDS
     return render(request, 'result/regSuccessful.html', {'reged':zip(cname, student_id)})
 
-def regMe(dim):#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 1
+def regMe(dim):#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
     reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
     reged.save()
     return reged.id
