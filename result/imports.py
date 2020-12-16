@@ -17,7 +17,7 @@ from django.http import JsonResponse
 
 session = session()
 
-def check(inp):
+def check(inp, ):
     try:
         inp = inp.replace(',', '.')
         num_float = float(inp)
@@ -73,9 +73,9 @@ def upload_new_subject_scores(request):
                 return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_input[i], 'pk':tutor.id, 'subject':tutor.subject})
         if QSUBJECT.objects.filter(tutor__subject__exact='BST', tutor__Class__exact=tutor.Class, tutor__first_term__exact='1st Term', tutor__session__exact=tutor.session): 
             if len(valid_input[0][1:]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
-                valid_input = [[x[0], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
+                valid_input = [[x[0].split('¿')[-1], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
         x = cader(tutor.Class)
-        raw_scores = [[x[0],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]
+        raw_scores = [[x[0].split('¿')[-1],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]
         
         posi = do_positions([int(i[-1]) for i in raw_scores][:])
         grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
@@ -157,3 +157,4 @@ def regMe(dim):#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
     reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
     reged.save()
     return reged.id
+
