@@ -15,9 +15,9 @@
             @page {
                 size: A4;
                 margin-top:2.5cm;
-                margin-left:1cm;
-                margin-right:1cm;
-                margin-bottom:cm;
+                margin-left:0.5cm;
+                margin-right:0.5cm;
+                margin-bottom:1cm;
             }
 
             table, th, td {
@@ -75,24 +75,24 @@
             <em style="margin-left:40%;background-color:white;color:black;border-radius:1px;width:12%;text-align:center;font-weight:bold;">
                 {{ term }}
             </em> 
-            <em style="color:#20B2AA;">._________________________________________</em> 
-            <label><u>STUDENT's NAME: </u>{{ info.full_name }}</label>
+            <em style="color:#20B2AA;">._____________________________________</em> 
+            <label><em style='background-color:white;'><u>STUDENT's NAME: </em></u><em style='color:white;'>{{ info.full_name }}</em></label>
         </div>
         <div>
             <em style="font-size:20px;font-weight:bold;">UMMUL QURA HIGH SCHOOL</em>
-            <em style="margin-left:1%;"><em style="color:#20B2AA;">.___________________</em>
-            <u>ADMISSION NO.: </u>{{ info.uid }}</em>
-            <em style="color:#20B2AA;">._____</em>
-            <em><u>CLASS: </u>{{ info.Class }}</em>
+            <em style="margin-left:1%;"><em style="color:#20B2AA;">._______________</em>
+            <em style='background-color:white;'><u>ADMISSION NO.: </u></em><em style='color:white;'>{{ info.uid }}</em>
+            <em style="color:#20B2AA;">._</em>
+            <em style='background-color:white;'><u>CLASS:</u></em> <em style='color:white;'>{{ info.Class }}</em>
         </div>
         <div>
-            <i style="font-size:12px">AROWONA BUS-STOP, AKANRAN ROAD, IBADAN</i>
-            <em style="color:#20B2AA;">____________________</em>
-            <u>DATE OF BIRTH: </u>{{info.birth_date}}</em>
+            <i style="font-size:12px;color:white;">AROWONA BUS-STOP, AKANRAN ROAD, IBADAN</i>
+            <em style="color:#20B2AA;">________________</em>
+            <em style='background-color:white;'><u>DATE OF BIRTH:</u> </em><em style='color:white;'>{{info.birth_date}}</em>
             <em style="color:#20B2AA;">.___</em>
-            <em><u> SEX: </u>{{info.sex}}</em>
-            <em style="color:#20B2AA;">.__</em>
-            <em><u>YEAR:</u>{{ info.session }}</em>
+            <em style='background-color:white;'><u> SEX: </u></em><em style='color:white;'>{{info.sex}}</em>
+            <em style="color:#20B2AA;">.</em>
+            <em style='background-color:white;'><u>YEAR:</u></em><em style='color:white;'>{{ info.session }}</em>
         </div>
         <div class="capt">1. ATTENDANCE (REGULARITY & PUNCTUALITY)</div>
         <table>
@@ -179,136 +179,136 @@
                         <a href="{% url 'student_info' pk=a.student_name.id %}">{{ a.tutor.Class }}:{{ term }}</a>               
                </td>
                 <td>Obt. Mark</td>
-                <td>{{ a.tutor.subject }}</td>
-                <td>{{ b.tutor.subject }}</td>
-                <td>{{ c.tutor.subject }}</td>
-                <td>{{ d.tutor.subject }}</td>
-                <td>{{ e.tutor.subject }}</td>
-                <td>{{ f.tutor.subject }}</td>
-                <td>{{ g.tutor.subject }}</td>
-                <td>{{ h.tutor.subject }}</td>
-                <td>{{ i.tutor.subject }}</td>
-                <td>{{ j.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ a.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ b.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ c.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ d.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ e.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ f.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ g.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ h.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ i.tutor.subject }}</td>
+                <td style='font-weight:bold;'>{{ j.tutor.subject }}</td>
              
             </thead>
         </tr>
         <tr>
-            <th style="font-family:Helvetica; color:blue;width:20%;">grade</th>
+            <th style="font-family:Helvetica; color:blue;width:20%;">Grades</th>
             <td style="font-family:Helvetica; color:red;" ></td>
-            <td>{{ a.grade }}</td>
-            <td>{{ b.grade }}</td>
-            <td>{{ c.grade }}</td>
-            <td>{{ d.grade }}</td>
-            <td>{{ e.grade }}</td>
-            <td>{{ f.grade }}</td>
-            <td>{{ g.grade }}</td>
-            <td>{{ h.grade }}</td>
-            <td>{{ i.grade }}</td>
-            <td>{{ j.grade }}</td>
+            <td style='font-size:12px;'>{{ a.grade }}</td>
+            <td style='font-size:12px;'>{{ b.grade }}</td>
+            <td style='font-size:12px;'>{{ c.grade }}</td>
+            <td style='font-size:12px;'>{{ d.grade }}</td>
+            <td style='font-size:12px;'>{{ e.grade }}</td>
+            <td style='font-size:12px;'>{{ f.grade }}</td>
+            <td style='font-size:12px;'>{{ g.grade }}</td>
+            <td style='font-size:12px;'>{{ h.grade }}</td>
+            <td style='font-size:12px;'>{{ i.grade }}</td>
+            <td style='font-size:12px;'>{{ j.grade }}</td>
          </tr>
         <tr>
             <th style="font-family:Helvetica; color:blue;">Cont. Asst Test [CA]</th>
-            <td style="font-family:Helvetica; color:red;" >40</td>
-            <td>{{ a.total }}</td>
-            <td>{{ b.total }}</td>
-            <td>{{ c.total }}</td>
-            <td>{{ d.total }}</td>
-            <td>{{ e.total }}</td>
-            <td>{{ f.total }}</td>
-            <td>{{ g.total }}</td>
-            <td>{{ h.total }}</td>
-            <td>{{ i.total }}</td>
-            <td>{{ j.total }}</td>
+            <td style="font-family:Helvetica; color:red;font-weight:bold;">30</td>
+            <td style='font-size:12px;'>{{ a.total }}</td>
+            <td style='font-size:12px;'>{{ b.total }}</td>
+            <td style='font-size:12px;'>{{ c.total }}</td>
+            <td style='font-size:12px;'>{{ d.total }}</td>
+            <td style='font-size:12px;'>{{ e.total }}</td>
+            <td style='font-size:12px;'>{{ f.total }}</td>
+            <td style='font-size:12px;'>{{ g.total }}</td>
+            <td style='font-size:12px;'>{{ h.total }}</td>
+            <td style='font-size:12px;'>{{ i.total }}</td>
+            <td style='font-size:12px;'>{{ j.total }}</td>
            
         </tr>
         <tr>
             <th style="font-family:Helvetica; color:blue;width15%;">Exam Score</th>
-            <td style="font-family:Helvetica; color:red;" >60</td>
-            <td>{{ a.exam }}</td>
-            <td>{{ b.exam }}</td>
-            <td>{{ c.exam }}</td>
-            <td>{{ d.exam }}</td>
-            <td>{{ e.exam }}</td>
-            <td>{{ f.exam }}</td>
-            <td>{{ g.exam }}</td>
-            <td>{{ h.exam }}</td>
-            <td>{{ i.exam }}</td>
-            <td>{{ j.exam }}</td>
+            <td style="font-family:Helvetica; color:red;font-weight:bold;" >70</td>
+            <td style='font-size:12px;'>{{ a.exam }}</td>
+            <td style='font-size:12px;'>{{ b.exam }}</td>
+            <td style='font-size:12px;'>{{ c.exam }}</td>
+            <td style='font-size:12px;'>{{ d.exam }}</td>
+            <td style='font-size:12px;'>{{ e.exam }}</td>
+            <td style='font-size:12px;'>{{ f.exam }}</td>
+            <td style='font-size:12px;'>{{ g.exam }}</td>
+            <td style='font-size:12px;'>{{ h.exam }}</td>
+            <td style='font-size:12px;'>{{ i.exam }}</td>
+            <td style='font-size:12px;'>{{ j.exam }}</td>
             
         </tr>
         {% if term == "3rd Term" %}<tr>
             <th style="font-family:Helvetica; color:blue;">3rd term Scores</th>
-            <td style="font-family:Helvetica; color:red;" >100</td>
-            <td>{{ a.agr }}</td>
-            <td>{{ b.agr }}</td>
-            <td>{{ c.agr }}</td>
-            <td>{{ d.agr }}</td>
-            <td>{{ e.agr }}</td>
-            <td>{{ f.agr }}</td>
-            <td>{{ g.agr }}</td>
-            <td>{{ h.agr }}</td>
-            <td>{{ i.agr }}</td>
-            <td>{{ j.agr }}</td>
+            <td style="font-family:Helvetica; color:red; font-weight:bold;">100</td>
+            <td style='font-size:12px;'>{{ a.agr }}</td>
+            <td style='font-size:12px;'>{{ b.agr }}</td>
+            <td style='font-size:12px;'>{{ c.agr }}</td>
+            <td style='font-size:12px;'>{{ d.agr }}</td>
+            <td style='font-size:12px;'>{{ e.agr }}</td>
+            <td style='font-size:12px;'>{{ f.agr }}</td>
+            <td style='font-size:12px;'>{{ g.agr }}</td>
+            <td style='font-size:12px;'>{{ h.agr }}</td>
+            <td style='font-size:12px;'>{{ i.agr }}</td>
+            <td style='font-size:12px;'>{{ j.agr }}</td>
          
         </tr>{% endif %}
         {% if term == "2nd Term"  or term == "3rd Term" %}<tr id='second'>
             <th style="font-family:Helvetica; color:blue;">2nd term Scores</th>
             <td style="font-family:Helvetica; color:red;" >100</td>
-            <td>{{ a.sagr }}</td>
-            <td>{{ b.sagr }}</td>
-            <td>{{ c.sagr }}</td>
-            <td>{{ d.sagr }}</td>
-            <td>{{ e.sagr }}</td>
-            <td>{{ f.sagr }}</td>
-            <td>{{ g.sagr }}</td>
-            <td>{{ h.sagr }}</td>
-            <td>{{ i.sagr }}</td>
-            <td>{{ j.sagr }}</td>
+            <td style='font-size:12px;'>{{ a.sagr }}</td>
+            <td style='font-size:12px;'>{{ b.sagr }}</td>
+            <td style='font-size:12px;'>{{ c.sagr }}</td>
+            <td style='font-size:12px;'>{{ d.sagr }}</td>
+            <td style='font-size:12px;'>{{ e.sagr }}</td>
+            <td style='font-size:12px;'>{{ f.sagr }}</td>
+            <td style='font-size:12px;'>{{ g.sagr }}</td>
+            <td style='font-size:12px;'>{{ h.sagr }}</td>
+            <td style='font-size:12px;'>{{ i.sagr }}</td>
+            <td style='font-size:12px;'>{{ j.sagr }}</td>
            
         </tr> {% endif %}
         {% if term == "3rd Term" or term == "1st Term" %}<tr id='first'>
             <th style="font-family:Helvetica; color:blue;">1st term Scores</th>
             <td style="font-family:Helvetica; color:red;" >100</td>
-            <td>{{ a.fagr }}</td>
-            <td>{{ b.fagr }}</td>
-             <td>{{ c.fagr }}</td>
-            <td>{{ d.fagr }}</td>
-            <td>{{ e.fagr }}</td>
-            <td>{{ f.fagr }}</td>
-            <td>{{ g.fagr }}</td>
-            <td>{{ h.fagr }}</td>
-            <td>{{ i.fagr }}</td>
-            <td>{{ j.fagr }}</td>
+            <td style='font-size:12px;'>{{ a.fagr }}</td>
+            <td style='font-size:12px;'>{{ b.fagr }}</td>
+             <td style='font-size:12px;'>{{ c.fagr }}</td>
+            <td style='font-size:12px;'>{{ d.fagr }}</td>
+            <td style='font-size:12px;'>{{ e.fagr }}</td>
+            <td style='font-size:12px;'>{{ f.fagr }}</td>
+            <td style='font-size:12px;'>{{ g.fagr }}</td>
+            <td style='font-size:12px;'>{{ h.fagr }}</td>
+            <td style='font-size:12px;'>{{ i.fagr }}</td>
+            <td style='font-size:12px;'>{{ j.fagr }}</td>
          
         </tr>{% endif %}
        {% if term == "3rd Term" %} <tr class='third'>
             <th style="font-family:Helvetica; color:blue;">Annual Scores</th>
-            <td style="font-family:Helvetica; color:red;" >300</td>
-            <td>{{ a.aagr }}</td>
-            <td>{{ b.aagr }}</td>
-            <td>{{ c.aagr }}</td>
-            <td>{{ d.aagr }}</td>
-            <td>{{ e.aagr }}</td>
-            <td>{{ f.aagr }}</td>
-            <td>{{ g.aagr }}</td>
-            <td>{{ h.aagr }}</td>
-            <td>{{ i.aagr }}</td>
-            <td>{{ j.aagr }}</td>
+            <td style="font-family:Helvetica; color:red;font-weight:bold;" >300</td>
+            <td style='font-size:12px;'>{{ a.aagr }}</td>
+            <td style='font-size:12px;'>{{ b.aagr }}</td>
+            <td style='font-size:12px;'>{{ c.aagr }}</td>
+            <td style='font-size:12px;'>{{ d.aagr }}</td>
+            <td style='font-size:12px;'>{{ e.aagr }}</td>
+            <td style='font-size:12px;'>{{ f.aagr }}</td>
+            <td style='font-size:12px;'>{{ g.aagr }}</td>
+            <td style='font-size:12px;'>{{ h.aagr }}</td>
+            <td style='font-size:12px;'>{{ i.aagr }}</td>
+            <td style='font-size:12px;'>{{ j.aagr }}</td>
           
         </tr>
         <tr class='third'>
             <th style="font-family:Helvetica; color:blue;width15%;">Annual % average</th>
-            <td style="font-family:Helvetica; color:red;" >100</td>
-            <td>{{ a.avr }}</td>
-            <td>{{ b.avr }}</td>
-            <td>{{ c.avr }}</td>
-            <td>{{ d.avr }}</td>
-            <td>{{ e.avr }}</td>
-            <td>{{ f.avr }}</td>
-            <td>{{ g.avr }}</td>
-            <td>{{ h.avr }}</td>
-            <td>{{ i.avr }}</td>
-            <td>{{ j.avr }}</td>
+            <td style="font-family:Helvetica; color:red;font-weight:bold;" >100</td>
+            <td style='font-size:12px;'>{{ a.avr }}</td>
+            <td style='font-size:12px;'>{{ b.avr }}</td>
+            <td style='font-size:12px;'>{{ c.avr }}</td>
+            <td style='font-size:12px;'>{{ d.avr }}</td>
+            <td style='font-size:12px;'>{{ e.avr }}</td>
+            <td style='font-size:12px;'>{{ f.avr }}</td>
+            <td style='font-size:12px;'>{{ g.avr }}</td>
+            <td style='font-size:12px;'>{{ h.avr }}</td>
+            <td style='font-size:12px;'>{{ i.avr }}</td>
+            <td style='font-size:12px;'>{{ j.avr }}</td>
             
        {% endif %} </tr>
         <tr>
@@ -329,16 +329,16 @@
         <tr>    								
             <th style="font-family:Helvetica; color:blue;">Position</th>
             <td style="font-family:Helvetica; color:red;" ></td>
-            <td>{{ a.posi }}</td>
-            <td>{{ b.posi }}</td>
-            <td>{{ c.posi }}</td>
-            <td>{{ d.posi }}</td>
-            <td>{{ e.posi }}</td>
-            <td>{{ f.posi }}</td>
-            <td>{{ g.posi }}</td>
-            <td>{{ h.posi }}</td>
-            <td>{{ i.posi }}</td>
-            <td>{{ j.posi }}</td>
+            <td style='font-size:12px;'>{{ a.posi }}</td>
+            <td style='font-size:12px;'>{{ b.posi }}</td>
+            <td style='font-size:12px;'>{{ c.posi }}</td>
+            <td style='font-size:12px;'>{{ d.posi }}</td>
+             <td style='font-size:12px;'>{{ e.posi }}</td>
+             <td style='font-size:12px;'>{{ f.posi }}</td>
+             <td style='font-size:12px;'>{{ g.posi }}</td>
+             <td style='font-size:12px;'>{{ h.posi }}</td>
+             <td style='font-size:12px;'>{{ i.posi }}</td>
+             <td style='font-size:12px;'>{{ j.posi }}</td>
          
         </tr>
      
@@ -449,23 +449,23 @@
         <table>
             <tr>
                 <th style="font-family:Helvetica; color:blue;width:20%">Master's Remark </th>
-                <th><i>{{ info.master_comment }}</i></th> 
+                <th colspan='2'><i>{{ info.master_comment }}</i></th> 
             </tr>
             <tr>
                 <th style="font-family:Helvetica; color:blue;">Principal's Remark </th>
-                <th><i>{{ info.principal_comment }} </i>Sign:___________________Date:_________.</th><img src="/office/jango_env/uqi/result/static/result/iiro.jpg" height="30"  width="30"/> <em style="font-size:300%;line-height:2px;color:white;8"> <em style="color:#20B2AA;">---------</em>MASTER AND PRINCIPAL REMARKS</em><img src="/office/jango_env/uqi/result/static/result/uqhs.jpg" height="30"  width="30"/> 
+                <th><i>{{ info.principal_comment }}</i></th><th style='width=20%;'><em style='font-size:12px'>Signature and Date:</em>________________</th><img src="/app/result/static/result/iiro.jpg" height="30"  width="30"/> <em style="font-size:300%;line-height:2px;color:white;"> <em style="color:#20B2AA;">---------</em>MASTER AND PRINCIPAL REMARKS</em><img src="/app/result/static/result/uqhs.jpg" height="30"  width="30" /> 
             </tr>
             <tr>
                 <td style="font-family:Helvetica; color:blue;">Next term begins on </td>
-                <td><i>{{ info.resumption }}</i></td>
+                <td colspan='2'><i>{{ info.resumption }}</i></td>
             </tr>
         </table>
-        <div id="footerContent">
+        <div id="footerContent" style='color:white;text-align:center;'>
             {%block page_foot%}
 			www.https://uqhs.herokuapp.com/result/render/pdf/{{info.id}}/2/0/:
             {{info.tutor.Class}}/{{term}}/generated on:-{{ today }} 
             By:-{{ request.user.profile.last_name }} {{ request.user.profile.first_name }}
-            [Page <pdf:pagenumber>]
+          
             {%endblock%}
     </div>
     </body>

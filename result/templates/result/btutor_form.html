@@ -42,7 +42,7 @@
               </select> 
         </td>
         <td style="width:20%;">
-          <select value="{{ caller.first_term.Class }}" id="Class" name="Class" style="width:100%;background-color:blue;color:white;border-radius:5px;">
+          <select value="{{ caller.first_term.Class }}" id="class" name="Class" style="width:100%;background-color:blue;color:white;border-radius:5px;">
             <option value="{{ caller.first_term.Class }}">{{ caller.first_term.Class }}</option>
             <option value="JSS 1">JSS 1</option>
             <option value="JSS 2">JSS 2</option>
@@ -191,10 +191,8 @@
       
       <script>
       function redirect(to) {
-					var oldurl = document.referrer;
-					var htt = oldurl.split('/')[2];
-					var next = 'http://'+htt+to+'/';
-					location.replace(next)
+					var next = window.location.href.split('/')[0]+'/result/'+to+"/";  
+          window.open(next);
 					};
       $("#navigates").change(function(){
           redirect($(this).val())
@@ -205,11 +203,10 @@
                     }
       });
       $("button[name='submit']").click(function(){
-           
             var argument = { 
               accounts:$("#accounts").val(),
               status:'active', 
-              Class:$("#Class").val(), 
+              Class:$("#class").val(), 
               Subject:$("#Subject").val(), 
               first_term:$("#first_term").val(), 
               second_term:$("#second_term").val(), 
@@ -225,7 +222,7 @@
                });
                  request.done(function(data){
                  if (data.status){alert(data.status); $('#save').hide();$('#home').show()}else{
-                        document.getElementById("Class").value = data.Class;
+                        document.getElementById("class").value = data.Class;
                         document.getElementById("Subject").value = data.Subject;
                         document.getElementById("first_term").value = data.first_term;
                         document.getElementById("second_term").value = data.second_term;

@@ -405,13 +405,13 @@
 						<th style="width:30%;">
 							  <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Males</button>
              
-                <a href="{% url 'pdf' ty=2 sx=2 %}">
+                <a href="{% url 'pdf' ty=2 sx=2 pk=0 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
               |
                 <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Fmales</button>
             
-                <a href="{% url 'pdf' ty=2 sx=1 %}">
+                <a href="{% url 'pdf' ty=2 sx=1 pk=0 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
 						</th>
@@ -520,14 +520,14 @@
 					</td>
 					<td>
 						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
-						   <a href="{% url 'pdf' ty=2 sx=0 %}"><span class="glyphicon glyphicon-print"></span></a>
+						   <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-print"></span></a>
 						</button>
 						
 						
 						
 					</td>
 					<td>
-						<button  onclick="positioning()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="uploading">
+						<button  onclick="positioning()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"id="uploading">
 						<span class="glyphicon glyphicon-record"></span>
 						</button>
 					</td>
@@ -639,8 +639,8 @@
 								'404': "The requested page not found.",
 								'500' : "Internal server error.",
 								'503' : "Service unavailable.",
-								'parsererror' : "Requested JSON parse failed.",
-								'timeout': "Time out error.",
+															'parsererror' : "Requested JSON parse failed.",
+															'timeout': "Time out error.",
 								'abort': "Ajax request aborted.",
 								};
 								if (x.status){
@@ -1167,7 +1167,7 @@
                         function doPosi(){
 							counter.count = 0;
 							varTotal.start = varTotal.end
-							varTotal.end += $(".page_"+next_page.npg).length;
+							varTotal.end += $(".oneBox, .page_"+next_page.npg).length;
 							var jdata = {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'start':varTotal.start, 'end':varTotal.end};
 							dom = saveState(); dim = [];
 							var posi, result, idx, itr;

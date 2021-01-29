@@ -11,21 +11,21 @@
     </head>
     <body>
             <table>
-                 <div class="capt" style="font-size:13;"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;"><u style="color:white;">{{ counts }} </u> SUBJECTS SHORTLISTED</strong></div>
+                 <div class="capt" style="font-size:13;"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;"><u style="color:white;">{{ class }} </u> SUBJECTS SHORTLISTED</strong></div>
                 <thead>
-                    <tr><th>S/N</th><th>Teachers</th><th>Class</th><th>Subject</th><th>Review</th><th>Males</th><th>Females</th><th>Accounts</th>{% if request.user.is_superuser == True  and user.is_staff == True %}<th>Delete</th>{% endif %}<th>Session</th></tr>      
-                </thead>
+                    <tr><th>S/N</th><th>Teachers</th><th colspan="2">Subject Code</th><th>Review</th><th colspan="3">Counts</th><th>Update Time</th><th>Session</th>{% if request.user.is_superuser == True  and user.is_staff == True %}<th>Syc</th>{% endif %}</tr>      
+                </thead>          
                 <tbody>
                     {% if all_page %}
                     {% for sub in all_page %}
-                        <tr><td>{{ forloop.counter }}</td><td style="font-family:Helvetica; color:#FFFAFA; font-size: 10px;width:30%;">{{ sub.teacher_name }}</td><td>{{ sub.Class }}</td><td>{{ sub.subject }}</td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}"> {% if sub.second_term == '2nd Term' and  sub.third_term == '1st Term'  %}{{ sub.second_term }}{% else %}{{ sub.third_term }}{% endif %}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td style="color:#FFFAFA">{{ sub.accounts }}</td>{% if request.user.is_superuser == True  and user.is_staff == True %}<td><a href="{% url 'warning_delete' pk=sub.id %}"><span class="glyphicon glyphicon-remove"></span></a></td>{% endif %}<td>{{ sub.session }}</td></tr>
+                        <tr><td>{{ forloop.counter }}</td><td style="font-family:Helvetica; color:#FFFAFA; font-size: 10px;width:20%;">{{ sub.accounts.profile.first_name }}</td><td>{{ sub.subject }}</td><td>{{ sub.subject_teacher_id }}<td><a href="{% url 'subject_view' pk=sub.id md=1 %}"> {% if sub.second_term == '2nd Term' and  sub.third_term == '1st Term'  %}{{ sub.second_term }}{% else %}{{ sub.third_term }}{% endif %}</a></td></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td>{{ sub.males|add:sub.females }}</td><td style="color:#FFFAFA;width:20%;">{{ sub.updated }}</td><td>{{ sub.session }}</td><td>{% if request.user.is_superuser == True  and user.is_staff == True %}<button onclick="synch('{{sub.Class}}', '{{sub.term}}', '{{sub.id}}')" style="line-height:5%;width:100%;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-refresh"></span></button>{% endif %}</td></tr>     
                     {% endfor %}
                     {% else %}
                         <pre style="width:70%;" >There are no records.</pre>
                     {% endif %}       
                 </tbody>
                 <tfoot>
-                    <tr><th colspan="10">
+                    <tr><th colspan="11">
                     {% if all_page.has_other_pages %}
               <em class="pagination" >
                 {% if all_page.has_previous %}
@@ -63,6 +63,58 @@
                 </tfoot>
             </table>
     </body>
+    <script>
+        function pushed(cal, ler){
+            var subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]                                                                     
+            var next = window.location.href.split('/')[0]+"/result/synchronizing/0/"+""+subj[0].indexOf(cal)+'/'+""+subj[1].indexOf(ler)+'/';                           
+        		window.open(next);			
+                       }
+        function synch(cla, term, ids){
+          var clas = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
+          var request  = $.ajax({
+          url: "http://uqhs.herokuapp.com/result/synchronizing/1/2/"+""+clas.indexOf(cal)+"/",
+          data: {
+                'range':1
+                },
+          dataType: 'json',
+          });
+          request.done(function(data) { 
+            if (window.location.href.split(':')[1] == '//127.0.0.1')
+                {
+                var jdata = {'end':data.response.length, 'Term':term, 'username':data.response[0][10]};
+                for (var i = 0; i < data.response.length;  i++){
+                    var itr = ""+i;
+                    jdata['uid_'+itr] = data.response[i][0]; 
+                    jdata['uid_'+itr] = data.response[i][0];
+                    jdata['test_'+itr] = data.response[i][2]; 
+                    jdata['agn_'+itr] = data.response[i][3];
+                    jdata['atd_'+itr] = data.response[i][4]; 
+                    jdata['total_'+itr] = data.response[i][5];
+                    jdata['exam_'+itr] = data.response[i][6]; 
+                    jdata['agr_'+itr] = data.response[i][7];
+                    jdata['grade_'+itr] = data.response[i][8]; 
+                    jdata['posi_'+itr] = data.response[i][9];
+                    jdata['subject_code_'+itr] = data.response[i][1];     
+                    };
+                    var sub_request = $.ajax({
+                    url:"{% url 'synch' last=2 subject=0 Class=0 %}",
+                    data:jdata,
+                    dataType: 'json',
+                    success: function(data) {
+                    var next = window.location.href.split('/')[0]+'/result/'+""+ids+"/1/";  
+                    window.open(next);}			
+                      });
+                    sub_request.fail(function(jqXHR, textStatus){
+                      alert(ErrorMap[jqXHR.status])
+                      });
+                      }});  
+                    request.fail(function(jqXHR, textStatus, data) {
+                        alert(ErrorMap[jqXHR.status]);
+                        });
+                      
+          
+	}   
 
+    </script>
     {% endblock %}
 </html>

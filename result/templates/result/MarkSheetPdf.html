@@ -149,7 +149,7 @@
                         {% for scr in subjects %}
             <tbody>
                 <td style="font:VeraIt;font-size:9px;background-color:#afe5c6;">{{ forloop.counter }}</td>
-                <td style="font:VeraIt;font-size:12px;background-color:#ebe1c6;">{{scr.student_name}}</td>
+                <td style="font:VeraIt;font-size:12px;background-color:#ebe1c6;">{{scr.student_name.full_name}}</td>
                 <td style="color:black;width:15%;background-color:#c2b693;">{{scr.student_id}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.test}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.agn}}</td>

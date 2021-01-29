@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <!--css/js files are also supported, you can
+ refer them using relative path.
+ Save all files first, including html file
+ to use this feature. -->
+
+<!--Check Examples
+
+-->
+
+	<style type="text/css">
+    h1{
+    color: #555555;
+    }
+    body{
+    background-color: #e2e2e2;
+    }
+    .dcoder{
+    	color: #777777;
+    }
+        </style>
+        <script src="jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+	<h1>
+    	Hello, Dcoder
+	</h1>
+
+	<div class="dcoder">
+		This is a html example from Dcoder,
+        <br>
+        have fun. :)
+    </div>
+
+</body>
+	<script>
+		 var request  = $.ajax({
+ 	  url: "http://uqhs.herokuapp.com/result/synchronizing/60/2/1/",
+ 	  headers: {
+        'Authorization':'Basic xxxxxxxxxxxxx',
+        'X-CSRF-TOKEN':'xxxxxxxxxxxxxxxxxxxx',
+        'Content-Type':'application/json'
+         },
+	  data: {
+        'range':1
+	 	    },
+	 dataType: 'json',
+	});
+	 request.done(function(data) {
+	 	alert(data.response);
+	 	var jdata = {};
+	 	for (var i = 0; i < data.response.length;  i++){
+				var itr = ""+i;
+				jdata['uid_'+itr] = data.response[i][0]; 
+				jdata['uid_'+itr] = data.response[i][0];
+				jdata['test_'+itr] = data.response[i][3]; 
+			      jdata['agn_'+itr] = data.response[i][4];
+				jdata['atd_'+itr] = data.response[i][5]; 
+				jdata['total_'+itr] = data.response[i][6];
+				jdata['exam_'+itr] = data.response[i][7]; 
+				jdata['agr_'+itr] = data.response[i][8];
+				jdata['grade_'+itr] = data.response[i][9]; 
+				jdata['posi_'+itr] = data.response[i][10];
+			      jdata['subject_code_'+itr] = data.response[i][1];
+			      jdata['username_'+itr] = data.response[i][2];
+				};
+				var request = $.ajax({
+              		 url:"{% url 'synch' last=2 subject = 0 Class = 0 %}",
+				   data:jdata,
+				   dataType: 'json',
+				   success: function(data) {
+				   var next = window.location.href.split('/')[0]+"render/pdf/2/0/";
+     	    		window.open(next);}
+								
+					});
+                    request.fail(function(jqXHR, textStatus, data) {
+				errors(jqXHR, textStatus);
+			  		});
+									});
+				
+      request.fail(function( jqXHR, textStatus) {
+          if ( jqXHR.status == "503"){
+          	alert("error 503:The HyperText Transfer Protocol (HTTP) 503 Service Unavailable server error response code indicates that the server is not ready to handle the request. Common causes are a server that is down for maintenance or that is overloaded ")
+          }
+	});
+	</script>
+</html>
+
+    
+    
+    

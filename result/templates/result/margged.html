@@ -30,13 +30,13 @@
                   {% if all_page.count != 0 %}
                 <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.males}}">Males</button>
                 {% if user.is_authenticated %}
-                <a href="{% url 'pdf' ty=2 sx=2 %}">
+                <a href="{% url 'pdf' ty=2 sx=2 pk=0 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
                 {% endif %}|
                 <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.females}}">Females</button>
                 {% if user.is_authenticated %}
-                <a href="{% url 'pdf' ty=2 sx=1 %}">
+                <a href="{% url 'pdf' ty=2 sx=1 pk=0 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
                   {% endif %}
@@ -66,9 +66,12 @@
                 $("#toAll_{{ forloop.counter }}").addClass("gen_{{ scr.student_name.gender }}");
             </script>
        	  <td style="width:1%;">{{ forloop.counter }}</td>
-           <td style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.student_name }}
+           <td style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.student_name.full_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
-              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.student_name_id %}" title="{{ scr.student_id }}" style="color:blue;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.student_name.id %}" title="{{ scr.student_id }}" style="color:blue;">Profile</a></button>
+            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.student_name.id %}" title="{{ scr.student_id }}" style="color:blue;">Profile</a></button><br>
+            <button style="line-height:65%;border:2px solid blue;color:blue;border-radius:5px;" onclick="cards('{{ scr.student_name.full_name }}', '{{ scr.student_name.Class }}', '1st')">1st Term Card</button><br>
+            <button style="line-height:65%;border:2px solid blue;color:blue;border-radius:5px;" onclick="cards('{{ scr.student_name.full_name }}', '{{ scr.student_name.Class }}', '2nd')">2nd Term Card</button><br>
+            <button style="line-height:65%;border:2px solid blue;color:blue;border-radius:5px;" onclick="cards('{{ scr.student_name.full_name }}', '{{ scr.student_name.Class }}', '3rd')">3rd Term Card</button>
             </div>
            </td>
            <td style="color:sienna;" title="{{ scr.student_name }}"  id="id_{{ forloop.counter }}">{{ scr.student_id }}</td>
@@ -79,26 +82,26 @@
            </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_test_{{ forloop.counter }}" type="number" min="0" max="20" value="{{ scr.test }}" class="extral"></td>
            <td style="color:sienna;" title="{{ scr.agn }}" id='agn_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
             {{ scr.agn }}
-           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_agn_{{ forloop.counter }}"  type="number" min="0" max="10" value="{{ scr.agn }}" class="extral"></td>
+           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input id="edith_agn_{{ forloop.counter }}"  type="number" min="0" max="5" value="{{ scr.agn }}" class="extral"></td>
            <td style="color:sienna;" title="{{ scr.atd }}" id='atd_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
             {{ scr.atd }}
-           </td><td style="color:black;width:5%;"  class='edith_{{ forloop.counter }}' hidden><input id="edith_atd_{{ forloop.counter }}" type="number" min="0" max="10" value="{{ scr.atd }}" class="extral"></td>
-           <td style="color:sienna;" title="{{ scr.total }}">
+           </td><td style="color:black;width:5%;"  class='edith_{{ forloop.counter }}' hidden><input id="edith_atd_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.atd }}" class="extral"></td>
+           <td style="color:white;width:5%;background-color:#A2A161;" title="{{ scr.total }}">
             {{ scr.total }}
            </td>
            <td style="color:sienna;" title="{{ scr.exam }}" id='exam_{{ forloop.counter }}' class='raw_{{ forloop.counter }}'>
             {{ scr.exam }}
-           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_exam_{{ forloop.counter }}" type="number" min="0" max="60" value="{{ scr.exam }}" class="extral"></td>
-             {% if scr.tutor.third_term == "3rd Term" %}<td>{{ scr.agr }}</td>{% endif %}
-             {% if scr.tutor.second_term == "2nd Term" %}<td>{{ scr.sagr }}{% endif %}</td>
-             {% if scr.tutor.first_term == "1st Term" %}<td>{{ scr.fagr }}</td>{% endif %}
-            <td>{{ scr.aagr }}</td>
-           <td id="success{{ forloop.counter }}">{{ scr.avr }}</td>
-           <td>{{ scr.grade }}</td>
-           <td style="color:white;">
-            <button class="grade_no" onclick='edith({{ forloop.counter }})' id="show_ed{{ forloop.counter }}">{{ scr.posi }}</button>
+           </td><td style="color:black;width:5%;" class='edith_{{ forloop.counter }}' hidden><input  id="edith_exam_{{ forloop.counter }}" type="number" min="0" max="70" value="{{ scr.exam }}" class="extral"></td>
+         {% if scr.tutor.third_term == "3rd Term" %}<td style="color:white;width:5%;background-color:#E6C3C3;">{{ scr.agr }}</td>{% endif %}
+             {% if scr.tutor.second_term == "2nd Term" %}<td style="color:white;width:5%;background-color:#E6C3C3;">{{ scr.sagr }}{% endif %}</td>
+             {% if scr.tutor.first_term == "1st Term" %}<td style="color:white;width:5%;background-color:#E6C3C3;">{{ scr.fagr }}</td>{% endif %}
+            <td style="color:white;width:5%;background-color:#A2A161;">{{ scr.aagr }}</td>
+           <td style="color:white;width:5%;background-color:#22D8A0;"id="success{{ forloop.counter }}">{{ scr.avr }}</td>
+           <td style="color:white;width:5%;background-color:#7AA49A;">{{ scr.grade }}</td>
+           <td style="color:white;width:5%;">
+            <button style="line-height:65%;border-radius:3px;background-color:green;color:white;width:100%;border:1px solid white;" onclick='edith({{ forloop.counter }})' id="show_ed{{ forloop.counter }}" class="show_ed">{{ scr.posi }}</button>
             <button class="grade_no" onclick='save({{ forloop.counter }})'  id="show_sa{{ forloop.counter }}" hidden>save</button>
-            <button style="line-height:65%;border-radius:5px;background-color:red;color:white;" class="delete" hidden><a href="{%  url 'delete_warning' pk=scr.id %}"><span class="glyphicon glyphicon-remove" title="remove a student from the table"></span></a></button>
+            <button style="line-height:65%;border-radius:5px;background-color:red;color:white;width:100%" class="delete" hidden><a href="{%  url 'delete_warning' pk=scr.id %}"><span class="glyphicon glyphicon-remove" title="remove a student from the table"></span></a></button>
 
 
  </td>
@@ -108,12 +111,18 @@
        	<pre class="empty">There are no records.</pre>
        {% endif %}
        <tr id="toAll" class="{{ scr.grade }}">
-          <script>
-		  $(".oneBox").show();
+      <script>
+		  $(".oneBox").show();//http://127.0.0.1:8838/static/result/pdf/marksheets/2/1st/HIS_2_1_21_0.pdf
             dim.unshift("{{ scr.grade }}");
             $("#toAll").addClass("oneBox")
             $("#toAll").addClass("gen_{{ scr.student_name.gender }}");
-          </script>
+            function cards(nam, cls, trm){
+              var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
+              var kwd = argt[cls]+'/'+trm+'/'+nam.split(' ')[0]+'_'+nam.split(' ')[1]+'.pdf'
+              var next = window.location.href.split('/')[0]+"/static/result/pdf/cards/"+kwd;
+              window.open(next, '_blank');
+              };
+      </script>
         
           <tbody id="extral" hidden>
        	   <td style="width:1%;" id="sn"></td>
@@ -122,23 +131,23 @@
                 <option value="student_name">Student_Name</option>
                 {% if classNames %}
                 {% for scr in classNames %}
-                    <option name="dropDownOpt" id="edith_name" value="{{ scr.id }}">{{ scr.full_name }}</option>
+                    <option name="dropDownOpt" id="edith_name" value="{{ scr.uid }}">{{ scr.full_name }}</option>
                 {% endfor %}
                 {% endif %}
             </select> 
            </td>
-           <td id="student_id" id="id_0">AK/43/897/J</td>
+           <td id="id_0">waiting</td>
            <td ><input type="number" min="0" max="20" class="extral" id="edith_test_0" value="0"></td>
-           <td ><input type="number" min="0" max="10" class="extral" id="edith_agn_0" value="0"></td>
-           <td ><input type="number" min="0" max="10" class="extral" id="edith_atd_0" value="0"></td>
+           <td ><input type="number" min="0" max="5" class="extral" id="edith_agn_0" value="0"></td>
+           <td ><input type="number" min="0" max="5" class="extral" id="edith_atd_0" value="0"></td>
            <td  id="total_0">40</td>
-           <td><input type="number" min="0" max="60" class="extral" id="edith_exam_0" value="0"></td>
+           <td><input type="number" min="0" max="70" class="extral" id="edith_exam_0" value="0"></td>
             {% if qry.third_term == "3rd Term" %}<td id="agr_0">100</td>{% endif %}
              {% if qry.second_term == "2nd Term" %}<td id="fagr_0">100</td>{% endif %}
              {% if qry.first_term == "1st Term" %}<td id="sagr_0">100</td>{% endif %}
            <td id="aagr">300</td>
            <td id="avg">100</td>
-           <td>D7</td>
+					 <td id="grd"></td>
            <td id="posi"><button class="grade_no" onclick="save(0)">save</button></td>
            </tbody>
            <script>
@@ -170,38 +179,33 @@
               </button>
         </td>
    ..      <td>
-              <button style="line-height:65%;border-radius:5px;background-color:red;" onclick="$('.delete').toggle()">
+              <button style="line-height:65%;border-radius:5px;background-color:red;" onclick="$('.delete, .show_ed').toggle()">
                 <span class="glyphicon glyphicon-remove" title="remove a student from the table"></span>
               </button>
         </td>
         <td> <strong>AGR:</td>
         <td style="color:white;">{{ subject_scores }}</td>
-        <td colspan="2"><strong>{{ subject_pert }}%</strong></td>
+        <td colspan="2" style="color:white;width:5%;"><strong>{{ subject_pert }}%</strong></td>
      
       </tr>
       <tr class="capt">
         <td class="capt" style="color:white; width: 200px;" colspan="2">Annual grades
-            <a href="{% url 'offline' pk=pk %}" title='Click for details'><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{qry.subject}}</button>
+            <a href="{% url 'offline' pk=pk %}" title='Click for details'><button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;" >{{qry.subject}}</button>
             </a>
         </td>
         <td colspan="10" id='tenb'>
           <a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>
-            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">{{ qry.teacher_name }}</button>
+            <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;" >{{ qry.teacher_name }}</button>
             </a> |{% if user.is_authenticated %}
           <a href="" style="color:white;" title='Click to upload exam questions'> 
-            <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Upload Questions </button>
+            <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;">Upload Questions </button>
           </a>
           {% endif %}
         </td>
         <td>{% if user.is_authenticated %}
-          <a href="{% url 'pdf' ty=2 sx=0 %}">
-            <span class="glyphicon glyphicon-print" title="PDF"></span>
-          </a>{% endif %}
+          <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-print" title="PDF"></span></a>{% endif %}
         </td>
-        <td>{% if cl != None and user.is_authenticated %}
-          <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}" title="{{ qry.Class }} Broadsheet ">
-            <span class="glyphicon glyphicon-record"></span>
-          </a>{% endif %}
+        <td><button onclick="synch()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;"><span class="glyphicon glyphicon-download"></span></button>   
         </td>
         <td>{% if qry.term == '1st Term' %}
           <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}">
@@ -240,12 +244,10 @@
                 {% if all_page.has_next %}
                   <li style="width:5%;line-height:65%;">
                     <a href="?page={{ users.next_page_number }} "style="background-color:#CAA04F;border-radius:3px;border:1px solid orange;">&raquo;</a>
-                    {% if request.user.is_authenticated %}
+                    
                     <a href="{% url 'subject_view_all' pk=pk md=2 %}" style="color:green;">
                       <span class="glyphicon glyphicon-list-alt" title='all'></span>
-                      </a>
-                      
-                    {% endif %}          
+                      </a>         
                   </li>
                 {% else %}
                   <li class="disabled" style="width:5%;line-height:65%;">
@@ -288,60 +290,124 @@
 }};
                 colset();
         function edith(i){
-	$(".raw_"+""+i).hide(); 
-	$(".edith_"+""+i).show();
-        $("#show_ed"+""+i).hide();
-        $("#show_sa"+""+i).show();
+            $("#id_"+""+i).html('waiting');
+            $(".raw_"+""+i).hide(); 
+            $(".edith_"+""+i).show();
+            $("#show_ed"+""+i).hide();
+            $("#show_sa"+""+i).show();
 	
-}
+};
 
+var ErrorMap = {
+			'0': "Not connected.\nPlease verify your network connection.",
+			'400' : "Server understood the request, but request content was invalid.",
+			'401' : "Unauthorized access.",
+			'403' : "Forbidden resource can't be accessed.",
+			'404': "The requested page not found.",
+			'500' : "Internal server error.",
+			'503' : "Service unavailable.",
+			'parsererror' : "Requested JSON parse failed.",
+			'timeout': "Time out error.",
+			'abort': "Ajax request aborted.",
+					};
         function save(i){
-	  var test = $("#edith_test_"+""+i).val();
-	  var agn = $("#edith_agn_"+""+i).val();
-	  var atd = $("#edith_atd_"+""+i).val();
-	  var exam = $("#edith_exam_"+""+i).val();
+            $("#grd").html('waiting');
+            var test = $("#edith_test_"+""+i).val();
+            var agn = $("#edith_agn_"+""+i).val();
+            var atd = $("#edith_atd_"+""+i).val();
+            var exam = $("#edith_exam_"+""+i).val();
             $("#total_0").html(eval([Number(test), Number(atd), Number(agn)].join('+')));
-           $("#fagr_0").html(eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')));
-	  var request  = $.ajax({
+            $("#fagr_0").html(eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')));
+           
+    var grader  = $.ajax({
  	  url: "{% url 'responsive_updates' pk=0 %}",
 	  data: {
-        'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
-        'student_id_1': 'XX/S/19/'+$("#edith_name_id_"+""+i).val(), 'start':1, 'end':2,
-        'student_name_1': "AMINU ISMAIL",
-        'test_1': Number(test),
-	 	    'agn_1': Number(agn),
-	 	    'atd_1': Number(atd), 
-	 	    'total_1': eval([Number(test), Number(atd), Number(agn)].join('+')),
-	 	    'exam_1': Number(exam),
-	 	    'agr_1': eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')),
-	 	    'grade_1': 'D7', 
-	 	    'posi_1': 'th'
+        'flow':'mygrade',
+        'scores':eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+'))
 	 	    },
 	 dataType: 'json',
-	 
+	});
+  
+	 grader.done(function(data){
+          $("#grd").html(data.grade); 
+          var request  = $.ajax({
+            url: "{% url 'responsive_updates' pk=0 %}",
+            data: {
+                'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
+                'student_id_1': $("#edith_name_id_"+""+i).val(), 'start':1, 'end':2,
+                'student_name_1': "AMINU ISMAIL",
+                'test_1': Number(test),
+                'agn_1': Number(agn),
+                'atd_1': Number(atd), 
+                'total_1': eval([Number(test), Number(atd), Number(agn)].join('+')),
+                'exam_1': Number(exam),
+                'agr_1': eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')),
+                'grade_1':data.grade, 
+                'posi_1': 'th'
+                },
+          dataType: 'json',
+          
 	});
 	 request.done(function(data) {
-          $("#id_"+""+i).html(data.id);
-            $("#id_"+""+i).css('color', '#670A53');
+          $("#id_"+""+i).html($("#edith_name_id_"+""+i).val());
      });
-      request.fail(function( jqXHR, textStatus) {
-          alert(textStatus)
+      request.fail(function(jqXHR, textStatus) {
+          alert(ErrorMap[jqXHR.status])
 	});
+     });
+    grader.fail(function( jqXHR, textStatus) {
+          if (jqXHR.status == '404'){
+                  var next = window.location.href.split('/')[0]+'/result/logins/'};
+                  location.replace(next)
+	});
+	  
  
-}
-
-        var grades = dim.reduce(function(prev, cur){prev[cur] = (prev[cur] || 0) + 1; return prev;},{});
-          $("#A").html(grades.A);$("#C").html(grades.C);$("#P").html(grades.P);$("#F").html(grades.F);
-          $("#F9").html(grades.F9);$("#E8").html(grades.E8);$("#D7").html(grades.D7);$("#C6").html(grades.C6);$("#C5").html(grades.C5);$("#C4").html(grades.C4);$("#B3").html(grades.B3);$("#B2").html(grades.B2);$("#A1").html(grades.A1);
-          $(".oneBox").show();
-          function showOnly(x){$("."+x).hide();$(".oneBox").toggle();};
-          if ("{{qry.Class}}"[0] == 'J'){
-            $("#Junior").show()
-          }
-          else{
-            $("#Senior").show()
-          };
-          function pastquestions(y, z, x){
+};
+ 
+function synch(){
+    var request  = $.ajax({
+ 	  url: "http://uqhs.herokuapp.com/result/synchronizing/60/2/1/",
+	  data: {
+        'range':1
+	 	    },
+	 dataType: 'json',
+	});
+	 request.done(function(data) {alert(data.response) 
+     if (window.location.href.split(':')[1] == '//127.0.0.1')
+        {
+        var jdata = {'end':data.response.length, 'Term':'{{ qry.term }}', 'username':data.response[0][10]};
+        for (var i = 0; i < data.response.length;  i++){
+            var itr = ""+i;
+            jdata['uid_'+itr] = data.response[i][0]; 
+            jdata['uid_'+itr] = data.response[i][0];
+            jdata['test_'+itr] = data.response[i][2]; 
+            jdata['agn_'+itr] = data.response[i][3];
+            jdata['atd_'+itr] = data.response[i][4]; 
+            jdata['total_'+itr] = data.response[i][5];
+            jdata['exam_'+itr] = data.response[i][6]; 
+            jdata['agr_'+itr] = data.response[i][7];
+            jdata['grade_'+itr] = data.response[i][8];                           
+            jdata['posi_'+itr] = data.response[i][9];
+            jdata['subject_code_'+itr] = data.response[i][1];
+            jdata['username_'+itr] = data.response[i][10];      
+            };
+            var sub_request = $.ajax({
+            url:"{% url 'synch' last=2 subject=0 Class=0 %}",
+            data:jdata,
+            dataType: 'json',
+            success: function(data) {
+            var next = window.location.href.split('/')[0]+'/result/'+""+"{{ qry.id }}"+"/1/";  
+            window.open(next);}			
+              });             
+            sub_request.fail(function(jqXHR, textStatus){
+              alert(ErrorMap[jqXHR.status])
+              });
+              }});  
+            request.fail(function(jqXHR, textStatus, data) {
+                alert(ErrorMap[jqXHR.status]);
+                });
+	}   
+    function pastquestions(y, z, x){
         var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
         var next = window.location.href.split('/')[0]+"/static/result/pdf/pastquestions/"+y+'_'+argt[z]+'_'+x+'.pdf';
         window.open(next, '_blank');

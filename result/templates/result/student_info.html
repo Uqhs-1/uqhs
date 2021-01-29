@@ -14,7 +14,7 @@
         <div class="capt" style="font-weight:bold;"> STUDENT INFORMATION <a href="{% url 'offline' pk=0 %}" title="Register a new student name"><span class="glyphicon glyphicon-plus" style="color:white; margin-left:44%;background-color:green;border:1px solid blue;border-radius:5px;"></span></a><em id="edit" onclick="$('#names, #nameh').toggle()" title="Edit student name"><span class="glyphicon glyphicon-pencil" style="color:white;margin-left:1%;background-color:yellow;border:1px solid blue;border-radius:5px;"></span></em></div><br>
         <div style="font-weight:bold;background-color:black;color:white;border-radius:5px;border:1px solid blue;text-align:center;width:10%;font-size:100%">Profile</div>
             <label for="" style="font-size:60%;width:25%;">STUDENT NAME: </label>
-            <input type="text" value="{{ info.full_name }}" style="background-color:black;color:white;text-align:center;border-radius:5px;line-height:5px;font-size:10px;width:25%;" id='names' disabled><input type="text" id="nameh" value="{{ info.full_name }}" style="background-color:black;color:white;text-align:center;border-radius:5px;line-height:5px;font-size:10px;width:25%;" hidden><label for="" style='font-size:60%;width:25%;'>ADMISSION NO.:</label><input type="text" value="{{ info.uid }}" disabled style="background-color:black;color:white;text-align:center;border-radius:5px;font-size:60%;width:20%;"><br>
+            <input type="text" value="{{ info.full_name }}" style="background-color:black;color:white;text-align:center;border-radius:5px;line-height:5px;font-size:10px;width:25%;" id='names' disabled><input type="text" id="nameh" value="{{ info.full_name }}" style="background-color:black;color:white;text-align:center;border-radius:5px;line-height:5px;font-size:10px;width:25%;" hidden><label for="" style='font-size:60%;width:25%;'>ADMISSION NO.:</label><input type="text" id='uid' value="{{ info.uid }}" style="background-color:black;color:white;text-align:center;border-radius:5px;font-size:60%;width:20%;"><br>
                  <div>
             <label for="" style="font-size:60%">Class: </label>
                 <select name="class" id="class" required="True" style="line-height:5px;background-color:#9DC0AF;color:white;width:10%;text-align:center;border-radius:5px;line-height:5px;font-size:10px;">
@@ -340,20 +340,35 @@
             });
         
         $("button[name='Save']").click(function(){
-            var argument = {pk:{{ info.id }}, name:$("#nameh").val(), class:$("#class").val(), term:$("#term").val(), opened:$("#opened").val(), presence:$("#presence").val(), punctual:$("#punctual").val(), comment:$("#comment").val(), hbegin:$("#hbegin").val(), hend:$("#hend").val(), wbegin:$("#wbegin").val(), wend:$("#wend").val(), daysAbsent:$("#opened").val() - $("#presence").val(), purpose:$("#purpose").val(), good:$("#good").val(), fair:$("#fair").val(), poor:$("#poor").val(), remark:$("#remark").val(), event:$("#event").val(), indoor:$("#indoor").val(), ball:$("#ball").val(), combat:$("#combat").val(), track:$("#track").val(), jump:$("#jump").val(), throw:$("#throw").val(), swim:$("#swim").val(), lift:$("#lift").val(), sport_comment:$("#sport_comment").val(), club_one:$("#club_one").val(), office_one:$("#office_one").val(), contrib_one:$("#contrib_one").val(), club_two:$("#club_two").val(), office_two:$("#office_two").val(), contrib_two:$("#contrib_two").val(),birth:$("#birth").val(),title:$("#title").val(),pname:$("#pname").val(),pocp:$("#pocp").val(),contact1:$("#contact1").val(),contact2:$("#contact2").val(),address:$("#address").val()
+            var argument = {pk:{{ info.id }}, uid:$("#uid").val(), name:$("#nameh").val(), class:$("#class").val(), term:$("#term").val(), opened:$("#opened").val(), presence:$("#presence").val(), punctual:$("#punctual").val(), comment:$("#comment").val(), hbegin:$("#hbegin").val(), hend:$("#hend").val(), wbegin:$("#wbegin").val(), wend:$("#wend").val(), daysAbsent:$("#opened").val() - $("#presence").val(), purpose:$("#purpose").val(), good:$("#good").val(), fair:$("#fair").val(), poor:$("#poor").val(), remark:$("#remark").val(), event:$("#event").val(), indoor:$("#indoor").val(), ball:$("#ball").val(), combat:$("#combat").val(), track:$("#track").val(), jump:$("#jump").val(), throw:$("#throw").val(), swim:$("#swim").val(), lift:$("#lift").val(), sport_comment:$("#sport_comment").val(), club_one:$("#club_one").val(), office_one:$("#office_one").val(), contrib_one:$("#contrib_one").val(), club_two:$("#club_two").val(), office_two:$("#office_two").val(), contrib_two:$("#contrib_two").val(),birth:$("#birth").val(),title:$("#title").val(),pname:$("#pname").val(),pocp:$("#pocp").val(),contact1:$("#contact1").val(),contact2:$("#contact2").val(),address:$("#address").val()
                             };
-           var request = $.ajax({
-                url:"{% url 'student_info_json' %}",
-                data: argument,
+           var whendone = $.ajax({
+                url:"{% url 'responsive_updates' pk=0 %}",
+                data: {'flow':'admin_no', uid:$("#uid").val(), name:$("#nameh").val()},
                 dataType: 'json',
                });
-                 request.done(function(data) {
-                         $("#outcome").show();
-                        $("#success").html("{{ info.full_name }}"+" data saved!");
+                 whendone.done(function(data) {
+                    if (data.uid == $("#uid").val() || data.exist == 0){
+                        var request = $.ajax({
+                            url:"{% url 'student_info_json' %}",
+                            data: argument,
+                            dataType: 'json',
+                        });
+                        request.done(function(data) {
+                                $("#outcome").show();
+                                $("#success").html("{{ info.full_name }}"+" data saved!");
+                        });     
+                        request.fail(function( jqXHR, textStatus ) {
+                            alert( "Request failed: " + jqXHR.status );
+                        });
+                        }
+                    else{
+                        alert('A student has been assigned with this admission number')
+                    }
             });     
-                   request.fail(function( jqXHR, textStatus ) {
+                   whendone.fail(function( jqXHR, textStatus ) {
                        alert( "Request failed: " + jqXHR.status );
-});
+            });
             });
     </script>
 </body>
