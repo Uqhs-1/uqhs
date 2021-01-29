@@ -399,7 +399,7 @@
             };
             data.saved = 'saved';
 				    var request = $.ajax({
-                    	url:"{% url 'pdf' ty=6 sx=0 %}",
+                    	url:"{% url 'pdf' ty=6 sx=0 pk=0 %}",
                     	data: data,
                     	dataType: 'json',
                		 });
