@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 {% load static %}
 {% load crispy_forms_tags %}
 <html lang="en">
@@ -86,7 +86,7 @@
                 <a href="{% url 'offline' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-tasks"></a>
                 <a href="{% url 'transfers' md=30 %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
                 <a href="{% url 'pdf' ty=5 sx=0 pk=0 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
-               {% if request.user.profile.class_in != None %}
+               {% if request.user.is_superuser == True %}
                <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
                <a href="{% url 'pdf' ty=6 sx=0 pk=0 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
                 <em style="width:30%;cursor:pointer;" onclick="$('#hid_t').toggle()"><span class="glyphicon glyphicon-download"></span>
@@ -94,8 +94,8 @@
                     <button onclick="allTerm('2nd Term')" style="line-height:65%;width:6%;border:2px solid blue;color:black;border-radius:5px;">2nd</button><button onclick="allTerm('3rd Term')" style="line-height:65%;width:6%;border:2px solid blue;color:black;border-radius:5px;">3rd</button>
                     </div>
                 </em>
-                {% endif %}
-                {% if request.user.is_superuser == True %}
+            
+                
                 
                     <em style="width:30%;cursor:pointer;" onclick="$('#hid_k').show()"><span class="glyphicon glyphicon-download"></span>
                     <div id="hid_k" hidden>
