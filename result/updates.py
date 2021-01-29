@@ -177,7 +177,7 @@ def responsive_updates(request, pk):
 
                 if request.GET.get('flow') == "currnetTerms":
                     tutor = BTUTOR.objects.all()
-                    data = {'tutors':str(len([currentTerms(request.GET.get('Term'), i) for i in tutor]))}
+                    data = {'tutors':str(len([currentTerms(request.GET.get('Term'), i) for i in tutor if i is not None]))}
                 
                 if request.GET.get('flow') == "confirm":
                     exist = BTUTOR.objects.filter(subject__exact = request.GET.get('Subject'), Class__exact = request.GET.get('Class'), term__exact = '1st Term')
