@@ -22,7 +22,7 @@ urlpatterns = [
             url(r'student_exam_page/(?P<subj_code>\d+)/(?P<pk>\d+)/', views.student_exam_page, name='student_exam_page'),
             #url(r'detail/(?P<pk>\d+)/', views.detail, name='detail'),
             url('subject_home/(?P<pk>\d+)/(?P<cl>\d+)/', views.subject_home, name='subject_home'),
-            url('render/pdf/(?P<ty>\d+)/(?P<sx>\d+)/', views.Pdf.as_view(), name='pdf'),
+            url('render/pdf/(?P<ty>\d+)/(?P<sx>\d+)/(?P<pk>\d+)/', views.Pdf.as_view(), name='pdf'),
             url(r'uniqueness/(?P<pk>\d+)/', views.uniqueness, name='uniqueness'),
             url('student_home_page/(?P<pk>\d+)/', views.student_home_page, name='student_home_page'), 
             url(r'^(?P<pk>\d+)/(?P<md>\d+)/', views.detailView, name='subject_view'),###################### 
@@ -30,7 +30,8 @@ urlpatterns = [
             #url('quest_filter/(?P<tm>\d+)/(?P<cl>\d+)/(?P<sj>[\w\-]+)/', views.quest_filter, name='quest_filter'),
             url('student_names/(?P<pk>\d+)/', views.Student_names_list, name='student_names'),
             #results_junior_senior#annual_sheet
-            url(r'^subject/transfers', views.teacher_accounts, name='transfers'),
+            url(r'^subject/transfers/(?P<md>\d+)/', views.teacher_accounts, name='transfers'),
+            url(r'^auto_pdf_a/transfers/(?P<md>\d+)/', views.auto_pdf_a, name='auto_pdf_a'),
             url('editQuest/(?P<pk>\d+)/', views.editQuest, name='editQuest'),
             url(r'^results_junior_senior/(?P<pk>\d+)/', views.results_junior_senior, name='results_junior_senior'),
             url('search_results/(?P<pk>\d+)/', views.search_results, name='search_results'),
@@ -70,6 +71,7 @@ urlpatterns = [
             #
             url('question_image/(?P<pk>\d+)/', updates.question_image, name='question_image'),
             
+            url('synchronizing/(?P<last>\d+)/(?P<subject>\d+)/(?P<Class>\d+)/$', updates.synch, name='synch'),
             url('pro_detail/updates/(?P<pk>\d+)/', updates.profiles, name='pro_detail'),####
             url('user/updates/(?P<pk>\d+)/$', updates.ProfileUpdate.as_view(), name='user_update'),#####
             url('upload_photo/ updates/ (?P<pk>\d+)/', updates.profile_picture, name='upload_photo'),#####

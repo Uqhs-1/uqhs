@@ -5,14 +5,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .utils import do_grades, do_positions, cader, round_half_up, session
 from django.contrib.auth.decorators import login_required
 import time
-from django.contrib.auth.models import User
+import datetime
+#from django.contrib.auth.models import User
 from datetime import timedelta
 from django.contrib import messages
-from django.conf import settings
-import os
-import shutil
+#from django.conf import settings
+#import os
+#import shutil
 from statistics import mean
-from django.http import JsonResponse
+#from django.http import JsonResponse
 #import datetime
 
 session = session()
@@ -75,8 +76,7 @@ def upload_new_subject_scores(request):
             if len(valid_input[0][1:]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
                 valid_input = [[x[0].split('¿')[-1], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
         x = cader(tutor.Class)
-        raw_scores = [[x[0].split('¿')[-1],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]
-        
+        raw_scores = [[x[0].split('¿')[-1],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]       
         posi = do_positions([int(i[-1]) for i in raw_scores][:])
         grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
         final = [x+[y]+[z] for x,y,z in zip(raw_scores, grade, posi)]
@@ -129,7 +129,11 @@ def massRegistration(request):
         for line in contents:
             each_student = [new.strip() for new in line.split(',')]
             names += [each_student]
-        valid_names = [n[:] for n in names]
+        valid_names = [n[:] for n in names if len(n) is not 1]
+        if len(valid_names[0]) == 15:
+           reged = [regMe(i) for i in valid_names if not CNAME.objects.filter(uid__exact=i[1]).exists()]
+           cname = CNAME.objects.filter(id__in= reged)
+           return render(request, 'result/regSuccessful.html', {'reged':zip(cname, reged)})
         for i in range(0, len(valid_names)):
             output = [check(s) for s in valid_names[i]]
             if len(output) == 5:
@@ -153,8 +157,11 @@ def massRegistration(request):
     ######################STAGE 2 ::: UPLOAD SCORES##################ENDS
     return render(request, 'result/regSuccessful.html', {'reged':zip(cname, student_id)})
 
-def regMe(dim):#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
-    reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
+def regMe(dim):
+    if len(dim) == 5:#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
+         reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
+    else:#ABDULFATAI SODIQ,2015/1290,2004-11-27,SSS 3,1,120,112,8,Not Specified,Good keep it up,48.0,48.0,1.5,1.5,good         
+          reged = CNAME(full_name = dim[0], last_name = dim[0].split(' ')[0], uid = dim[1], first_name = dim[1].split(' '), gender = int(dim[4]), birth_date = dim[2], Class = dim[3], no_open = dim[5], no_present = dim[6], no_of_day_abs = dim[7], purpose = dim[8], remark = dim[9], W_begin = dim[10], W_end = dim[11], H_begin = dim[12], H_end = dim[13], good = dim[14])
     reged.save()
     return reged.id
 

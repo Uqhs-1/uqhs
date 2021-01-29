@@ -9,8 +9,8 @@ class subject_main(admin.ModelAdmin):
 
 @admin.register(BTUTOR)
 class model_teacher(admin.ModelAdmin):
-    list_display = ('accounts', 'teacher_name', 'subject', 'Class', 'model_in', 'session', 'males',  'females')
-    fields = [('cader', 'model_in','accounts', 'teacher_name'), ('subject', 'Class', 'first_term', 'second_term', 'third_term', 'males',  'females'), ('model_summary', 'session')]
+    list_display = ('accounts', 'teacher_name', 'subject', 'Class', 'subject_teacher_id', 'session', 'males',  'females')
+    fields = [('model_in','accounts', 'teacher_name'), ('subject', 'Class', 'first_term', 'second_term', 'third_term', 'males',  'females'), ('term', 'session')]
 
 @admin.register(CNAME)
 class model_names(admin.ModelAdmin):

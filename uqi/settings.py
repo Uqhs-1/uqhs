@@ -39,7 +39,7 @@ FILES_FOLDER = os.path.join(PROJECT_ROOT, 'file_folder/')
 #DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['uqhi.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['uqhi.herokuapp.com', '127.0.0.1', 'uqhi.herokuapp.com']
 #add email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -59,21 +59,29 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book_shelf.apps.BookShelfConfig',
     'result.apps.ResultConfig',
-    'crispy_forms',#How to Use Bootstrap 4 Forms With Django
+    'crispy_forms',
+    #'corsheaders',
+    #How to Use Bootstrap 4 Forms With Django
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+#CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #'corsheaders.middleware.common.corsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CORS_ALLOWED_ORIGINS = [
+   '    '
+]
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ROOT_URLCONF = 'uqi.urls'
 AUTH_PROFILE_MODULE = 'result.Edit_User'
@@ -132,13 +140,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 

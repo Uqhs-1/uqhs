@@ -13,7 +13,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class BTUTOR(models.Model):
     accounts = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, help_text='loggon-account:move account here', related_name='btutor')
     teacher_name = models.CharField(max_length=50, blank=True, null=True, help_text='Subject Teacher')###
-    codex = tuple([('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
+    codex = tuple([('----', 'None'), ('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
     subject = models.CharField(max_length=30, choices= codex, blank=True, null=True, default='ENG', help_text='select subject NAME',)
     class_status = (('JSS 1', 'jss_one'), ('JSS 2', 'jss_two'), ('JSS 3', 'jss_three'), ('SSS 1', 'sss_one'), ('SSS 2', 'sss_two'), ('SSS 3', 'sss_three'))
     Class = models.CharField(max_length=30, choices=class_status, null=True, default='JSS 1', help_text='select subject CLASS')
@@ -31,7 +31,7 @@ class BTUTOR(models.Model):
     status = models.CharField(max_length=8, choices=account_status, blank=True, default='active', null=True, help_text='Account Status')
     session = models.CharField(max_length=8, blank=True, null=True)###
     teacher_in = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='my_account', help_text= 'Class Teachers')
-    class_teacher_id = models.CharField(max_length=200, blank=True, null=True, help_text='Class teacher id')
+    subject_teacher_id = models.CharField(max_length=200, blank=True, null=True, help_text='Class teacher id')
     created = models.DateTimeField(max_length=200, default=str(datetime.date.today()))
     updated = models.DateTimeField(editable=False, blank=True, null=True,)
     pdf = models.FileField(upload_to='static/result/pdf/', null=True, default='default.pdf')
@@ -39,16 +39,20 @@ class BTUTOR(models.Model):
           ordering = ('teacher_name',) # helps in alphabetical listing. Sould be a tuple
     def __str__(self):
         """String for representing the Model object."""#marksheets/2/3rd/BUS_18_0.pdf
-        return f'{self.subject}_{self.session[-2:]}_0.pdf:{self.accounts.username}:/{self.id}/{self.updated.day}/{self.updated.month}/{self.updated.year}_{self.updated.hour}:{self.updated.minute}:{self.updated.second}'
+        termi = sorted([self.first_term[0], self.second_term[0], self.third_term[0]])
+        cdo = str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+'_'+str(termi[-1])+'_'+self.session[-2:]
+        return f'{self.subject}_{cdo}_0.pdf:{self.accounts.username}:/{self.id}/{self.updated.day}/{self.updated.month}/{self.updated.year}_{self.updated.hour}:{self.updated.minute}:{self.updated.second}'
     
     def save(self):
         from .utils import session
+        #self.updated = datetime.datetime.today()
         if not self.id:
             self.created = datetime.date.today()
             self.session = session().profile.session
         if self.accounts is not None:
             self.teacher_name = f'{self.accounts.profile.title} {self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
-        self.updated = datetime.datetime.today()
+            #subj = ['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR']
+            #self.subject_teacher_id = str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+"-"+str(subj.index(self.subject))+"-"+str(self.accounts.id)
         self.model_summary = self.accounts.profile.last_name[0]+self.accounts.profile.first_name[0]
         if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() is not 0:
             males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.filter(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session).first(), student_name__gender__exact = 1).count()
@@ -132,10 +136,10 @@ class CNAME(models.Model):
     sport_comment = models.CharField(max_length=200, default='Satisfactory', null=True, blank=True)
     club_one = models.CharField(max_length=200, default='MSSN', null=True, blank=True)
     club_two = models.CharField(max_length=200, default='JET', null=True, blank=True)
-    office_one = models.CharField(max_length=200, default='Mosque Coordinator.', null=True, blank=True)
-    office_two = models.CharField(max_length=200, default='Time keeper', null=True, blank=True)
-    contrib_one = models.CharField(max_length=200, default='Proper arrangement of School mosque', null=True, blank=True)
-    contrib_two = models.CharField(max_length=200, default='Manage program timely', null=True, blank=True)
+    office_one = models.CharField(max_length=200, default='Member', null=True, blank=True)
+    office_two = models.CharField(max_length=200, default='Member', null=True, blank=True)
+    contrib_one = models.CharField(max_length=200, default='Active member', null=True, blank=True)
+    contrib_two = models.CharField(max_length=200, default='Active member', null=True, blank=True)
     sex = models.CharField(max_length=100, blank=True, null=True, default= "Male")
 
     #Parent Info
@@ -153,7 +157,6 @@ class CNAME(models.Model):
     annual_scores = models.IntegerField(blank=True, null=True, default=0)
     annual_avr = models.FloatField(max_length=4, blank=True, null=True, default=0)
     posi = models.CharField(max_length=5, blank=True, null=True)
-
 
     class Meta:
           ordering = ('full_name',) # helps in alphabetical listing. Sould be a tuple
@@ -187,14 +190,12 @@ class CNAME(models.Model):
 class QSUBJECT(models.Model):#step5-subject 
      student_name = models.ForeignKey(CNAME, on_delete=models.CASCADE, null=True)#
      student_id = models.CharField(max_length=115, blank=True, null=True)
-
      test = models.IntegerField(blank=True, null=True, default=0)
      agn = models.IntegerField(blank=True, null=True, default=0)
      atd = models.IntegerField(blank=True, null=True, default=0)
      total = models.IntegerField(blank=True, null=True, default=0)
      exam = models.IntegerField(blank=True, null=True, default=0)
      agr = models.IntegerField(blank=True, null=True, default=0)
-     
      gender = models.IntegerField(blank=True, null=True, default= 1, validators=[MaxValueValidator(2), MinValueValidator(1)])#
      created = models.DateTimeField(auto_now_add=True) 
      updated = models.DateTimeField(editable=False, blank=True, null=True,)
@@ -219,9 +220,6 @@ class QSUBJECT(models.Model):#step5-subject
      
      class Meta:
           ordering = ('gender', 'student_name',) # helps in alphabetical listing. Sould be a tuple
-     def __str__(self):
-        """String for representing the Model object."""
-        return f'{self.id}:{self.student_name}'
     
      def __str__(self):
         """String for representing the Model object."""
@@ -241,16 +239,18 @@ class QSUBJECT(models.Model):#step5-subject
                 self.avr = round((sum(dim)/sum(x > 0 for x in dim)), 2)
                 self.grade = do_grades([int(self.avr)], cader(self.tutor.Class))[0]
             self.qteacher = self.tutor.teacher_name
-            self.updated = datetime.datetime.today()
         if self.student_name is not None:
             self.student_id = self.student_name.last_name[0]+self.student_name.first_name[0]+'/'+self.tutor.Class[0]+'/'+self.student_name.session[-2:]+'/'+str(self.student_name.id)
             self.gender = self.student_name.gender
         cname = CNAME.objects.get(pk=self.student_name.id)
-        cname.Class = self.tutor.Class
         cname.term = self.tutor.term
-        cname.uid = self.student_id
-        cname.save()
-        super(QSUBJECT, self).save()
+        tutor = self.tutor
+        if self.student_name.Class == self.tutor.Class:
+            tutor.updated = datetime.datetime.today()
+            tutor.save()  
+            cname.save()
+            super(QSUBJECT, self).save()
+            
      def get_absolute_url(self):
         """Returns the url to access a detail record for this student."""
         return reverse('subject_view', args=[str(self.id), 1])
@@ -276,7 +276,7 @@ class Edit_User(models.Model):
    department = models.CharField(max_length=30, choices=section_status, blank=True, null=True)
    account_id = models.CharField(max_length=1130, default = 0, blank=True, null=True)
    email_confirmed = models.BooleanField(default=False, help_text='True/False')
-   class_status = (('JSS 1', 'jss_one'), ('JSS 2', 'jss_two'), ('JSS 3', 'jss_three'), ('SSS 1', 'sss_one'), ('SSS 2', 'sss_two'), ('SSS 3', 'sss_three'))
+   class_status = (('JSS 1', 'ONE'), ('JSS 2', 'TWO'), ('JSS 3', 'THREE'), ('SSS 1', 'FOUR'), ('SSS 2', 'FIVE'), ('SSS 3', 'SIX'), ('HEADS', 'HOD'))
    class_in = models.CharField(max_length=15, choices=class_status, blank=True, null=True, help_text='Select class in charge', default= None)
    login_count = models.IntegerField(blank=True, null=True, default= 0,)
    code = tuple([('2018', '2017/2018'), ('2019', '2018/2019'), ('2020', '2019/2020'), ('2021', '2020/2021'), ('2022', '2021/2022'), ('2023', '2022/2023'), ('2024', '2023/2024'), ('2025', '2024/2025'), ('2026', '2025/2026'), ('2027', '2026/2027'), ('2028', '2027/2028'), ('2029', '2028/2029'), ('2030', '2029/2030'), ('2031', '2030/2031'), ('2032', '2031/2032'), ('2033', '2032/2033'), ('2034', '2033/2034'), ('2035', '2034/2035'), ('2036', '2035/2036'), ('2037', '2036/2037'), ('2038', '2037/2038'), ('2039', '2038/2039'), ('2040', '2039/2040'), ('2041', '2040/2041'), ('2042', '2041/2042'), ('2043', '2042/2043'), ('2044', '2043/2044'), ('2045', '2044/2045'), ('2046', '2045/2046'), ('2047', '2046/2047'), ('2048', '2047/2048')])
@@ -291,7 +291,7 @@ class Edit_User(models.Model):
    def save(self, *args, **kwargs):
         self.image = 'result/images/default.jpg'
         if self.photo.name is not 'default.jpg':
-            self.image = 'result/images/'+str(self.user.username)+'.jpg'
+            self.image = 'result/images/default.jpg'#'result/images/'+str(self.user.username)+'.jpg'
         if self.user.email is not None and self.last_name is not None or self.first_name is not None:
             self.email_confirmed = True
         super(Edit_User, self).save(*args, **kwargs)
@@ -377,3 +377,4 @@ class QUESTION(models.Model):
 
 
 
+    

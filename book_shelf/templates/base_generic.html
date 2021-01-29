@@ -80,15 +80,106 @@
             <div id="mySidebar" class="sidebar">
             {% if request.user.is_authenticated %}
             <div class="dropdowns">
-                <span class="dropbtns"><img class="rounded-circle" src="{% static request.user.profile.image %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
+                <span class="dropbtns" id="downloading"><img class="rounded-circle" src="{% static request.user.profile.image %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
                 <div class="dropdown-contents">
                 <a href="{% url 'pro_detail' request.user.id %}" class="top-menu" title="Edit personal information"><span class="glyphicon glyphicon-edit"></a>
                 <a href="{% url 'offline' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-tasks"></a>
-                <a href="{% url 'transfers' %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
-                <a href="{% url 'pdf' ty=5 sx=0 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
-                <a href="{% url 'pdf' ty=6 sx=0 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
+                <a href="{% url 'transfers' md=30 %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
+                <a href="{% url 'pdf' ty=5 sx=0 pk=0 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
+               {% if request.user.profile.class_in != None %}
+               <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
+               <a href="{% url 'pdf' ty=6 sx=0 pk=0 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
+                <em style="width:30%;cursor:pointer;" onclick="$('#hid_t').toggle()"><span class="glyphicon glyphicon-download"></span>
+                    <div id="hid_t" hidden>
+                    <button onclick="allTerm('2nd Term')" style="line-height:65%;width:6%;border:2px solid blue;color:black;border-radius:5px;">2nd</button><button onclick="allTerm('3rd Term')" style="line-height:65%;width:6%;border:2px solid blue;color:black;border-radius:5px;">3rd</button>
+                    </div>
+                </em>
+                {% endif %}
                 {% if request.user.is_superuser == True %}
-                <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
+                
+                    <em style="width:30%;cursor:pointer;" onclick="$('#hid_k').show()"><span class="glyphicon glyphicon-download"></span>
+                    <div id="hid_k" hidden>
+                    <em style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">
+                    <select value="" id="Class" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">
+                        <option value="">Class</option>
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SSS 1">SSS 1</option>
+                        <option value="SSS 2">SSS 2</option>
+                        <option value="SSS 3">SSS 3</option>
+                    </select>
+                    <select value="" id="Subj" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:18%;" hidden>
+                        <option value="">Subject</option>
+                        <option value="1">Account</option>
+                        <option value="2">Agric. Sc</option>
+                        <option value="3">Arabic</option>
+                        <option value="4">Basic Science & Technology</option>
+                        <option value="5">Biology</option>
+                        <option value="6">Business Studies</option>
+                        <option value="7">Catring Services</option>
+                        <option value="8">Chemistry</option>
+                        <option value="9">Civic Education</option>
+                        <option value="10">Commerce</option>
+                        <option value="11">Economics</option>
+                        <option value="12">Electrical</option>
+                        <option value="13">English Language</option>
+                        <option value="14">Further Mathematics</option>
+                        <option value="16">Geography</option>
+                        <option value="17">Government</option>
+                        <option value="15">Germent Maiking</option>
+                        <option value="18">History</option>
+                        <option value="19">Information Technology</option>
+                        <option value="20">Islamic Religion Studies</option>
+                        <option value="21">Literature</option>
+                        <option value="22">Mathematics</option>
+                        <option value="23">Regional and National Value</option>
+                        <option value="24">Physics</option>
+                        <option value="25">Pre-Vocational Studies</option>
+                        <option value="26">Yoruba Language</option>
+                        <option value="27">Report Cards</option>
+                    </select>
+                    <script>
+                    var counter = {count:0};
+                            function waring(targer){
+                            var cot = 0;
+                            var id = setInterval(frame , 450);
+                            function frame(){
+                                if (counter.count == 1){
+                                    clearInterval(id);
+                                    $("#downloading").show()
+                                }
+                                else{
+                                    cot++;
+                                    $(targer).toggle(); 
+                                }
+                            } 
+                            };
+                        $("#Class").change(function(){
+                            document.getElementById("Subj").value = '';
+                            $("#Subj").show()});
+                        $("#Subj").change(function(){
+                            waring("#downloading");
+                            if ($(this).val() == '26'){
+                                synch($(this).val(), $("#Class").val())
+                                }
+                            else{
+                                var request = $.ajax({
+									url:"{% url 'auto_pdf_a' md=1 %}",
+									data:{'class':$("#Class").val()},
+									dataType: 'json',
+									success: function(data) {
+                                        if (data.done){
+                                            counter.count = 1;
+                                        }}		
+                                                        });
+                                                    request.fail(function(jqXHR, textStatus) {
+                                                    alert(ErrorMap[jqXHR.status])});
+                                                }
+                                                })
+                    </script>
+                    </em>   
+                    </div></em>
                 {% endif %}
                 {% if perms.catalog.can_mark_returned and request.username == "?" %}
                 <a href="{% url 'post_draft_list'  %}">Posts</a>
@@ -103,12 +194,25 @@
                 <a href="{% url 'qeuing'  %}">Grant Requests</a>
                 {% endif %}
                 {% if request.user.profile.class_in != None %}
-                <em style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ request.user.profile.class_in }}<span class="glyphicon glyphicon-export"></span>
+                <em style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').show()"><span class="glyphicon glyphicon-download"></span>
                     <div id="hid_{{ forloop.counter }}" hidden>
-                    <em style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">pdf:<a href="{% url 'pdf' ty=3 sx=2 %}" title="bsheet 1-2" style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">1-2</a><a href="{% url 'pdf' ty=3 sx=3 %}" title="bsheet 3-4" style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">3-4</a></em><a href="{% url 'pdf' ty=3 sx=0 %}" title="PDF download" style="color:blue;">csv</a></button>
+                    <em style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">
+                    <select value="" id="sheets" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:18%;">
+                        <option value="">Broadsheet</option>
+                        <option value="3/2/">Pages 1 - 2</option>
+                        <option value="3/3/">Pages 3 - 4</option>
+                        <option value="3/0/">CSV</option>
+                    </select>
                     </div>
                 </em>
+                <script>
+                    $("#sheets").change(function(){
+                        if ($(this).val() != ''){
+                        var next = window.location.href.split('/')[0]+'/result/render/pdf/'+$(this).val();  
+                        window.open(next)}})
+                </script>
                 {% endif %}
+                
             </div>
             <a href="{% url 'log_out' %}" style="font-family:Helvetica; color:red; font-size: 9px;" title="Do you want to logout?"><span class="glyphicon glyphicon-log-out"></span><em class=""><em style="font-family:Helvetica; font-size:9px;">Logout</em></em></a>                                              
             {% endif %} 
@@ -311,4 +415,78 @@
         <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Tell: </strong>08053776177, 07042412052</div>
         </div>
     </div>
+    <script>
+    var ErrorMap = {
+			'0': "Not connected.\nPlease verify your network connection.",
+			'400' : "Server understood the request, but request content was invalid.",
+			'401' : "Unauthorized access.",
+			'403' : "Forbidden resource can't be accessed.",
+			'404': "The requested page not found.",
+			'500' : "Internal server error.",
+			'503' : "Service unavailable.",
+			'parsererror' : "Requested JSON parse failed.",
+			'timeout': "Time out error.",
+			'abort': "Ajax request aborted.",
+					};
+    function allTerm(x){
+        var request  = $.ajax({
+          url: "{% url 'responsive_updates' pk=0 %}",
+          data: {
+                'Term':x, 'flow':'currnetTerms'
+                },
+          dataType: 'json',
+          success: function(data) {alert(data.tutors+' accounts upadated')}
+          });
+        request.fail(function(jqXHR, textStatus, data) {
+                        alert(ErrorMap[jqXHR.status]);
+                        });
+    };
+        
+        function synch(s, c){
+          var request  = $.ajax({
+          url: "http://uqhs.herokuapp.com/result/synchronizing/0/"+s+"/"+c+"/",
+          data: {
+                'subject':1
+                },
+          dataType: 'json',
+          });
+          request.done(function(data) { 
+            if (window.location.href.split(':')[1] == '//127.0.0.1')
+                {
+                var jdata = {'end':data.response.length, 'Term':'1st Term', 'username':data.response[0][10]};
+                for (var i = 0; i < data.response.length;  i++){
+                    var itr = ""+i;
+                    jdata['uid_'+itr] = data.response[i][0]; 
+                    jdata['uid_'+itr] = data.response[i][0];
+                    jdata['test_'+itr] = data.response[i][2]; 
+                    jdata['agn_'+itr] = data.response[i][3];
+                    jdata['atd_'+itr] = data.response[i][4]; 
+                    jdata['total_'+itr] = data.response[i][5];
+                    jdata['exam_'+itr] = data.response[i][6]; 
+                    jdata['agr_'+itr] = data.response[i][7];
+                    jdata['grade_'+itr] = data.response[i][8]; 
+                    jdata['posi_'+itr] = data.response[i][9];
+                    jdata['subject_code_'+itr] = data.response[i][1];     
+                    };
+                    var sub_request = $.ajax({
+                    url:"{% url 'synch' last=2 subject=0 Class=0 %}",
+                    data:jdata,
+                    dataType: 'json',
+                    success: function(data) {
+                    counter.count = 1;
+                    var next = window.location.href.split('/')[0]+'/result/'+data.id+'/1/';  
+                    window.open(next);}			
+                      });
+                    sub_request.fail(function(jqXHR, textStatus){
+                      alert(ErrorMap[jqXHR.status])
+                      });
+                      }});  
+                    request.fail(function(jqXHR, textStatus, data) {
+                        alert(ErrorMap[jqXHR.status]);
+                        });
+                      
+          
+	}   
+
+    </script>
 </html>
