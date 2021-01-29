@@ -39,7 +39,7 @@ FILES_FOLDER = os.path.join(PROJECT_ROOT, 'file_folder/')
 #DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['uqhi.herokuapp.com', '127.0.0.1', 'uqhi.herokuapp.com']
+ALLOWED_HOSTS = ['uqhs.herokuapp.com', '127.0.0.1', 'uqhi.herokuapp.com']
 #add email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
