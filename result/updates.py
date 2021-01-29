@@ -143,10 +143,10 @@ def create_new_subject_teacher(account, Subject, Class, Term): #if not exist.exi
 def currentTerms(Term, tutor):
     tutors = TUTOR_HOME.objects.filter(first_term__exact = tutor).first()
     if Term == '2nd Term' or Term == '3rd Term':
-        if Term == '2nd Term':
+        if tutors and Term == '2nd Term':
             tutor.second_term = Term
             tutors.second_term = tutor
-        if Term == '3rd Term':
+        if tutors and Term == '3rd Term':
             tutor.second_term = "2nd Term"
             tutor.third_term = Term
             tutors.third_term = tutor
