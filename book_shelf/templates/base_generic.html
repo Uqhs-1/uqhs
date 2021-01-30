@@ -27,7 +27,7 @@
                 <button style="background-color:blue;border-radius:5px;border:2px solid pink;"><a href="{% url 'home' %}"><span class="glyphicon glyphicon-home btn-lg"></span></a></button>
                 <button style="background-color:blue;border-radius:5px;border:2px solid pink;"><a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope btn-lg"></span></a></button>
                   <span class="dropbtn">Juniors</span>
-                  <button type=button class="btn btn-default btn-lg">
+                  <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 1 results">JSS 1</a>
                     <a href="{% url 'results_junior_senior' pk=2 %}" title="JSS 2 results">JSS 2</a>
                     <a href="{% url 'results_junior_senior' pk=3 %}" title="JSS 3 results">JSS 3</a>
