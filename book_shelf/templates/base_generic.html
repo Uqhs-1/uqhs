@@ -24,8 +24,8 @@
      
             <div class="navbar">
                 <div class="dropdown">
-                <button style="background-color:white;color:blue;border-radius:5px;border:2px solid pink;"><a href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span></a></button>
-                <button><a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a></button>
+                <button style="background-color:blue;border-radius:5px;border:2px solid pink;"><a href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span></a></button>
+                <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;width:12%;"><a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a></button>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 1 results">JSS 1</a>
@@ -61,9 +61,7 @@
                    <a href="{% url 'student_names' pk=0 %}" title="Students name list">All</a>
                   </div>
                 
-                <div>
-                    <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "result/uqhs.jpg"%}" alt="uqhs-logo"  width="30"/></a>
-                </div>
+                
                 </div>
                 <div class="navbar-header">
                     <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  width="30"/></a>
