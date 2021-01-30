@@ -750,7 +750,7 @@ p{ margin: 0px;
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 9px;}
   .navbar a {font-size: 8px;}
-  .dropdown{
+  .dropbtn{
        width:40%;
       }
 }
