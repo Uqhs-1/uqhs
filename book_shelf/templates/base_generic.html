@@ -24,8 +24,8 @@
      
             <div class="navbar">
                 <div class="dropdown">
-                <button style="background-color:blue;border-radius:5px;border:2px solid pink;"><a href="{% url 'home' %}"><span class="glyphicon glyphicon-home fa-5x"></span></a></button>
-                <button style="background-color:blue;border-radius:5px;border:2px solid pink;"><a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope fa-5x"></span></a></button>
+                <button style="background-color:blue;border-radius:5px;border:2px solid pink; "type=button class="btn btn-default btn-lg"><a href="{% url 'home' %}"><span class="glyphicon glyphicon-home fa-5x"></span></a></button>
+                <button style="background-color:blue;border-radius:5px;border:2px solid pink;" type=button class="btn btn-default btn-lg"><a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope fa-5x"></span></a></button>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 1 results">JSS 1</a>
