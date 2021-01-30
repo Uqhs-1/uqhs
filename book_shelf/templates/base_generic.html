@@ -81,7 +81,7 @@
             </navz>
             <div id="mySidebar" class="sidebar">
             {% if request.user.is_authenticated %}
-            <div class="dropdowns">
+            <div class="dropdowns" style"min-width:380px;">
                 <span class="dropbtns" id="downloading"><img class="rounded-circle" src="{% static request.user.profile.image %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
                 <div class="dropdown-contents">
                 <a href="{% url 'pro_detail' request.user.id %}" class="top-menu" title="Edit personal information"><span class="glyphicon glyphicon-edit"></a>
