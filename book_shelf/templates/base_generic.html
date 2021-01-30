@@ -24,8 +24,8 @@
      
             <div class="navbar">
                 <div class="dropdown">
-                <a href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span></a>
-                <a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a>
+                <span class="dropbtn"><a href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span></a></span>
+                <span class="dropbtn"><a href="{% url 'my_post_list' %}"><span class="glyphicon glyphicon-envelope"></span></a></span>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 1 results">JSS 1</a>
