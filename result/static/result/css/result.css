@@ -750,6 +750,9 @@ p{ margin: 0px;
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 9px;}
   .navbar a {font-size: 8px;}
+  .dropdown{
+       width:20%;
+      }
 }
 
 @media screen and (max-height: 700px) {
