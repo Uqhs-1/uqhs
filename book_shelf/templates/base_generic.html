@@ -431,7 +431,9 @@
 			'abort': "Ajax request aborted.",
 					};
     function allTerm(x){
-        var request  = $.ajax({
+        var con = confirm('Do you want to change all to '+x+'?')
+        if (con == true){
+            var request  = $.ajax({
           url: "{% url 'responsive_updates' pk=0 %}",
           data: {
                 'Term':x, 'flow':'currnetTerms'
@@ -442,6 +444,8 @@
         request.fail(function(jqXHR, textStatus, data) {
                         alert(ErrorMap[jqXHR.status]);
                         });
+        };
+        
     };
         
         function synch(s, c){
