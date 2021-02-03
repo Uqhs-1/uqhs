@@ -141,18 +141,19 @@ def create_new_subject_teacher(account, Subject, Class, Term): #if not exist.exi
         return new_teacher
 
 def currentTerms(Term, tutor):
-    tutors = TUTOR_HOME.objects.filter(first_term__exact = tutor).first()
     if Term == '2nd Term' or Term == '3rd Term':
-        if tutors and Term == '2nd Term':
+        if Term == '2nd Term':
             tutor.second_term = Term
+            tutor.third_term = '1st Term'
+            tutors = TUTOR_HOME.objects.filter(first_term__exact = tutor).first()
             tutors.second_term = tutor
-        if tutors and Term == '3rd Term':
+        if Term == '3rd Term':
             tutor.second_term = "2nd Term"
             tutor.third_term = Term
+            tutors = TUTOR_HOME.objects.filter(first_term__exact = tutor).first()
             tutors.third_term = tutor
-        if tutors:
-            tutor.save()
-            tutors.save()
+        tutor.save()
+        tutors.save()
 
 @login_required
 def responsive_updates(request, pk):
@@ -177,7 +178,7 @@ def responsive_updates(request, pk):
 
                 if request.GET.get('flow') == "currnetTerms":
                     tutor = BTUTOR.objects.all()
-                    data = {'tutors':str(len([currentTerms(request.GET.get('Term'), i) for i in tutor if i is not None]))}
+                    data = {'tutors':str(len([currentTerms(request.GET.get('Term'), i) for i in tutor]))}
                 
                 if request.GET.get('flow') == "confirm":
                     exist = BTUTOR.objects.filter(subject__exact = request.GET.get('Subject'), Class__exact = request.GET.get('Class'), term__exact = '1st Term')
