@@ -145,8 +145,8 @@ def currentTerms(Term, tutor):
     if Term == '2nd Term' or Term == '3rd Term':
         if tutors and Term == '2nd Term':
             tutor.second_term = Term
-            tutors.second_term = tutor
             tutor.third_term = '1st Term'
+            tutors.second_term = tutor
         if tutors and Term == '3rd Term':
             tutor.second_term = "2nd Term"
             tutor.third_term = Term
@@ -251,8 +251,8 @@ def need_tutor(request, x, subj, Term, username):
     #ids.append(tutor.id)
     return tutor
 
+date = datetime.datetime.today()
 def synch(request, last, subject, Class):
-    date = datetime.datetime.today()
     subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
     if last == '0' or last == '1' or last == '60':
         if last == '0':#by subject
@@ -264,4 +264,24 @@ def synch(request, last, subject, Class):
         data = {'response':[[i.student_name.uid.strip(), i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username] for i in new]}
     elif last == '2':   
         data = {'id':str(need_tutor(request, request.GET.get('subject_code_0').split('-'), subj, request.GET.get('Term'), request.GET.get('username')).id), 'response':[get_or_create(need_tutor(request, request.GET.get('subject_code_'+str(i)).split('-'), subj, request.GET.get('Term'), request.GET.get('username')),  request.GET.get('uid_'+str(i)), [request.GET.get('uid_'+str(i)), request.GET.get('uid_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)),request.GET.get('atd_'+str(i)),request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)),request.GET.get('grade_'+str(i)),request.GET.get('posi_'+str(i))]) for i in range(0, int(request.GET.get('end'))) if request.GET.get('uid_'+str(i)) in [x.uid for x in CNAME.objects.all()]]}
+    elif last == '3':
+        if subject == '1':
+            contents = CNAME.objects.filter(Class__exact=subj[1][int(Class)], session__exact=session.profile.session).order_by('gender', 'full_name')
+            sd = [[x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id] for x in contents]
+            data = {'response':sd}
+        else:
+            data = {'response':[update_student_profile(request, i) for i in [request.GET.get(x+'_'+str(r)) for x in ['full_name', 'uid', 'birth_date', 'age', 'Class', 'gender', 'term', 'no_open', 'no_present', 'no_absent', 'no_of_day_abs', 'purpose', 'remark', 'W_begin', 'W_end', 'H_begin', 'H_end', 'good', 'fair', 'poor', 'event', 'indoor', 'ball', 'combat', 'track', 'jump', 'throw', 'swim', 'lift', 'sport_comment', 'club_one', 'club_two', 'contrib_one', 'contrib_two', 'master_comment', 'principal_comment', 'resumption', 'serial_no'] for r in range(0, int(request.GET.get('len')))]]}
     return JsonResponse(data)
+
+def update_student_profile(request, data):
+    x = CNAME.objects.filter(uid__exact=data[1])
+    if not x:
+        x = CNAME(full_name = data[0], uid = data[1])
+        x.save()
+    else:
+        x = x.first()
+    x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.serial_no = data
+    x.save()
+    if x.created == x.updated:
+        return x.uid 
+[]
