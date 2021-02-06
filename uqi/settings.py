@@ -60,13 +60,13 @@ INSTALLED_APPS = [
     'book_shelf.apps.BookShelfConfig',
     'result.apps.ResultConfig',
     'crispy_forms',
-    'corsheaders',
+    #'corsheaders',
     #How to Use Bootstrap 4 Forms With Django
 ]
 
 #CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
-    'corsheaders.middleware.common.corsMiddleware',
+    #'corsheaders.middleware.common.corsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -84,7 +84,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8838"
 ]
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ROOT_URLCONF = 'uqi.urls'
 AUTH_PROFILE_MODULE = 'result.Edit_User'
