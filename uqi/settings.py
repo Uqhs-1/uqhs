@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'book_shelf.apps.BookShelfConfig',
     'result.apps.ResultConfig',
     'crispy_forms',
-    #'corsheaders',
+    'corsheaders',
     #How to Use Bootstrap 4 Forms With Django
 ]
 
