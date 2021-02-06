@@ -265,7 +265,7 @@ def synch(request, last, subject, Class):
     elif last == '2':   
         data = {'id':str(need_tutor(request, request.GET.get('subject_code_0').split('-'), subj, request.GET.get('Term'), request.GET.get('username')).id), 'response':[get_or_create(need_tutor(request, request.GET.get('subject_code_'+str(i)).split('-'), subj, request.GET.get('Term'), request.GET.get('username')),  request.GET.get('uid_'+str(i)), [request.GET.get('uid_'+str(i)), request.GET.get('uid_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)),request.GET.get('atd_'+str(i)),request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)),request.GET.get('grade_'+str(i)),request.GET.get('posi_'+str(i))]) for i in range(0, int(request.GET.get('end'))) if request.GET.get('uid_'+str(i)) in [x.uid for x in CNAME.objects.all()]]}
     elif last == '3':
-        if subject == 1:
+        if subject == '1':
             contents = CNAME.objects.filter(Class__exact=subj[1][int(Class)], session__exact=session.profile.session).order_by('gender', 'full_name')
             sd = [[x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id] for x in contents]
             data = {'response':sd}
