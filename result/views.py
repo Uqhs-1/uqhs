@@ -422,7 +422,7 @@ def name_down(request, pk, fm,  ps):
         Class = tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(term[-1])
     elif len(contents) == 0:
         contents = CNAME.objects.filter(Class__exact=Class, session__exact=session.profile.session).order_by('gender', 'full_name')
-        sd = [[x.full_name, x.uid, x.birth_date, x.Class, x.gender, x.no_open, x.no_present, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good] for x in contents]
+        sd = [[x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id] for x in contents]
     else:
         sd = [[x.student_name.id, x.student_name.full_name, 0, 0, 0, 0] for x in contents]
         Class = Class +'_'+pair_subject[int(ps)]
