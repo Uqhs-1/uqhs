@@ -17,7 +17,7 @@
             <td>{{ forloop.counter }}</td>
             <td style="cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.full_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
-              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Profile</a></button>
+              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.id pk=0 %}" title="{{ scr.student_id }}" style="color:red;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Profile</a></button>
             </div>
             </td>
             <td>{{ scr.uid }}
@@ -63,14 +63,70 @@
                 {% endif %}
               </em>
             {% endif %}
-               <div style="color:white; font-size:13px;">Summary</div>|<em Class= "jss_one" title="Click to download JSS1 names"><a href="{% url 'name_down' pk=0 fm=3 ps=26 %}">{{Jo}}</a></em>--<em Class= "jss_two" title="Click to download JSS2 names"><a href="{% url 'name_down' pk=1 fm=3 ps=26 %}">{{Jt}}</a></em>--<em Class= "jss_three" title="Click to download JSS3 names"><a href="{% url 'name_down' pk=2 fm=3 ps=26 %}">{{Jh}}</a></em>--<em Class= "jss_one" title="Click to download SSS1 names"><a href="{% url 'name_down' pk=3 fm=3 ps=26 %}">{{So}}</a></em>--<em Class= "jss_two" title="Click to download SSS2 names"><a href="{% url 'name_down' pk=4 fm=3 ps=26 %}">{{St}}</a></em>--<em Class= "jss_three" title="Click to download SSS3 names"><a href="{% url 'name_down' pk=5 fm=3 ps=26 %}">{{Sh}}</a></em>| <div style="color:white;font-size:13px;">{{ counts }} names returned </div></th></tr>
+               <div style="color:white; font-size:13px;">Summary</div>|<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update JSS1 names" onclick="sycName('1')">{{Jo}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update JSS2 names" onclick="sycName(2)">{{Jt}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update JSS3 names" onclick="sycName(3)">{{Jh}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update SSS1 names" onclick="sycName(4)">{{So}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update SSS2 names" onclick="sycName(5)">{{St}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update SSS3 names" onclick="sycName(6)">{{Sh}}</button>| <div style="color:white;font-size:13px;">{{ counts }} names returned </div></th></tr>
           </tfoot>
         </table>
         <script>
+          var ErrorMap = {
+              '0': "Not connected.\nPlease verify your network connection.",
+              '400' : "Server understood the request, but request content was invalid.",
+              '401' : "Unauthorized access.",
+              '403' : "Forbidden resource can't be accessed.",
+              '404': "The requested page not found.",
+              '500' : "Internal server error.",
+              '503' : "Service unavailable.",
+              'parsererror' : "Requested JSON parse failed.",
+              'timeout': "Time out error.",
+              'abort': "Ajax request aborted.",
+          };
+          
           function clet(x){
                  var ind = x.split(' ')[1];
                  redirect('results_junior_senior/'+ind)
-                  }
+                  };
+          var cls = {class:1};
+
+          function sycName(cla){
+            cls.class = cla;
+          var request  = $.ajax({
+          url: "http://uqhs.herokuapp.com/result/synchronizing/3/1/"+cla+"/",
+          data: {
+                'subject':1
+                },
+          dataType: 'json',
+          });
+          request.done(function(data) { 
+            if (window.location.href.split(':')[1] == '//127.0.0.1')
+                {alert(data.response);
+                var jdata = {'len':data.response.length};
+                for (var i = 0; i < data.response.length;  i++){
+                    var itr = ""+i;
+                    var titles = ['full_name', 'uid', 'birth_date', 'age', 'Class', 'gender', 'term', 'no_open', 'no_present', 'no_absent', 'no_of_day_abs', 'purpose', 'remark', 'W_begin', 'W_end', 'H_begin', 'H_end', 'good', 'fair', 'poor', 'event', 'indoor', 'ball', 'combat', 'track', 'jump', 'throw', 'swim', 'lift', 'sport_comment', 'club_one', 'club_two', 'contrib_one', 'contrib_two', 'master_comment', 'principal_comment', 'resumption', 'serial_no'];
+                    for (var r = 0; r < data.response[i]; r++){
+                      jdata[titles[r]+'_'+itr] = data.response[i][r];
+                    }
+                    };
+                    var sub_request = $.ajax({
+                    url:"http://127.0.0.1:8838/result/synchronizing/3/2/"+cls.class+"/",
+                    data:jdata,
+                    dataType: 'json',
+                    success: function(data) {
+                    counter.count = 1;
+                    if (data.response.length == 0){
+                    var next = window.location.href.split('/')[0]+'/result/student_names/0/';  
+                    window.open(next);}
+                    else{alert(data.response)}}			
+                      });
+                    sub_request.fail(function(jqXHR, textStatus){
+                      alert(ErrorMap[jqXHR.status])
+                      });
+                      }});  
+        request.fail(function(jqXHR, textStatus, data) {
+                        alert(ErrorMap[jqXHR.status]);
+                        });
+                      
+          
+	}   
         </script>
 
 {% endblock %}

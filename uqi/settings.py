@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'book_shelf.apps.BookShelfConfig',
     'result.apps.ResultConfig',
     'crispy_forms',
-    #'corsheaders',
+    'corsheaders',
     #How to Use Bootstrap 4 Forms With Django
 ]
 
@@ -69,7 +69,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'corsheaders.middleware.common.corsMiddleware',
+    'corsheaders.middleware.common.corsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -78,7 +78,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-   '    '
+   #"https://example.com",
+    #"https://sub.example.com",
+    "http://localhost:8838",
+    "http://127.0.0.1:8838"
 ]
 
 
