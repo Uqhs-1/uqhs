@@ -127,7 +127,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'uqi.wsgi.application'
 
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
