@@ -51,8 +51,8 @@ class BTUTOR(models.Model):
             self.session = session().profile.session
         if self.accounts is not None:
             self.teacher_name = f'{self.accounts.profile.title} {self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
-            subj = ['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR']
-            self.subject_teacher_id = str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+"-"+str(subj.index(self.subject))+"-"+str(self.accounts.id)
+            #subj = ['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR']
+            #self.subject_teacher_id = str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+"-"+str(subj.index(self.subject))+"-"+str(self.accounts.id)
         self.model_summary = self.accounts.profile.last_name[0]+self.accounts.profile.first_name[0]
         if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() is not 0:
             males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.filter(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session).first(), student_name__gender__exact = 1).count()
@@ -92,7 +92,7 @@ class TUTOR_HOME(models.Model):
         """Returns the url to access a result_grade updates."""
         return reverse('uniqueness', args=[str(self.first_term_id)])
     
-    
+   
 class CNAME(models.Model):
     last_name = models.CharField(max_length=30, default='Surname', blank=True, null=True)
     middle_name = models.CharField(max_length=30, default='Middle nmae', blank=True, null=True)
@@ -141,7 +141,7 @@ class CNAME(models.Model):
     contrib_one = models.CharField(max_length=200, default='Active member', null=True, blank=True)
     contrib_two = models.CharField(max_length=200, default='Active member', null=True, blank=True)
     sex = models.CharField(max_length=100, blank=True, null=True, default= "Male")
-
+ 
     #Parent Info
     title = models.CharField(max_length=200, default='Mr/Mrs', null=True, blank=True)
     p_name = models.CharField(max_length=200, default='OLAGUNJU MUSLIM', null=True, blank=True)
@@ -158,6 +158,8 @@ class CNAME(models.Model):
     annual_avr = models.FloatField(max_length=4, blank=True, null=True, default=0)
     posi = models.CharField(max_length=5, blank=True, null=True)
 
+    serial_no = models.IntegerField(blank=True, null=True, default=0)
+    
     class Meta:
           ordering = ('full_name',) # helps in alphabetical listing. Sould be a tuple
     
@@ -176,7 +178,7 @@ class CNAME(models.Model):
             self.annual_scores = round(sum(all_avg), 2)
             self.annual_avr = round((sum(all_avg)/sum(x > 0 for x in all_avg)), 2)
         self.resumption = session().profile.resumption
-        self.updated = datetime.datetime.today()
+        self.updated = today
         self.sex = ['', 'Male', 'Female'][self.gender]
         super(CNAME, self).save()
     def __str__(self):
