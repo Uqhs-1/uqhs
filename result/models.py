@@ -158,7 +158,7 @@ class CNAME(models.Model):
     annual_avr = models.FloatField(max_length=4, blank=True, null=True, default=0)
     posi = models.CharField(max_length=5, blank=True, null=True)
 
-    serial_no = models.IntegerField(blank=True, null=True, default=0)
+    #serial_no = models.IntegerField(blank=True, null=True, default=0)
     
     class Meta:
           ordering = ('full_name',) # helps in alphabetical listing. Sould be a tuple
