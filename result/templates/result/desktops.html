@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
    <head>
@@ -443,6 +443,7 @@
                                 <em id="error_{{ forloop.counter }}" hidden><span class="glyphicon glyphicon-remove" style="background-color:white;color:red;border-radius:5px;border:1px solid red;" ></span></em>
                                 </td>
                                 <input type="text" id="student_id_{{ forloop.counter }}" value="AA/J/24/1436" hidden>
+								<input type="text" id="serial_no_{{ forloop.counter }}" value="0" hidden>
                                 <td class="forTd" id="all_{{ forloop.counter }}_1"><input type="number" min="0" max="20" class="input" id="test_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 1)"></td>
                                 <td class="forTd" id="all_{{ forloop.counter }}_2"><input type="number" min="0" max="5" class="input" id="agn_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 2)"></td>
                                 <td class="forTd" id="all_{{ forloop.counter }}_3"><input type="number" min="0" max="5" class="input" id="atd_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 3)"></td>
@@ -741,6 +742,7 @@
 							document.getElementById("name_"+itr).value = data.list[i][0];
 							$("#states_"+itr).html(data.list[i][1]);
 							document.getElementById("student_id_"+itr).value = data.list[i][1];
+							document.getElementById("serial_no_"+itr).value = data.list[i][13];
 							document.getElementById("test_"+itr).value = data.list[i][2];
 							document.getElementById("agn_"+itr).value = data.list[i][3];
 							document.getElementById("atd_"+itr).value = data.list[i][4];
@@ -1030,7 +1032,7 @@
 								var callBack = ['default'];
 								for (var i = 1; i < rel['len']+1; i++){
 								var itr = ""+i;
-								callBack.push([rel['id_'+itr]['name'], rel['id_'+itr]['student_id'], rel['id_'+itr]['test'], rel['id_'+itr]['agn'], rel['id_'+itr]['atd'], rel['id_'+itr]['exam'], rel['id_'+itr]['grade'], rel['id_'+itr]['posi'], rel['id_'+itr]['gender'], rel['id_'+itr]['fagr'], rel['id_'+itr]['sagr'], rel['id_'+itr]['aagr'], rel['id_'+itr]['avr']])
+								callBack.push([rel['id_'+itr]['name'], rel['id_'+itr]['serial_no'], rel['id_'+itr]['student_id'], rel['id_'+itr]['test'], rel['id_'+itr]['agn'], rel['id_'+itr]['atd'], rel['id_'+itr]['exam'], rel['id_'+itr]['grade'], rel['id_'+itr]['posi'], rel['id_'+itr]['gender'], rel['id_'+itr]['fagr'], rel['id_'+itr]['sagr'], rel['id_'+itr]['aagr'], rel['id_'+itr]['avr']])
 								};
 								reload({'info':0, list:callBack}, rel.Class);
 								}
@@ -1148,6 +1150,7 @@
 								dom['id_'+itr] = {
 									'name':$("#name_"+itr).val(), 
 									'student_id':$("#student_id_"+itr).val(),
+									'serial_no':$("#serial_no_"+itr).val(),
 									'test':Number($("#test_"+itr).val()), 
 									'agn':Number($("#agn_"+itr).val()), 
 									'atd':Number($("#atd_"+itr).val()), 
@@ -1204,6 +1207,7 @@
 									var itr = ""+i;
 									jdata['name_'+itr] = $("#name_"+itr).val(); 
 									jdata['student_id_'+itr] = $("#student_id_"+itr).val();
+									jdata['serial_no_'+itr] = $("#serial_no_"+itr).val();
 									jdata['test_'+itr] = $("#test_"+itr).val(); 
 									jdata['agn_'+itr] = $("#agn_"+itr).val(); 
 									jdata['atd_'+itr] = $("#atd_"+itr).val(); 
