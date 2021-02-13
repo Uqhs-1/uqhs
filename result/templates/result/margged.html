@@ -131,7 +131,7 @@
                 <option value="student_name">Student_Name</option>
                 {% if classNames %}
                 {% for scr in classNames %}
-                    <option name="dropDownOpt" id="edith_name" value="{{ scr.uid }}">{{ scr.full_name }}</option>
+                    <option name="dropDownOpt" id="edith_name" value="{{ scr.id }}">{{ scr.full_name }}</option>
                 {% endfor %}
                 {% endif %}
             </select> 
