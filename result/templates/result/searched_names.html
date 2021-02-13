@@ -63,14 +63,25 @@
                 {% endif %}
               </em>
             {% endif %}
-<<<<<<< HEAD
-               <div style="color:white; font-size:13px;">Summary</div>|<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update JSS1 names" onclick="sycName('1')">{{Jo}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update JSS2 names" onclick="sycName(2)">{{Jt}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update JSS3 names" onclick="sycName(3)">{{Jh}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update SSS1 names" onclick="sycName(4)">{{So}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update SSS2 names" onclick="sycName(5)">{{St}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update SSS3 names" onclick="sycName(6)">{{Sh}}</button>| <div style="color:white;font-size:13px;">{{ counts }} names returned </div></th></tr>
-=======
-               <div style="color:white; font-size:13px;">Summary</div>|<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update JSS1 names" onclick="synch(1)">{{Jo}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update JSS2 names" onclick="synch(2)">{{Jt}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update JSS3 names" onclick="synch(3)">{{Jh}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update SSS1 names" onclick="synch(4)">{{So}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update SSS2 names" onclick="synch(5)">{{St}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update SSS3 names" onclick="synch(6)">{{Sh}}</button>| <div style="color:white;font-size:13px;">{{ counts }} names returned </div></th></tr>
->>>>>>> 08ed0f58ae6c3ec531b8a2a97bdeffd467ce6563
+               <div style="color:white; font-size:13px;">Summary</div>|<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update JSS1 names" onclick="sycName('1')">{{Jo}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update JSS2 names" onclick="sycName(2)">{{Jt}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update JSS3 names" onclick="sycName(3)">{{Jh}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:green;" title="Click to update SSS1 names" onclick="sycName(4)" id='downloading'>{{So}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:red;" title="Click to update SSS2 names" onclick="sycName(5)">{{St}}</button>--<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;background-color:blue;" title="Click to update SSS3 names" onclick="sycName(6)">{{Sh}}</button>| <div style="color:white;font-size:13px;">{{ counts }} names returned </div></th></tr>
           </tfoot>
         </table>
         <script>
+        var counter = {count:0};
+            function waring(targer){
+              var cot = 0;
+              var id = setInterval(frame , 450);
+              function frame(){
+              if (counter.count == 1){
+              clearInterval(id);
+              $("#downloading").show()
+                                }
+              else{
+                  cot++;
+                $(targer).toggle(); 
+                                }
+                            } 
+                            };
           var ErrorMap = {
               '0': "Not connected.\nPlease verify your network connection.",
               '400' : "Server understood the request, but request content was invalid.",
@@ -89,18 +100,12 @@
                  redirect('results_junior_senior/'+ind)
                   };
           var cls = {class:1};
-<<<<<<< HEAD
 
           function sycName(cla){
             cls.class = cla;
+            waring("#downloading")
           var request  = $.ajax({
           url: "http://uqhs.herokuapp.com/result/synchronizing/3/1/"+cla+"/",
-=======
-          function synch(class){
-            cls.class = class;
-          var request  = $.ajax({
-          url: "http://uqhs.herokuapp.com/result/synchronizing/3/1/"+class+"/",
->>>>>>> 08ed0f58ae6c3ec531b8a2a97bdeffd467ce6563
           data: {
                 'subject':1
                 },
@@ -108,33 +113,22 @@
           });
           request.done(function(data) { 
             if (window.location.href.split(':')[1] == '//127.0.0.1')
-<<<<<<< HEAD
-                {alert(data.response);
-=======
-                {alert(data.response),
->>>>>>> 08ed0f58ae6c3ec531b8a2a97bdeffd467ce6563
+                {
                 var jdata = {'len':data.response.length};
                 for (var i = 0; i < data.response.length;  i++){
                     var itr = ""+i;
                     var titles = ['full_name', 'uid', 'birth_date', 'age', 'Class', 'gender', 'term', 'no_open', 'no_present', 'no_absent', 'no_of_day_abs', 'purpose', 'remark', 'W_begin', 'W_end', 'H_begin', 'H_end', 'good', 'fair', 'poor', 'event', 'indoor', 'ball', 'combat', 'track', 'jump', 'throw', 'swim', 'lift', 'sport_comment', 'club_one', 'club_two', 'contrib_one', 'contrib_two', 'master_comment', 'principal_comment', 'resumption', 'serial_no'];
-                    for (var r = 0; r < data.response[i]; r++){
+                    for (var r = 0; r < data.response[i].length; r++){
                       jdata[titles[r]+'_'+itr] = data.response[i][r];
                     }
                     };
                     var sub_request = $.ajax({
-<<<<<<< HEAD
                     url:"http://127.0.0.1:8838/result/synchronizing/3/2/"+cls.class+"/",
-=======
-                    url:"http://127.0.0.1:8838/result/synchronizing/3/1/"+cls.class+"/",
->>>>>>> 08ed0f58ae6c3ec531b8a2a97bdeffd467ce6563
                     data:jdata,
                     dataType: 'json',
                     success: function(data) {
                     counter.count = 1;
-                    if (data.response.length == 0){
-                    var next = window.location.href.split('/')[0]+'/result/student_names/0/';  
-                    window.open(next);}
-                    else{alert(data.response)}}			
+                    }			
                       });
                     sub_request.fail(function(jqXHR, textStatus){
                       alert(ErrorMap[jqXHR.status])
