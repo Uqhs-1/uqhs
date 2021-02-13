@@ -161,7 +161,7 @@ def responsive_updates(request, pk):
                     tutor = BTUTOR.objects.get(pk=int(request.GET.get('tutor_id')))
                     instance = QSUBJECT.objects.filter(tutor__exact = tutor).order_by('gender', 'student_name__full_name')
                     data = {"status":tutor.updated, "tutor_name":tutor.teacher_name}
-                    data["list"] = ['Default']+[[i.student_name.full_name, i.student_name.uid, i.test, i.agn, i.atd, i.exam, i.grade, i.posi, i.student_name.gender, i.fagr, i.sagr, i.aagr, i.avr, i.student_name.serial_no] for i in instance]
+                    data["list"] = ['Default']+[[i.student_name.full_name, i.student_name.uid, i.test, i.agn, i.atd, i.exam, i.grade, i.posi, i.student_name.gender, i.fagr, i.sagr, i.aagr, i.avr, i.student_name.id] for i in instance]
                 if request.GET.get('flow') == "fromHtml":#fetching from the html page and save to the database.
                     tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
                     response = [get_or_create(tutor, int(request.GET.get('serial_no_'+str(i))), [request.GET.get('serial_no_'+str(i)), request.GET.get('student_name_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)),request.GET.get('atd_'+str(i)),request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)),request.GET.get('grade_'+str(i)),request.GET.get('posi_'+str(i))]) for i in range(int(request.GET.get('start')), int(request.GET.get('end')))]
