@@ -9,7 +9,7 @@
 	<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js">
-    //background-image: url("/office/jango_env/uqi/result/uqi/result/static/result/iiro.jpg");</script>
+    //background-image: url("/app/result/uqi/result/static/result/iiro.jpg");</script>
     <title>{% block title %}{{ qry.subject }}:{{ qry.Class }}:{{ term }}{% endblock %}</title>
     <style>
             @page {
@@ -122,17 +122,17 @@
 			<tr style="background:#7c84df;">
 				<th style="background-color:#FFA07A;width:5%;">S/N</th>
 				<th style="background-color:#FFA07A;width:30%;">
-				<button onclick="$('.gen_2').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;">Males</button>
-				<a href="">
-					{{ qry.males }}
-				</a>
+				<button onclick="$('.gen_2').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;"><a href="">{{ qry.males }}</a></button>
+				<em href="">
+					Males
+				</em>
 							|
-				<button onclick="$('.gen_1').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;">Females</button>
-				<a href="">
-					{{ qry.females }}
-				</a>
+				<button onclick="$('.gen_1').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;"><a href="">{{ qry.females }}</a></button>
+				<em href="">
+				Females	
+				</em>
 				</th>
-				<th style="background-color:#FFA07A;width:5%;">Student_id</th>
+				<th style="background-color:#FFA07A;width:5%;">Admision No.</th>
 			    <th style="background-color:#FFA07A;width:10%;">Test</th>
 				<th style="background-color:#FFA07A;width:10%;">Asgn</th>
 				<th style="background-color:#FFA07A;width:10%;">Atd</th>
@@ -150,7 +150,7 @@
             <tbody>
                 <td style="font:VeraIt;font-size:9px;background-color:#afe5c6;">{{ forloop.counter }}</td>
                 <td style="font:VeraIt;font-size:12px;background-color:#ebe1c6;">{{scr.student_name.full_name}}</td>
-                <td style="color:black;width:15%;background-color:#c2b693;">{{scr.student_id}}</td>
+                <td style="color:black;width:15%;background-color:#c2b693;">{{scr.student_name.uid}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.test}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.agn}}</td>
                 <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.atd}}</td>
