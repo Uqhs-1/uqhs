@@ -462,8 +462,7 @@
                 var jdata = {'end':data.response.length, 'Term':'1st Term', 'username':data.response[0][10]};
                 for (var i = 0; i < data.response.length;  i++){
                     var itr = ""+i;
-                    jdata['uid_'+itr] = data.response[i][0]; 
-                    jdata['uid_'+itr] = data.response[i][0];
+                    jdata['serial_no_'+itr] = data.response[i][0];
                     jdata['test_'+itr] = data.response[i][2]; 
                     jdata['agn_'+itr] = data.response[i][3];
                     jdata['atd_'+itr] = data.response[i][4]; 
