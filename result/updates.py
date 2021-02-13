@@ -115,7 +115,7 @@ def average(x):
     return rst
 
 def get_or_create(tutor, serial_no, scores):#name-name_id
-    student_name = CNAME.objects.get(serial_no=serial_no)
+    student_name = CNAME.objects.get(id=serial_no)
     instance = QSUBJECT.objects.filter(student_name__exact=student_name, tutor__exact = tutor)
     if not instance.exists():
         instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9])
