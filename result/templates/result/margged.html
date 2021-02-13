@@ -75,7 +75,7 @@
             </div>
            </td>
            <td style="color:sienna;" title="{{ scr.student_name }}"  id="id_{{ forloop.counter }}">{{ scr.student_id }}</td>
-            <td id="edith_student_id_td{{ forloop.counter }}" hidden><input  id="edith_name_id_{{ forloop.counter }}" type="text" value="{{ scr.student_id }}"></td>
+            <td id="edith_student_id_td{{ forloop.counter }}" hidden><input  id="edith_name_id_{{ forloop.counter }}" type="text" value="{{ scr.student_name_id }}"></td>
            <td id="edith_name_td{{ forloop.counter }}" hidden><input  id="edith_name_{{ forloop.counter }}" type="text" value="{{ scr.student_name }}"></td>
            <td style="color:sienna;" title="{{ scr.test }}" id='test_{{ forloop.counter }}'  class='raw_{{ forloop.counter }}'>
             {{ scr.test }}
@@ -334,7 +334,7 @@ var ErrorMap = {
             url: "{% url 'responsive_updates' pk=0 %}",
             data: {
                 'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
-                'student_id_1': $("#edith_name_id_"+""+i).val(), 'start':1, 'end':2,
+                'serial_no_1': $("#edith_name_id_"+""+i).val(), 'start':1, 'end':2,
                 'student_name_1': "AMINU ISMAIL",
                 'test_1': Number(test),
                 'agn_1': Number(agn),
@@ -377,9 +377,8 @@ function synch(){
         {
         var jdata = {'end':data.response.length, 'Term':'{{ qry.term }}', 'username':data.response[0][10]};
         for (var i = 0; i < data.response.length;  i++){
-            var itr = ""+i;
-            jdata['uid_'+itr] = data.response[i][0]; 
-            jdata['uid_'+itr] = data.response[i][0];
+            var itr = ""+i; 
+            jdata['serial_no_'+itr] = data.response[i][0];
             jdata['test_'+itr] = data.response[i][2]; 
             jdata['agn_'+itr] = data.response[i][3];
             jdata['atd_'+itr] = data.response[i][4]; 
