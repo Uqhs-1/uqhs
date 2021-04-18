@@ -20,7 +20,7 @@ urlpatterns = [
             url(r'student_info/(?P<pk>\d+)/', views.student_info, name='student_info'),
             url(r'student_info_json/', views.student_info_json, name='student_info_json'),
             url(r'student_exam_page/(?P<subj_code>\d+)/(?P<pk>\d+)/', views.student_exam_page, name='student_exam_page'),
-            #url(r'detail/(?P<pk>\d+)/', views.detail, name='detail'),
+            url(r'accid/(?P<pk>\d+)/(?P<md>\d+)/', views.accid, name='accid'),
             url('subject_home/(?P<pk>\d+)/(?P<cl>\d+)/', views.subject_home, name='subject_home'),
             url('render/pdf/(?P<ty>\d+)/(?P<sx>\d+)/(?P<pk>\d+)/', views.Pdf.as_view(), name='pdf'),
             url(r'uniqueness/(?P<pk>\d+)/', views.uniqueness, name='uniqueness'),
@@ -58,10 +58,12 @@ urlpatterns = [
               ####DELETE%######  
             url('delete_warning/ deletions/ (?P<pk>\d+)/', deletions.confirm_deletion, name='delete_warning'),
             url(r'^delete_a_student/ deletions/ (?P<pk>\d+)/', deletions.confirmed_delete, name='delete'),
+            url(r'^deletions/', deletions.deletes, name='deletes'),
             url('yes_no/ deletions/ (?P<pk>\d+)/', deletions.yes_no, name='yes_no'),
             url('warning_delete/ deletions/(?P<pk>\d+)/', deletions.warning_delete, name='warning_delete'),
             url(r'^deletes/ deletions/(?P<pk>\d+)/', deletions.delete, name='confirmed'), 
             url('confirm_deleting_a_user/ deletions/ (?P<pk>\d+)/', deletions.confirm_deleting_a_user, name='confirm_deleting_a_user'),
+            url(r'^deletes/ deletions/(?P<pk>\d+)/', deletions.delete, name='confirmed'),
             url('delete_a_user/ deletions/ (?P<pk>\d+)/', deletions.delete_user, name='delete_a_user'),
             url('post_remove/ deletions/ (?P<pk>\d+)/', deletions.delete_post, name='post_remove'),
             			 #####UPDATES%###### 

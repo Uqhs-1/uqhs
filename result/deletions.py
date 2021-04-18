@@ -2,6 +2,7 @@ from .models import QSUBJECT, Post, BTUTOR
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required#, @permission_required
+from django.http import JsonResponse
 
 @login_required
 def confirm_deleting_a_user(request, pk):
@@ -37,6 +38,13 @@ def delete(request, pk):#Yes deletes
     QSUBJECT.objects.filter(tutor=BTUTOR.objects.get(pk=pk)).delete()
     BTUTOR.objects.get(pk=pk).delete()
     return redirect('home')
+
+@login_required
+def deletes(request):#Yes deletes
+    QSUBJECT.objects.filter(id__in=[int(request.GET.get('id_'+str(i))) for i in range(int(request.GET.get('end')))]).delete()
+    data = {"done":1}
+    return JsonResponse(data)
+    
 @login_required
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)

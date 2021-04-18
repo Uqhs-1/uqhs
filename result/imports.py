@@ -1,4 +1,3 @@
-######################STAGE 2 ::: UPLOAD SCORES##################STARTS
 from collections import Counter
 from .models import QSUBJECT, CNAME, BTUTOR, QUESTION
 from django.shortcuts import render, redirect, get_object_or_404
@@ -81,7 +80,7 @@ def upload_new_subject_scores(request):
         grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
         final = [x+[y]+[z] for x,y,z in zip(raw_scores, grade, posi)]
         from .updates import get_or_create
-        [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(id__exact=i[0]).exists()]
+        [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(id__exact=i[0]).exists() and i[5] != 0]
         if tutor.subject == 'BST1' or tutor.subject == 'BST2':
             tutor.subject = 'BST'
         tutor.save()
@@ -130,10 +129,6 @@ def massRegistration(request):
             each_student = [new.strip() for new in line.split(',')]
             names += [each_student]
         valid_names = [n[:] for n in names if len(n) is not 1]
-        if len(valid_names[0]) == 15:
-           reged = [regMe(i) for i in valid_names if not CNAME.objects.filter(uid__exact=i[1]).exists()]
-           cname = CNAME.objects.filter(id__in= reged)
-           return render(request, 'result/regSuccessful.html', {'reged':zip(cname, reged)})
         for i in range(0, len(valid_names)):
             output = [check(s) for s in valid_names[i]]
             if len(output) == 5:
@@ -160,8 +155,5 @@ def massRegistration(request):
 def regMe(dim):
     if len(dim) == 5:#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
          reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
-    else:#ABDULFATAI SODIQ,2015/1290,2004-11-27,SSS 3,1,120,112,8,Not Specified,Good keep it up,48.0,48.0,1.5,1.5,good         
-          reged = CNAME(full_name = dim[0], last_name = dim[0].split(' ')[0], uid = dim[1], first_name = dim[1].split(' '), gender = int(dim[4]), birth_date = dim[2], Class = dim[3], no_open = dim[5], no_present = dim[6], no_of_day_abs = dim[7], purpose = dim[8], remark = dim[9], W_begin = dim[10], W_end = dim[11], H_begin = dim[12], H_end = dim[13], good = dim[14])
-    reged.save()
+         reged.save()
     return reged.id
-

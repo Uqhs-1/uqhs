@@ -28,7 +28,7 @@ session = session()
 def offline(request, pk):
     if request.user.is_authenticated:
         if request.user.profile.email_confirmed:
-            mains = [BTUTOR.objects.filter(Class__exact=i).order_by('id') for i in ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
+            mains = [BTUTOR.objects.filter(Class__exact=i).order_by('subject') for i in ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
             tutor = None
             if pk != '0':
                 tutor = BTUTOR.objects.get(pk=pk)
@@ -134,11 +134,11 @@ def common(request, pk):
         posi = do_positions([i.avr for i in QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id') if i.avr != None])
         [save(QSUBJECT, posi[i], QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id')[i].id) for i in range(0, len(posi))]
     term = ['-', '1st Term', '2nd Term', '3rd Term'][sorted([int(i) for i in [tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]]])[-1]]
-    mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('gender', 'student_id')#.exclude(fagr__exact=0)
+    mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')#.exclude(fagr__exact=0)
     return [term,  mains, tutor]
 def detailView(request, pk, md):##Step 2::  every tutor home detail views all_search_lists
     mains = common(request, pk)
-    if mains[1].count() != 0 and md == '1':
+    if mains[1].aggregate(Avg('avr'))['avr__avg'] and md == '1':
         sum_agr = round(mains[1].aggregate(Sum('avr'))['avr__sum'], 1)
         sum_avr = round(mains[1].aggregate(Avg('avr'))['avr__avg'],2)
     else:
@@ -180,7 +180,17 @@ def teacher_accounts(request, md):
 def results_junior_senior(request, pk):
     cls = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']
     tutors = BTUTOR.objects.filter(Class__exact=cls[int(pk)]).exclude(accounts__exact=None).order_by('subject')
-    return render(request, 'result/results_junior_senior.html', {'all_page': paginator(request, tutors), 'pk':pk, 'counts':tutors.count(), 'class':cls[int(pk)]})
+    qsubject = [QSUBJECT.objects.filter(tutor__exact=i) for i in  tutors]
+    agr = []
+    per = []
+    for i in qsubject:
+        if i.aggregate(Avg('avr'))['avr__avg']:
+            agr.append(round(i.aggregate(Sum('avr'))['avr__sum'], 1))
+            per.append(round(i.aggregate(Avg('avr'))['avr__avg'],2))
+        else:
+            agr.append(00)
+            per.append(00)
+    return render(request, 'result/results_junior_senior.html', {'all_page': zip(tutors, agr, per), 'pk':pk, 'counts':tutors.count(), 'class':cls[int(pk)]})
     
 
 def all_users(request):#show single candidate profile 
@@ -277,7 +287,7 @@ def auto_pdf_a(request, md):
       if md == '0':
           data = {'done':str(len([accid(request, i.id, md) for i in BTUTOR.objects.filter(id__in=[int(request.GET.get('pk_'+str(a))) for a in range(0, int(request.GET.get('end')))])]))}
       else:
-          data = {'done':str(len([accid(request, i.id, md) for i in CNAME.objects.filter(Class__exact=request.GET.get('class'))]))}
+          data = {'ids':[i.id for i in CNAME.objects.filter(Class__exact=request.GET.get('class'))]}
       return JsonResponse(data)
 
 
@@ -424,12 +434,10 @@ def name_down(request, pk, fm,  ps):
         contents = CNAME.objects.filter(Class__exact=Class, session__exact=session.profile.session).order_by('gender', 'full_name')
         sd = [[x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id] for x in contents]
     else:
-        sd = [[x.student_name.id, x.student_name.full_name, 0, 0, 0, 0] for x in contents]
+        sd = [[x.student_name.id, x.student_name.full_name, x.test, x.atd, x.agn, x.exam] for x in contents]
         Class = Class +'_'+pair_subject[int(ps)]
     writer = csv.writer(response)
     for each in sd:
         writer.writerow(each) 
     response['Content-Disposition'] = "attachment; filename={name}".format(name=Class+[' ', '.csv', '.pdf', '.txt', '.txt'][int(fm)])
     return response 
-
-    
