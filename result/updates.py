@@ -265,7 +265,7 @@ def synch(request, last, subject, Class):
             new = QSUBJECT.objects.filter(tutor__Class__exact=subj[1][int(Class)]).order_by('tutor__subject')
         else:# in minute 
             new = QSUBJECT.objects.filter(updated__year__exact=date.year, updated__month__exact=date.month, updated__day__exact=date.day, updated__hour__exact=date.hour, updated__minute__range=[0, 60])# in minutes
-        data = {'response':[[i.student_name.id, i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username, i.second_term, i.third_term, i.fagr, i.sagr] for i in new]}
+        data = {'response':[[i.student_name.id, i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username, i.tutor.second_term, i.tutor.third_term, i.fagr, i.sagr] for i in new]}
     elif last == '2':   # if request.GET.get('serial_no_'+str(i)) in [x.serial_no for x in CNAME.objects.all()]
         data = {'id':str(need_tutor(request, request.GET.get('subject_code').split('-'), subj, [request.GET.get('second_term'), request.GET.get('third_term')],request.GET.get('username')).id), 'response':get_or_create(need_tutor(request, request.GET.get('subject_code').split('-'), subj, [request.GET.get('second_term'), request.GET.get('third_term')], request.GET.get('username')),  request.GET.get('serial_no'), [request.GET.get('serial_no'), request.GET.get('serial_no'), request.GET.get('test'),request.GET.get('agn'),request.GET.get('atd'),request.GET.get('total'), request.GET.get('exam'),request.GET.get('agr'),request.GET.get('grade'),request.GET.get('posi'),request.GET.get('fagr'),request.GET.get('sagr')]), 'sn':request.GET.get('sn'), 'len':request.GET.get('len')}
     elif last == '3':
