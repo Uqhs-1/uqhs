@@ -290,11 +290,11 @@ def auto_pdf_a(request, md):
           data = {'ids':[i.id for i in CNAME.objects.filter(Class__exact=request.GET.get('class'))]}
       return JsonResponse(data)
 
-
+#QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')
 class Pdf(View):#LoginRequiredMixin, 
     def get(self, request, ty, sx, pk):#CARD
         if ty == '1' or ty == '4':
-              this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('tutor__subject')      
+              this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('student_name__gender', 'student_name__full_name')      
               if this:  
                  term = sorted([this.first().tutor.first_term[0], this.first().tutor.second_term[0], this.first().tutor.third_term[0]])
                  filename = this.first().student_name.last_name+'_'+this.first().student_name.first_name+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'_'+str(term[-1])+'_'+str(this.first().tutor.session[-2:])
@@ -321,7 +321,7 @@ class Pdf(View):#LoginRequiredMixin,
             termi = sorted([tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]])
             filepath = 'marksheets/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
             filename = tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
-            subjects = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__gender=sx).order_by('gender', 'student_id')
+            subjects = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__gender=sx).order_by('student_name__gender', 'student_name__full_name')
             if subjects:
                 sumed = round(subjects.aggregate(Sum('avr'))['avr__sum'], 1)
                 average = round(subjects.aggregate(Avg('avr'))['avr__avg'], 2)
@@ -343,7 +343,7 @@ class Pdf(View):#LoginRequiredMixin,
                     [save(CNAME, i, k.id) for i, k in zip(posi, eng.order_by('id'))]
                     #return HttpResponse([posi], content_type='text/plain')
                     if sx == '1':
-                        ai, bn, cs, dd, ed, fc, gv, hs, iw, jd  = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'full_name')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x) for x in [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])]]
+                        ai, bn, cs, dd, ed, fc, gv, hs, iw, jd  = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'full_name')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x).order_by('student_name__gender', 'student_name__full_name') for x in [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])]]
                         sd = [[r, a.student_name, a.agr, a.sagr, a.fagr, a.avr, b.agr, b.sagr,  b.fagr, b.avr, c.agr, c.sagr, c.fagr, c.avr, d.agr, d.sagr, d.fagr, d.avr, e.agr, e.sagr, e.fagr, e.avr, f.agr, f.sagr, f.fagr, f.avr, g.agr, g.sagr, g.fagr, g.avr, h.agr, g.sagr, h.fagr, h.avr, i.agr, i.sagr, i.fagr, i.avr, j.agr, j.sagr, j.fagr, j.avr, a.student_name.annual_scores, a.student_name.annual_avr, a.student_name.posi]  for r, a, b, c, d, e, f, g, h, i, j in zip([r for r in range(1, eng.count()+1)], ai, bn, cs, dd, ed, fc, gv, hs, iw, jd)]
                         sd = [[['sn',  'Student_name', 3, 2, 1, 'YOR', 3, 2, 1, 'BST', 3, 2, 1, 'ARB', 3, 2, 1, 'HIS', 3, 2, 1, 'PRV', 3, 2, 1, 'MAT', 3, 2, 1, 'NAV', 3, 2, 1, 'BUS', 3, 2, 1, 'IRS', 3, 2, 1, 'ENG', 'AGR', 'AVR', 'Posi'], ['sn', 'Student_name', 3, 2, 1, "CHE, ACC, ARB", 3, 2, 1, "GOV, ICT", 3, 2, 1, "GEO, AGR, YOR", 3, 2, 1, "BIO, ECO", 3, 2, 1, "PHY, LIT, COM", 3, 2, 1, "ELE, CTR, GRM", 3, 2, 1,  'MAT', 3, 2, 1, 'IRS', 3, 2, 1, 'CIV', 3, 2, 1, 'ENG', 'AGR', 'AVR', 'Posi']][['JSS', 'SSS'].index(request.user.profile.class_in[:3])]]+sd
                         writer = csv.writer(response)
@@ -353,7 +353,7 @@ class Pdf(View):#LoginRequiredMixin,
                         return response
                     pag = ['', '', [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])][:5], [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])][5:]]
                     tit = ['', '', sub[['SSS', 'JSS'].index(request.user.profile.class_in[:3])][:5], sub[['SSS', 'JSS'].index(request.user.profile.class_in[:3])][5:]]
-                    data = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'uid')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x).order_by('gender', 'student_id') for x in pag[int(sx)]]
+                    data = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'uid')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x).order_by('student_name__gender', 'student_name__full_name') for x in pag[int(sx)]]
                     if data:
                         ai, bn, cs, dd, ed  = data
                     else:
@@ -416,7 +416,7 @@ def name_down(request, pk, fm,  ps):
     pair_subject =  ["ACC", "AGR", "ARB", "BIO", "BST", "BUS", "CHE", "CIV", "COM", "CTR", "ECO", "ELE", "ENG", "FUR", "GEO", "GOV", "GRM", "HIS", "ICT", "IRS", "LIT", "MAT", "NAV", "PHY", "PRV", "YOR", ' ']
     Class = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ''][int(pk)]
     response = HttpResponse(content_type=['', 'application/csv', 'application/pdf', 'text/plain', 'text/plain'][int(fm)])
-    contents = QSUBJECT.objects.filter(tutor__Class__exact=Class, tutor__subject__exact=pair_subject[int(ps)], tutor__session__exact=session.profile.session).order_by('gender', 'student_name')
+    contents = QSUBJECT.objects.filter(tutor__Class__exact=Class, tutor__subject__exact=pair_subject[int(ps)], tutor__session__exact=session.profile.session).order_by('student_name__gender', 'student_name__full_name')
     if fm == '4':
         if contents:
             sd = [[x.student_name_id, x.student_name.full_name, randrange(11, 20), randrange(8, 10), randrange(8, 10), randrange(21, 60)] for x in contents]
@@ -424,7 +424,7 @@ def name_down(request, pk, fm,  ps):
             contents = CNAME.objects.filter(Class__exact=Class).order_by('gender', 'full_name')
             sd = [[x.id, x.full_name, randrange(11, 20), randrange(8, 10), randrange(8, 10), randrange(21, 60)] for x in contents]
     elif pk == '6':
-        contents = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(pk=int(request.user.profile.account_id))).order_by('gender', 'student_name')
+        contents = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(pk=int(request.user.profile.account_id))).order_by('student_name__gender', 'student_name__full_name')
         sd = [[x.student_name.full_name, x.test, x.agn, x.atd, x.total, x.exam, x.agr, x.sagr, x.fagr, x.aagr, x.avr, x.grade, x.posi] for x in contents]
         sd = [['Student Name', 'Test', 'Agn', 'Atd', 'Total', 'Exam', '3rd', '2nd', '1st', 'Anuual', 'Avg', 'Grade', 'Posi']]+sd
         tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))

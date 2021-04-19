@@ -120,7 +120,7 @@ def average(x, r):
       return round(rst,1)
 
 def get_or_create(tutor, serial_no, scores):#name-name_id
-    student_name = CNAME.objects.get(serial_no=serial_no)#############################################
+    student_name = CNAME.objects.get(id=serial_no)#############################################
     instance = QSUBJECT.objects.filter(student_name__exact=student_name, tutor__exact = tutor)
     if not instance.exists():
         instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9], fagr=scores[10], sagr=scores[11])
@@ -164,7 +164,7 @@ def responsive_updates(request, pk):
             if pk == '0':#i.student_name.last_name[0]+i.student_name.first_name[0]+'/J/18/'+str(i.student_name.id)      
                 if request.GET.get('flow') == "toHtml":#feeding the html page x.serial_no
                     tutor = BTUTOR.objects.get(pk=int(request.GET.get('tutor_id')))
-                    instance = QSUBJECT.objects.filter(tutor__exact = tutor).order_by('gender', 'student_name__full_name')
+                    instance = QSUBJECT.objects.filter(tutor__exact = tutor).order_by('student_name__gender', 'student_name__full_name')
                     data = {"status":tutor.updated, "tutor_name":tutor.teacher_name}
                     data["list"] = ['Default']+[[i.student_name.full_name, i.student_name.uid, i.test, i.agn, i.atd, i.exam, i.grade, i.posi, i.student_name.gender, i.fagr, i.sagr, i.aagr, i.avr, i.student_name.id] for i in instance]
                 if request.GET.get('flow') == "fromHtml":#fetching from the html page and save to the database.
@@ -172,7 +172,7 @@ def responsive_updates(request, pk):
                     response = [get_or_create(tutor, int(request.GET.get('serial_no_'+str(i))), [request.GET.get('serial_no_'+str(i)), request.GET.get('student_name_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)),request.GET.get('atd_'+str(i)),request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)),request.GET.get('grade_'+str(i)),request.GET.get('posi_'+str(i)),request.GET.get('fagr_'+str(i)),request.GET.get('sagr_'+str(i))]) for i in range(int(request.GET.get('start')), int(request.GET.get('end')))]
                     if tutor.subject == 'BST1' or tutor.subject == 'BST2':
                         tutor.subject = 'BST'
-                    qs = QSUBJECT.objects.get(tutor=tutor, student_name__serial_no=int(request.GET.get('serial_no_1')))
+                    qs = QSUBJECT.objects.get(tutor=tutor, student_name__id=int(request.GET.get('serial_no_1')))
                     data = {"status":str(len(response)), 'updated':response, 'agr':qs.agr, 'fagr':qs.fagr, 'sagr':qs.sagr, 'aagr':qs.aagr, 'avg':qs.avr}
                 if request.GET.get('flow') == "mygrade":
                     tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
@@ -227,7 +227,7 @@ def responsive_updates(request, pk):
                         user.save()
                         data = {"status":exist.id, "tutor_name":exist.teacher_name, "tutor_id":exist.id}
             elif pk == "1":
-                    names = QSUBJECT.objects.filter(tutor__Class__exact= request.GET.get('Class'), tutor__subject__exact= request.GET.get('Subject'), tutor__session__exact = session, tutor__term__exact = "1st Term").order_by('gender', 'student_name')
+                    names = QSUBJECT.objects.filter(tutor__Class__exact= request.GET.get('Class'), tutor__subject__exact= request.GET.get('Subject'), tutor__session__exact = session, tutor__term__exact = "1st Term").order_by('student_name__gender', 'student_name__full_name')
                     data = {"status":str(names.count())}
                     data["list"] = ['Default']+[[i.student_name.full_name, i.student_id] for i in names] 
                     if names.count() == 0:
@@ -260,7 +260,7 @@ def synch(request, last, subject, Class):
     subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
     if last == '0' or last == '1' or last == '60':
         if last == '0':#by subject
-            new = QSUBJECT.objects.filter(tutor__subject__exact=subj[0][int(subject)], tutor__Class__exact=subj[1][int(Class)]).order_by('gender', 'student_name__full_name')            
+            new = QSUBJECT.objects.filter(tutor__subject__exact=subj[0][int(subject)], tutor__Class__exact=subj[1][int(Class)]).order_by('student_name__gender', 'student_name__full_name')            
         elif last == '1':#by classserial_no
             new = QSUBJECT.objects.filter(tutor__Class__exact=subj[1][int(Class)]).order_by('tutor__subject')
         else:# in minute 
@@ -280,13 +280,13 @@ def synch(request, last, subject, Class):
 ## for i in range(0, int(request.GET.get('len')))]
            #data = {'response':[update_student_profile(request, i) for i in items]}
 def update_student_profile(request, data):
-    x = CNAME.objects.filter(serial_no__exact=data[-1])
+    x = CNAME.objects.filter(id__exact=data[-1])
     if not x:
         x = CNAME(full_name = data[0], uid = data[1])
         x.save()
     else:
         x = x.first()
-    x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.serial_no = data
+    x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id = data
     x.save()
     if x.created == x.updated:
         return x.uid 

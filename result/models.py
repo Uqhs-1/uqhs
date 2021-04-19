@@ -161,7 +161,7 @@ class CNAME(models.Model):
     serial_no = models.IntegerField(blank=True, null=True, default=0)
     
     class Meta:
-          ordering = ('full_name',) # helps in alphabetical listing. Sould be a tuple
+          ordering = ('gender', 'Class', 'full_name') # helps in alphabetical listing. Sould be a tuple
     
     def save(self):
         from .utils import session
@@ -221,7 +221,7 @@ class QSUBJECT(models.Model):#step5-subject
      qteacher = models.CharField(max_length=100, blank=True, null=True)
      
      class Meta:
-          ordering = ('gender', 'student_name',) # helps in alphabetical listing. Sould be a tuple
+          ordering = ('student_name__gender', 'student_name__full_name') # helps in alphabetical listing. Sould be a tuple
     
      def __str__(self):
         """String for representing the Model object."""
