@@ -34,7 +34,7 @@ class BTUTOR(models.Model):
     subject_teacher_id = models.CharField(max_length=200, blank=True, null=True, help_text='Class teacher id')
     created = models.DateTimeField(max_length=200, default=str(datetime.date.today()))
     updated = models.DateTimeField(editable=False, blank=True, null=True,)
-    pdf = models.FileField(upload_to='static/result/pdf/', null=True, default='default.pdf')
+    subject_code = models.CharField(max_length=200, blank=True, null=True, help_text='Class teacher id')
     class Meta:
           ordering = ('teacher_name',) # helps in alphabetical listing. Sould be a tuple
     def __str__(self):
@@ -159,7 +159,8 @@ class CNAME(models.Model):
     posi = models.CharField(max_length=5, blank=True, null=True)
 
     serial_no = models.IntegerField(blank=True, null=True, default=0)
-    
+    local_id = models.IntegerField(blank=True, null=True, default=0)
+
     class Meta:
           ordering = ('gender', 'Class', 'full_name') # helps in alphabetical listing. Sould be a tuple
     

@@ -9,17 +9,7 @@ class Migration(migrations.Migration):
         ('result', '0133_auto_20200911_1735'),
     ]
 
-    operations = [
-        migrations.RenameField(
-            model_name='btutor',
-            old_name='class_teacher_id',
-            new_name='subject_teacher_id',
-        ),
-        migrations.RenameField(
-            model_name='cname',
-            old_name='orders',
-            new_name='serial_no',
-        ),
+    operations = [    
         migrations.AlterField(
             model_name='btutor',
             name='created',
