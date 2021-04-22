@@ -135,20 +135,20 @@
           </td>
           {% endif %}
           {% if scr.tutor.second_term == "2nd Term" %}   
-           {% if request.user.is_superuser == True  and user.is_staff == True %}  
-           <td class="editable" style="color:black;width:5%;" ><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
+             
+           <td class="editable_{{ forloop.counter }}" style="color:black;width:5%;" hidden><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
            </td>
-           {% else %}
+           
           <td style="color:white;width:5%;background-color:#E6C3C3;" id='sagr_{{ forloop.counter }}' class="no_edith">{{ scr.sagr }}</td>
-          {% endif %}
+          
           {% endif %}
           {% if scr.tutor.first_term == "1st Term" %}  
-            {% if request.user.is_superuser == True  and user.is_staff == True %}
-            <td class="editable" style="color:black;width:5%;"><input id="edith_fagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.fagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
+            
+            <td class="editable_{{ forloop.counter }}" style="color:black;width:5%;" hidden><input id="edith_fagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.fagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
             </td>
-           {% else %}
+           
            <td style="color:white;width:5%;background-color:#E6C3C3;" id='fagr_{{ forloop.counter }}' class="no_edith">{{ scr.fagr }}</td>
-           {% endif %}
+           
           {% endif %}
           <td style="color:white;width:5%;background-color:#A2A161;" id='aagr_{{ forloop.counter }}'>{{ scr.aagr }}</td>
           <td style="color:white;width:5%;background-color:#22D8A0;" id="avg_{{ forloop.counter }}">{{ scr.avr }}</td>
@@ -407,6 +407,11 @@ function edith(i, name){
             $("#edith_student_show_"+""+i).show();
             $("#edith_student_hide_"+""+i).hide();
             document.getElementById("edith_student_name_show_"+""+i).value = name;
+            if ('{{ request.user.is_superuser }}' == 'True'){
+                $(".editable_"+""+i).show();
+                $("#fagr_"+""+i).hide();
+                $("#sagr_"+""+i).hide()
+                }
 	
 };
 
