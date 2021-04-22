@@ -55,9 +55,7 @@
               <th>Exam</th>
               {% if qry.third_term == "3rd Term" %}<th>3rd</th>{% endif %}
               {% if qry.second_term == "2nd Term" %}<th>2nd</th>{% endif %}
-              {% if qry.first_term == "1st Term" %}<th>1st</th>{% endif %}
-              <th class="editable" hidden>2nd</th>
-              <th class="editable" hidden>1st</th>
+              {% if qry.first_term == "1st Term" %}<th>1st</th>{% endif %}             
               <th>Agr</th>
               <th>Avg</th>
               <th>Grd</th>
@@ -402,6 +400,7 @@
         colset();
 if ('{{ request.user.is_superuser }}' == 'True'){
                 $(".editable").show();
+                $(".no_edith").hide()
                 
                }
 function edith(i, name){
