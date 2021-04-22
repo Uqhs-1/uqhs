@@ -136,7 +136,7 @@
           {% endif %}
           {% if scr.tutor.second_term == "2nd Term" %}   
              
-           <td class="editable_{{ forloop.counter }}" style="color:black;width:5%;" hidden><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
+           <td id="editable2_{{ forloop.counter }}" style="color:black;width:5%;" hidden><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
            </td>
            
           <td style="color:white;width:5%;background-color:#E6C3C3;" id='sagr_{{ forloop.counter }}' class="no_edith">{{ scr.sagr }}</td>
@@ -144,7 +144,7 @@
           {% endif %}
           {% if scr.tutor.first_term == "1st Term" %}  
             
-            <td class="editable_{{ forloop.counter }}" style="color:black;width:5%;" hidden><input id="edith_fagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.fagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
+            <td id="editable1_{{ forloop.counter }}" style="color:black;width:5%;" hidden><input id="edith_fagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.fagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
             </td>
            
            <td style="color:white;width:5%;background-color:#E6C3C3;" id='fagr_{{ forloop.counter }}' class="no_edith">{{ scr.fagr }}</td>
@@ -407,11 +407,12 @@ function edith(i, name){
             $("#edith_student_show_"+""+i).show();
             $("#edith_student_hide_"+""+i).hide();//alert('{{request.user.is_superuser}}');
             document.getElementById("edith_student_name_show_"+""+i).value = name;
-            //if ('{{ request.user.is_superuser }}' == 'True'){
-                $(".editable_"+""+i).show();
+           // if ('{{ request.user.is_superuser }}' == 'True'){
+                $("#editable1_"+""+i).show();
+                $("#editable2_"+""+i).show()
                 $("#fagr_"+""+i).hide();
                 $("#sagr_"+""+i).hide()
-              //  }
+               // }
 	
 };
 
