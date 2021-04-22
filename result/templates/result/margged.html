@@ -54,8 +54,8 @@
               <th>Total</th>
               <th>Exam</th>
               {% if qry.third_term == "3rd Term" %}<th>3rd</th>{% endif %}
-              {% if qry.second_term == "2nd Term" %}<th>2nd</th>{% endif %}
-              {% if qry.first_term == "1st Term" %}<th>1st</th>{% endif %}             
+              {% if qry.second_term == "2nd Term" %}<th><button onclick="$('.second, .sagr').toggle()">2nd</button></th>{% endif %}
+              {% if qry.first_term == "1st Term" %}<th><button onclick="$('.first, .fagr').toggle()">1st</button></th>{% endif %}             
               <th>Agr</th>
               <th>Avg</th>
               <th>Grd</th>
@@ -138,14 +138,14 @@
              
            
            
-          <td style="color:white;width:5%;background-color:#E6C3C3;" id='sagr_{{ forloop.counter }}' class="no_edith">{{ scr.sagr }}</td>
+          <td style="color:white;width:5%;background-color:#E6C3C3;" id='sagr_{{ forloop.counter }}' class="sagr">{{ scr.sagr }}</td>
           
           {% endif %}
           {% if scr.tutor.first_term == "1st Term" %}  
             
             
            
-           <td style="color:white;width:5%;background-color:#E6C3C3;" id='fagr_{{ forloop.counter }}' class="no_edith">{{ scr.fagr }}</td>
+           <td style="color:white;width:5%;background-color:#E6C3C3;" id='fagr_{{ forloop.counter }}' class="fagr">{{ scr.fagr }}</td>
            
           {% endif %}
           <td class="editable" style="color:black;width:5%;" hidden><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
@@ -398,11 +398,11 @@
 			document.getElementById("fifteen").colSpan = '13';}
 }};
         colset();
-if ('{{ request.user.is_superuser }}' == 'True'){
-                $(".editable").show();
-                $(".no_edith").hide()
+//if ('{{ request.user.is_superuser }}' == 'True'){
+                //$(".editable").show();
+                //$(".no_edith").hide()
                 
-               }
+               //}
 function edith(i, name){
             document.getElementById("ide_"+""+i).value = 'Waiting';
             $(".raw_"+""+i).hide(); 
