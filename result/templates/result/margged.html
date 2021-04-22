@@ -407,7 +407,7 @@ function edith(i, name){
             $("#edith_student_show_"+""+i).show();
             $("#edith_student_hide_"+""+i).hide();//alert('{{request.user.is_superuser}}');
             document.getElementById("edith_student_name_show_"+""+i).value = name;
-            if ('{{ request.user.is_superuser }}' == True){
+            if ('{{ request.user.is_superuser }}' == 'True'){
                 $(".editable_"+""+i).show();
                 $("#fagr_"+""+i).hide();
                 $("#sagr_"+""+i).hide()
