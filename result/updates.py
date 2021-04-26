@@ -53,7 +53,7 @@ def profiles(request, pk):#show single candidate profile
 def create_local_accounts(request, x):
   if x == '0':
     users = User.objects.all()
-    data = [[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in users]
+    data = {'response':[[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in users]}
   else:
     for i in range(0, int(request.GET.get('len'))):
         if not User.objects.filter(username__exact=request.GET.get('username_'+str(i))):
