@@ -50,6 +50,23 @@ def profiles(request, pk):#show single candidate profile
     user=get_object_or_404(User, pk=pk)
     return render(request, 'result/profiles.html', {'qry' : user.profile, 'pk':pk})
 
+def create_local_accounts(request, x):
+  if x == '0':
+    users = User.objects.all()
+    data = [[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in users]
+  else:
+    for i in range(0, int(request.GET.get('len'))):
+        if not User.objects.filter(username__exact=request.GET.get('username_'+str(i))):
+            userObj = User.objects.create_user(username=request.GET.get('username_'+str(i)), email=request.GET.get('username_'+str(i)).lower()+'@uqhs.herokuapp.com', password='Ll0183111@$')
+            userObj.is_active = True
+            userObj.is_staff = True
+            userObj.save()
+            pro = userObj.profile
+            pro.title, pro.last_name, pro.first_name, pro.department = [request.GET.get('title_'+str(i)), request.GET.get('last_name_'+str(i)), request.GET.get('first_name_'+str(i)), request.GET.get('department_'+str(i))]
+            pro.email_confirmed = True
+            pro.save()
+    data = {'status':'done'}
+  return JsonResponse(data)
 
 class ProfileUpdate(UpdateView):
     model = Edit_User
