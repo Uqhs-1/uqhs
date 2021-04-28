@@ -44,33 +44,53 @@ class Cname_edit(LoginRequiredMixin, UpdateView):#New teacher form for every new
     fields = ['full_name', 'gender']
 ###################################################   
 
+subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
+def need_tutor(request, x, subj, Term, username):
+    tutor = BTUTOR.objects.filter(subject__exact = subj[0][int(x[1])], Class__exact = subj[1][int(x[0])], term__exact = '1st Term')
+    if tutor:
+        tutor = tutor.first()
+    else:
+        user = User.objects.filter(username__exact=username)
+        if user:
+            account = user.first()
+        else:
+            account = request.user
+        tutor = create_new_subject_teacher(account, subj[0][int(x[1])], subj[1][int(x[0])])
+    tutor.second_term, tutor.third_term = Term
+    tutor.save()
+    return tutor
 ############################################################################### student_in_None
 @login_required
-def profiles(request, pk):#show single candidate profile
+def profiles(request, pk):#
     user=get_object_or_404(User, pk=pk)
     return render(request, 'result/profiles.html', {'qry' : user.profile, 'pk':pk})
 
 def create_local_accounts(request, x):
   if x == '0':
-    users = User.objects.all()
-    data = {'response':[[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in users]}
+    users = [[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in User.objects.all()]
+  elif x == '2':
+    tutors = [[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all()]
+    data = {'response':users, 'tutors':tutors}
   else:
-    for i in range(0, int(request.GET.get('len'))):
-        if not User.objects.filter(username__exact=request.GET.get('username_'+str(i))):
-            userObj = User.objects.create_user(username=request.GET.get('username_'+str(i)), email=request.GET.get('username_'+str(i)).lower()+'@uqhs.herokuapp.com', password='Ll0183111@$')
-            userObj.is_active = True
-            userObj.is_staff = True
-            userObj.save()
-            pro = userObj.profile
-            pro.title, pro.last_name, pro.first_name, pro.department = [request.GET.get('title_'+str(i)), request.GET.get('last_name_'+str(i)), request.GET.get('first_name_'+str(i)), request.GET.get('department_'+str(i))]
-            pro.email_confirmed = True
-            pro.save()
-    data = {'status':'done'}
+    if x == '1': 
+        for i in range(0, int(request.GET.get('len'))):
+            if not User.objects.filter(username__exact=request.GET.get('username_'+str(i))):
+                userObj = User.objects.create_user(username=request.GET.get('username_'+str(i)), email=request.GET.get('username_'+str(i)).lower()+'@uqhs.herokuapp.com', password='Ll0183111@$')
+                userObj.is_active = True
+                userObj.is_staff = True
+                userObj.save()
+                pro = userObj.profile
+                pro.title, pro.last_name, pro.first_name, pro.department = [request.GET.get('title_'+str(i)), request.GET.get('last_name_'+str(i)), request.GET.get('first_name_'+str(i)), request.GET.get('department_'+str(i))]
+                pro.email_confirmed = True
+                pro.save()
+    else:
+        [[need_tutor(request, request.GET.get('subject_teacher_id'+str(i)).split('-'), subj, [request.GET.get('second_term'+str(i)), request.GET.get('third_term'+str(i))], request.GET.get('username'+str(i)))] for i in range(0, int(request.GET.get('len')))]
+  data = {'status':'done'}
   return JsonResponse(data)
 
 class ProfileUpdate(UpdateView):
     model = Edit_User
-    fields = ['title', 'first_name', 'last_name', 'bio', 'phone', 'city', 'department', 'location', 'birth_date', 'country', 'organization', 'class_in', 'photo']
+    fields = ['title', 'first_name', 'last_name', 'bio', 'phone', 'city', 'department', 'location', 'birth_date', 'country', 'organization', 'class_in', 'photo', 'user',]
     
 
 @login_required
@@ -137,9 +157,9 @@ def average(x, r):
       return round(rst,1)
 
 def get_or_create(tutor, serial_no, scores):#name-name_id
-    student_name = CNAME.objects.get(id=serial_no)#############################################
+    student_name = CNAME.objects.get(serial_no=serial_no)#############################################
     instance = QSUBJECT.objects.filter(student_name__exact=student_name, tutor__exact = tutor)
-    if not instance.exists():
+    if not instance.exists():#[i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[13], i[14]]
         instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9], fagr=scores[10], sagr=scores[11])
     else:
         instance = QSUBJECT.objects.get(student_name=student_name, tutor = tutor)
@@ -189,7 +209,7 @@ def responsive_updates(request, pk):
                     response = [get_or_create(tutor, int(request.GET.get('serial_no_'+str(i))), [request.GET.get('serial_no_'+str(i)), request.GET.get('student_name_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)),request.GET.get('atd_'+str(i)),request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)),request.GET.get('grade_'+str(i)),request.GET.get('posi_'+str(i)),request.GET.get('fagr_'+str(i)),request.GET.get('sagr_'+str(i))]) for i in range(int(request.GET.get('start')), int(request.GET.get('end')))]
                     if tutor.subject == 'BST1' or tutor.subject == 'BST2':
                         tutor.subject = 'BST'
-                    qs = QSUBJECT.objects.get(tutor=tutor, student_name__id=int(request.GET.get('serial_no_1')))
+                    qs = QSUBJECT.objects.get(tutor=tutor, student_name__serial_no=int(request.GET.get('serial_no_1')))#########################################
                     data = {"status":str(len(response)), 'updated':response, 'agr':qs.agr, 'fagr':qs.fagr, 'sagr':qs.sagr, 'aagr':qs.aagr, 'avg':qs.avr}
                 if request.GET.get('flow') == "mygrade":
                     tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
@@ -257,24 +277,28 @@ def responsive_updates(request, pk):
         data = {"redirect":'home'}
     return JsonResponse(data)
 
-def need_tutor(request, x, subj, Term, username):
-    tutor = BTUTOR.objects.filter(subject__exact = subj[0][int(x[1])], Class__exact = subj[1][int(x[0])], term__exact = '1st Term')
-    if tutor:
-        tutor = tutor.first()
-    else:
-        user = User.objects.filter(username__exact=username)
-        if user:
-            account = user.first()
-        else:
-            account = request.user
-        tutor = create_new_subject_teacher(account, subj[0][int(x[1])], subj[1][int(x[0])])
-    tutor.second_term, tutor.third_term = ['2nd Term', '1st Term']
-    tutor.save()
-    return tutor
 
-date = datetime.datetime.today()#
+def order_of(second):
+    return second[1]
+
+def subListed(data):
+    main_list = []
+    sub_list = []
+    determinant = [0]
+    for i in sorted(data, key=order_of):
+       if determinant[0] != i[1]:
+           determinant[0] = i[1]
+           main_list.append(sub_list)
+           sub_list = []
+       if determinant[0] == i[1]:
+            sub_list += [i]
+       if i == data[-1]:
+           main_list.append(sub_list)
+           del(main_list[0])
+    return main_list
+
+date = datetime.datetime.today()#0/s/c
 def synch(request, last, subject, Class):
-    subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
     if last == '0' or last == '1' or last == '60':
         if last == '0':#by subject
             new = QSUBJECT.objects.filter(tutor__subject__exact=subj[0][int(subject)], tutor__Class__exact=subj[1][int(Class)]).order_by('student_name__gender', 'student_name__full_name')            
@@ -282,9 +306,25 @@ def synch(request, last, subject, Class):
             new = QSUBJECT.objects.filter(tutor__Class__exact=subj[1][int(Class)]).order_by('tutor__subject')
         else:# in minute 
             new = QSUBJECT.objects.filter(updated__year__exact=date.year, updated__month__exact=date.month, updated__day__exact=date.day, updated__hour__exact=date.hour, updated__minute__range=[0, 60])# in minutes
-        data = {'response':[[i.student_name.id, i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username, i.tutor.second_term, i.tutor.third_term, i.fagr, i.sagr] for i in new]}
-    elif last == '2':   # if request.GET.get('serial_no_'+str(i)) in [x.serial_no for x in CNAME.objects.all()]
-        data = {'id':str(need_tutor(request, request.GET.get('subject_code').split('-'), subj, [request.GET.get('second_term'), request.GET.get('third_term')],request.GET.get('username')).id), 'response':get_or_create(need_tutor(request, request.GET.get('subject_code').split('-'), subj, [request.GET.get('second_term'), request.GET.get('third_term')], request.GET.get('username')),  request.GET.get('serial_no'), [request.GET.get('serial_no'), request.GET.get('serial_no'), request.GET.get('test'),request.GET.get('agn'),request.GET.get('atd'),request.GET.get('total'), request.GET.get('exam'),request.GET.get('agr'),request.GET.get('grade'),request.GET.get('posi'),request.GET.get('fagr'),request.GET.get('sagr')]), 'sn':request.GET.get('sn'), 'len':request.GET.get('len')}
+        data = {'response':[[i.student_name.id, i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username, i.second_term, i.third_term, i.fagr, i.sagr] for i in new]}
+    elif last == '2':#[352, '1-6-25', 7, 4, 3, 14, 56, 70, 'A', '10th', 'Adisa', '2nd Term', '3rd Term', 0, 70]
+        from django.contrib import messages
+        raw_data = [[request.GET.get('serial_no_'+str(i)), request.GET.get('subject_code_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)), request.GET.get('atd_'+str(i)), request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)), request.GET.get('grade_'+str(i)), request.GET.get('posi_'+str(i)), request.GET.get('username_'+str(i)), request.GET.get('second_term'), request.GET.get('third_term'), request.GET.get('fagr_'+str(i)),request.GET.get('sagr_'+str(i))] for i in range(0, int(request.GET.get('end')))]
+        messages.success(request, len(raw_data))
+        theList = subListed(raw_data)
+        messages.success(request, len(theList))
+        for i in theList:#[[],[]] (request, x, subj, Term, username)
+            tutor = need_tutor(request, i[0][1].split('-'), subj, [i[0][11], i[0][12]], i[0][10])
+            uploads = [get_or_create(tutor, x[0], ['', '', x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[13], x[14]]) for x in i]
+            messages.success(request, len(i))
+            tutor.subject_teacher_id = i[0][1]
+            tutor.save()
+            left = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__serial_no__in=[r[0] for r in i])
+            if left:
+                left.delete()
+        data = {'id':str(tutor.id)}
+
+        
     elif last == '3':
         if subject == '1':
             contents = CNAME.objects.filter(Class__exact=subj[1][int(Class)], session__exact=session.profile.session).order_by('gender', 'full_name')
@@ -297,14 +337,14 @@ def synch(request, last, subject, Class):
 ## for i in range(0, int(request.GET.get('len')))]
            #data = {'response':[update_student_profile(request, i) for i in items]}
 def update_student_profile(request, data):
-    x = CNAME.objects.filter(id__exact=data[-1])
+    x = CNAME.objects.filter(serial_no__exact=data[-1])##########################################################
     if not x:
         x = CNAME(full_name = data[0], uid = data[1])
         x.save()
     else:
         x = x.first()
-    x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id = data
-    x.save()
+    x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.serial_no = data
+    x.save()####################################################################################################
     if x.created == x.updated:
         return x.uid 
 
