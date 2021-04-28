@@ -67,10 +67,9 @@ def profiles(request, pk):#
 
 def create_local_accounts(request, x):
   if x == '0':
-    users = [[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in User.objects.all()]
+    data = {'response':[[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in User.objects.all()]}
   elif x == '2':
-    tutors = [[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all()]
-    data = {'response':users, 'tutors':tutors}
+    data = {'tutors':[[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all()]}
   else:
     if x == '1': 
         for i in range(0, int(request.GET.get('len'))):
@@ -85,7 +84,7 @@ def create_local_accounts(request, x):
                 pro.save()
     else:
         [[need_tutor(request, request.GET.get('subject_teacher_id'+str(i)).split('-'), subj, [request.GET.get('second_term'+str(i)), request.GET.get('third_term'+str(i))], request.GET.get('username'+str(i)))] for i in range(0, int(request.GET.get('len')))]
-  data = {'status':'done'}
+    data = {'status':'done'}
   return JsonResponse(data)
 
 class ProfileUpdate(UpdateView):
