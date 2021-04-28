@@ -69,7 +69,7 @@ def create_local_accounts(request, x):
   if x == '0':
     data = {'response':[[i.profile.title, i.profile.last_name, i.profile.first_name, i.username, i.profile.department] for i in User.objects.all()]}
   elif x == '2':
-    data = {'tutors':[[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all()]}
+    data = {'tutors':[[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all() if i.subject_teacher_id]}
   else:
     if x == '1': 
         for i in range(0, int(request.GET.get('len'))):
