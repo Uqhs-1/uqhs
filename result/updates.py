@@ -305,7 +305,8 @@ def synch(request, last, subject, Class):
             new = QSUBJECT.objects.filter(tutor__Class__exact=subj[1][int(Class)]).order_by('tutor__subject')
         else:# in minute 
             new = QSUBJECT.objects.filter(updated__year__exact=date.year, updated__month__exact=date.month, updated__day__exact=date.day, updated__hour__exact=date.hour, updated__minute__range=[0, 60])# in minutes
-        data = {'response':[[i.student_name.id, i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username, i.tutor.second_term, i.tutor.third_term, i.fagr, i.sagr] for i in new]}
+        data = {'response':[[[i.student_name.id, i.tutor.subject_teacher_id, i.test, i.agn, i.atd, i.total, i.exam, i.agr, i.grade, i.posi, i.tutor.accounts.username, i.tutor.second_term, i.tutor.third_term, i.fagr, i.sagr] for i in new.filter(tutor__subject__exact=e)] for e in sorted(set([i.tutor.subject for i in new]))]
+}
     elif last == '2':#[352, '1-6-25', 7, 4, 3, 14, 56, 70, 'A', '10th', 'Adisa', '2nd Term', '3rd Term', 0, 70]
         from django.contrib import messages
         raw_data = [[request.GET.get('serial_no_'+str(i)), request.GET.get('subject_code_'+str(i)), request.GET.get('test_'+str(i)),request.GET.get('agn_'+str(i)), request.GET.get('atd_'+str(i)), request.GET.get('total_'+str(i)), request.GET.get('exam_'+str(i)),request.GET.get('agr_'+str(i)), request.GET.get('grade_'+str(i)), request.GET.get('posi_'+str(i)), request.GET.get('username_'+str(i)), request.GET.get('second_term'), request.GET.get('third_term'), request.GET.get('fagr_'+str(i)),request.GET.get('sagr_'+str(i))] for i in range(0, int(request.GET.get('end')))]
