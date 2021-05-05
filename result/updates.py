@@ -66,9 +66,10 @@ def profiles(request, pk):#
 def create_local_accounts(request, x):
   if x == '0':
     users = [[i.profile.title, i.profile.last_name, i.profile.first_name, i.profile.department, i.username] for i in User.objects.all()]
+    data = {'response':users}
   elif x == '2':
     tutors = [[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all()]
-    data = {'response':users, 'tutors':tutors}
+    data = {'tutors':tutors}
   else:
     if x == '1': 
         from django.contrib import messages
