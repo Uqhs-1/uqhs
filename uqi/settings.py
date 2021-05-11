@@ -21,8 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
 
 if USE_S3:
-    #import django_heroku 
-    #django_heroku.settigns(locals(), staticfiles=False)
+    import django_heroku 
+    django_heroku.settigns(locals(), staticfiles=False)
     # aws settings
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY =os.getenv('AWS_SECRET_ACCESS_KEY')
