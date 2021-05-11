@@ -11,6 +11,7 @@ django-crispy-forms==1.7.2
 django-cors-headers==3.7.0
 django-encrypted-model-fields==0.5.8
 django-model-import==0.3.2
+django-storages==1.11.1
 et-xmlfile==1.0.1
 gunicorn==19.9.0
 heroku==0.1.4
