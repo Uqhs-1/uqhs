@@ -14,29 +14,44 @@ import os
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-                      
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#AUTH_USER_MODEL = 'score_log.User'
-# The URL to use when referring to static files (where they will be served from)
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)###
 
-settings_dir = os.path.dirname(__file__)
-PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
-FILES_FOLDER = os.path.join(PROJECT_ROOT, 'file_folder/')
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
+
+if USE_S3:
+    #import django_heroku 
+    #django_heroku.settigns(locals(), staticfiles=False)
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY =os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = 'dhnygxib7cbg0.cloudfront.net'#f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'    
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/result/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'result')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'result/static'),)
+
+#DEFAULT_FILE_STORAGE = 'uqi.storage_backends.MediaStorage'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'dqtx4k0&m9expsji^cwgqec=3vmc0cyk-k_8^50ei5_0$b!ub='
-
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+#
 
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['uqhi.herokuapp.com', 'uqhs.herokuapp.com', '127.0.0.1']
@@ -61,6 +76,7 @@ INSTALLED_APPS = [
     'result.apps.ResultConfig',
     'crispy_forms',#How to Use Bootstrap 4 Forms With Django
      'corsheaders',
+     'storages', 
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -172,7 +188,7 @@ USE_L10N = True
 USE_TZ = True
 TIME_ZONE = 'Africa/Lagos'
 
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -180,15 +196,10 @@ DATABASES['default'].update(db_from_env)
 ###for image upload
 MEDIA_URL = '/result/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'result')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# The URL to use when referring to static files (where they will be served from)
-STATIC_URL = '/static/'
 
 
