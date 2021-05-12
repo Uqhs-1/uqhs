@@ -33,7 +33,7 @@
                 <a href="{% url 'pdf' ty=2 sx=2 pk=0 %}">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
-                {% endif %}|
+                {% endif %}
                 <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.females}}">Females</button>
                 {% if user.is_authenticated %}
                 <a href="{% url 'pdf' ty=2 sx=1 pk=0 %}">
@@ -54,8 +54,8 @@
               <th>Total</th>
               <th>Exam</th>
               {% if qry.third_term == "3rd Term" %}<th>3rd</th>{% endif %}
-              {% if qry.second_term == "2nd Term" %}<th>2nd</th>{% endif %}
-              {% if qry.first_term == "1st Term" %}<th>1st</th>{% endif %}
+              {% if qry.second_term == "2nd Term" %}<th style="line-height:65%;border:1px solid white;color:black;border-radius:2px;background-color:green" ><button onclick="$('.second, .sagr').toggle()">2nd</button></th>{% endif %}
+              {% if qry.first_term == "1st Term" %}<th style="line-height:65%;border:1px solid white;color:black;border-radius:2px;background-color:green" ><button onclick="$('.first, .fagr').toggle()">1st</button></th>{% endif %}             
               <th>Agr</th>
               <th>Avg</th>
               <th>Grd</th>
@@ -134,22 +134,12 @@
           <td style="color:white;width:5%;background-color:#E6C3C3;" id='agr_{{ forloop.counter }}'>{{ scr.agr }}
           </td>
           {% endif %}
-          {% if scr.tutor.second_term == "2nd Term" %}   
-           {% if request.user.is_superuser == True  and user.is_staff == True %}  
-           <td class="editable" style="color:black;width:5%;" ><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
+          {% if scr.tutor.second_term == "2nd Term" %} <td style="color:white;width:5%;background-color:#E6C3C3;" id='sagr_{{ forloop.counter }}' class="sagr">{{ scr.sagr }}</td>{% endif %}
+          {% if scr.tutor.first_term == "1st Term" %}<td style="color:white;width:5%;background-color:#E6C3C3;" id='fagr_{{ forloop.counter }}' class="fagr">{{ scr.fagr }}</td>{% endif %}
+          <td class="second" style="color:black;width:5%;" hidden><input id="edith_sagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.sagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
            </td>
-           {% else %}
-          <td style="color:white;width:5%;background-color:#E6C3C3;" id='sagr_{{ forloop.counter }}' class="no_edith">{{ scr.sagr }}</td>
-          {% endif %}
-          {% endif %}
-          {% if scr.tutor.first_term == "1st Term" %}  
-            {% if request.user.is_superuser == True  and user.is_staff == True %}
-            <td class="editable" style="color:black;width:5%;"><input id="edith_fagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.fagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
+          <td class="first" style="color:black;width:5%;" hidden><input id="edith_fagr_{{ forloop.counter }}" type="number" min="0" max="5" value="{{ scr.fagr }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;">
             </td>
-           {% else %}
-           <td style="color:white;width:5%;background-color:#E6C3C3;" id='fagr_{{ forloop.counter }}' class="no_edith">{{ scr.fagr }}</td>
-           {% endif %}
-          {% endif %}
           <td style="color:white;width:5%;background-color:#A2A161;" id='aagr_{{ forloop.counter }}'>{{ scr.aagr }}</td>
           <td style="color:white;width:5%;background-color:#22D8A0;" id="avg_{{ forloop.counter }}">{{ scr.avr }}</td>
           <td style="color:white;width:5%;background-color:#7AA49A;" id='grd_{{ forloop.counter }}'>{{ scr.grade }}</td>
@@ -165,19 +155,7 @@
        	<pre class="empty">There are no records.</pre>
        {% endif %}
        <tr id="toAll" class="{{ scr.grade }}">
-      <script>
-		  $(".oneBox").show();//http://127.0.0.1:8838/static/result/pdf/marksheets/2/1st/HIS_2_1_21_0.pdf
-            dim.unshift("{{ scr.grade }}");
-            $("#toAll").addClass("oneBox")
-            $("#toAll").addClass("gen_{{ scr.student_name.gender }}");
-            function cards(nam, cls, trm){
-              var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
-              var kwd = argt[cls]+'/'+trm+'/'+nam.split(' ')[0]+'_'+nam.split(' ')[1]+'.pdf'
-              var next = window.location.href.split('/')[0]+"/static/result/pdf/cards/"+kwd;
-              window.open(next, '_blank');
-              };
-      </script>
-        
+      
           <tbody id="extral" hidden>
        	  <td style="width:1%;" id="sn"></td>
           <td>
@@ -219,21 +197,6 @@
 					 <td id="grd_0"></td>
            <td id="posi"><button style="line-height:105%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid white;font-size:11px;" onclick='save(0)'  id="show_sa0">Done</button></td>
            </tbody>
-           <script>
-              $("#sn").html(dim.length);//alert(""+"{{ qry.Class }}".split(' ')[0]);
-              $('#edith_name_id_0').change(function(){
-                $('#total_0').html(0);
-                $('#aagr_0').html(0);
-                $('#avg_0').html(0);
-                $('#agr_0').html(0);
-                $('#fagr_0').html(0);
-                $('#sagr_0').html(0)
-                document.getElementById('edith_atd_0').value = 0;
-                document.getElementById("edith_test_0").value = 0;
-                document.getElementById('edith_agn_0').value = 0;
-                document.getElementById('edith_exam_0').value = 0;
-             })
-           </script>
       </tr>
       <tr class="capt">
         <td colspan="10" id='tena'>grades Summary 
@@ -258,21 +221,16 @@
               <button style="line-height:65%;border-radius:5px;background-color:green;" onclick="extral()">
                 <span class="glyphicon glyphicon-plus" title="add a student's score"></span>
               </button>
-            <script>
-              function extral(){
-                    $('#extral').toggle();
-                    document.getElementById("ide_0").value = 'Waiting';
-              }
-            </script>
+          
         </td>
-   ..      <td>
+        <td>
               <button style="line-height:65%;border-radius:5px;background-color:red;" onclick="$('#delete, .deletes, #showing, .show_ed').toggle()">
                 <span class="glyphicon glyphicon-remove" title="remove a student from the table"></span>
               </button>
         </td>
         <td> <strong>AGR:</td>
-        <td style="color:white;">{{ subject_scores }}</td>
-        <td colspan="2" style="color:white;width:5%;"><strong>{{ subject_pert }}%</strong></td>
+        <td style="color:white;"><input type='text'  value='{{ subject_scores }}' disabled style="line-height:65%;border-radius:3px;background-color:white;font-weight:bold;color:red;border:1px solid white;width:100%;"></td>
+        <td colspan="2" style="color:white;width:5%;"><input type='text'  value='{{ subject_pert }}%' disabled style="line-height:65%;border-radius:3px;background-color:white;font-weight:bold;color:red;border:1px solid white;width:100%;"></td>
      
       </tr>
       <tr class="capt">
@@ -280,7 +238,7 @@
             <a href="{% url 'offline' pk=pk %}" title='Click for details'><button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;" >{{qry.subject}}</button>
             </a>
         </td>
-        <td colspan="10" id='tenb'>
+        <td colspan="9" id='tenb'>
           <a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>
             <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;" >{{ qry.teacher_name }}</button>
             </a> |{% if user.is_authenticated %}
@@ -290,16 +248,23 @@
           {% endif %}
         </td>
         <td>{% if user.is_authenticated %}
-          <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-print" title="PDF"></span></a>{% endif %}
+        <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;">
+        <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-print" title="click to download pdf file" ></span></a>
+        </button>
+          {% endif %}
         </td>
-        <td> <button onclick="share()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;"> <span class="glyphicon glyphicon-share-alt"></span> </button> </td>
-        <td>{% if qry.term == '1st Term' %}
+        <td> <button onclick="share()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;"> <span class="glyphicon glyphicon-share-alt" title="click to share on whatsapp"></span> </button> </td>
+        <td>
+        <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;">
           <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}">
-            <span class="glyphicon glyphicon-export"></span>
-          </a>{% else %}
-          <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}">
-            <span class="glyphicon glyphicon-export" title="CSV"></span>
-          </a>{% endif %}
+            <span class="glyphicon glyphicon-export" title="click to download csv file"></span>
+          </a>
+          </button>
+          </td>
+          <td>
+          <button id='clicked' onclick="synchr('{{ qry.subject }}', '{{ qry.Class }}')" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;">
+            <span class="glyphicon glyphicon-refresh" title="click to update record"></span>
+          </button>
         </td>
       </tr>  
       <tfoot>
@@ -350,7 +315,7 @@
           </a>
           <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('{{ qry.subject }}', '{{ qry.Class }}', 3)">3RD TERM</button>
           </a> 
-            <br> .
+            <br> 
             <div style="color:white;">OLD</div> <br>
             <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('all', 'old', 1)">1</button>
           <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="pastquestions('all', 'old', 2)">2</button>
@@ -362,8 +327,34 @@
       </tr>
       </tfoot>  
   </table>
-  <script>
-
+  <script>colset();
+  function extral(){
+      $('#extral').toggle();
+      document.getElementById("ide_0").value = 'Waiting';
+              };
+  $("#sn").html(dim.length);//alert(""+"{{ qry.Class }}".split(' ')[0]);
+  $('#edith_name_id_0').change(function(){
+                $('#total_0').html(0);
+                $('#aagr_0').html(0);
+                $('#avg_0').html(0);
+                $('#agr_0').html(0);
+                $('#fagr_0').html(0);
+                $('#sagr_0').html(0)
+                document.getElementById('edith_atd_0').value = 0;
+                document.getElementById("edith_test_0").value = 0;
+                document.getElementById('edith_agn_0').value = 0;
+                document.getElementById('edith_exam_0').value = 0;
+             });
+  $(".oneBox").show();//http://127.0.0.1:8838/static/result/pdf/marksheets/2/1st/HIS_2_1_21_0.pdf
+            dim.unshift("{{ scr.grade }}");
+            $("#toAll").addClass("oneBox")
+            $("#toAll").addClass("gen_{{ scr.student_name.gender }}");
+            function cards(nam, cls, trm){
+              var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
+              var kwd = argt[cls]+'/'+trm+'/'+nam.split(' ')[0]+'_'+nam.split(' ')[1]+'.pdf'
+              var next = window.location.href.split('/')[0]+"/static/result/pdf/cards/"+kwd;
+              window.open(next, '_blank');
+              };
   if ("{{ qry.Class }}".split(' ')[0] == 'JSS'){
 		$("#Senior").hide();
 		$("#Junior").show()
@@ -395,7 +386,7 @@
 			document.getElementById("tenb").colSpan = '8';
 			document.getElementById("fifteen").colSpan = '13';}
 }};
-        colset();
+        
 function edith(i, name){
             document.getElementById("ide_"+""+i).value = 'Waiting';
             $(".raw_"+""+i).hide(); 
@@ -405,8 +396,9 @@ function edith(i, name){
             $("#posi_"+""+i).hide();
             $("#show_sa"+""+i).show();
             $("#edith_student_show_"+""+i).show();
-            $("#edith_student_hide_"+""+i).hide();
+            $("#edith_student_hide_"+""+i).hide();//alert('{{request.user.is_superuser}}');
             document.getElementById("edith_student_name_show_"+""+i).value = name;
+            
 	
 };
 
@@ -447,23 +439,11 @@ var ErrorMap = {
   
 	 grader.done(function(data){
           $("#grd_"+data.sn).html(data.grade); 
-          var request  = $.ajax({
-            url: "{% url 'responsive_updates' pk=0 %}",
-            data: {
-                'flow':'fromHtml', 'tutor_id':"{{ qry.id }}", 'id':'none', 'sn':""+i, 
-                'serial_no_1': $("#edith_name_id_"+""+i).val(), 'start':1, 'end':2,
-                'student_name_1': "AMINU ISMAIL",
-                'test_1': Number(test),
-                'agn_1': Number(agn),
-                'atd_1': Number(atd), 
-                'total_1': eval([Number(test), Number(atd), Number(agn)].join('+')),
-                'exam_1': Number(exam),
-                'agr_1': eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')),
-                'grade_1':data.grade, 
-                'posi_1': 'th',
-                'fagr_1':fagr,
-                'sagr_1':sagr
-                },
+          var array = JSON.stringify([[$("#edith_name_id_"+""+i).val(), "AMINU ISMAIL", Number(test), Number(agn), Number(atd), eval([Number(test), Number(atd), Number(agn)].join('+')), Number(exam), eval([Number(test), Number(atd), Number(agn), Number(exam)].join('+')), data.grade, 'th', fagr, sagr]]);
+          var request = $.ajax({
+          type:'POST',
+          data:{'content':array},
+          url: "{% url 'responsive_updates' pk=0 %}",
           dataType: 'json',
           
 	});
@@ -491,52 +471,69 @@ else{
  
 };
  
-function synch(){
-    var request  = $.ajax({
- 	  url: "http://uqhs.herokuapp.com/result/synchronizing/60/2/1/",
-	  data: {
-        'range':1
-	 	    },
-	 dataType: 'json',
-	});
-	 request.done(function(data) {alert(data.response) 
-     if (window.location.href.split(':')[1] == '//127.0.0.1')
-        {
-        var jdata = {'end':data.response.length, 'Term':'{{ qry.term }}', 'username':data.response[0][10]};
-        for (var i = 0; i < data.response.length;  i++){
-            var itr = ""+i;
-            jdata['uid_'+itr] = data.response[i][0]; 
-            jdata['uid_'+itr] = data.response[i][0];
-            jdata['test_'+itr] = data.response[i][2]; 
-            jdata['agn_'+itr] = data.response[i][3];
-            jdata['atd_'+itr] = data.response[i][4]; 
-            jdata['total_'+itr] = data.response[i][5];
-            jdata['exam_'+itr] = data.response[i][6]; 
-            jdata['agr_'+itr] = data.response[i][7];
-            jdata['grade_'+itr] = data.response[i][8];                           
-            jdata['posi_'+itr] = data.response[i][9];
-            jdata['subject_code_'+itr] = data.response[i][1];
-            jdata['username_'+itr] = data.response[i][10];      
-            };
-            var sub_request = $.ajax({
-            url:"{% url 'synch' last=2 subject=0 Class=0 %}",
-            data:jdata,
-            dataType: 'json',
-            success: function(data) {
-            var next = window.location.href.split('/')[0]+'/result/'+""+"{{ qry.id }}"+"/1/";  
-            window.open(next);}			
-              });             
-            sub_request.fail(function(jqXHR, textStatus){
-              alert(ErrorMap[jqXHR.status])
+function progress_bar(i) {
+      var elem = document.getElementById("status_bar_animate");
+                        elem.style.width = i + '%';
+                        };
+var chn = [];
+function status(step, dest, next){
+  chn.push(step);
+  var pro = (Array.from(new Set(chn)).length / dest)*100;
+  var elem = document.getElementById("status_bar_animate");
+  elem.value = ""+""+Array.from(new Set(chn)).length+" of "+""+dest;
+  progress_bar(pro)
+  if (Array.from(new Set(chn)).length == dest){
+    if (next == 'main'){
+      location.replace(window.location.href);
+      };
+    if (next == 'accounts'){
+      var next = window.location.href.split('/')[0]+'/result/all_users/';  
+      location.replace(next);
+        }
+      else{
+      var next = window.location.href.split('/')[0]+'/result/'+next+'/1/';  
+      location.replace(next);
+      }}
+                        };                       
+var subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
+function synchr(s, c){
+            $('#status_bar_container').show();
+            $("#clicked").css('background-color', 'white');
+            $("#clicked").css('color', 'green');
+          var request  = $.ajax({
+              url: "http://uqhs.herokuapp.com/result/synchronizing/0/"+""+subj[0].indexOf(s)+"/"+""+subj[1].indexOf(c)+"/",
+              data: {
+                    'subject':1
+                    },
+              dataType: 'json',
               });
-              }});  
+          request.done(function(data) { 
+            if (window.location.href.split(':')[1] == '//127.0.0.1')
+                {status(1, 2, 'main');
+                    var array = JSON.stringify(data.response);
+                    var sub_request = $.ajax({
+                          type:'POST',
+                          data:{'content':array},
+                          url:"{% url 'synch' last=2 subject=0 Class=0 %}",
+                          dataType: 'json',
+                          success: function(data) {
+                          status(2, 2, data.id);
+                          }			
+                            });
+                    sub_request.fail(function(jqXHR, textStatus){
+                              alert(ErrorMap[jqXHR.status]);
+                              $('#status_bar_container').hide()
+                              });
+                          
+                          }});  
             request.fail(function(jqXHR, textStatus, data) {
-                alert(ErrorMap[jqXHR.status]);
-                });
-	};
-
-
-  function deletes(){
+                        alert(ErrorMap[jqXHR.status]);
+                        $('#status_bar_container').hide()
+                        });
+                      
+          
+	};  
+function deletes(){
     var jdata = {'end':0};
      var names = [];
     var deletes = $('.deletes');
@@ -569,13 +566,13 @@ function synch(){
    location.replace(next);
 };
                 }
-  };
+};
 
-    function pastquestions(y, z, x){
+function pastquestions(y, z, x){
         var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
         var next = window.location.href.split('/')[0]+"/static/result/pdf/pastquestions/"+y+'_'+argt[z]+'_'+x+'.pdf';
         window.open(next, '_blank');
-        }
+  }
      </script>    
     <a href="{% url 'subject_view' pk=pk md=1 %}" style="color:red">
           <span class="glyphicon glyphicon-th-large" title='small'></span>
@@ -583,5 +580,3 @@ function synch(){
   </body>
 	{% endblock %}
 </html>
-
-

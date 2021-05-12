@@ -917,17 +917,17 @@
 							};
 						function pages(){
 						var seed = [];var dimed = [0]
-						var page = 20;
+						var page = 31;
 						document.getElementById('buttons').innerHTML += "<button "+ "  onclick="+"'pagging(1)'"+">"+ ""+ 1 +"</button>" ;
-						if ($(".oneBox").length > 20){
+						if ($(".oneBox").length > 31){
 							var torem = Array.from(document.querySelectorAll('tbody.oneBox'));
 							while(torem.length != 0){
-									seed.push(20);
+									seed.push(31);
 									var each = $("#tb_"+""+seed.length);
 									each.removeClass("oneBox");
 									each.addClass("newBox");
 										if (seed.length == page){
-											if (torem.length < 20){
+											if (torem.length < 31){
 												page += torem.length
 											}else{
 												page += seed[0];
@@ -1001,7 +1001,7 @@
 									$("#avg_"+itr).html(avg);
 									grades(avg, "grd_"+itr, $("#Class").val()[0]);};
 									};
-						function forRef(data){
+									function forRef(data){
 										dom.Class = data.Class; 
 										dom.Subject = data.Subject; 
 										dom.Term = data.Term;
@@ -1177,7 +1177,6 @@
 							counter.count = 0;
 							varTotal.start = varTotal.end;
 							varTotal.end += $(".oneBox, .page_"+next_page.npg).length;
-							var jdata = {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"fromHtml", 'start':varTotal.start, 'end':varTotal.end};
 							dom = saveState(); dim = [];
 							var posi, result, idx, itr;
 							posi = positions(arrayOne);
@@ -1207,34 +1206,27 @@
                             for (var i = 0; i < data[0].length;  i++){
 								find(data[0][i], data[1].sort((a, b) => b - a), i+1);
 								};
-								
-								
+							var array = [];var list, fagr, sagr;
 							for (var i = varTotal.start; i < varTotal.end;  i++){
-									var itr = ""+i;
-									jdata['name_'+itr] = $("#name_"+itr).val(); 
-									jdata['student_id_'+itr] = $("#student_id_"+itr).val();
-									jdata['serial_no_'+itr] = $("#serial_no_"+itr).val();
-									jdata['test_'+itr] = $("#test_"+itr).val(); 
-									jdata['agn_'+itr] = $("#agn_"+itr).val(); 
-									jdata['atd_'+itr] = $("#atd_"+itr).val(); 
-									jdata['total_'+itr] = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]); 
-									jdata['exam_'+itr] = $("#exam_"+itr).val(); 
-									jdata['agr_'+itr] = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]); 
-									jdata['grade_'+itr] = document.getElementById("grade_"+itr).value; 
-									jdata['posi_'+itr] = dom['id_'+itr]['posi'];
-                                                                        if ($("#fagr_"+itr).val()){jdata['fagr_'+itr] = $("#fagr_"+itr).val()}else{jdata['fagr_'+itr] = 0};
-                                                                        if ($("#sagr_"+itr).val()){jdata['sagr_'+itr] = $("#sagr_"+itr).val()}else{jdata['sagr_'+itr] = 0};
-									};
+								var itr = ""+i;
+								if ($("#fagr_"+itr).val()){fagr = $("#fagr_"+itr).val()}else{fagr = 0};
+                				if ($("#sagr_"+itr).val()){sagr = $("#sagr_"+itr).val()}else{sagr = 0};
+									
+								list = [$("#serial_no_"+itr).val(), $("#student_id_"+itr).val(), $("#test_"+itr).val(), $("#atd_"+itr).val(), $("#agn_"+itr).val(), sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]), $("#exam_"+itr).val(), sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]), document.getElementById("grade_"+itr).value, dom['id_'+itr]['posi'], fagr, sagr]
+								array.push(list);};
+								alert(array);
+								var array = JSON.stringify(array);
 								var request = $.ajax({
-										url:"{% url 'responsive_updates' pk=0 %}",
-										data:jdata,
-										dataType: 'json',
-										success: function(data) {
-											counter.count = 1;
-											if (varTotal.end > $(".oneBox, .newBox").length){
-												var next = window.location.href.split('/result')[0]+"/result/render/pdf/2/0/0/";
-        										window.open(next);
-											}
+								type:'POST',
+								data:{'content':array},
+								url:"{% url 'responsive_updates' pk=0 %}",
+								dataType: 'json',
+								success: function(data) {
+								counter.count = 1;
+								if (varTotal.end > $(".oneBox, .newBox").length){
+									var next = window.location.href.split('/result')[0]+"/result/render/pdf/2/0/0/";
+        							window.open(next);
+								}
 								
 										}
 									});

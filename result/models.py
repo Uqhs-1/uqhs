@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 ################################################################################################'18/19'
         
-class BTUTOR(models.Model):
+class BTUTOR(models.Model):#
     accounts = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, help_text='loggon-account:move account here', related_name='btutor')
     teacher_name = models.CharField(max_length=50, blank=True, null=True, help_text='Subject Teacher')###
     codex = tuple([('----', 'None'), ('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
@@ -34,7 +34,7 @@ class BTUTOR(models.Model):
     subject_teacher_id = models.CharField(max_length=200, blank=True, null=True, help_text='Class teacher id')
     created = models.DateTimeField(max_length=200, default=str(datetime.date.today()))
     updated = models.DateTimeField(editable=False, blank=True, null=True,)
-    subject_code = models.CharField(max_length=200, blank=True, null=True, help_text='Class teacher id')
+    pdf = models.FileField(upload_to='static/result/pdf/', null=True, default='default.pdf')
     class Meta:
           ordering = ('teacher_name',) # helps in alphabetical listing. Sould be a tuple
     def __str__(self):
@@ -52,7 +52,7 @@ class BTUTOR(models.Model):
         if self.accounts is not None:
             self.teacher_name = f'{self.accounts.profile.title} {self.accounts.profile.last_name} : {self.accounts.profile.first_name}'
             subj = ['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR', 'BST1',  'BST2']
-            self.subject_teacher_id = str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+"-"+str(subj.index(self.subject))+"-"+str(self.accounts.id)
+            #self.subject_teacher_id = str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+"-"+str(subj.index(self.subject))+"-"+str(self.accounts.id)
         self.model_summary = self.accounts.profile.last_name[0]+self.accounts.profile.first_name[0]
         if BTUTOR.objects.filter(accounts__exact = self.accounts, Class__exact = self.Class, term__exact=self.term, subject__exact=self.subject, session__exact=self.session).count() is not 0:
             males = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.filter(accounts = self.accounts, Class = self.Class, term=self.term, subject=self.subject, session=self.session).first(), student_name__gender__exact = 1).count()
@@ -159,11 +159,10 @@ class CNAME(models.Model):
     posi = models.CharField(max_length=5, blank=True, null=True)
 
     serial_no = models.IntegerField(blank=True, null=True, default=0)
-    local_id = models.IntegerField(blank=True, null=True, default=0)
-
+    
     class Meta:
           ordering = ('gender', 'Class', 'full_name') # helps in alphabetical listing. Sould be a tuple
-    
+    #https://dhnygxib7cbg0.cloudfront.net/static/result/css/result.css
     def save(self):
         from .utils import session
         from .models import QSUBJECT 
@@ -243,10 +242,12 @@ class QSUBJECT(models.Model):#step5-subject
                 self.avr = average(dim, 't')
                 self.grade = do_grades([int(self.avr)], cader(self.tutor.Class))[0]
             self.qteacher = self.tutor.teacher_name
-        if self.student_name is not None:
+        if self.student_name:
             self.student_id = self.student_name.last_name[0]+self.student_name.first_name[0]+'/'+self.tutor.Class[0]+'/'+self.student_name.session[-2:]+'/'+str(self.student_name.id)
             self.gender = self.student_name.gender
         cname = CNAME.objects.get(pk=self.student_name.id)
+        if self.student_name.uid == None:
+            cname.uid = self.student_id
         cname.term = self.tutor.term
         tutor = self.tutor
         if self.student_name.Class == self.tutor.Class:

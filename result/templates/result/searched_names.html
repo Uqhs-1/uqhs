@@ -12,20 +12,27 @@
         <table>
             <thead>
 	       
-            <tr><th>S/N</th><th>STUDENT NAMEs ({{ counts }})</th><th>Student ID</th><th>Class</th><th>Session</th></tr> 
+            <tr><th>S/N</th><th>STUDENT NAMEs ({{ counts }})</th><th>Student ID</th><th>Age</th><th colspan="2">Club</th><th colspan="3">Annualy</th><th>Class</th></tr> 
               </thead>
           {% if all_page %}
           {% for scr in all_page %} 
           
           <tr>
-            <td>{{ forloop.counter }}</td>
-            <td style="cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.full_name }}
+            <td style="width:5%;">{{ forloop.counter }}</td>
+            <td style="cursor:pointer;width:40%;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.full_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
               <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.id pk=0 %}" title="{{ scr.student_id }}" style="color:red;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Profile</a></button>
             </div>
             </td>
-            <td>{{ scr.uid }}
-            </td><td><button   style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="clet('{{ scr.Class }}')">{{ scr.Class }}</button></td><td>{{ scr.session }}</td>
+            <td style="width:10%;">{{ scr.uid }}
+            </td>
+            <td>{{ scr.age }}</td>
+            <td>{{ scr.club_one }}</td>
+            <td>{{ scr.club_two }}</td>
+            <td>{{ scr.annual_scores }}</td>
+            <td>{{ scr.annual_avr }}</td>
+            <td>{{ scr.posi }}</td>
+            <td style="width:7%;"><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;width:100%;" onclick="clet('{{ scr.Class }}')">{{ scr.Class }}</button></td>
           </tr> 
           
           {% endfor %}
@@ -33,7 +40,7 @@
               <pre style="width:70%;" >There are no records.</pre>
           {% endif %}
           <tfoot>
-                <tr><th colspan="5">
+                <tr><th colspan="10">
                      {% if all_page.has_other_pages %}
               <em class="pagination" >
                 {% if all_page.has_previous %}
@@ -88,7 +95,7 @@
           };
           function clet(x){
                  var ind = x.split(' ')[1];
-                 redirect('results_junior_senior/'+ind)
+                 location.replace(window.location.href.split('student_names')[0]+'results_junior_senior/'+ind+"/")
                   };
           var cls = {class:1};
           function sycName(cla){
@@ -104,29 +111,24 @@
           });
           request.done(function(data) { 
             if (window.location.href.split(':')[1] == '//127.0.0.1')
-                {
-                for (var i = 0; i < data.response.length;  i++){
-                    var itr = ""+i;
-                    var titles = ['full_name', 'uid', 'birth_date', 'age', 'Class', 'gender', 'term', 'no_open', 'no_present', 'no_absent', 'no_of_day_abs', 'purpose', 'remark', 'W_begin', 'W_end', 'H_begin', 'H_end', 'good', 'fair', 'poor', 'event', 'indoor', 'ball', 'combat', 'track', 'jump', 'throw', 'swim', 'lift', 'sport_comment', 'club_one', 'club_two', 'contrib_one', 'contrib_two', 'master_comment', 'principal_comment', 'resumption', 'serial_no'];
-                    var jdata = {'sn':i, 'len':data.response.length};
-                    for (var r = 0; r < data.response[i].length; r++){
-                      jdata[titles[r]] = data.response[i][r];
-                    };
-                    var sub_request = $.ajax({
+                {status(1, 2, 'main');
+                var array = JSON.stringify(data.response);
+                var sub_request = $.ajax({
+                    type:'POST', 
+                    data:{'content':array},
+                    dataType: 'JSON', 
                     url:"http://127.0.0.1:8838/result/synchronizing/3/2/"+cls.class+"/",
-                    data:jdata,
-                    dataType: 'json',
                       });
-                    sub_request.done(function(data) {
-                      status(Number(data.sn), Number(data.len), 'main');
+                sub_request.done(function(data) {
+                      status(2, 2, 'main');
                       });
-                    sub_request.fail(function(jqXHR, textStatus){
+                sub_request.fail(function(jqXHR, textStatus){
                       alert(ErrorMap[jqXHR.status])
                       $('#status_bar_container').hide()
                       $('#capt').show()
                       });
                       };
-                      }});  
+                      });  
         request.fail(function(jqXHR, textStatus, data) {
                         alert(ErrorMap[jqXHR.status]);
                       $('#status_bar_container').hide()

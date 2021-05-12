@@ -9,7 +9,7 @@
         <div class="capt"><a href="{% url 'password' %}"><strong style="color:white;"><span class="glyphicon glyphicon-wrench">settings</span></strong></a></div>
           <form action="" method="post">
           {% csrf_token %}
-            <div class="capt" style="color:white;">logged in as <strong>{{ request.user.username }}</strong></div>
+            <div class="capt" style="line-height:65%;border-radius:3px;background-color:white;font-weight:bold;color:red;border:1px solid white;width:100%;">You are editing <strong>{{ form.user }} 's profile.</strong></div>
             <div class="capt" style="font-family:Helvetica; color:white; font-size: 10px;width:30%;">Personal Info:</div>
             <div class="row">
               <div class="col-xs-2">

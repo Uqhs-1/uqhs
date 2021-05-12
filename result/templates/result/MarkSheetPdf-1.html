@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js">
+    //background-image: url("/office/jango_env/uqi/result/uqi/result/static/result/iiro.jpg");</script>
+    <title>{% block title %}{{ qry.subject }}:{{ qry.Class }}:{{ term }}{% endblock %}</title>
+    <style>
+            @page {
+				background-image: url("/office/jango_env/uqi/result/static/result/uqhs.jpg");
+                opacity:0.3;
+                size: A4;
+                margin-top:1.5cm;
+                margin-left:1cm;
+                margin-right:1cm;
+                margin-bottom:1.5cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0.5cm;
+                    margin-left: 1cm;
+                    margin-right: 1cm;
+                    height: 1cm;
+                }
+            }
+
+            @page lastPage {
+                 -pdf-frame-content: summContent;
+                 bottom: 2.5cm;
+                 margin-left: 1cm;
+                 margin-right: 1cm;
+                 height: 4cm;
+            }
+			table, th, td {
+			border: 1px solid #b3bcbe;
+			border-radius: 5px;
+			font-family: Baskerville Old Face;
+			text-align: center;
+			font-size: 12px;
+			line-height:6px;
+			
+            }
+            .forTd {
+                 width:6%;
+                 color:white;
+            }
+			
+			.table {border-collapse: collapse;
+				margin-left:1%;
+				width: 98%;
+				}
+
+			th, td {padding: 2px;}
+
+			table {
+			border-spacing: 1px;
+			}
+
+			.em, .tfoot {background-color: #FFA07A;}
+
+			tbody {background-color: #20B2AA;}
+			tr:nth-child(even) {background-color:#90EE90;}
+			.capt{margin-left: 1%;
+				border-radius: 5px;
+				background-color:#7c84df;
+				text-align: center;
+				color: white;
+				font-size:13px;
+				width: 100%;
+				}
+		
+				.red_black {
+				color:white;
+				border-radius:4px;
+				background-color:#7c84df;
+				border:2px solid white;
+				
+				}
+
+				.red_white {
+				color:white;
+				border-radius:4px;
+				background-color:#7c84df;
+				border:2px solid white;
+				
+				}
+                .thh{
+                    style="background-color:#FFA07A;width:2%;"
+                }
+                img{
+        
+        border: 2px solid rgba(247, 238, 238, 0.918);border-radius:3px;
+        padding: 2px;
+    }
+				
+		</style>
+</head>
+<body style="background-color:#ddd;text-align:center;">
+    <div class="capt">
+				<table>
+					<td style="width:10%;"><img src="/office/jango_env/uqi/result/static/result/iiro.jpg" height="80"  width="80" alt=""/></td><td id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;"><strong style="font-size:28px;">UMMUL-QURA HIGH SCHOOL</strong></td>
+					<td>
+						<div id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;">
+							<Address>
+							<State class="br">Arowona Bus-Stop, Akanran Road, Ibadan, Oyo State</State><br>
+							<i>Contact</i>: 08053776177, 07042950010<br>
+							<i>E-mail</i>: ummulquraschl@gmail.com, ummulqr@yahoo.com<br>
+							</Address>
+							<strong style="font-size:18px;">EXAMINATION MARK SHEET</strong><br>
+							<aside><strong>SUBJECT:</strong><u>{{ qry.subject }}</u></aside><aside> <strong>CLASS:</strong><u>{{ qry.Class }}</u> </aside><aside><strong>TERM:</strong><u>{{ term }}</u></aside>
+						</div>
+					</td>
+					<td style="width:10%;"><img src="/office/jango_env/uqi/result/static/result/uqhs.jpg" height="80"  width="80" alt=""/></td>
+				</table>		
+	</div>
+    <table class="table">
+			<tr style="background:#7c84df;">
+				<th style="background-color:#FFA07A;width:5%;">S/N</th>
+				<th style="background-color:#FFA07A;width:30%;">
+				<button onclick="$('.gen_2').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;"><a href="">{{ qry.males }}</a></button>
+				<em href="">
+					Males
+				</em>
+							|
+				<button onclick="$('.gen_1').toggle()" style="line-height:10px;border:2px solid blue;color:black;border-radius:5px;"><a href="">{{ qry.females }}</a></button>
+				<em href="">
+				Females	
+				</em>
+				</th>
+				<th style="background-color:#FFA07A;width:5%;">Admision No.</th>
+			    <th style="background-color:#FFA07A;width:10%;">Test</th>
+				<th style="background-color:#FFA07A;width:10%;">Asgn</th>
+				<th style="background-color:#FFA07A;width:10%;">Atd</th>
+				<th style="background-color:#FFA07A;width:10%;">Total</th>
+				<th style="background-color:#FFA07A;width:10%;">Exam</th>
+                <th style="background-color:#FFA07A;width:10%;">3rd</th>
+                <th style="background-color:#FFA07A;width:10%;">2nd</th>
+				<th style="background-color:#FFA07A;width:10%;">1st</th>
+				<th style="background-color:#FFA07A;width:10%;">Agr</th>
+				<th style="background-color:#FFA07A;width:10%;">Avr</th>
+				<th style="background-color:#FFA07A;width:10%;">Grade</th>
+				<th style="background-color:#FFA07A;width:10%;">Pos</th>
+                        {% if subjects %} 
+                        {% for scr in subjects %}
+            <tbody>
+                <td style="font:VeraIt;font-size:9px;background-color:#afe5c6;">{{ forloop.counter }}</td>
+                <td style="font:VeraIt;font-size:12px;background-color:#ebe1c6;">{{scr.student_name.full_name}}</td>
+                <td style="color:black;width:15%;background-color:#c2b693;">{{scr.student_name.uid}}</td>
+                <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.test}}</td>
+                <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.agn}}</td>
+                <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.atd}}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{{scr.total}}</td>
+                <td style="color:black;width:5%;background-color:#9ad9c4;">{{scr.exam}}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{% if qry.third_term == '3rd Term' %}{{scr.agr}}{% else %}0{% endif %}</td>
+                <td style="color:black;width:5%;background-color:#dfe39d;">{{scr.sagr}}</td>
+				<td style="color:black;width:5%;background-color:#dfe39d;">{{scr.fagr}}</td>
+				<td id="annual_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{{scr.aagr}}</td>
+				<td id="avg_{{ forloop.counter }}" style="color:black;width:5%;background-color:#989c5b;">{{scr.avr}}</td>
+                <td style="color:black;width:5%;background-color:#eacdcc;">{{scr.grade}}</td>
+                <td style="width:7%;background-color:#a4c9d2;">{{scr.posi}}</td>
+            </tbody>
+            {% endfor %}
+            {% else %}
+            <pre class="empty">There are no records.</pre>
+            {% endif %}
+        
+        </tr>    
+        <tr>    
+        <th style="background-color:#FFA07A;">-</th>        
+        <td  style="background-color:#FFA07A;" colspan="4">Result Summary</td>
+		<td  style="background-color:#FFA07A;"colspan="2"><strong>AGR:</strong></td>
+		<td  style="background-color:#FFA07A;"colspan="3">{{sum}}</td>
+		<td  style="background-color:#FFA07A;"colspan="2"><strong>PER:</strong></td>
+        <td  style="background-color:#FFA07A;"colspan="3">{{avg}}%</td>
+        </tr> 
+		<tr>
+			<th style="background-color:#b77a7a;color:white;">-</th>
+			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='1'>
+				<pre><strong>TEACHER:</strong>{{qry.teacher_name}}</pre><pre><strong>SIGN:</strong>________________</pre><pre><strong>DATE:</strong>________________</pre>
+			</th> 
+			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='5'>
+				<pre><strong>No OF STUDENT EXAMINED:</strong>{{ subjects.count }}</pre><pre><strong>TOTAL SCORES:</strong>{{sum}}</pre><pre><strong>AVERAGE:</strong>{{avg}}%</pre>
+			</th>
+			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='8'>
+				<pre><strong>APPROVED BY:</strong>{{myHod.profile.title}} {{myHod.profile.last_name}} {{myHod.profile.first_name}}</pre><pre><strong>SIGN:</strong>________________</pre><pre><strong>DATE:</strong>________________</pre>
+				
+			</th>   
+        </tr> 
+        <th  style="background-color:#d84848;color:white;"colspan="15" id="foot">{{ grade_conuts }}</th>
+		
+		
+		
+	</table>
+    
+    <div id="footerContent">
+            {%block page_foot%}
+			www.https://uqhs.herokuoffice/jango_env/uqi.com/result/render/pdf/{{qry.id}}/2/0/:
+            {{qry.subject.name}}/{{qry.Class}}/{{term}}/generated <on:->{{ today }}</on:->
+			<br> 
+			By:-{{ request.user.profile.last_name }} {{ request.user.profile.first_name }}
+            [Page <pdf:pagenumber>]
+            {%endblock%}
+    </div>
+</body>
+</html>

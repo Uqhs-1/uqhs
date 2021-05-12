@@ -118,7 +118,7 @@ def subject_home(request, pk, cl):#Step 1:: list of tutor's subjects with class,
         detail = 'Results filtered by Subject'
         tutor = BTUTOR.objects.filter(subject__exact=tutor.subject).order_by('subject')
     if tutor.count() != 0:    
-        return render(request, 'result/tutor_class_filter.html', {'tutors':tutor, 'detail' : detail, 'counts':tutor.count()})
+        return render(request, 'result/tutor_class_filter.html', {'all_page': paginator(request, tutor), 'detail' : detail, 'counts':tutor.count()})
     else:
         return redirect('home') 
 def save(mod, posi, pk):
@@ -193,9 +193,12 @@ def results_junior_senior(request, pk):
     return render(request, 'result/results_junior_senior.html', {'all_page': zip(tutors, agr, per), 'pk':pk, 'counts':tutors.count(), 'class':cls[int(pk)]})
     
 
-def all_users(request):#show single candidate profile 
-    qry = User.objects.all().order_by('username') 
-    return render(request, 'result/all_users.html', {'qry' : qry})
+def all_users(request, pk):#show single candidate profile 
+    qry = User.objects.all().order_by('username')
+    if pk == '0': 
+        return render(request, 'result/all_users.html', {'all_page': paginator(request, qry)})
+    else:
+        return render(request, 'result/all_users.html', {'all_page': qry})
 
 @login_required
 def student_info (request, pk):
@@ -211,7 +214,7 @@ def student_info_json (request):
         info = CNAME.objects.get(pk = request.GET.get('pk'))
         info.full_name, info.Class, info.uid, info.term, info.no_open, info.no_present, info.no_absent, info.comment, info.H_begin, info.H_end,info.W_begin, info.W_end, info.no_of_day_abs, info.purpose, info.good, info.fair, info.poor,info.remark, info.event, info.indoor, info.ball, info.combat, info.track, info.jump, info.throw, info.swim, info.lift, info.sport_comment, info.club_one, info.office_one, info.contrib_one, info.club_two, info.office_two, info.contrib_two, info.birth_date, info.title, info.p_name,info.occupation, info.contact1, info.contact2, info.address = listed
         info.save()
-        data = {'status': "Saved!"}
+        data = {'status': str(info.full_name)}
         return JsonResponse(data)
 
 def card_comment(request):

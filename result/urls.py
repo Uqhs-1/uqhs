@@ -1,8 +1,7 @@
 from django.conf.urls import url
 from.import views, imports, posts, sign_up_or_log_in, creates, deletions, updates
 urlpatterns = [
-            #####EXPORTS #######IMPORTS#####          
-            #url('home_page/(?P<pk>\d+)/$', views.home_page, name='home_page'),
+            #####EXPORTS #######IMPORTS#####  
             url(r'home/$', views.home, name='home'),
             url(r'offline/(?P<pk>\d+)/$', views.offline, name='offline'),
             url(r'massRegistration/', imports.massRegistration, name='massRegistration'),
@@ -13,7 +12,7 @@ urlpatterns = [
             url('setup_questions/', imports.setup_questions, name='setup_questions'),            
             url('user_qury/', sign_up_or_log_in.user_qury, name='user_qury'),
          			 #####VIEWS##### 
-            #url('exam_venue/', views.exam_venue, name='exam_venue'),           
+            url('all_users/(?P<pk>\d+)/', views.all_users, name='all_users'),           
             #url('templatesPdf/', views.lesson_templates.as_view(), name='templatesPdf'),
             url(r'searchs', views.searchs, name='searchs'),
             url(r'card_comments', views.card_comment, name='card_comments'),
@@ -35,7 +34,7 @@ urlpatterns = [
             url('editQuest/(?P<pk>\d+)/', views.editQuest, name='editQuest'),
             url(r'^results_junior_senior/(?P<pk>\d+)/', views.results_junior_senior, name='results_junior_senior'),
             url('search_results/(?P<pk>\d+)/', views.search_results, name='search_results'),
-            			 #####CREATES##### ques_subject_updates 
+            			 #####CREATES##### ques_subject_updates  
             
             
             url(r'create_new_teacher/', creates.create_new_subject_teacher, name='teacher_create'),
@@ -68,9 +67,11 @@ urlpatterns = [
             url('post_remove/ deletions/ (?P<pk>\d+)/', deletions.delete_post, name='post_remove'),
             			 #####UPDATES%###### 
             url('edit_accounts/ updates/ (?P<pk>\d+)/', updates.Users_update.as_view(), name='edit_accounts'),
+            url('create_local_accounts/updates/(?P<x>\d+)/', updates.create_local_accounts, name='create_local_accounts'),
             url('tutor/updates/(?P<pk>\d+)/', updates.Teacher_model_view, name='tutor_update'),
             url('responsive_updates/(?P<pk>\d+)/', updates.responsive_updates, name='responsive_updates'),
             #
+            url('need_tutor', updates.need_tutor, name='need_tutor'),
             url('question_image/(?P<pk>\d+)/', updates.question_image, name='question_image'),
             
             url('synchronizing/(?P<last>\d+)/(?P<subject>\d+)/(?P<Class>\d+)/$', updates.synch, name='synch'),
