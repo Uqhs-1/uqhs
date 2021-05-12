@@ -10,31 +10,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='btutor',
-            name='class_teacher_id',
-        ),
-        migrations.RemoveField(
-            model_name='btutor',
-            name='subject_code',
-        ),
-        migrations.RemoveField(
-            model_name='cname',
-            name='local_id',
-        ),
-        migrations.RemoveField(
-            model_name='cname',
-            name='orders',
-        ),
         migrations.AddField(
             model_name='btutor',
             name='pdf',
             field=models.FileField(default='default.pdf', null=True, upload_to='static/result/pdf/'),
-        ),
-        migrations.AddField(
-            model_name='btutor',
-            name='subject_teacher_id',
-            field=models.CharField(blank=True, help_text='Class teacher id', max_length=200, null=True),
         ),
         migrations.AlterField(
             model_name='btutor',
