@@ -15,6 +15,7 @@
             <link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
             <link rel="stylesheet" href="{% static 'result/css/result.css' %}">
+            <link rel="javascript" href="{% static 'result/js/result.js' %}">
             <script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
             <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
             <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
@@ -24,8 +25,9 @@
            {% if request.user.is_superuser %}<script src="//cdn.jsdelivr.net/npm/eruda"></script> <script>eruda.init();</script> {% endif %}
             <div class="navbar">
                 <div class="dropdown">
-                <a href="{% url 'home' %}" style='color:white;font-size:83%;background-color:gray;'><span class="glyphicon glyphicon-home btn-lg"></span></a>
-                <a href="{% url 'my_post_list' %}" style='color:white;font-size:83%;background-color:gray;'><span class="glyphicon glyphicon-envelope btn-lg"></span></a>
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'index' %}" style='background-color:blue;font-size:83%;'><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  height:'120' width="120"/></a>
+                </div>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=1 %}" title="JSS 1 results">JSS 1</a>
@@ -60,15 +62,11 @@
                     <a href="{% url 'student_names' pk=1 %}" title="Female name list">Female</a>
                    <a href="{% url 'student_names' pk=0 %}" title="Students name list">All</a>
                   </div>
-                  
-                  <span>
-                    <button href="{% url 'home' %}" ><span class="glyphicon glyphicon-home btn-lg"></span></button>
+                </div>
+                <span>
+                    <button style="color:white;background-color:blue;" onclick="(location.replace(window.location.href.split('/')[0]+'/result/home/'))"><span class="glyphicon glyphicon-home btn-lg"></span></button>
                 </span>
                 
-                </div>
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{% url 'index' %}" style='background-color:blue;font-size:83%;'><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  height:'120' width="120"/></a>
-                </div>
                 <form method="GET" action="{% url 'searchs'%}"  class="search">
                 <div class="input-group">{% csrf_token %}
                   <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control" style="border-radius:5px;border:2px solid white;background-color:blue;text-align:center;">
@@ -96,6 +94,7 @@
                 <a href="{% url 'pdf' ty=5 sx=0 pk=0 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
                {% if request.user.is_superuser == True %}
                <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
+               <a href="{% url 'all_users' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-user"></a>
                <a href="{% url 'pdf' ty=6 sx=0 pk=0 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
                 <em style="width:30%;cursor:pointer;" onclick="$('#hid_t').toggle()"><span class="glyphicon glyphicon-download"></span>
                     <div id="hid_t" hidden>
@@ -117,7 +116,7 @@
                         <option value="8">CARDS</option>
                         <option value="7">USER</option>
                     </select>
-                       
+                    
                     <script>
                     
                     function progress_bar(i) {
@@ -136,7 +135,7 @@
                             location.replace(window.location.href);
                             };
                             if (next == 'accounts'){
-                                var next = window.location.href.split('/')[0]+'/result/all_users/';  
+                                var next = window.location.href.split('/')[0]+'/result/all_users/0/';  
                             location.replace(next);
                             };
                             if (next == 'btutors'){
@@ -181,13 +180,13 @@
                                         });
                                         request.done(function(data) { 
                                             if (window.location.href.split(':')[1] == '//127.0.0.1')
-                                                {status(1, 2, 'main');
-                                                   var array = JSON.stringify(data.response);
+                                                    {status(1, 2, 'main');
+                                                    var array = JSON.stringify(data.response);
                                                     var sub_request = $.ajax({
-                                                    type:'POST',
+                                                    type:'POST', 
                                                     data:{'content':array},
+                                                    dataType: 'JSON',
                                                     url:"{% url 'create_local_accounts' x=1 %}",
-                                                    dataType: 'json',
                                                     success: function(data) {
                                                     status(2, 2, 'accounts');
                                                     }			
@@ -215,12 +214,12 @@
                                         request.done(function(data) { 
                                             if (window.location.href.split(':')[1] == '//127.0.0.1')
                                                 {status(1, 2, 'main');
-                                                    var array = JSON.stringify(data.response);
+                                                    var array = JSON.stringify(data.tutors);
                                                     var sub_request = $.ajax({
-                                                    type:'POST',
+                                                    type:'POST', 
                                                     data:{'content':array},
+                                                    dataType: 'JSON',
                                                     url:"{% url 'create_local_accounts' x=3 %}",
-                                                    dataType: 'json',
                                                     success: function(data) {
                                                     status(2, 2, 'btutors');
                                                     }			
@@ -529,9 +528,9 @@
                  var array = JSON.stringify(data.response);
                     var sub_request = $.ajax({
                     type:'POST', 
-                    url:"{% url 'synch' last=2 subject=0 Class=0 %}",
                     data:{'content':array},
                     dataType: 'JSON',
+                    url:"{% url 'synch' last=2 subject=0 Class=0 %}",
                     success: function(data) {
                     status(2, 2, data.id);
                     }			
