@@ -349,10 +349,10 @@
             dim.unshift("{{ scr.grade }}");
             $("#toAll").addClass("oneBox")
             $("#toAll").addClass("gen_{{ scr.student_name.gender }}");
-            function cards(nam, cls, trm){
+  function cards(nam, cls, trm){
               var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
               var kwd = argt[cls]+'/'+trm+'/'+nam.split(' ')[0]+'_'+nam.split(' ')[1]+'.pdf'
-              var next = window.location.href.split('/')[0]+"/static/result/pdf/cards/"+kwd;
+              var next = "https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/cards /"+kwd;
               window.open(next, '_blank');
               };
   if ("{{ qry.Class }}".split(' ')[0] == 'JSS'){
@@ -570,7 +570,7 @@ function deletes(){
 
 function pastquestions(y, z, x){
         var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
-        var next = window.location.href.split('/')[0]+"/static/result/pdf/pastquestions/"+y+'_'+argt[z]+'_'+x+'.pdf';
+        var next = "https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/pastquestions/"+y+'_'+argt[z]+'_'+x+'.pdf';
         window.open(next, '_blank');
   }
      </script>    
