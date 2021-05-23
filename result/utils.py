@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 import xhtml2pdf.pisa as pisa
 from django.contrib.auth.models import User
+from django.conf import settings
+import os, boto3
 
 def session():
     return User.objects.filter(is_superuser__exact=True).first()
@@ -116,22 +118,39 @@ def may_not(r, dg):
        return [dg.index([i for i in dg if i[-1] == r][x])+1 for x in range(len([i for i in dg if i[-1] == r]))]
    else:
        return [0]
-from django.conf import settings
-import os
+
+def upload_to_s3(content, path):
+    aws_session = boto3.Session(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
+    s3 = aws_session.resource('s3')
+    s3.Bucket('uqhs').put_object(Key=path, Body=content)
+
+
+
+def listpdf():
+    basepath = settings.MEDIA_ROOT + '/pdf'
+    for entry in os.listdir(basepath):#cards, marksheete|/pdf
+        for cls in os.listdir(os.path.join(basepath, entry)):#class|/pdf/cards
+            for term in os.listdir(os.path.join(basepath, entry+'/'+cls)):
+                for doc in os.listdir(os.path.join(basepath, entry+'/'+cls+'/'+term)):
+                    os.chdir(os.path.join(basepath, entry+'/'+cls+'/'+term))
+                    with open(doc, 'rb') as file:
+                        if len(file.name.split('_')) == 2:
+                            file_name = file.name.split('.')[0]+'_'+term[0]+'.pdf'
+                        else:
+                            file_name = 'broadsheets/'+cls+'/'+term+'/'+file.name
+                        file_name = 'broadsheets/'+cls+'/'+term+'/'+file.name    
+                        upload_to_s3(file, file_name)
 class Render:
     @staticmethod
     def render(path: str, params: dict, filepath, filename):
         template = get_template(path)
         html = template.render(params)
-        path = os.path.join(settings.MEDIA_ROOT, 'static/result/pdf/'+filepath)
-        result = open(path+'.pdf', 'wb')
-        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
-        result.close()
         response = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
         if not pdf.err:
              response = HttpResponse(response.getvalue(), content_type = "application/pdf")
              response['Content-Disposition'] = "attachment; filename={name}.pdf".format(name=filename)
+             upload_to_s3(response.content, filepath)
              return response
         else:
             return HttpResponse("Error Rendering PDF", status=400)
