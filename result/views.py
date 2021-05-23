@@ -311,7 +311,7 @@ class Pdf(View):#LoginRequiredMixin,
                  params = {
                      'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'this':this.first(), 'today': timezone.now(), 'request': request, 'term':term[-1], 'info':this.first().student_name
                           }
-                 return Render.render('result/card.html', params, 'cards /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name), filename)
+                 return Render.render('result/card.html', params, 'pdf/cards /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name), filename)
               else:
                  return redirect('student_info', pk=sx)       
         myHod = User.objects.filter(profile__class_in__exact='HEADS')
@@ -322,7 +322,7 @@ class Pdf(View):#LoginRequiredMixin,
                 tutor = get_object_or_404(BTUTOR, pk = int(pk))#
             term = sorted([tutor.first_term, tutor.second_term, tutor.third_term])
             termi = sorted([tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]])
-            filepath = 'marksheets /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
+            filepath = 'pdf/marksheets /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
             filename = tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
             subjects = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__gender=sx).order_by('student_name__gender', 'student_name__full_name')
             if subjects:
