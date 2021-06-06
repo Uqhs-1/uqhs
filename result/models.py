@@ -40,7 +40,7 @@ class BTUTOR(models.Model):#
     def __str__(self):
         """String for representing the Model object."""#marksheets/2/3rd/BUS_18_0.pdf
         #termi = sorted([self.first_term[0], self.second_term[0], self.third_term[0]])
-        cdo = str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+'_'+'1'+'_'+self.session[-2:]
+        cdo = str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+'_'+'-'+'_'+self.session[-2:]
         return f'{self.subject}_{cdo}_0.pdf:{self.accounts.username}:/{self.id}/{self.updated.day}/{self.updated.month}/{self.updated.year}_{self.updated.hour}:{self.updated.minute}:{self.updated.second}'
     
     def save(self):
