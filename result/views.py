@@ -8,9 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Avg
 from django.http import JsonResponse
 from django.views.generic import View
-#from django.conf import settings
-import os
-import csv
+import os, csv
 #from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 #from io import BytesIO
@@ -21,7 +19,7 @@ module_dir = os.path.dirname(__file__)  # get current directory
 start_time =  time.time()
 from random import randrange
 from collections import Counter
-from .utils import session, Render, Rendered, do_positions
+from .utils import session, Render, Rendered, do_positions, generate_zip 
 session = session()
  
 
@@ -293,47 +291,77 @@ def auto_pdf_a(request, md):
           data = {'ids':[i.id for i in CNAME.objects.filter(Class__exact=request.GET.get('class'))]}
       return JsonResponse(data)
 
+def param_cards(request, this, ty):
+    term = sorted([this.first().tutor.first_term[0], this.first().tutor.second_term[0], this.first().tutor.third_term[0]])
+    filename = this.first().student_name.last_name+'_'+this.first().student_name.first_name+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'_'+str(term[-1])+'_'+str(this.first().tutor.session[-2:])
+    term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])       
+    lists = [x for x in this][:10]
+    if len(lists) != 10:
+        lists = lists + [None]*(10-len(lists))
+    a,b,c,d,e,f,g,h,i,j = lists
+    if ty == '4':
+        return render(request, 'result/three_termx.html',  {'term':term[-1], 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'margged':CNAME.objects.filter(Class__exact=this.first().tutor.Class, session__exact=session.profile.session), 'info':this.first().student_name})
+    params = {
+            'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'this':this.first(), 'today': timezone.now(), 'request': request, 'term':term[-1], 'info':this.first().student_name
+            }
+    return params, term, filename
+
+def param_marksheets(request, tutor, myHod):
+    term = sorted([tutor.first_term, tutor.second_term, tutor.third_term])
+    termi = sorted([tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]])
+    filepath = 'pdf/marksheets /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'/'+term[-1].split(' ')[0]
+    filename = tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]
+    subjects = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__gender=0).order_by('student_name__gender', 'student_name__full_name')
+    if subjects:
+        sumed = round(subjects.aggregate(Sum('avr'))['avr__sum'], 1)
+        average = round(subjects.aggregate(Avg('avr'))['avr__avg'], 2)
+        params = {
+            'subjects' : subjects, 'qry':tutor,'request': request, 'today': timezone.now(), 'sum':sumed, 'avg':average, 'term':term[-1], 'myHod':myHod.filter(profile__department__exact=tutor.accounts.profile.department).first(), 'grade_conuts':grade_counter(subjects)
+        }
+        return params, filepath, filename
+    else:
+        return redirect('home')  
+
+    
+myHod = User.objects.filter(profile__class_in__exact='HEADS')
+def zipped_my_pdfs(request, model, pk):
+    clss = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', []]
+    if model == '0':
+        these = CNAME.objects.filter(session__exact=session.profile.session, Class__exact=clss[int(pk)]).order_by('gender', 'full_name')
+        for this in these:
+            this = QSUBJECT.objects.filter(student_name_id__exact=this.id, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=this.Class).order_by('tutor__subject')
+            params, term, filename = param_cards(request, this, '0')
+            pdf = Render.render('result/card.html', params, 'pdf/cards /'+pk+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.zip', filename)
+            clss[-1].append((filename + ".pdf", pdf))
+    else:
+        tutors = BTUTOR.objects.filter(Class__exact=clss[int(pk)])
+        for tutor in tutors:
+            params, filepath, filename = param_marksheets(request, tutor, myHod)
+            pdf =  Render.render('result/MarkSheetPdf.html', params, filepath+'.zip', filename)
+            clss[-1].append((filename + ".pdf", pdf))
+    response = HttpResponse(generate_zip(clss[-1]), content_type='application/force-download')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(clss[int(pk)]+'.zip')
+    return response
+
+
 #QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')
 class Pdf(View):#LoginRequiredMixin, 
     def get(self, request, ty, sx, pk):#CARD
         if ty == '1' or ty == '4':
               this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('student_name__gender', 'student_name__full_name')      
               if this:  
-                 term = sorted([this.first().tutor.first_term[0], this.first().tutor.second_term[0], this.first().tutor.third_term[0]])
-                 filename = this.first().student_name.last_name+'_'+this.first().student_name.first_name+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'_'+str(term[-1])+'_'+str(this.first().tutor.session[-2:])
-                 term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])       
-                 lists = [x for x in this][:10]
-                 if len(lists) != 10:
-                    lists = lists + [None]*(10-len(lists))
-                 a,b,c,d,e,f,g,h,i,j = lists
-                 if ty == '4':
-                     return render(request, 'result/three_termx.html',  {'term':term[-1], 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'margged':CNAME.objects.filter(Class__exact=this.first().tutor.Class, session__exact=session.profile.session), 'info':this.first().student_name})
-                 params = {
-                     'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'this':this.first(), 'today': timezone.now(), 'request': request, 'term':term[-1], 'info':this.first().student_name
-                          }
+                 params, term, filename = param_cards(request, this, ty)
                  return Render.render('result/card.html', params, 'pdf/cards /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.pdf', filename)
               else:
-                 return redirect('student_info', pk=sx)       
-        myHod = User.objects.filter(profile__class_in__exact='HEADS')
+                 return redirect('student_info', pk=sx)
         if ty == '2':#SCORE SHEET
             if pk == '0':
                 tutor = get_object_or_404(BTUTOR, pk = int(request.user.profile.account_id))
             else:
                 tutor = get_object_or_404(BTUTOR, pk = int(pk))#
-            term = sorted([tutor.first_term, tutor.second_term, tutor.third_term])
-            termi = sorted([tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]])
-            filepath = 'pdf/marksheets /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)+'.pdf'
-            filename = tutor.subject+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(tutor.Class))+'_'+str(termi[-1])+'_'+tutor.session[-2:]+'_'+str(sx)
-            subjects = QSUBJECT.objects.filter(tutor__exact=tutor).exclude(student_name__gender=sx).order_by('student_name__gender', 'student_name__full_name')
-            if subjects:
-                sumed = round(subjects.aggregate(Sum('avr'))['avr__sum'], 1)
-                average = round(subjects.aggregate(Avg('avr'))['avr__avg'], 2)
-                params = {
-                'subjects' : subjects, 'qry':tutor,'request': request, 'today': timezone.now(), 'sum':sumed, 'avg':average, 'term':term[-1], 'myHod':myHod.filter(profile__department__exact=tutor.accounts.profile.department).first(), 'grade_conuts':grade_counter(subjects)
-                  }
-                return Render.render('result/MarkSheetPdf.html', params, filepath, filename)
-            else:
-                return redirect('home')
+            params, filepath, filename = param_marksheets(request, tutor, myHod, sx)
+            return Render.render('result/MarkSheetPdf.html', params, filepath+'.pdf', filename)
+            
         if ty == '3':#BROADSHEET
             if request.user.profile.class_in:
                 SSS = [['CHE', 'ACC', 'ARB'], ['GOV', 'ICT'], ['GEO', 'AGR', 'YOR'], ['BIO', 'ECO'], ['PHY', 'LIT', 'COM'], ['ELE', 'CTR', 'GRM'], ['MAT'], ['IRS'], ['CIV'], ['ENG']]

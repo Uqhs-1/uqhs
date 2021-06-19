@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from.import views, imports, posts, sign_up_or_log_in, creates, deletions, updates
+from.import views, imports, posts, sign_up_or_log_in, creates, deletions, updates, utils
 urlpatterns = [
             #####EXPORTS #######IMPORTS#####  
             url(r'home/$', views.home, name='home'),
@@ -13,7 +13,7 @@ urlpatterns = [
             url('user_qury/', sign_up_or_log_in.user_qury, name='user_qury'),
          			 #####VIEWS##### 
             url('all_users/(?P<pk>\d+)/', views.all_users, name='all_users'),           
-            #url('templatesPdf/', views.lesson_templates.as_view(), name='templatesPdf'),
+            url('zip_pdf/(?P<model>\d+)/(?P<pk>\d+)/', views.zipped_my_pdfs, name='zip_pdf'),#file, clasS, term
             url(r'searchs', views.searchs, name='searchs'),
             url(r'card_comments', views.card_comment, name='card_comments'),
             url(r'student_info/(?P<pk>\d+)/', views.student_info, name='student_info'),
