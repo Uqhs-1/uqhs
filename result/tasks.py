@@ -5,10 +5,11 @@ from django.contrib.auth.models import User
 from .utils import session, Render 
 from .models import CNAME, BTUTOR, QSUBJECT
 session = session()
-
+from celery.decorators import task 
 
 myHod = User.objects.filter(profile__class_in__exact='HEADS')
-@shared_task
+#@shared_task
+@task(name="generate cards/marksheet")
 def zipped_my_pdfs_(request, model, pk):
     clss = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', []]
     if model == '0':
