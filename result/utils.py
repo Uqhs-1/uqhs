@@ -141,51 +141,7 @@ def upload_to_s3(content, path):
     aws_session = s3_session()
     s3 = aws_session.resource('s3')
     s3.Bucket('uqhs').put_object(Key=path, Body=content)
-
-def downLoad_fr_s3(prefix):#Prefix=pdf/cards/1/1st
-    aws_session = s3_session()#
-    s3 = aws_session.resource('s3')
-    bucket = s3.Bucket('uqhs')
-    pdf = 0
-    for object in bucket.objects.filter(Prefix = prefix):
-        path = os.path.join(settings.MEDIA_ROOT, object.key.split(' ')[0]+object.key.split(' ')[1]) 
-        if object.key == prefix:
-            os.makedirs(os.path.dirname(path), exist_ok=True)
-            continue;
-        bucket.download_file(object.key, path)
-
-
-
-def bucket_zip(request, folder, clasS, term):
-    prefix = 'pdf/'+['marksheets', 'card'][int(folder)]+' /'+str(clasS)+'/'+['1st', '2nd', '3rd'][int(term)]
-    byte = BytesIO()
-    zip_folder = str(['', 'JSS1', 'JSS2', 'JSS3', 'SSS1', 'SSS2', 'SSS3'][int(clasS)])+'_'+prefix.split('/')[-1]
-    with zipfile.ZipFile(byte, 'w') as zf:
-        bucket = s3_session().resource('s3').Bucket('uqhs')
-        s3Client = s3_session().client('s3')
-        for object in bucket.objects.filter(Prefix = prefix):
-            if object.key == prefix:
-                url = s3Client.generate_presigned_url('get_object', Params = {'Bucket': 'www.uqhs.com', 'Key': object.key.split('/')[-1]}, ExpiresIn = 100)
-                file_response = requests.get(url)
-                if file_response.status_code == 200:
-                    file_response.content
-                    f1 = open(object.key.split('/')[-1] , 'r')
-                    f1.write(file_response.content)
-                    f1.close()
-                    fdir, fname = os.path.split(object.key.split('/')[-1])
-                    zip_path = os.path.join(zip_folder, fname)
-                    zf.write(object.key.split('/')[-1], zip_path)
-                    #fh = open(object.key.split('/')[-1], 'r')
-                    #zf.writestr(fh.name, file_response.content)
-                    #os.unlink(object.key.split('/')[-1])
-                zf.close()
-                #zf.seek(0)
-    response = HttpResponse(byte.getvalue(), content_type="application/x-zip-compressed")
-    response['Content-Disposition'] = 'attachment; filename=%s' % zip_folder +'.zip'
-    return response
-
-
-
+    
 def listpdf():
     basepath = settings.MEDIA_ROOT + '/pdf'
     for entry in os.listdir(basepath):#cards, marksheete|/pdf

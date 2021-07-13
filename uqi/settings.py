@@ -17,24 +17,37 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
+
+if USE_S3:
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY =os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = 'uqhs'
+    AWS_S3_CUSTOM_DOMAIN = 'dhnygxib7cbg0.cloudfront.net'
+    AWS_LOCATION = 'static'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'uqi.storage_backends.MediaStorage' #the media storage configurations
+    STATIC_URL = 'http://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'result/static'),
+    ]
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY =os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'uqhs'
-AWS_S3_CUSTOM_DOMAIN = 'dhnygxib7cbg0.cloudfront.net'
-AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'uqi.storage_backends.MediaStorage' #the media storage configurations
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'result/static'),
-]
+#https://dhnygxib7cbg0.cloudfront.net/static/result/complab.jpg
+#http://uqhs.herokuapp.com/static/result/pdf/cards/4/1st/ABDULAZEEZ_JIMOH.pdf
 
-    
-
+    #https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/pastquestions/IRS_1_1.pdf
+    #https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/broadsheets/1/1st/4157.5da4bc577b60.pdf
+    #https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/marksheets /1/1st/ARB_1_1_21_0.pdf
+    #https://dhnygxib7cbg0.cloudfront.net/MAT_1_3_21_0.pdf
+#https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/cards /1/1st/ABDULAZEEZ_ABDULMUIZ.pdf
 #DEFAULT_FILE_STORAGE = 'uqi.storage_backends.MediaStorage'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -64,8 +77,8 @@ INSTALLED_APPS = [
     'book_shelf.apps.BookShelfConfig',
     'result.apps.ResultConfig',
     'crispy_forms',#How to Use Bootstrap 4 Forms With Django
-     'corsheaders',
-     'storages', 
+     #'corsheaders',
+     #'storages', 
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -179,16 +192,23 @@ TIME_ZONE = 'Africa/Lagos'
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
+
+
+
+
+
+
+
+
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 ###for image upload
 MEDIA_URL = '/result/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'result')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-
-# The absolute path to the directory where collectstatic will collect static files for deployment.
-
+# The URL to use when referring to static files (where they will be served from)
+#STATIC_URL = '/static/'
 
