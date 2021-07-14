@@ -9,11 +9,11 @@
 	<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js">
-    //background-image: url("/office/jango_env/uqi/result/uqi/result/static/result/iiro.jpg");</script>
+    //background-image: url("/app/result/static/result/uqhs.jpg");//office/jango_env/uqi/result/static/result/uqhs.jpg</script>
     <title>{% block title %}{{ qry.subject }}:{{ qry.Class }}:{{ term }}{% endblock %}</title>
     <style>
             @page {
-				background-image: url("/office/jango_env/uqi/result/static/result/uqhs.jpg");
+				background-image: url("https://dhnygxib7cbg0.cloudfront.net/pdf/uqhs.jpg");
                 opacity:0.3;
                 size: A4;
                 margin-top:1.5cm;
@@ -103,7 +103,7 @@
 <body style="background-color:#ddd;text-align:center;">
     <div class="capt">
 				<table>
-					<td style="width:10%;"><img src="{% static "result/iiro.jpg"%}" height="80"  width="80" alt=""/></td><td id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;"><strong style="font-size:28px;">UMMUL-QURA HIGH SCHOOL</strong></td>
+					<td style="width:10%;"><img src="https://dhnygxib7cbg0.cloudfront.net/pdf/iiro.jpg" height="80"  width="80" alt=""/></td><td id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;"><strong style="font-size:28px;">UMMUL-QURA HIGH SCHOOL</strong></td>
 					<td>
 						<div id="header" style="background-color:#d84848;border:2px solid red;line-height:10px;">
 							<Address>
@@ -115,7 +115,7 @@
 							<aside><strong>SUBJECT:</strong><u>{{ qry.subject }}</u></aside><aside> <strong>CLASS:</strong><u>{{ qry.Class }}</u> </aside><aside><strong>TERM:</strong><u>{{ term }}</u></aside>
 						</div>
 					</td>
-					<td style="width:10%;"><img src="{% static "result/uqhs.jpg"%}" height="80"  width="80" alt=""/></td>
+					<td style="width:10%;"><img src="https://dhnygxib7cbg0.cloudfront.net/pdf/uqhs.jpg" height="80"  width="80" alt=""/></td>
 				</table>		
 	</div>
     <table class="table">
