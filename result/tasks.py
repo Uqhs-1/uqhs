@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .utils import session, Render 
 from .models import CNAME, BTUTOR, QSUBJECT
 session = session()
-from .views import param_cards, param_marksheets
+#from .views import param_cards, param_marksheets
 from celery.decorators import task 
 
 myHod = User.objects.filter(profile__class_in__exact='HEADS')
