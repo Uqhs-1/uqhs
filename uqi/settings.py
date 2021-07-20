@@ -40,20 +40,8 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 
 
-#https://dhnygxib7cbg0.cloudfront.net/static/result/complab.jpg
-#http://uqhs.herokuapp.com/static/result/pdf/cards/4/1st/ABDULAZEEZ_JIMOH.pdf
 
-    #https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/pastquestions/IRS_1_1.pdf
-    #https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/broadsheets/1/1st/4157.5da4bc577b60.pdf
-    #https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/marksheets /1/1st/ARB_1_1_21_0.pdf
-    #https://dhnygxib7cbg0.cloudfront.net/MAT_1_3_21_0.pdf
-#https://dhnygxib7cbg0.cloudfront.net/static/result/pdf/cards /1/1st/ABDULAZEEZ_ABDULMUIZ.pdf
-#DEFAULT_FILE_STORAGE = 'uqi.storage_backends.MediaStorage'
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-#
 
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['uqhi.herokuapp.com', 'uqhs.herokuapp.com', '127.0.0.1']
@@ -80,6 +68,7 @@ INSTALLED_APPS = [
      #'corsheaders',
      #'storages', 
 ]
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [

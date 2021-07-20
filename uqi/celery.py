@@ -1,4 +1,4 @@
-# replace 'proj' with the name of your django project.
+# replace 'uqi' with the name of your django uqiect.
 from __future__ import absolute_import
 import os
 from celery import Celery

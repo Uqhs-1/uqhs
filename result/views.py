@@ -9,10 +9,9 @@ from django.db.models import Sum, Avg
 from django.http import JsonResponse
 from django.views.generic import View
 import os, csv
-from celery.decorators import task 
 #from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from .tasks import zipped_my_pdfs_
+#from io import BytesIO
 import requests
 from django.utils import timezone  
 module_dir = os.path.dirname(__file__)  # get current directory
@@ -292,7 +291,6 @@ def auto_pdf_a(request, md):
           data = {'ids':[i.id for i in CNAME.objects.filter(Class__exact=request.GET.get('class'))]}
       return JsonResponse(data)
 
-#@task(name="generate card")
 def param_cards(request, this, ty):
     term = sorted([this.first().tutor.first_term[0], this.first().tutor.second_term[0], this.first().tutor.third_term[0]])
     filename = this.first().student_name.last_name+'_'+this.first().student_name.first_name+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'_'+str(term[-1])+'_'+str(this.first().tutor.session[-2:])
@@ -307,7 +305,7 @@ def param_cards(request, this, ty):
             'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'this':this.first(), 'today': timezone.now(), 'request': request, 'term':term[-1], 'info':this.first().student_name
             }
     return params, term, filename
-#@task(name="generate marksheet")
+
 def param_marksheets(request, tutor, myHod):
     term = sorted([tutor.first_term, tutor.second_term, tutor.third_term])
     termi = sorted([tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]])
@@ -324,14 +322,29 @@ def param_marksheets(request, tutor, myHod):
     else:
         return redirect('home')  
 
-def zipped_my_pdfs(request, model, pk):
-    clss = zipped_my_pdfs_.delay(request, model, pk)
-    response = HttpResponse(generate_zip(clss[-1]), content_type='application/force-download')
-    response['Content-Disposition'] = 'attachment; filename="{}"'.format(clss[int(pk)]+'.zip')
-    return response
-
-myHod = User.objects.filter(profile__class_in__exact='HEADS')
     
+myHod = User.objects.filter(profile__class_in__exact='HEADS')
+def zipped_my_pdfs(request, model, pk):
+    clss = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', []]
+    if model == '0':
+        these = CNAME.objects.filter(session__exact=session.profile.session, Class__exact=clss[int(pk)]).order_by('gender', 'full_name')
+        for this in these:
+            this = QSUBJECT.objects.filter(student_name_id__exact=this.id, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=this.Class).order_by('tutor__subject')
+            params, term, filename = param_cards(request, this, '0')
+            pdf = Render.render('result/card.html', params, 'pdf/cards /'+pk+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.zip', filename)
+            clss[-1].append((filename + ".pdf", pdf))
+    else:
+        tutors = BTUTOR.objects.filter(Class__exact=clss[int(pk)])
+        for tutor in tutors:
+            params, filepath, filename = param_marksheets(request, tutor, myHod)
+            pdf =  Render.render('result/MarkSheetPdf.html', params, filepath+'.zip', filename)
+            clss[-1].append((filename + ".pdf", pdf))
+    
+    #response = HttpResponse(generate_zip(clss[-1]), content_type='application/force-download')
+    #response['Content-Disposition'] = 'attachment; filename="{}"'.format(clss[int(pk)]+'.zip')
+    return clss
+
+
 #QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')
 class Pdf(View):#LoginRequiredMixin, 
     def get(self, request, ty, sx, pk):#CARD

@@ -55,7 +55,7 @@ def need_tutor(request, x, subj, Term, username):
         else:
             account = request.user
         tutor = create_new_subject_teacher(account, subj[0][int(x[1])], subj[1][int(x[0])])
-    tutor.second_term, tutor.third_term = Term
+    tutor.second_term, tutor.third_term = ['2nd Term', '1st Term']
     tutor.save()
     return tutor
 ############################################################################### student_in_None
@@ -151,16 +151,16 @@ def average(x, r):
     xy = [int(i) for i in x]
     rst = sum(xy)/sum(i > 0 for i in xy)
     if r == 't':
-       deci = str(rst).split('.')
-       if int(deci[1]) >= 0.5:
-          return int(deci[0])+1
+       deci = str(round(rst,2)).split('.')
+       if int(deci[1]) >= 50:
+          return float(deci[0])+1
        else:
-          return int(rst)
+          return round(rst,2)
     else:
-      return round(rst,1)
+      return round(rst,2)
 
 def get_or_create(tutor, serial_no, scores):#name-name_id
-    student_name = CNAME.objects.get(id=serial_no)#############################################
+    student_name = CNAME.objects.get(serial_no=serial_no)#############################################
     instance = QSUBJECT.objects.filter(student_name__exact=student_name, tutor__exact = tutor)
     if not instance.exists():#[i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11]]
         instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9], fagr=scores[10], sagr=scores[11])
@@ -169,7 +169,7 @@ def get_or_create(tutor, serial_no, scores):#name-name_id
         if tutor.subject == 'BST1' or tutor.subject == 'BST2':
             instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi = [average([instance.test, scores[2]], 'n'), average([scores[3], instance.agn], 'n'), average([instance.atd, scores[4]], 'n'), average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't'), round(sum([average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't')])), do_grades([int(round(sum([average([instance.total, scores[5]], 'n'), average([instance.exam, scores[6]], 't')]))), cader(tutor.Class)])[0], scores[9]]
         else:
-            instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi, instance.fagr, instance.sagr = scores[2:]   
+            instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi, instance.fagr, instance.sagr = scores[2:12]   
     
     instance.updated = datetime.datetime.today()
     instance.save()    
