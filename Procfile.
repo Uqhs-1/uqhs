@@ -1,2 +1,0 @@
-web: gunicorn uqi.wsgi
-celery: celery worker -A proj -l info -c 4
