@@ -813,7 +813,7 @@ sswidth:100%; /* Width of the outside container */
   cursor: pointer; /* Cursor on hover */
 }
 
-.grade_no {
+.grade_no {color:g
   background-color:white;
   border-radius:5px;
   border:1px solid blue;

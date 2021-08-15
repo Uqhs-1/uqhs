@@ -13,19 +13,19 @@
             <table>
                  <div class="capt" style="font-size:13;"><strong style="color:white;background-color:black;border:2px solid white;border-radius:5px;font-weight:bold;"><u style="color:white;">{{ class }} </u> SUBJECTS SHORTLISTED</strong></div>
                 <thead>
-                    <tr><th>S/N</th><th>Teachers</th><th colspan="2">Subject Code</th><th>Subject Detail</th><th colspan="3">Counts</th><th colspan="2">Update Time</th><th>Aggrigate</th><th>Percentage</th></tr>      
+                    <tr><th>S/N</th><th>Teachers</th><th colspan="2">Subject Code</th><th>Views</th><th colspan="3">Counts</th><th colspan="2">Update Time</th><th>Aggrigate</th><th>Percentage</th><th><span class="glyphicon glyphicon-download" title="select to download"></span></th> </tr>      
                 </thead>          
                 <tbody>
                     {% if all_page %}
                     {% for sub, age, per in all_page %}
-                        <tr><td>{{ forloop.counter }}</td><td style="font-family:Helvetica;font-size: 10px;width:16%;">{{ sub.accounts.profile.first_name }}</td><td>{{ sub.subject }}</td><td style='width:10%'>{{ sub.subject_teacher_id }}</td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}"> {% if sub.second_term == '2nd Term' and  sub.third_term == '1st Term'  %}{{ sub.second_term }}{% else %}{{ sub.third_term }}{% endif %}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td>{{ sub.males|add:sub.females }}</td><td style="width:20%;">{{ sub.updated }}</td><td style='width:5%'><button id="clicked_{{ forloop.counter }}" onclick="synchr('{{ sub.subject }}', '{{ sub.Class }}', '{{ forloop.counter }}')" style="line-height:65%;border-radius:2px;background-color:green;color:white;border-radius:2px;font-size:8px;width:100%;"><span class="glyphicon glyphicon-refresh" title="click to update record"></span></button></td><td style='width:8%'><button  style="line-height:83%;width:100%;border:1px solid black;color:black;background:white;;font:2px;">{{ age }}</button></td><td style='width:5%'><button  style="line-height:83%;width:100%;border:1px solid white;color:white;background:black;font:2px;">{{ per }}%</button></td></tr>     
+                        <tr><td>{{ forloop.counter }}</td><td style="font-family:Helvetica;font-size: 10px;width:16%;">{{ sub.accounts.profile.first_name }}</td><td>{{ sub.subject }}</td><td style='width:10%'>{{ sub.subject_teacher_id }}</td><td><a href="{% url 'subject_view' pk=sub.id md=1 %}"> {% if sub.second_term == '2nd Term' and  sub.third_term == '1st Term'  %}{{ sub.second_term }}{% else %}{{ sub.third_term }}{% endif %}</a></td><td>{{ sub.males }}</td><td>{{ sub.females }}</td><td>{{ sub.males|add:sub.females }}</td><td style="width:20%;">{{ sub.updated }}</td><td style='width:5%'><button id="clicked_{{ forloop.counter }}" onclick="synchr('{{ sub.subject }}', '{{ sub.Class }}', '{{ forloop.counter }}')" style="line-height:65%;border-radius:2px;background-color:green;color:white;border-radius:2px;font-size:8px;width:100%;"><span class="glyphicon glyphicon-refresh" title="click to update record"></span></button></td><td style='width:8%'><button  style="line-height:83%;width:100%;border:1px solid black;color:black;background:white;;font:2px;">{{ age }}</button></td><td style='width:5%'><button  style="line-height:83%;width:100%;border:1px solid white;color:white;background:black;font:2px;">{{ per }}%</button></td><td><a href="{% url 'pdf' ty=2 sx=0 pk=sub.id %}" target="_blank"><span class="glyphicon glyphicon-download" title="download marksheet"></span></a></td></tr>     
                     {% endfor %}
                     {% else %}
                         <pre style="width:70%;" >There are no records.</pre>
                     {% endif %}       
                 </tbody>
                 <tfoot>
-                    <tr><th colspan="12">
+                    <tr><th colspan="13">
                     {% if all_page.has_other_pages %}
               <em class="pagination" >
                 {% if all_page.has_previous %}

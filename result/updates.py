@@ -149,10 +149,13 @@ class Users_update(UpdateView):#New teacher form for every new term, class, subj
 
 def average(x, r):
     xy = [int(i) for i in x]
-    rst = sum(xy)/sum(i > 0 for i in xy)
+    if sum(i > 0 for i in xy) != 0:
+         rst = sum(xy)/sum(i > 0 for i in xy)
+    else:
+        rst = 0.0
     if r == 't':
        deci = str(round(rst,2)).split('.')
-       if int(deci[1]) >= 50:
+       if int(deci[1]) >= 50 or int(deci[1]) == 5:
           return float(deci[0])+1
        else:
           return round(rst,2)
@@ -160,17 +163,20 @@ def average(x, r):
       return round(rst,2)
 
 def get_or_create(tutor, serial_no, scores):#name-name_id
-    student_name = CNAME.objects.get(serial_no=serial_no)#############################################
+    student_name = CNAME.objects.get(id=serial_no)#############################################
     instance = QSUBJECT.objects.filter(student_name__exact=student_name, tutor__exact = tutor)
     if not instance.exists():#[i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11]]
         instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9], fagr=scores[10], sagr=scores[11])
     else:#[352, '1-6-25', 7, 4, 3, 14, 56, 70, 'A', '10th', 0, 70, 'Adisa', '2nd Term', '3rd Term']
         instance = QSUBJECT.objects.get(student_name=student_name, tutor = tutor)
         if tutor.subject == 'BST1' or tutor.subject == 'BST2':
-            instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi = [average([instance.test, scores[2]], 'n'), average([scores[3], instance.agn], 'n'), average([instance.atd, scores[4]], 'n'), average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't'), round(sum([average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't')])), do_grades([int(round(sum([average([instance.total, scores[5]], 'n'), average([instance.exam, scores[6]], 't')]))), cader(tutor.Class)])[0], scores[9]]
+            instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi = [average([instance.test, scores[2]], 't'), average([scores[3], instance.agn], 't'), average([instance.atd, scores[4]], 't'), average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't'), round(sum([average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't')])), do_grades([int(round(sum([average([instance.total, scores[5]], 't'), average([instance.exam, scores[6]], 't')])))], cader(tutor.Class))[0], scores[9]]
         else:
-            instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi, instance.fagr, instance.sagr = scores[2:12]   
-    
+            if len(scores) >= 11:
+                  instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi, instance.fagr, instance.sagr = scores[2:12]   
+            else:
+              instance.test, instance.agn, instance.atd, instance.total, instance.exam, instance.agr, instance.grade, instance.posi = scores[2:10]   
+   
     instance.updated = datetime.datetime.today()
     instance.save()    
     return [instance.student_name.updated, instance.agr, instance.fagr, instance.sagr, instance.aagr, instance.avr]
@@ -206,7 +212,7 @@ def responsive_updates(request, pk):
                 if request.GET.get('flow') == "toHtml":#feeding the html page x.serial_no
                     tutor = BTUTOR.objects.get(pk=int(request.GET.get('tutor_id')))
                     instance = QSUBJECT.objects.filter(tutor__exact = tutor).order_by('student_name__gender', 'student_name__full_name')
-                    data = {"status":tutor.updated, "tutor_name":tutor.teacher_name}
+                    data = {"status":tutor.updated, "tutor_name":tutor.accounts.username}
                     data["list"] = ['Default']+[[i.student_name.full_name, i.student_name.uid, i.test, i.agn, i.atd, i.exam, i.grade, i.posi, i.student_name.gender, i.fagr, i.sagr, i.aagr, i.avr, i.student_name.id] for i in instance]
                 if request.GET.get('flow') == "mygrade":
                     tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))

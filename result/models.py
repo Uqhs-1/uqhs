@@ -40,7 +40,7 @@ class BTUTOR(models.Model):#
     def __str__(self):
         """String for representing the Model object."""#marksheets/2/3rd/BUS_18_0.pdf
         #termi = sorted([self.first_term[0], self.second_term[0], self.third_term[0]])
-        cdo = str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+'_'+'-'+'_'+self.session[-2:]
+        cdo = str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(self.Class))+'_-_'+self.session[-2:]
         return f'{self.subject}_{cdo}_0.pdf:{self.accounts.username}:/{self.id}/{self.updated.day}/{self.updated.month}/{self.updated.year}_{self.updated.hour}:{self.updated.minute}:{self.updated.second}'
     
     def save(self):
@@ -172,15 +172,19 @@ class CNAME(models.Model):
         if not self.id:
             self.created = today
             self.session = session().profile.session
-        bsheet = QSUBJECT.objects.filter(student_id__exact=self.uid, tutor__Class__exact=self.Class, tutor__session__exact=session().profile.session)
+        print('cname_model')
+        bsheet = QSUBJECT.objects.filter(student_id__exact=self.id, tutor__Class__exact=self.Class, tutor__session__exact=session().profile.session)
         if bsheet.count() >= 9:
             all_avg = [i.avr for i in bsheet if i.avr is not None]
             self.annual_scores = round(sum(all_avg), 2)
             self.annual_avr = round((sum(all_avg)/sum(x > 0 for x in all_avg)), 2)
         self.resumption = session().profile.resumption
         self.updated = today
+        self.last_name = self.full_name.split(' ')[0]
+        self.first_name = self.full_name.split(' ')[1]
         self.sex = ['', 'Male', 'Female'][int(self.gender)]
         super(CNAME, self).save()
+        
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name} {self.first_name}'
@@ -242,9 +246,12 @@ class QSUBJECT(models.Model):#step5-subject
                 self.avr = average(dim, 't')
                 self.grade = do_grades([int(self.avr)], cader(self.tutor.Class))[0]
             self.qteacher = self.tutor.teacher_name
-        if self.student_name:
-            self.student_id = self.student_name.last_name[0]+self.student_name.first_name[0]+'/'+self.tutor.Class[0]+'/'+self.student_name.session[-2:]+'/'+str(self.student_name.id)
+        if self.student_name.full_name:
+            slp = self.student_name.full_name.split(' ')+['OTHER']
+            self.student_id = 'NA/'+self.tutor.Class[0]+'/'+self.student_name.session[-2:]+'/'+str(self.student_name.id)
             self.gender = self.student_name.gender
+        if self.grade == 'null':
+            self.grade = do_grades([int(self.agr)], cader(self.tutor.Class))[0]
         cname = CNAME.objects.get(pk=self.student_name.id)
         if self.student_name.uid == None:
             cname.uid = self.student_id

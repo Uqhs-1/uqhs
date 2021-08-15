@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from.import views, imports, posts, sign_up_or_log_in, creates, deletions, updates, utils
+from.import views, imports, posts, sign_up_or_log_in, creates, deletions, updates, tasks
 urlpatterns = [
             #####EXPORTS #######IMPORTS#####  
             url(r'home/$', views.home, name='home'),
@@ -13,6 +13,7 @@ urlpatterns = [
             url('user_qury/', sign_up_or_log_in.user_qury, name='user_qury'),
          			 #####VIEWS##### 
             url('all_users/(?P<pk>\d+)/', views.all_users, name='all_users'),           
+            #url('delayed_task/(?P<model>\d+)/(?P<pk>\d+)/', tasks.delayed_task, name='delayed_task'),#
             url('zip_pdf/(?P<model>\d+)/(?P<pk>\d+)/', views.zipped_my_pdfs, name='zip_pdf'),#file, clasS, term
             url(r'searchs', views.searchs, name='searchs'),
             url(r'card_comments', views.card_comment, name='card_comments'),
@@ -20,6 +21,7 @@ urlpatterns = [
             url(r'student_info_json/', views.student_info_json, name='student_info_json'),
             url(r'student_exam_page/(?P<subj_code>\d+)/(?P<pk>\d+)/', views.student_exam_page, name='student_exam_page'),
             url(r'accid/(?P<pk>\d+)/(?P<md>\d+)/', views.accid, name='accid'),
+            url(r'csv_bsh/(?P<pk>\d+)/', views.csv_bsh, name='csv_bsh'),
             url('subject_home/(?P<pk>\d+)/(?P<cl>\d+)/', views.subject_home, name='subject_home'),
             url('render/pdf/(?P<ty>\d+)/(?P<sx>\d+)/(?P<pk>\d+)/', views.Pdf.as_view(), name='pdf'),
             url(r'uniqueness/(?P<pk>\d+)/', views.uniqueness, name='uniqueness'),

@@ -134,7 +134,7 @@ def may_not(r, dg):
        return [0]
 
 def s3_session():
-    aws_session = boto3.Session('AKIAZXDZRFQVP24YW7UU', '32hOmVzUovuSW89PjoSYS2WNBm3IE/JKyosYehQh')#boto3.Session(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
+    aws_session = boto3.Session(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
     return aws_session
     
 def upload_to_s3(content, path):
@@ -166,7 +166,10 @@ class Render:
         if not pdf.err:
             response = HttpResponse(response.getvalue(), content_type = "application/pdf")
             response['Content-Disposition'] = "attachment; filename={name}.pdf".format(name=filename)
-            #upload_to_s3(response.content, filepath.split('.')[0]+'.pdf')
+            try:
+                upload_to_s3(response.content, filepath.split('.')[0]+'.pdf')
+            except:
+                print('No connection')
             if filepath.split('.')[-1] == 'zip':#updated
                 return response.getvalue()#updated
             return response

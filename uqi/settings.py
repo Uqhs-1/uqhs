@@ -64,11 +64,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book_shelf.apps.BookShelfConfig',
     'result.apps.ResultConfig',
-    'crispy_forms',#How to Use Bootstrap 4 Forms With Django
-     #'corsheaders',
-     #'storages', 
+    'crispy_forms',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
+CELERY_RESULT_BACKEND = "django-db"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [

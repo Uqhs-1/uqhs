@@ -17,7 +17,7 @@
 	<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
      
 		<style>
-		body, html { margin: 0px; padding: 0px; background-color: #2CA17B ; font-family: 'Trebuchet MS'; }
+		body, html { margin: 0px; padding: 0px; background-color:lavender; font-family: 'Trebuchet MS'; }
 		Container { width: 90%; min-width: 500px; margin: auto; }
 		.input{
 			text-align:center;width:100%;background-color:white;color:black;border-radius:5px;
@@ -31,7 +31,7 @@
             	.forTd {width:6%;color:white;
             	}
 		.inport{
-			height:1176px;top:10%;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;background-color:red;margin-left:10%;width:55%;bottom:10%;margin-right:10%;overflow-x:hidden;
+			height:1176px;top:10%;border:1px solid white;border:2px solid blue;color:black;border-radius:5px;background-color:silver;margin-left:10%;width:55%;bottom:10%;margin-right:10%;overflow-x:hidden;
 		}
 		table {
 			border-collapse: collapse;margin-left:1%;width: 98%;
@@ -39,9 +39,9 @@
 		th, td {padding: 2px;}
 		table {border-spacing: 1px;
 		}
-		thead, tfoot {background-color: #FFA07A;}
-		tbody {background-color: #20B2AA;}
-		tr:nth-child(even) {background-color:#90EE90;}
+		thead, tfoot {background-color:#2980B9;}
+		tbody {background-color:cornflowerblue;}
+		tr:nth-child(even) {background-color:lightgrey;}
 		.capt{margin-left:1%;border-radius: 5px;background-color:green;text-align: center;color: white;font-size:11px;width: 98%;
 		}
 		#sidenav {
@@ -165,12 +165,12 @@
 	</style>
    </head>
    <body>
-		<div id="header"><img src="{% static "result/iiro.jpg" %}" height="30" style="border-radius:5px;" width="30"/><em id="headern">UMMUL-QURA INSTITUTE</em>
+		<div id="header"><img src="{% static "result/iiro.jpg" %}" height="90" style="border-radius:5px;" width="90"/><em id="headern" style="color:blue;font-size:200%;margin-left:10px;">UMMUL-QURA INSTITUTE</em>
 		</div>
-		<div id="address">
-			Akanran Road, Amuloko Arowona Bus-stop, Oyo State, Ibadan.
+		<div id="address" style="color:red;margin-left:10px;">
+			Akanran Road, Arowona Bus-stop Amuloko, Oyo State, Ibadan.
 		</div>
-		<div id="address1"><em >RESULT PORTAL</em>
+		<div id="address1" style="color:white;font-size:200%;margin-left:40px;"><em >RESULT PORTAL</em>
 				
 		</div>
                 <button id="rightm" onclick="openNav('right')"><span class="glyphicon glyphicon-tasks"></span><br>
@@ -190,6 +190,7 @@
 			<button style="font-size:9px;border:2px solid orange;color:black;border-radius:5px;width:40%;line-height:6px;" onclick="$('#form').toggle()">SINGLE</button>
                              <select value="-1" id='export' name='export' style="font-size:9px;border:2px solid orange;color:black;border-radius:5px;width:50%;height:16px;">
 					<option value="">Downloads</option>
+          <option value="0" class="selectbut" onclick="broadsheet_csv()">bsh</option>
 					<option value="1" class="selectbut" onclick="namDld('1')">csv</option>
 					<option value="2" class="selectbut" onclick="namDld('2')">pdf</option>
                     <option value="3" class="selectbut" onclick="namDld('3')">text</option>
@@ -493,72 +494,85 @@
 						<button class="grade_no" onclick="showOnly('F9')">F9:<span  id="F9" style="color:pink;"></span></button>
 					</em>
 					<td>
-						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="go_to('pdf', 'none')">
-							<span class="glyphicon glyphicon-upload" title="add a student's score" class='glh'></span>
-						</button>
+						
 					</td>
-					<td> <strong>AGR:</td>
+					<td> <strong>AGR:</strong></td>
 					<td class="grade_no"><span id="agr"></span></td>
 					<td>
-						<strong>PER:</strong>
-					</td>
-					<td colspan="6" class="grade_no" id="grade_no"style="width:4px;"><span id="avr"></span>%</td>
-					</tr>
-					<tr class="capt">
-					<td class="capt" style="color:white; width:200px;" colspan="2">Grade Summary 
-							<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="min" onclick="mini(0)">ENG</button>
+					<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="min" onclick="mini(0)">ENG</button>
 							<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="max" onclick="mini(1)" hidden>ENG</button>
+						
 					</td>
-					<td><button onclick="share()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;"> <span class="glyphicon glyphicon-share-alt"></span> </button></td>
-					<td colspan="5" id="tutor">
+					<td colspan="6">
+					<button style="width:100%;background-color:white;border:2px solid blue;color:black;border-radius:5px;" onclick="forwards()">
+                                <span class="glyphicon glyphicon-forward" title="Details"></span>
+                    </button>
+					
+					</td>
+					</tr>
+					<tr>
+					<td colspan="2">
 						<a href="{% url 'home' %}" title='Click to edit class details'>
-						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" id="tutor_name">Mal. Yusuf Sodeeq</button>
-						</a> |
-						
-						<a href="{% url 'setup_questions' %}" style="color:white;" title='Click to upload exam questions'> 
-						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Upload Questions </button>
+						<button style="width:100%;color:white;border-radius:5px;background-color:blue;border:2px solid white;" id="tutor_name">Mal. Yusuf Sodeeq</button>
 						</a>
-						
+					</td>
+					<td class="capt" style="color:white; width:200px;"> 
+							
 					</td>
 					<td>
-						<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
-						   <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-print"></span></a>
-						</button>
-						
-						
-						
-					</td>
-					<td>
-						<button  onclick="positioning()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"id="uploading">
-						<span class="glyphicon glyphicon-record"></span>
+						<button  onclick="positioning()" style="background-color:greenyellow;width:100%;border:2px solid white;color:white;border-radius:5px;"id="uploading">
+						<span class="glyphicon glyphicon-floppy-disk"></span>
 						</button>
 					</td>
+					<td><button onclick="share()" style="width:100%;border-radius:3px;background-color:green;color:white;border:2px solid white;"> <span class="glyphicon glyphicon-share-alt"></span> </button></td>
+					
 					<td>
-						<button onclick="refresh()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><span class="glyphicon glyphicon-refresh" title="refresh page" class='glh'></span></button>
+						<a href="{% url 'setup_questions' %}" style="color:white;" title='Click to upload exam questions'> 
+						<button style="width:100%;border:2px solid pink;color:white;border-radius:5px;background-color:red;"><span class="glyphicon glyphicon-open"></button>
+						</a>
+					</td>
+					<td>
+						<button style="width:100%;border:2px solid pink;color:white;border-radius:5px;background-color:blue;" onclick="go_to('pdf', 'none')">
+							<span class="glyphicon glyphicon-open" title="add a student's score" class='glh'></span>
+						</button>
+					</td>
+					<td style="background-color:green"><strong>PER:</strong>
 						
+					</td>
+					<td class="grade_no">
+						<span id="avr"></span>%	
+					</td>
+					<td>
+						<button onclick="refresh()" style="width:100%;border:2px solid orange;color:beige;border-radius:5px;background-color:purple"><span class="glyphicon glyphicon-refresh" title="refresh page" class='glh'></span></button>	
 						
+					</td>
+					<td id="mid_foo">
+						<button style="width:100%;border:2px solid blue;color:black;border-radius:5px;background-color:white;">
+						   <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-save"></span></a>
+						</button>
 					</td>
 					</tr>                                                                                                                             
 					<tfoot>
 						<tr>
-						<th colspan="11" id="foot">
+						<th colspan="15" id="foot">
 							<div id="buttons"></div>
-							<button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" onclick="forwards()">
-                                <span class="glyphicon glyphicon-forward" title="Details"></span>
-                            </button>
+							
 						</th>
 						</tr>
 					</tfoot>
 					</table>
 				<script>
 				var counter = {count:0};
-				function waring(targer){
+function waring(targer){
+				$("#uploading").css("background-color", 'pink')
 				var cot = 0;
 				var id = setInterval(frame , 450);
 				function frame(){
 					if (counter.count == 1){
 						clearInterval(id);
-						$("#uploading").show()
+						var upd = $("#uploading").show()
+						
+
 					}
 					else{
 						cot++;
@@ -566,16 +580,17 @@
 					}
 				} 
 				};
-				function redirect(to) {
+
+function redirect(to) {
 					var next = window.location.href.split('offline')[0]+to+'/';
         			location.replace(next);
 					};
 			
-				$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
+$("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
 					redirect($(this).val()+'/1')
-				})
-			
-                 function namDld(fmt){
+				});
+		 
+function namDld(fmt){
 		 			var pair_subject =  ["ACC", "AGR", "ARB", "BIO", "BST", "BUS", "CHE", "CIV", "COM", "CTR", "ECO", "ELE", "ENG", "FUR", "GEO", "GOV", "GRM", "HIS", "ICT", "IRS", "LIT", "MAT", "NAV", "PHY", "PRV", "YOR"];
 		 			var Class = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']; 	
 		 	 		if (pair_subject.indexOf($("#Subject").val()) != -1){
@@ -587,13 +602,21 @@
  			 			redirect("name_down/"+ind)
  						}
 					};
-					$("#export").change(function(){
-              		if ($(this).val() != '') {
+
+function broadsheet_csv (){
+                          var Class = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'];
+                          var ind = Class.indexOf($("#Class").val())
+                          redirect("csv_bsh/"+ind)
+                 };
+
+$("#export").change(function(){
+              		if ($(this).val() != '' && $(this).val() > 0) {
                			if ($("#Class").val()){
                       namDld($(this).val())
-                 		}}
-                        });
-				$('#form').submit(function (evt) {
+                 		}}else{broadsheet_csv()}
+                       });
+
+$('#form').submit(function (evt) {
 		    		evt.preventDefault();
                     var promp = confirm('You are about to register a candidate with the following details:' +' First Name :'+ $("#fname").val() + " " + $("#oname").val()+
 				   ', Last Name:' + $("#lname").val()+ ', Gender: '+ $("#gender").val()+', Birth :'+ $("#birth").val()+ ', Class :'+ $("#class").val() +', Click OK to continue.')
@@ -625,17 +648,19 @@
 			  					errors(jqXHR, textStatus)
 																});}
 		    									}); 
-						$("#birth").change(function(){
+$("#birth").change(function(){
 						var button = (date_diff_indays($("#birth").val(), new Date()))
 						$("#age").html(Math.floor(button/365))
 
-						})
-						var date_diff_indays = function(date1, date2) {
+						});
+
+var date_diff_indays = function(date1, date2) {
 							dt1 = new Date(date1);
 							dt2 = new Date(date2);
 							return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
 						};
-						function errors(x, y){
+
+function errors(x, y){
 								var statusErrorMap = {
 									'0': "Not connected.\nPlease verify your network connection.",
 								'400' : "Server understood the request, but request content was invalid.",
@@ -667,11 +692,11 @@
 
 								};
             
-					function save(){
+function save(){
 						alert($("#birth").val())
 						}
 							
-							function openNav(x) { 
+function openNav(x) { 
 								$(".glh").css('color', 'gray');                       
 								$("#"+x+'m').css('color', 'blue');
 								$("#"+x+"btn").show()
@@ -695,7 +720,7 @@
 							};
 							};
 						
-							function closeNav(x) { 
+function closeNav(x) { 
 								$("#"+x+"btn").hide()
 								$(".glh").css('color', 'blue');
 								$("#"+x+'m').css('color', 'white');
@@ -718,18 +743,20 @@
 								left.style.width = "0";
 							};
 							}; 
-                    var sum, average, raw, copy, dom, Class, Subject, Term, time, dim;
-                    var arrayOne, copyArray, dom, agr, allRaw;
-					arrayOne = [];copyArray = [];
-					var time = new Date();
-					$("#date").html(time);
-					dom = {'Class':0,'Subject':0,'Term':0, 'flow':"fromHtml", 'len':$(".oneBox, .newBox").length, 'last_updated':new Date(), 'sum':0, 'avg':0};
-					sum = x => eval(x.join("+"));
-					average = arr => Number(arr.reduce((p, c) => p + c, 0)/arr.length);
-                    function forwards(){
+
+var sum, average, raw, copy, dom, Class, Subject, Term, time, dim;
+var arrayOne, copyArray, dom, agr, allRaw;
+arrayOne = [];copyArray = [];
+var time = new Date();
+$("#date").html(time);
+dom = {'Class':0,'Subject':0,'Term':0, 'flow':"fromHtml", 'len':$(".oneBox, .newBox").length, 'last_updated':new Date(), 'sum':0, 'avg':0};
+sum = x => eval(x.join("+"));
+average = arr => Number(arr.reduce((p, c) => p + c, 0)/arr.length);
+
+function forwards(){
 						redirect(dom.tutor_id+'/1')
 					}
-					function del(i){
+function del(i){
 						var arr, each, x; arr = [];
 						x = i.length;
 						while(x != 0){
@@ -738,7 +765,7 @@
 							x = i.length}
 							return arr;};
 
-					function reload(data, classCat){
+function reload(data, classCat){
 						arrayOne = [];dim = [];
 						for (var i = 1; i < data.list.length; i++) 
 						{
@@ -784,11 +811,11 @@
 								$("#Senior").show();
 								$("#Junior").hide()
 								}	
-							$('#agr').html(sum(arrayOne));
+							$('#agr').html(sum(arrayOne).toFixed(2));
 			    			$("#avr").html(average(arrayOne).toFixed(2));	
 					};
 
-						function go_to_load_data(tutor_id){
+function go_to_load_data(tutor_id){
 							var request = $.ajax({
 								url: "{% url 'responsive_updates' pk=0 %}",
 								data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"toHtml", 'tutor_id':tutor_id},
@@ -803,16 +830,17 @@
 							errors(jqXHR, textStatus)
 											})};
 					
-                        $("#Subject").change(function(){
+$("#Subject").change(function(){
 							document.getElementById("Class").value = '';
 							$("#subject").html($(this).val());
 							$("#Term").show();});
-                        $("#Term").change(function(){
+                        
+$("#Term").change(function(){
 							document.getElementById("Class").value = '';
 							$("#term").html($(this).val());
 							$("#Class").show()});
 
-                        $("#Class").change(function(){
+$("#Class").change(function(){
 							if ($(this).val() != ''){
                             $("#sub_class").html($(this).val());
 						var request = $.ajax({
@@ -858,7 +886,7 @@
 			  					errors(jqXHR, textStatus)
 																})
 								dom.Class = $("#Class").val(), dom.Subject = $("#Subject").val(), dom.Term = $("#Term").val();
-								cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+								cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)
                             	if ($(this).val()[0] == 'J'){
 									$("#Senior").hide();
 									$("#Junior").show()
@@ -870,8 +898,9 @@
                             	$("#class").html($(this).val());$("#list").show();
 								
                             }});
-                             $("#rowNum").change(function(){
-                        cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+
+$("#rowNum").change(function(){
+							cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)
 						var index = Number($(this).val());
 						for (var i = 1; i < index+1; i++){
 							var itr = ""+i;
@@ -880,7 +909,7 @@
 							
 						}
 						});
-					function cls(len){
+function cls(len){
 							for (var i = 1; i < len; i++) { 
                                 var itr = ""+i;
 								$("#tb_"+itr).removeClass(document.getElementById("grade_"+itr).value);
@@ -893,29 +922,29 @@
 								$("#total_"+itr).html(40);
 								$("#agr_"+itr).html(100);
                                 $("#tb_"+itr).hide();
-                                $("#tb_"+itr).removeClass("newBox");var doc = localStorage.getItem("refresh");doc.tutor_id = 0;
+                                $("#tb_"+itr).removeClass("newBox");var doc = localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]);doc.tutor_id = 0;
                             };
 							document.getElementById('buttons').innerHTML = '';
 						};
 
-						
-						function mini(x){
-							var parm = [['20%', '61%', '9', '15'], ['25%', '55%', '5', '9']]
+					
+function mini(x){
+							var parm = [['20%', '61%', '11', '15'], ['25%', '55%', '6', '9']]
 							$(".third").toggle();
 							document.getElementById("grade_no").colSpan = parm[x][2];
-							document.getElementById("tutor").colSpan = parm[x][2];
+							document.getElementById("mid_foo").colSpan = 'parm[x][2]';
 							document.getElementById("foot").colSpan = parm[x][3];
 							$("#min").toggle();
 							$("#max").toggle();		
 						};
 						
-						next_page = {npg:1}
-						function pagging(x){
+next_page = {npg:1}
+function pagging(x){
 								$(".page_"+next_page.npg).hide();
 								$(".page_"+x).show();
 								next_page.npg = x
 							};
-						function pages(){
+function pages(){
 						var seed = [];var dimed = [0]
 						var page = 31;
 						document.getElementById('buttons').innerHTML += "<button "+ "  onclick="+"'pagging(1)'"+">"+ ""+ 1 +"</button>" ;
@@ -944,7 +973,7 @@
 							}$(".page_1").show();
 						};
 						
-                        function grades(x, y, z){
+function grades(x, y, z){
                             switch(z){
                             case "S":
                                 if (x >=0 && x <=39){document.getElementById(y).value = "F9";};
@@ -966,7 +995,7 @@
                                 };
 								return document.getElementById(y).value; 
                             };
-						function done(x, y){
+function done(x, y){
 							$("#all_"+""+x+"_"+""+y).click(function(){
 								$("#all_"+""+x+"_"+""+y).addClass("highlight");
 							});
@@ -975,8 +1004,10 @@
 							$(this).removeClass("highlight");
 							}) 	
 							};
-							$("#Subject").change(function(){$("#min, #max").html($(this).val())});
-						function go_to(key, i){
+
+$("#Subject").change(function(){$("#min, #max").html($(this).val())});
+
+function go_to(key, i){
 							if (dom.tutor_id){
                             if (i == 'none') {
 								if ('{{qry}}' !='None'){
@@ -987,7 +1018,7 @@
                             else{redirect(+key+'/'+ dom.tutor_id +'/'+i)
                                     }}
 							};
-						function doOneach(x){
+function doOneach(x){
 							var total, annual, avg, itr;
 							itr = ""+x;
                             total = sum([$("#test_"+itr).val(), $("#agn_"+itr).val(), $("#atd_"+itr).val()]);
@@ -1001,7 +1032,7 @@
 									$("#avg_"+itr).html(avg);
 									grades(avg, "grd_"+itr, $("#Class").val()[0]);};
 									};
-									function forRef(data){
+function forRef(data){
 										dom.Class = data.Class; 
 										dom.Subject = data.Subject; 
 										dom.Term = data.Term;
@@ -1015,8 +1046,8 @@
 										$("#Class").show();
 										$("#Term").show();
 										$("#tutor_name").html(data.tutor_name);
-							} 
-							if ('{{qry}}' !='None'){
+							}; 
+	if ('{{qry}}' !='None'){
 								var data = {
 									Class:'{{ qry.Class }}', 
 									Subject:'{{ qry.subject }}',
@@ -1031,8 +1062,8 @@
 								dom.tutor_id = '{{qry.id}}';
 								go_to_load_data('{{qry.id}}')
 								}
-							else{
-								rel = JSON.parse(localStorage.getItem("refresh"));
+	else{
+								rel = JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]));
 								if (rel){
 								forRef(rel)
 								var callBack = ['default'];
@@ -1047,17 +1078,18 @@
 									};
 
 							
-						function refresh(){
+function refresh(){
                             var allRaw = $(".newBox, .oneBox");
                             for (var i = 1; i < allRaw.length+1; i++){
                                 var itr = ""+i;
                                 $("#total_"+itr).html(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]));
 								$("#agr_"+itr).html(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]));
-                                                               document.getElementById("avr_"+itr).value = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]);
+                                document.getElementById("avr_"+itr).value = sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]);
 								grades(sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]), "grade_"+itr, dom.Class[0]);  
                             } };	
-                    	$("button[name='submit']").click(function() {
-							cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+
+$("button[name='submit']").click(function() {
+							cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)
                             var arr = $("#list").val().split(',');
                             arr.unshift("Defualt");
                             cls(dom.len + 1)
@@ -1068,8 +1100,9 @@
                             $("#tb_"+itr).addClass("newBox");
 						}
                         });
-						var allChecked= []; var allarray = [];					
-						function getNames(){
+
+var allChecked= []; var allarray = [];					
+function getNames(){
 							if ($("#search").val().split(",").length == 2){
 								var newBox = $(".newBox");
 								for (var i = 0; i < newBox.length+1; i++) {
@@ -1092,20 +1125,16 @@
 													document.getElementById("resultTable").innerHTML += '<tr>'+'<td>'+ ""+i +'</td>'+'<td>'+""+namesRet[i][0]+'</td><td>'+ namesRet[i][1]+ "</td><td><input type='checkbox'"+ "value="+thss  +" > " + '</td></tr>';
 													
 												};
-												document.getElementById("resultTable").innerHTML += "<tfoot><th colspan='3'>Tick none when all names are applicable, then click</th><th><button onclick='next()' style='line-height:65%;border:2px solid blue;color:black;border-radius:5px;'>Next</button></th></tfoot>";
-												
-												
-											alert(allarray)}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
+												document.getElementById("resultTable").innerHTML += "<tfoot><th colspan='3'>Tick none when all names are applicable, then click</th><th><button id='ticked' onclick='next()' style='line-height:65%;border:2px solid blue;color:black;border-radius:5px;'>Next</button></th></tfoot>";
+											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
 										},
-										
 									});
 								request.fail(function( jqXHR, textStatus) {
 			  					errors(jqXHR, textStatus)
 																})
                          }else{alert("Enter class then subject to search eg JSS 1, ARB.")}   
                         };
-
-						function next(){
+function next(){			$("#ticked").hide()
 							var checks = $('input:checkbox'); 
 							for (var i = 0; i < checks.length; i++){
 							var item = checks[i];
@@ -1113,7 +1142,8 @@
 								allChecked.push([item.value.split('_')[0]+' '+ item.value.split('_')[1], item.value.split('_')[2]]);
 													}
 								};
-                            cls(JSON.parse(localStorage.getItem("refresh")).len + 1)
+							if (JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]))){
+                            cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)}
 							if (allChecked.length == 0){allChecked = allarray};							
 							for (var i = 1; i < allChecked.length+1; i++) { 
 								var itr = ""+i;
@@ -1125,14 +1155,16 @@
 							}; 
 							};
 
-                        function positioning(){
+function positioning(){
 							if ('{{qry}}' !='None'){
 									var conf = confirm("Do you want to overwrite "+ data.Term + ' scores?')
 								if (conf == true){doPosi();waring("#uploading");}
-								}else{doPosi();waring("#uploading");}
+								}
+							else{doPosi();waring("#uploading");}
 							
 						};
-                        function positions(size){
+
+function positions(size){
                             posi = []
                             for (var i = 1; i < size.length+1;  i++){
                                 var it = ""+i;
@@ -1145,9 +1177,8 @@
                                         if (it.endsWith("3") || i == 3){posi.push(""+i+'rd');};}  
                                     else{posi.push(""+i+'th');}};}
                             return posi;};
-							//Setting states to the DOM
 							
-						function saveState(){
+function saveState(){
 							dom.len = $(".oneBox, .newBox").length;dom.Subject = $("#Subject").val();
                             for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
                                 itr = ""+i;
@@ -1172,8 +1203,9 @@
 									'sn':i};}
 									return dom;
                             };
-						var varTotal = {start:0, end:1};
-                        function doPosi(){
+
+var varTotal = {start:0, end:1};
+function doPosi(){
 							counter.count = 0;
 							varTotal.start = varTotal.end;
 							varTotal.end += $(".oneBox, .page_"+next_page.npg).length;
@@ -1193,7 +1225,8 @@
 								$("#tb_"+itr).addClass(dom['id_'+itr]['grade']);
                             return results ;}
                             countGrade(dim);
-                            function listening(data){
+
+function listening(data){
 		              var scr = [];var sdr = [];
 	                      for (var i = 1; i < $(".oneBox, .newBox").length+1;  i++){
 		              var itr = ""+i;
@@ -1214,7 +1247,6 @@
 									
 								list = [$("#serial_no_"+itr).val(), $("#student_id_"+itr).val(), $("#test_"+itr).val(), $("#atd_"+itr).val(), $("#agn_"+itr).val(), sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val())]), $("#exam_"+itr).val(), sum([Number($("#test_"+itr).val()), Number($("#agn_"+itr).val()), Number($("#atd_"+itr).val()), Number($("#exam_"+itr).val())]), document.getElementById("grade_"+itr).value, dom['id_'+itr]['posi'], fagr, sagr]
 								array.push(list);};
-								alert(array);
 								var array = JSON.stringify(array);
 								var request = $.ajax({
 								type:'POST',
@@ -1223,6 +1255,8 @@
 								dataType: 'json',
 								success: function(data) {
 								counter.count = 1;
+								$("#uploading").css("background-color", 'greenyellow')
+								array = []
 								if (varTotal.end > $(".oneBox, .newBox").length){
 									var next = window.location.href.split('/result')[0]+"/result/render/pdf/2/0/0/";
         							window.open(next);
@@ -1236,25 +1270,23 @@
                             dom.sum = sum(data[1]);dom.avg = average(del(data[1])).toFixed(2);
                             $('#agr').html(dom.sum);
 			    			$("#avr").html(dom.avg);
-                            localStorage.setItem("refresh", JSON.stringify(dom));
+                            localStorage.setItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0], JSON.stringify(dom));
 							};
-							pages()
-							function showOnly(x){$("."+x).hide();$(".oneBox, .newBox").toggle();};
-							function countGrade(dim){
+pages();
+function showOnly(x){$("."+x).hide();$(".oneBox, .newBox").toggle();};
+function countGrade(dim){
 								var grades = dim.reduce(function(prev, cur){prev[cur] = (prev[cur] || 0) + 1; return prev;},{});
 								$("#A").html(grades.A);$("#C").html(grades.C);$("#P").html(grades.P);$("#F").html(grades.F);
 								$("#F9").html(grades.F9);$("#E8").html(grades.E8);$("#D7").html(grades.D7);$("#C6").html(grades.C6);$("#C5").html(grades.C5);$("#C4").html(grades.C4);$("#B3").html(grades.B3);$("#B2").html(grades.B2);$("#A1").html(grades.A1);
-							};
-							function share(){
+							};//alert($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])
+function share(){
 								var link = window.location.href;
 								window.open('whatsapp://send?text=' + link)
 							};
                     </script>    
 		</div>
         </div>
-		</div>
-		
-					
+		</div>		
 		<div class="sidenavs" id="sidenav">
                    <div onclick="closeNav('middle')" id="middlebtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div>
                    <em id='response' style="margin-left:0%;border:2px solid blue;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid blue;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>

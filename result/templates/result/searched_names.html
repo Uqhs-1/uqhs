@@ -21,7 +21,14 @@
             <td style="width:5%;">{{ forloop.counter }}</td>
             <td style="cursor:pointer;width:40%;" onclick="$('#hid_{{ forloop.counter }}').toggle()">{{ scr.full_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
-              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=scr.id pk=0 %}" title="{{ scr.student_id }}" style="color:red;">Report Card</a></button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:red;">Profile</a></button>
+              <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
+                <a href="{% url 'student_info' pk=scr.id %}" title="{{ scr.student_id }}" style="color:blue;">
+                  Profile
+                </a>
+              </button><br>
+              <button style="line-height:65%;border:2px solid blue;color:blue;border-radius:5px;" onclick="cards('{{ scr.full_name }}', '{{ scr.Class }}', '1st')">1st Term Card</button><br>
+              <button style="line-height:65%;border:2px solid blue;color:blue;border-radius:5px;" onclick="cards('{{ scr.full_name }}', '{{ scr.Class }}', '2nd')">2nd Term Card</button><br>
+              <button style="line-height:65%;border:2px solid blue;color:blue;border-radius:5px;" onclick="cards('{{ scr.full_name }}', '{{ scr.Class }}', '3rd')">3rd Term Card</button>
             </div>
             </td>
             <td style="width:10%;">{{ scr.uid }}
@@ -136,7 +143,13 @@
                         });
                       
           
-	}   
+	};
+  function cards(nam, cls, trm){
+              var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
+              var kwd = argt[cls]+'/'+trm+'/'+nam.split(' ')[0]+'_'+nam.split(' ')[1]+'.pdf'
+              var next = "https://dhnygxib7cbg0.cloudfront.net/pdf/cards /"+kwd;
+              window.open(next, '_blank');
+              };   
         </script>
 
 {% endblock %}

@@ -225,14 +225,15 @@
       <tfoot><th colspan="7" onclick="$('#teight').hide()"><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Hide</button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" name='done'>Done: <em id='deight'></em>
       </button></th></tfoot>
       </tbody>
-      </table>    
+      </table>  
+
     <li><button style="border:2px solid white;color:white;border-radius:5px;background-color:#35c2b6;width:100%;text-align:left;line-height:15%;" onclick="$('#tnine').show()"><input type="checkbox" value='nine' name='nine' id='nine' >SSS 2 LIST OF REGISTERED STUDENT | MALES </button></li> 
 	 <table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='tnine' hidden>
     <tbody>
            <thead>
      		<th>SN</th><th>Student Name</th><th>Admission No. </th><th>Year</th><th>Age</th><th>Status</th><th>Tick</th>
      	</thead>
-      {% for scr in ten %}
+      {% for scr in nine %}
       <tr id="tr_nine_{{ forloop.counter }}">
         <td style="color:white;font-size:12px;">{{ forloop.counter }}</td>
         <td style="color:white;font-size:12px;">{{ scr.full_name }}</td>
@@ -246,9 +247,10 @@
       <tfoot><th colspan="7" onclick="$('#tnine').hide()"><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Hide</button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" name='done'>Done: <em id='dnine'></em>
       </button></th></tfoot>
       </tbody>
-      </table>     
-    <li><button style="border:2px solid white;color:white;border-radius:5px;background-color:#35c2b6;width:100%;text-align:left;line-height:15%;" onclick="$('#tten').show()"><input type="checkbox" value='ten' name='ten' id='ten'>SSS 2 LIST OF REGISTERED STUDENT | FEMALES </button></li> 
-    <table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='tten' hidden>
+      </table> 
+
+    <li><button style="border:2px solid white;color:white;border-radius:5px;background-color:#35c2b6;width:100%;text-align:left;line-height:15%;" onclick="$('#tten').show()"><input type="checkbox" value='ten' name='ten' id='ten' >SSS 2 LIST OF REGISTERED STUDENT | FEMALES </button></li> 
+	 <table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='tten' hidden>
     <tbody>
            <thead>
      		<th>SN</th><th>Student Name</th><th>Admission No. </th><th>Year</th><th>Age</th><th>Status</th><th>Tick</th>
@@ -260,14 +262,15 @@
         <td style="color:white;font-size:12px;">{{ scr.uid }}</td>
         <td style="color:white;font-size:12px;">{{ scr.session }}</td>
         <td style="color:white;font-size:12px;">{{ scr.age }}</td>
-        <td style="color:white;font-size:12px;">{{ scr.orders }}</td>
-        <td style="color:white;font-size:12px;"  id="td_ten_{{ forloop.counter }}"><input type="checkbox" value="{{ scr.id }}" name='ten_{{ forloop.counter }}' class='ten' id='ten_{{ forloop.counter }}' onclick="counts('ten_{{ forloop.counter }}')"></td>        
+        <td style="color:white;font-size:12px;"  id="td_ten_{{ forloop.counter }}">{{ scr.orders }}</td>
+        <td style="color:white;font-size:12px;"><input type="checkbox" value="{{ scr.id }}" name='ten_{{ forloop.counter }}' class='ten' id='ten_{{ forloop.counter }}' onclick="counts('ten_{{ forloop.counter }}')"></td>        
       </tr>
       {% endfor %}
       <tfoot><th colspan="7" onclick="$('#tten').hide()"><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Hide</button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" name='done'>Done: <em id='dten'></em>
       </button></th></tfoot>
       </tbody>
-      </table>    
+      </table> 
+
     <li><button style="border:2px solid white;color:white;border-radius:5px;background-color:#35c2b6;width:100%;text-align:left;line-height:15%;" onclick="$('#televen').show()"><input type="checkbox" value='eleven' name='eleven' id='eleven' >SSS 3 LIST OF REGISTERED STUDENT | MALES </button></li> 
       <table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='televen' hidden>
     <tbody>

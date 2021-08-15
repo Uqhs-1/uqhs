@@ -3,13 +3,12 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 from django.contrib.auth.decorators import login_required
-#from datetime import timedelta 
+from .updates import average
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Avg
 from django.http import JsonResponse
 from django.views.generic import View
 import os, csv
-#from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 #from io import BytesIO
 import requests
@@ -291,16 +290,11 @@ def auto_pdf_a(request, md):
           data = {'ids':[i.id for i in CNAME.objects.filter(Class__exact=request.GET.get('class'))]}
       return JsonResponse(data)
 
-def param_cards(request, this, ty):
+def param_cards(request, this, lists):
     term = sorted([this.first().tutor.first_term[0], this.first().tutor.second_term[0], this.first().tutor.third_term[0]])
     filename = this.first().student_name.last_name+'_'+this.first().student_name.first_name+'_'+str(["", 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'_'+str(term[-1])+'_'+str(this.first().tutor.session[-2:])
     term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])       
-    lists = [x for x in this][:10]
-    if len(lists) != 10:
-        lists = lists + [None]*(10-len(lists))
     a,b,c,d,e,f,g,h,i,j = lists
-    if ty == '4':
-        return render(request, 'result/three_termx.html',  {'term':term[-1], 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'margged':CNAME.objects.filter(Class__exact=this.first().tutor.Class, session__exact=session.profile.session), 'info':this.first().student_name})
     params = {
             'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'this':this.first(), 'today': timezone.now(), 'request': request, 'term':term[-1], 'info':this.first().student_name
             }
@@ -330,30 +324,61 @@ def zipped_my_pdfs(request, model, pk):
         these = CNAME.objects.filter(session__exact=session.profile.session, Class__exact=clss[int(pk)]).order_by('gender', 'full_name')
         for this in these:
             this = QSUBJECT.objects.filter(student_name_id__exact=this.id, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=this.Class).order_by('tutor__subject')
-            params, term, filename = param_cards(request, this, '0')
-            pdf = Render.render('result/card.html', params, 'pdf/cards /'+pk+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.zip', filename)
-            clss[-1].append((filename + ".pdf", pdf))
+            if this:
+                lists = [x for x in this][:10]
+                if len(lists) != 10:
+                    lists = lists + [None]*(10-len(lists))
+                params, term, filename = param_cards(request, this, lists)
+                pdf = Render.render('result/card.html', params, 'pdf/cards /'+pk+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.zip', filename)
+                clss[-1].append((filename + ".pdf", pdf))
     else:
         tutors = BTUTOR.objects.filter(Class__exact=clss[int(pk)])
         for tutor in tutors:
             params, filepath, filename = param_marksheets(request, tutor, myHod)
-            pdf =  Render.render('result/MarkSheetPdf.html', params, filepath+'.zip', filename)
+            pdf =  Render.render('result/MarkSheetPdf.html', params, filepath+'/'+filename+'.zip', filename)
             clss[-1].append((filename + ".pdf", pdf))
     
-    #response = HttpResponse(generate_zip(clss[-1]), content_type='application/force-download')
-    #response['Content-Disposition'] = 'attachment; filename="{}"'.format(clss[int(pk)]+'.zip')
-    return clss
+    response = HttpResponse(generate_zip(clss[-1]), content_type='application/force-download')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(clss[int(pk)]+'.zip')
+    return response
 
+def csv_bsh(request, pk):
+    clS = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', []][int(pk)]
+    col_head_ = ['STUDENT NAME', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 3, 2, 1, 'A', 'Avg', 'posi']
+    data = [[[CNAME.objects.get(id=ids).full_name]] + [[a.agr, a.sagr, a.fagr, a.avr] for a in QSUBJECT.objects.filter(student_name__id__exact=ids).order_by('tutor__subject')] for ids in [i.id for i in CNAME.objects.filter(Class__exact=clS)]]
+    sets = [x+[[sum([i[-1] for i in x[1:]])/10]] for x in data]
+    empty = []
+    for i in sets:
+        main = i[0]
+        for x in i[1:]:
+            main.extend(tuple(x))
+        empty.append(main)
+    posi = do_positions([int(average([i[-1], 0], 't')) for i in empty])
+    response = HttpResponse(content_type='application/csv')
+    sd = [i+[r] for i, r in zip(empty, posi)]
+    sd.insert(0, col_head_)
+    writer = csv.writer(response)
+    for each in sd:
+        writer.writerow(each) 
+    response['Content-Disposition'] = "attachment; filename={name}".format(name=clS+'_bsh_.csv')
+    return response
 
 #QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')
 class Pdf(View):#LoginRequiredMixin, 
     def get(self, request, ty, sx, pk):#CARD
         if ty == '1' or ty == '4':
-              this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('student_name__gender', 'student_name__full_name')      
-              if this:  
-                 params, term, filename = param_cards(request, this, ty)
+            this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('student_name__gender', 'student_name__full_name') 
+            lists = [x for x in this][:10]
+            if len(lists) != 10:
+                lists = lists + [None]*(10-len(lists))
+            a,b,c,d,e,f,g,h,i,j = lists
+            if ty == '4':
+                term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])
+                return render(request, 'result/three_termx.html',  {'term':term[-1], 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'margged':CNAME.objects.filter(Class__exact=this.first().tutor.Class, session__exact=session.profile.session), 'info':this.first().student_name})     
+            elif this:  
+                 params, term, filename = param_cards(request, this, lists)
                  return Render.render('result/card.html', params, 'pdf/cards /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.pdf', filename)
-              else:
+            else:
                  return redirect('student_info', pk=sx)
         if ty == '2':#SCORE SHEET
             if pk == '0':
@@ -361,46 +386,8 @@ class Pdf(View):#LoginRequiredMixin,
             else:
                 tutor = get_object_or_404(BTUTOR, pk = int(pk))#
             params, filepath, filename = param_marksheets(request, tutor, myHod)
-            return Render.render('result/MarkSheetPdf.html', params, filepath+'.pdf', filename)
+            return Render.render('result/MarkSheetPdf.html', params, filepath+'/'+filename+'_'+sx+'.pdf', filename)
             
-        if ty == '3':#BROADSHEET
-            if request.user.profile.class_in:
-                SSS = [['CHE', 'ACC', 'ARB'], ['GOV', 'ICT'], ['GEO', 'AGR', 'YOR'], ['BIO', 'ECO'], ['PHY', 'LIT', 'COM'], ['ELE', 'CTR', 'GRM'], ['MAT'], ['IRS'], ['CIV'], ['ENG']]
-                JSS = [['YOR'], ['BST'], ['ARB'], ['HIS'], ['PRV'], ['MAT'], ['NAV'], ['BUS'], ['IRS'], ['ENG']]           
-                response = HttpResponse(content_type=[' ', 'application/csv', 'application/pdf', 'text/plain'][int(1)])
-                eng = CNAME.objects.filter(Class__exact=request.user.profile.class_in).exclude(annual_scores__exact = 0)             
-                sub = [["CHE, ACC, ARB", "GOV, ICT", "GEO, AGR, YOR", "BIO, ECO", "PHY, LIT, COM", "ELE, CTR, GRM", 'MAT', 'IRS', 'CIV', 'ENG'], ['YOR', 'BST', 'ARB', 'HIS', 'PRV', 'MAT', 'NAV', 'BUS', 'IRS', 'ENG']]
-                if eng:
-                    posi = do_positions([i.annual_avr for i in eng.order_by('id')])
-                    [save(CNAME, i, k.id) for i, k in zip(posi, eng.order_by('id'))]
-                    #return HttpResponse([posi], content_type='text/plain')
-                    if sx == '1':
-                        ai, bn, cs, dd, ed, fc, gv, hs, iw, jd  = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'full_name')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x).order_by('student_name__gender', 'student_name__full_name') for x in [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])]]
-                        sd = [[r, a.student_name, a.agr, a.sagr, a.fagr, a.avr, b.agr, b.sagr,  b.fagr, b.avr, c.agr, c.sagr, c.fagr, c.avr, d.agr, d.sagr, d.fagr, d.avr, e.agr, e.sagr, e.fagr, e.avr, f.agr, f.sagr, f.fagr, f.avr, g.agr, g.sagr, g.fagr, g.avr, h.agr, g.sagr, h.fagr, h.avr, i.agr, i.sagr, i.fagr, i.avr, j.agr, j.sagr, j.fagr, j.avr, a.student_name.annual_scores, a.student_name.annual_avr, a.student_name.posi]  for r, a, b, c, d, e, f, g, h, i, j in zip([r for r in range(1, eng.count()+1)], ai, bn, cs, dd, ed, fc, gv, hs, iw, jd)]
-                        sd = [[['sn',  'Student_name', 3, 2, 1, 'YOR', 3, 2, 1, 'BST', 3, 2, 1, 'ARB', 3, 2, 1, 'HIS', 3, 2, 1, 'PRV', 3, 2, 1, 'MAT', 3, 2, 1, 'NAV', 3, 2, 1, 'BUS', 3, 2, 1, 'IRS', 3, 2, 1, 'ENG', 'AGR', 'AVR', 'Posi'], ['sn', 'Student_name', 3, 2, 1, "CHE, ACC, ARB", 3, 2, 1, "GOV, ICT", 3, 2, 1, "GEO, AGR, YOR", 3, 2, 1, "BIO, ECO", 3, 2, 1, "PHY, LIT, COM", 3, 2, 1, "ELE, CTR, GRM", 3, 2, 1,  'MAT', 3, 2, 1, 'IRS', 3, 2, 1, 'CIV', 3, 2, 1, 'ENG', 'AGR', 'AVR', 'Posi']][['JSS', 'SSS'].index(request.user.profile.class_in[:3])]]+sd
-                        writer = csv.writer(response)
-                        for each in sd:
-                            writer.writerow(each) 
-                        response['Content-Disposition'] = "attachment; filename={name}".format(name=request.user.profile.class_in+[' ', '.csv', '.pdf', '.txt'][int(sx)])
-                        return response
-                    pag = ['', '', [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])][:5], [SSS, JSS][['SSS', 'JSS'].index(request.user.profile.class_in[:3])][5:]]
-                    tit = ['', '', sub[['SSS', 'JSS'].index(request.user.profile.class_in[:3])][:5], sub[['SSS', 'JSS'].index(request.user.profile.class_in[:3])][5:]]
-                    data = [QSUBJECT.objects.filter(student_id__in=[i.uid for i in eng.order_by('gender', 'uid')], tutor__Class__exact=request.user.profile.class_in, tutor__session__exact=session.profile.session, tutor__subject__in=x).order_by('student_name__gender', 'student_name__full_name') for x in pag[int(sx)]]
-                    if data:
-                        ai, bn, cs, dd, ed  = data
-                    else:
-                        return redirect('home')
-                    sumed = round(eng.aggregate(Sum('annual_avr'))['annual_avr__sum'], 1)
-                    average = round(eng.aggregate(Avg('annual_avr'))['annual_avr__avg'], 2)
-                    cls = str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.user.profile.class_in))
-                    params = {
-                        'subjects':zip(ai, bn, cs, dd, ed), 'Class':request.user.profile.class_in,'request': request, 'today': timezone.now(), 'sum':sumed, 'avg':average, 'term':'BROADSHEET', 'subs':tit[int(sx)], 'myHod':myHod.first(), 'males':eng.filter(gender__exact=1).count(), 'females':eng.filter(gender__exact=2).count(), 'subject_count':5
-                        }
-                    return Render.render('result/broadsheet.html', params, 'broadsheets/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.user.profile.class_in))+'/'+cls+sx+session.profile.session, cls+sx+session.profile.session)
-                else:
-                    return redirect('home')
-            else:
-                return redirect('home')
         if ty == '5':
             if request.GET.get('saved'):
                 params = {
@@ -441,6 +428,7 @@ def sample_down(request):
         writer.writerow(each) 
     response['Content-Disposition'] ='attachment; filename="samples.txt"'
     return response 
+
 @login_required
 def name_down(request, pk, fm,  ps):
     if fm == '2':
