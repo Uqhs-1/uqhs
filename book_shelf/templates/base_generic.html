@@ -66,15 +66,6 @@
                 <span>
                     <button style="color:white;background-color:blue;" onclick="(location.replace(window.location.href.split('/')[0]+'/result/home/'))"><span class="glyphicon glyphicon-home btn-lg"></span></button>
                 </span>
-                
-                <form method="GET" action="{% url 'searchs'%}"  class="search">
-                <div class="input-group">{% csrf_token %}
-                  <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control" style="border-radius:5px;border:2px solid white;background-color:blue;text-align:center;">
-                <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span> </button>
-                </span>
-                </div>
-              </form>
             </div>
               <!-- Side navigation -->
             <navz>
@@ -476,6 +467,14 @@
         <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">E-mail: </strong>ummulqura@marktoob.com, ummulqr@yahoo.com</div>
         <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Tell: </strong>08053776177, 07042412052</div>
         </div> 
+        <form method="GET" action="{% url 'searchs'%}"  style="margin-left:10px;">
+                <div class="input-group">{% csrf_token %}
+                  <input type="text" name="q" id="search" placeholder="search" value="{{ request.GET.q }}" class="form-control" style="border-radius:5px;border:2px solid white;background-color:blue;text-align:center;">
+                <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><span style="font-size:1.4em; border-radius: 10px;" class="glyphicon glyphicon-search"></span> </button>
+                </span>
+                </div>
+              </form>
     </div>
     <script>
     var ErrorMap = {
