@@ -196,7 +196,7 @@
                     <option value="3" class="selectbut" onclick="namDld('3')">text</option>
 					<option value="4" class="selectbut" onclick="namDld('4')">Demo</option>
 				</select> 
-            		<form id='form' hidden>
+            		<form id='form'>
 				<div>
 				  <label for="uname">First Name</label><br>
 				<input type="text" id="fname" placeholder='First name's minlength="4" maxlength="15" class="forReg" required> <br>
@@ -227,7 +227,7 @@
                             
 			    </form> 
 			<div style="margin-top:78%;">
-			<input type="text" placeholder="SSS 1, ENG"  name="search" id="search" placeholder="search" value="" style="text-align:center;border:2px solid orange;color:black;border-radius:5px;width:80%;"><button onclick="getNames()" style="text-align:center;border:2px solid orange;color:black;border-radius:5px;width:20%;height:23px;" ><span class="glyphicon glyphicon-search"></span></button>
+			<input type="text" placeholder="SSS 1, ENG"  name="search" id="search" placeholder="search" value="" style="text-align:center;border:2px solid orange;color:black;border-radius:5px;width:80%;"><button onclick="getNames('JSS 1', ENG)" style="text-align:center;border:2px solid orange;color:black;border-radius:5px;width:20%;height:23px;" ><span class="glyphicon glyphicon-search"></span></button>
             
 			<button id='middle' onclick="openNav('middle')" hidden>Display</button>
             </div>
@@ -380,7 +380,7 @@
 				<u class="red_black" id="subject">ENG</u>
 				<a href="" class="red_white">CLASS
 				</a>
-				<u class="red_black" id="sub_class">JSS 3</u>
+				<u class="red_black" class="sub_class">JSS 3</u>
 				<a href="" class="red_white">Term
 				</a>
 				<u class="red_black" id="term">First Term</u>
@@ -842,7 +842,8 @@ $("#Term").change(function(){
 
 $("#Class").change(function(){
 							if ($(this).val() != ''){
-                            $("#sub_class").html($(this).val());
+							getNames($(this).val(), 'ENG')
+                            $(".sub_class").html($(this).val());
 						var request = $.ajax({
 							url:"{% url 'responsive_updates' pk=0 %}",
 							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
@@ -1102,9 +1103,9 @@ $("button[name='submit']").click(function() {
                         });
 
 var allChecked= []; var allarray = [];					
-function getNames(){
-							if ($("#search").val().split(",").length == 2){
-								var newBox = $(".newBox");
+function getNames(a, b){
+							
+							var newBox = $(".newBox");
 								for (var i = 0; i < newBox.length+1; i++) {
 									var itr = ""+i;
 									$("#tb_"+itr).hide();
@@ -1112,7 +1113,7 @@ function getNames(){
 								};
 							var request = $.ajax({
 									url:"{% url 'responsive_updates' pk=1 %}",
-									data: {'Class': $("#search").val().split(",")[0],'Subject': $("#search").val().split(",")[1].trim(), 'flow':"names"},
+									data: {'Class': a,'Subject': b, 'flow':"names"},
 										dataType: 'json',
 										success: function(data) {
 											if (data.status <= 100){
@@ -1132,7 +1133,7 @@ function getNames(){
 								request.fail(function( jqXHR, textStatus) {
 			  					errors(jqXHR, textStatus)
 																})
-                         }else{alert("Enter class then subject to search eg JSS 1, ARB.")}   
+                         //else{alert("Enter class then subject to search eg JSS 1, ARB.")}   
                         };
 function next(){			$("#ticked").hide()
 							var checks = $('input:checkbox'); 
@@ -1292,7 +1293,7 @@ function share(){
                    <em id='response' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>
 				   <ol id='failed' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;"></ol>
                    <ol id='success' style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;"></ol>
-				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>SEARCH RESULTs <em id='count'></em></div>	
+				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>LIST OF <em class='sub_class'></em> NAMES<em id='count'></em></div>	
 				<table style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	
 			   	<em style="margin-left:23%;border:2px solid white;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;">JUNIOR SUBJECT LIST</em>	
                     <ol value="" id="Subject" style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;">
