@@ -23,7 +23,7 @@
 			text-align:center;width:100%;background-color:white;color:black;border-radius:5px;
 		}
 		table, th, td {
-			border: 1px solid #0000CD;border-radius: 5px;font-family: Baskerville Old Face;text-align: center;font-size: 11px;
+			border: 1px solid #0000CD;border-radius:5px;font-family: Baskerville Old Face;text-align: center;font-size: 11px;
             	}
           	img{
         	    border:2px solid rgba(247, 238, 238, 0.918);padding: 2px;
@@ -380,7 +380,7 @@
 				<u class="red_black" id="subject">ENG</u>
 				<a href="" class="red_white">CLASS
 				</a>
-				<u class="red_black" class="sub_class">JSS 3</u>
+				<u class="red_black"><em id="top_class">JSS 3</em></u>
 				<a href="" class="red_white">Term
 				</a>
 				<u class="red_black" id="term">First Term</u>
@@ -842,8 +842,8 @@ $("#Term").change(function(){
 
 $("#Class").change(function(){
 							if ($(this).val() != ''){
+							$("#top_class").html($(this).val());
 							getNames($(this).val(), 'ENG')
-                            $(".sub_class").html($(this).val());
 						var request = $.ajax({
 							url:"{% url 'responsive_updates' pk=0 %}",
 							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
@@ -887,7 +887,8 @@ $("#Class").change(function(){
 			  					errors(jqXHR, textStatus)
 																})
 								dom.Class = $("#Class").val(), dom.Subject = $("#Subject").val(), dom.Term = $("#Term").val();
-								cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)
+								if (JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]))){
+                            cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)}
                             	if ($(this).val()[0] == 'J'){
 									$("#Senior").hide();
 									$("#Junior").show()
@@ -901,7 +902,8 @@ $("#Class").change(function(){
                             }});
 
 $("#rowNum").change(function(){
-							cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)
+							if (JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]))){
+                            cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)}
 						var index = Number($(this).val());
 						for (var i = 1; i < index+1; i++){
 							var itr = ""+i;
@@ -1090,7 +1092,8 @@ function refresh(){
                             } };	
 
 $("button[name='submit']").click(function() {
-							cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)
+							if (JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]))){
+                            cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)}
                             var arr = $("#list").val().split(',');
                             arr.unshift("Defualt");
                             cls(dom.len + 1)
@@ -1104,7 +1107,7 @@ $("button[name='submit']").click(function() {
 
 var allChecked= []; var allarray = [];					
 function getNames(a, b){
-							
+                            $("#sub_class").html(a);
 							var newBox = $(".newBox");
 								for (var i = 0; i < newBox.length+1; i++) {
 									var itr = ""+i;
@@ -1259,6 +1262,7 @@ function listening(data){
 								$("#uploading").css("background-color", 'greenyellow')
 								array = []
 								if (varTotal.end > $(".oneBox, .newBox").length){
+									localStorage.removeItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])
 									var next = window.location.href.split('/result')[0]+"/result/render/pdf/2/0/0/";
         							window.open(next);
 								}
@@ -1293,7 +1297,7 @@ function share(){
                    <em id='response' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>
 				   <ol id='failed' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;"></ol>
                    <ol id='success' style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;"></ol>
-				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>LIST OF <em class='sub_class'></em> NAMES<em id='count'></em></div>	
+				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>LIST OF <em id='sub_class'></em> NAMES<em id='count'></em></div>	
 				<table style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	
 			   	<em style="margin-left:23%;border:2px solid white;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;">JUNIOR SUBJECT LIST</em>	
                     <ol value="" id="Subject" style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;">

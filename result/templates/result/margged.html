@@ -675,7 +675,6 @@
     function saveOnce(callBack = []){
 							var array = [];
               $("#saveBut").hide();
-              $('#waiting').html("Wait while saving your work.");
               if (callBack.length == 0){
                 for (var i = 1; i < $(".oneBox, .newBox").length;  i++){
                   var itr = ""+i;ditcVal(i)
@@ -691,10 +690,15 @@
                       var content = callBack
                       }
                     else{
+                        $('#waiting').html("{{ qry.updated }}");
                         localStorage.removeItem("{{qry.subject}}"+'_'+"{{qry.Class}}".split(' ')[1]+'_'+"{{term}}"[0])
+                        
                     }
                     };
-								var request = $.ajax({
+                
+							if (content){
+              $('#waiting').html("Wait while saving your work.");
+                var request = $.ajax({
                         type:'POST',
                         data:{'content':JSON.stringify(content)},
                         url:"{% url 'responsive_updates' pk=0 %}",
@@ -711,6 +715,7 @@
 								    request.fail(function(jqXHR, textStatus, data) {
                         alert(ErrorMap[jqXHR.status])
                           })
+              }
                           };
                           
   function saveState(cls){

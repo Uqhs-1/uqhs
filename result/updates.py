@@ -279,13 +279,17 @@ def responsive_updates(request, pk):
                     if names.count() == 0:
                         names = CNAME.objects.filter(Class__exact= request.GET.get('Class'), session__exact = session.profile.session).order_by('gender', 'full_name')
                         data = {"status":str(names.count())}
-                        data["list"] = ['Default']+[[i.full_name, i.last_name[0]+i.first_name[0]+'/'+i.Class[0]+'/'+i.session[-2:]+'/'+str(i.id)] for i in names]
+                        data["list"] = ['Default']+[[i.full_name, get_serial_no(i)] for i in names]
         else:
             data = {'redirect': 'user/updates/'+str(request.user.profile.id)}
     else:
         data = {"redirect":'home'}
     return JsonResponse(data)
-
+def get_serial_no(i):
+    try:
+        return i.uid
+    except:
+        return i.id
 
 def order_of(second):
     return second[1]

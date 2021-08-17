@@ -233,7 +233,7 @@ class QSUBJECT(models.Model):#step5-subject
      
      def save(self):
         from .utils import do_grades, cader
-        from .updates import average
+        from .updates import average, get_serial_no
         if self.tutor is not None:
             if self.tutor.first_term == '1st Term' and self.tutor.second_term == '1st Term':
                 self.avr = self.fagr = self.agr 
@@ -248,7 +248,7 @@ class QSUBJECT(models.Model):#step5-subject
             self.qteacher = self.tutor.teacher_name
         if self.student_name.full_name:
             slp = self.student_name.full_name.split(' ')+['OTHER']
-            self.student_id = 'NA/'+self.tutor.Class[0]+'/'+self.student_name.session[-2:]+'/'+str(self.student_name.id)
+            self.student_id = get_serial_no(self.student_name)
             self.gender = self.student_name.gender
         if self.grade == 'null':
             self.grade = do_grades([int(self.agr)], cader(self.tutor.Class))[0]
