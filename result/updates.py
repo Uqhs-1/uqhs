@@ -273,23 +273,37 @@ def responsive_updates(request, pk):
                         tutor.subject = 'BST'
                     data = {"status":str(len(response)), 'updated':response[0][0], 'agr':response[0][1], 'fagr':response[0][2], 'sagr':response[0][3], 'aagr':response[0][4], 'avg':response[0][5]}
             elif pk == "1":
-                    names = QSUBJECT.objects.filter(tutor__Class__exact= request.GET.get('Class'), tutor__subject__exact= request.GET.get('Subject'), tutor__session__exact = session, tutor__term__exact = "1st Term").order_by('student_name__gender', 'student_name__full_name')
+                    names = QSUBJECT.objects.filter(tutor__Class__exact= request.GET.get('Class'), tutor__subject__exact= request.GET.get('Subject'), tutor__session__exact = session.profile.session, tutor__term__exact = "1st Term").order_by('student_name__gender', 'student_name__full_name')
                     data = {"status":str(names.count())}
-                    data["list"] = ['Default']+[[i.student_name.full_name, i.student_id] for i in names] 
+                    data["list"] = ['Default']+[[i.student_name.full_name, get_serial_no(i.student_name), i.student_name.id] for i in names] 
                     if names.count() == 0:
                         names = CNAME.objects.filter(Class__exact= request.GET.get('Class'), session__exact = session.profile.session).order_by('gender', 'full_name')
                         data = {"status":str(names.count())}
-                        data["list"] = ['Default']+[[i.full_name, get_serial_no(i)] for i in names]
+                        data["list"] = ['Default']+[[i.full_name, get_serial_no(i), i.id] for i in names]
+            elif pk == "2":#New class of student after promotion
+                cl_ss = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ' ']
+                promo = CNAME.objects.filter(Class__exact = cl_ss[cl_ss.index(request.POST['Class'])+1], session__exact = session.profile.session).order_by('gender', 'full_name')
+                currnet = CNAME.objects.filter(Class__exact= request.POST['Class'], session__exact = session.profile.session).order_by('gender', 'full_name')
+                if not promo: 
+                    data = {'counts':str(len([save(i[-1], cl_ss[cl_ss.index(request.POST['Class'])+1]) for i in json.loads(request.POST['content']) if i[-1] in [r.id for r in currnet]])), "Class":cl_ss[cl_ss.index(request.POST['Class'])+1]}
+                else:
+                    data = {'counts':request.POST['lent'], "Class":request.POST['Class']}
         else:
             data = {'redirect': 'user/updates/'+str(request.user.profile.id)}
     else:
         data = {"redirect":'home'}
     return JsonResponse(data)
+
 def get_serial_no(i):
     try:
         return i.uid
     except:
         return i.id
+
+def save(i, cl):
+    obj = get_object_or_404(CNAME, pk=i)
+    obj.Class = cl
+    obj.save()
 
 def order_of(second):
     return second[1]

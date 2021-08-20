@@ -1105,8 +1105,10 @@ $("button[name='submit']").click(function() {
 						}
                         });
 
-var allChecked= []; var allarray = [];					
+var allChecked = []; var allarray = [];var radio = {};		
 function getNames(a, b){
+							
+							allChecked = []; allarray = []; radio = {}
                             $("#sub_class").html(a);
 							var newBox = $(".newBox");
 								for (var i = 0; i < newBox.length+1; i++) {
@@ -1116,16 +1118,17 @@ function getNames(a, b){
 								};
 							var request = $.ajax({
 									url:"{% url 'responsive_updates' pk=1 %}",
-									data: {'Class': a,'Subject': b, 'flow':"names"},
+									data: {'Class': a,'Subject': b, 'flow':'name'},
 										dataType: 'json',
 										success: function(data) {
 											if (data.status <= 100){
 												var namesRet = data.list; 
 												$("#searchResult").show();
-												document.getElementById("resultTable").innerHTML += "<thead><tr><th>SN</th><th>Student Name</th><th>Admin No.</th><th>tick</th></tr></thead>";
+												document.getElementById("resultTable").innerHTML = '';
+												document.getElementById("resultTable").innerHTML += "<thead><tr><th colspan='4'> <input type='radio' name='choiced' value='scores' onclick='$(radio.state = 1)'><button disabled style='width:45%'>Select names for scoring</button><input type='radio' name='choiced' value='promo' onclick='$(radio.state = 2)'><button disabled style='width:45%'>For promotion Only</button></th></tr><tr><th>SN</th><th>Student Name</th><th>Admin No.</th><th>tick</th></tr></thead>";
 												for (var i =1; i < namesRet.length; i++){
 													allarray.push(data.list[i]);
-													var thss = namesRet[i][0].split(' ')[0]+'_'+ namesRet[i][0].split(' ')[1]+'_'+namesRet[i][1]; 
+													var thss = namesRet[i][0].split(' ')[0]+'_'+ namesRet[i][0].split(' ')[1]+'_'+namesRet[i][1]+'_'+namesRet[i][2]; 
 													document.getElementById("resultTable").innerHTML += '<tr>'+'<td>'+ ""+i +'</td>'+'<td>'+""+namesRet[i][0]+'</td><td>'+ namesRet[i][1]+ "</td><td><input type='checkbox'"+ "value="+thss  +" > " + '</td></tr>';
 													
 												};
@@ -1136,27 +1139,50 @@ function getNames(a, b){
 								request.fail(function( jqXHR, textStatus) {
 			  					errors(jqXHR, textStatus)
 																})
-                         //else{alert("Enter class then subject to search eg JSS 1, ARB.")}   
+                        
                         };
-function next(){			$("#ticked").hide()
-							var checks = $('input:checkbox'); 
-							for (var i = 0; i < checks.length; i++){
-							var item = checks[i];
-							if (checks[i].checked){
-								allChecked.push([item.value.split('_')[0]+' '+ item.value.split('_')[1], item.value.split('_')[2]]);
-													}
+						
+function next(a=$("#Class").val(), b=$("#Subject").val()){			
+							if (radio.state){
+								$("#ticked").hide()
+								var checks = $('input:checkbox'); 
+								for (var i = 0; i < checks.length; i++){
+									var item = checks[i];
+									if (checks[i].checked){
+										allChecked.push([item.value.split('_')[0]+' '+ item.value.split('_')[1], item.value.split('_')[2]]);
+															}
+										};
+									if (JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]))){
+									cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)}
+							if (allChecked.length == 0){allChecked = allarray};
+							if (radio.state == 1){
+									for (var i = 1; i < allChecked.length+1; i++) { 
+									var itr = ""+i;
+									document.getElementById("name_"+itr).value = allChecked[i-1][0];
+									$("#states_"+itr).html(allChecked[i-1][1]);
+									document.getElementById("student_id_"+itr).value = allChecked[i-1][1]; 
+									$("#tb_"+itr).show();
+									$("#tb_"+itr).addClass("oneBox");
 								};
-							if (JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0]))){
-                            cls(JSON.parse(localStorage.getItem($("#Subject").val()+'_'+$("#Class").val().split(' ')[1]+'_'+$("#Term").val()[0])).len + 1)}
-							if (allChecked.length == 0){allChecked = allarray};							
-							for (var i = 1; i < allChecked.length+1; i++) { 
-								var itr = ""+i;
-                            document.getElementById("name_"+itr).value = allChecked[i-1][0];
-							$("#states_"+itr).html(allChecked[i-1][1]);
-							document.getElementById("student_id_"+itr).value = allChecked[i-1][1]; 
-                            $("#tb_"+itr).show();
-				            $("#tb_"+itr).addClass("oneBox");
-							}; 
+									}	
+							else{
+								var array = JSON.stringify(allChecked);
+								var request = $.ajax({
+								type:'POST',
+								data:{'content':array, 'Class': a,'Subject': b, 'flow':'promo', 'lent':""+allChecked.length},
+								url:"{% url 'responsive_updates' pk=2 %}",
+								dataType: 'json',
+								success: function(data) {
+									alert(data.counts+' students promoted to '+data.Class)
+										}
+									});
+								request.fail(function(jqXHR, textStatus, data) {
+									errors(jqXHR, textStatus);
+			  						})
+							}						
+								}
+							else{alert("Select ONE option above.")} 
+							 
 							};
 
 function positioning(){

@@ -109,10 +109,10 @@
             <input  class="deletes" type="checkbox" value="{{ scr.id }},{{ scr.student_name.full_name }}" style="border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;" class="delete" hidden>
         </td>
         <td id="id_{{ forloop.counter }}" hidden>
-          <input type="text" value="{{ scr.student_name.serial_no }}" id="ide_{{ forloop.counter }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;" disabled>
+          <input type="text" value="{{ scr.student_name.id }}" id="ide_{{ forloop.counter }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;" disabled>
         </td>
         <td id="edith_student_id_td{{ forloop.counter }}" hidden>
-          <input  id="edith_name_id_{{ forloop.counter }}" type="text" value="{{ scr.student_name.serial_no }}">
+          <input  id="edith_name_id_{{ forloop.counter }}" type="text" value="{{ scr.student_name.id }}">
         </td>
         <td id="edith_name_td{{ forloop.counter }}" hidden>
           <input  id="edith_name_{{ forloop.counter }}" type="text" value="{{ scr.student_name }}">
