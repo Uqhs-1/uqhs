@@ -947,7 +947,7 @@ function pagging(x){
 								$(".page_"+x).show();
 								next_page.npg = x
 							};
-function pages(){
+function pages(){		document.getElementById('buttons').innerHTML = '';
 						var seed = [];var dimed = [0]
 						var page = 31;
 						document.getElementById('buttons').innerHTML += "<button "+ "  onclick="+"'pagging(1)'"+">"+ ""+ 1 +"</button>" ;
@@ -1125,14 +1125,14 @@ function getNames(a, b){
 												var namesRet = data.list; 
 												$("#searchResult").show();
 												document.getElementById("resultTable").innerHTML = '';
-												document.getElementById("resultTable").innerHTML += "<thead><tr><th colspan='4'> <input type='radio' name='choiced' value='scores' onclick='$(radio.state = 1)'><button disabled style='width:45%'>Select names for scoring</button><input type='radio' name='choiced' value='promo' onclick='$(radio.state = 2)'><button disabled style='width:45%'>For promotion Only</button></th></tr><tr><th>SN</th><th>Student Name</th><th>Admin No.</th><th>tick</th></tr></thead>";
+												document.getElementById("resultTable").innerHTML += "<thead><tr><th>SN</th><th>Student Name</th><th>Admin No.</th><th>tick</th></tr></thead>";
 												for (var i =1; i < namesRet.length; i++){
 													allarray.push(data.list[i]);
 													var thss = namesRet[i][0].split(' ')[0]+'_'+ namesRet[i][0].split(' ')[1]+'_'+namesRet[i][1]+'_'+namesRet[i][2]; 
 													document.getElementById("resultTable").innerHTML += '<tr>'+'<td>'+ ""+i +'</td>'+'<td>'+""+namesRet[i][0]+'</td><td>'+ namesRet[i][1]+ "</td><td><input type='checkbox'"+ "value="+thss  +" > " + '</td></tr>';
 													
 												};
-												document.getElementById("resultTable").innerHTML += "<tfoot><th colspan='3'>Tick none when all names are applicable, then click</th><th><button id='ticked' onclick='next()' style='line-height:65%;border:2px solid white;color:black;border-radius:5px;'>Next</button></th></tfoot>";
+												document.getElementById("resultTable").innerHTML += "<tfoot><tr><th colspan='4'> <input type='radio' name='choiced' value='scores' onclick='$(radio.state = 1)'><button disabled style='width:45%'>Select names for scoring</button><input type='radio' name='choiced' value='promo' onclick='$(radio.state = 2)'><button disabled style='width:45%'>For promotion Only</button></th></tr><th colspan='3'>Tick none when all names are applicable, then click</th><th><button id='ticked' onclick='next()' style='line-height:65%;border:2px solid white;color:black;border-radius:5px;'>Next</button></th></tfoot>";
 											}else{$("#states_"+itr).html("error!");$("#states_"+itr).css('color', 'red')}
 										},
 									});
@@ -1166,14 +1166,14 @@ function next(a=$("#Class").val(), b=$("#Subject").val()){
 								};
 									}	
 							else{
-								var array = JSON.stringify(allChecked);
 								var request = $.ajax({
-								type:'POST',
-								data:{'content':array, 'Class': a,'Subject': b, 'flow':'promo', 'lent':""+allChecked.length},
-								url:"{% url 'responsive_updates' pk=2 %}",
+								type:'GET',
+								data:{'content':'array', 'Class': a,'Subject': b, 'flow':'promo', 'lent':""+allChecked.length},
+								url:"{% url 'pdf' ty=3 sx=0 pk=2 %}",
 								dataType: 'json',
 								success: function(data) {
-									alert(data.counts+' students promoted to '+data.Class)
+									var next = 'https://dhnygxib7cbg0.cloudfront.net/pdf/cards /'+data.status+'/summary.pdf';
+        				        window.open(next, '_blank');
 										}
 									});
 								request.fail(function(jqXHR, textStatus, data) {
@@ -1323,7 +1323,7 @@ function share(){
                    <em id='response' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>
 				   <ol id='failed' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;"></ol>
                    <ol id='success' style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;"></ol>
-				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>LIST OF <em id='sub_class'></em> NAMES<em id='count'></em></div>	
+				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>LIST OF <em id='sub_class'></em> NAMES<em id='count'></em></div>{% csrf_token %}	
 				<table style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	
 			   	<em style="margin-left:23%;border:2px solid white;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;">JUNIOR SUBJECT LIST</em>	
                     <ol value="" id="Subject" style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;">

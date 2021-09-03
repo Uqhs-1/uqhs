@@ -190,9 +190,19 @@ class Rendered:
     def render(path: str, params: dict, filepath, filename):
         template = get_template(path)
         html = template.render(params)
-        path = os.path.join(settings.MEDIA_ROOT, 'static/result/pdf/'+filepath)
-        result = open(path+'.pdf', 'wb')
-        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
-        result.close()
+        path = os.path.join(settings.MEDIA_ROOT, filepath)
+        response = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+        if not pdf.err:
+            response = HttpResponse(response.getvalue(), content_type = "application/pdf")
+            response['Content-Disposition'] = "attachment; filename={name}.pdf".format(name='summary')
+            try:
+                upload_to_s3(response.content, 'pdf/cards /'+filename+'/summary.pdf')
+                print('saved to uqhs bucket!')
+            except:
+                result = open(path+'.pdf', 'wb')
+                pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+                result.close()
+                print('saved to offline!')
         data = {'status': filename}
         return JsonResponse(data)

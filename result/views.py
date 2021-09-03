@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Avg
 from django.http import JsonResponse
 from django.views.generic import View
-import os, csv
+import os, csv, json
 from django.http import HttpResponse
 #from io import BytesIO
 import requests
@@ -364,7 +364,7 @@ def csv_bsh(request, pk):
     return response
 
 #QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')
-class Pdf(View):#LoginRequiredMixin, 
+class Pdf(View):#LoginRequiredMixin,
     def get(self, request, ty, sx, pk):#CARD
         if ty == '1' or ty == '4':
             this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('student_name__gender', 'student_name__full_name') 
@@ -373,8 +373,11 @@ class Pdf(View):#LoginRequiredMixin,
                 lists = lists + [None]*(10-len(lists))
             a,b,c,d,e,f,g,h,i,j = lists
             if ty == '4':
-                term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])
-                return render(request, 'result/three_termx.html',  {'term':term[-1], 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'margged':CNAME.objects.filter(Class__exact=this.first().tutor.Class, session__exact=session.profile.session), 'info':this.first().student_name})     
+                try:
+                    term = sorted([this.first().tutor.first_term, this.first().tutor.second_term, this.first().tutor.third_term])
+                    return render(request, 'result/three_termx.html',  {'term':term[-1], 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f, 'g': g, 'h': h, 'i': i,'j': j, 'margged':CNAME.objects.filter(Class__exact=this.first().tutor.Class, session__exact=session.profile.session), 'info':this.first().student_name})
+                except:
+                       return redirect('student_info', pk=sx)  
             elif this:  
                  params, term, filename = param_cards(request, this, lists)
                  return Render.render('result/card.html', params, 'pdf/cards /'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(this.first().tutor.Class))+'/'+term[-1].split(' ')[0]+'/'+str(this.first().student_name.last_name)+'_'+str(this.first().student_name.first_name)+'.pdf', filename)
@@ -409,6 +412,62 @@ class Pdf(View):#LoginRequiredMixin,
             param = {"students":candi.count(), "one":candi.filter(Class__exact='JSS 1', gender__exact=1).order_by('gender', 'full_name'), "two":candi.filter(Class__exact='JSS 1', gender__exact=2).order_by('gender', 'full_name'), "three":candi.filter(Class__exact='JSS 2', gender__exact=1).order_by('gender', 'full_name'), "four":candi.filter(Class__exact='JSS 2', gender__exact=2).order_by('gender', 'full_name'), "five":candi.filter(Class__exact='JSS 3', gender__exact=1).order_by('gender', 'full_name'), "six":candi.filter(Class__exact='JSS 3', gender__exact=2).order_by('gender', 'full_name'), "seven":candi.filter(Class__exact='SSS 1', gender__exact=1).order_by('gender', 'full_name'), "eight":candi.filter(Class__exact='SSS 1', gender__exact=2).order_by('gender', 'full_name'), "nine":candi.filter(Class__exact='SSS 2', gender__exact=1).order_by('gender', 'full_name'), "ten":candi.filter(Class__exact='SSS 2', gender__exact=2).order_by('gender', 'full_name'), "eleven":candi.filter(Class__exact='SSS 3', gender__exact=1).order_by('gender', 'full_name'), "tewlve":candi.filter(Class__exact='SSS 3', gender__exact=2).order_by('gender', 'full_name')
             }
             return render(request, 'result/exam_venue.html', param)
+
+        if ty == '3':
+            cn = CNAME.objects.filter(Class__exact=request.GET.get('Class'))
+            print(cn.count() >= QSUBJECT.objects.filter(tutor__subject__exact='ENG', tutor__Class__exact=request.GET.get('Class')).count())
+            if cn.count() >= QSUBJECT.objects.filter(tutor__subject__exact='ENG', tutor__Class__exact=request.GET.get('Class')).count():
+                pmt, nta, rpt = 0, 0, 0
+                if request.GET.get('Class'):
+                    scr_bd = ['C', 'A', 'C6', 'C5', 'C4', 'B3', 'B2', 'A1']
+                    datum = []
+                    for ix in cn:
+                        grades = [[], []]#2, 8
+                        scr = []
+                        #scr += []
+                        for s in QSUBJECT.objects.filter(student_name_id__exact=ix):
+                            if s.tutor.subject == 'MAT' and s.grade in scr_bd:
+                                    grades[0] += [s.grade]
+                                    scr += [(s.tutor.subject+' : '+s.grade)]
+                            if s.tutor.subject == 'ENG' and s.grade in scr_bd:
+                                grades[0] += [s.grade]
+                                scr += [(s.tutor.subject+' : '+s.grade)]
+                            else:
+                                if s.grade in scr_bd:
+                                    grades[1] += [s.grade]
+                                    scr += [(s.tutor.subject+' : '+s.grade)]
+                                else:
+                                    scr += [(s.tutor.subject+' : '+s.grade)]
+                        eng_mat, other = [len(i) for i in grades]
+                        
+                        cl_ss = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ' ']
+                        if eng_mat == 2 and other >= 3:
+                            new_class, status, remark = cl_ss[cl_ss.index(request.GET.get('Class'))+1], 'Good result, Promoted to '+cl_ss[cl_ss.index(request.GET.get('Class'))+1], 'Promoted'
+                            pmt += 1
+                        elif eng_mat == 1 and other >= 3:
+                            new_class, status, remark = cl_ss[cl_ss.index(request.GET.get('Class'))+1], 'Fear result, Promoted to '+cl_ss[cl_ss.index(request.GET.get('Class'))+1]+' on trial', 'On Trial'
+                            nta += 1
+                        else:
+                            new_class, status, remark = request.GET.get('Class'), 'Poor result, you are to repeat '+request.GET.get('Class'), 'Repeated'
+                            rpt += 1
+                        scrd = sorted(list(set(scr)))
+                        scrd += [None]*10
+                        scrd.insert(0, ix.full_name)
+                        scrd.insert(11, remark)
+                        datum.append(scrd[:12])
+                        ix.Class, ix.principal_comment = [new_class, status]
+                        ix.save()
+                        data = {"counts":request.GET.get('Class')}
+                    print(pmt, nta, rpt)
+                    params = {
+                        'request':request, 'today':timezone.now(), 'Class':request.GET.get('Class'), 'students':datum, 'counts':len(datum), 'pmt':pmt, 'nta':nta, 'rpt':rpt
+                            }
+                    return Rendered.render('result/report_card_summary.html', params, 'pdf/cards/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.GET.get('Class')))+'/summary', request.GET.get('Class')[-1])
+                else:
+                    print('Retreived!')
+            data = {'status': request.GET.get('Class')}
+            return JsonResponse(data)
+        
 
 
 file_path = os.path.join(module_dir, 'JSS 2.txt')
