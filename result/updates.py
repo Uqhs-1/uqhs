@@ -280,14 +280,7 @@ def responsive_updates(request, pk):
                         names = CNAME.objects.filter(Class__exact= request.GET.get('Class'), session__exact = session.profile.session).order_by('gender', 'full_name')
                         data = {"status":str(names.count())}
                         data["list"] = ['Default']+[[i.full_name, get_serial_no(i), i.id] for i in names]
-            elif pk == "2":#New class of student after promotion
-                cl_ss = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ' ']
-                promo = CNAME.objects.filter(Class__exact = cl_ss[cl_ss.index(request.POST['Class'])+1], session__exact = session.profile.session).order_by('gender', 'full_name')
-                currnet = CNAME.objects.filter(Class__exact= request.POST['Class'], session__exact = session.profile.session).order_by('gender', 'full_name')
-                if not promo: 
-                    data = {'counts':str(len([save(i[-1], cl_ss[cl_ss.index(request.POST['Class'])+1]) for i in json.loads(request.POST['content']) if i[-1] in [r.id for r in currnet]])), "Class":cl_ss[cl_ss.index(request.POST['Class'])+1]}
-                else:
-                    data = {'counts':request.POST['lent'], "Class":request.POST['Class']}
+            
         else:
             data = {'redirect': 'user/updates/'+str(request.user.profile.id)}
     else:

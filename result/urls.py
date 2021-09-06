@@ -28,7 +28,7 @@ urlpatterns = [
             url('student_home_page/(?P<pk>\d+)/', views.student_home_page, name='student_home_page'), 
             url(r'^(?P<pk>\d+)/(?P<md>\d+)/', views.detailView, name='subject_view'),###################### 
             url(r'^_all/(?P<pk>\d+)/(?P<md>\d+)/', views.all_View, name='subject_view_all'),#################### student_subject_list
-            #url('quest_filter/(?P<tm>\d+)/(?P<cl>\d+)/(?P<sj>[\w\-]+)/', views.quest_filter, name='quest_filter'),
+            url('report_card_summary/', views.report_card_summary, name='report_card_summary'),
             url('student_names/(?P<pk>\d+)/', views.Student_names_list, name='student_names'),
             #results_junior_senior#annual_sheet
             url(r'^subject/transfers/(?P<md>\d+)/', views.teacher_accounts, name='transfers'),

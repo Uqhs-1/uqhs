@@ -413,19 +413,18 @@ class Pdf(View):#LoginRequiredMixin,
             }
             return render(request, 'result/exam_venue.html', param)
 
-        if ty == '3':
-            cn = CNAME.objects.filter(Class__exact=request.GET.get('Class'))
-            print(cn.count() >= QSUBJECT.objects.filter(tutor__subject__exact='ENG', tutor__Class__exact=request.GET.get('Class')).count())
-            if cn.count() >= QSUBJECT.objects.filter(tutor__subject__exact='ENG', tutor__Class__exact=request.GET.get('Class')).count():
+
+def report_card_summary(request):
+                print([i[-1] for i in json.loads(request.POST['content'])])
                 pmt, nta, rpt = 0, 0, 0
-                if request.GET.get('Class'):
+                if request.POST['Class']:
                     scr_bd = ['C', 'A', 'C6', 'C5', 'C4', 'B3', 'B2', 'A1']
                     datum = []
-                    for ix in cn:
+                    for ix in [int(i[-1]) for i in json.loads(request.POST['content'])]:
                         grades = [[], []]#2, 8
                         scr = []
-                        #scr += []
                         for s in QSUBJECT.objects.filter(student_name_id__exact=ix):
+                            ix = s.student_name
                             if s.tutor.subject == 'MAT' and s.grade in scr_bd:
                                     grades[0] += [s.grade]
                                     scr += [(s.tutor.subject+' : '+s.grade)]
@@ -442,13 +441,13 @@ class Pdf(View):#LoginRequiredMixin,
                         
                         cl_ss = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ' ']
                         if eng_mat == 2 and other >= 3:
-                            new_class, status, remark = cl_ss[cl_ss.index(request.GET.get('Class'))+1], 'Good result, Promoted to '+cl_ss[cl_ss.index(request.GET.get('Class'))+1], 'Promoted'
+                            new_class, status, remark = cl_ss[cl_ss.index(request.POST['Class'])+1], 'Good result, Promoted to '+cl_ss[cl_ss.index(request.POST['Class'])+1], 'Promoted'
                             pmt += 1
                         elif eng_mat == 1 and other >= 3:
-                            new_class, status, remark = cl_ss[cl_ss.index(request.GET.get('Class'))+1], 'Fear result, Promoted to '+cl_ss[cl_ss.index(request.GET.get('Class'))+1]+' on trial', 'On Trial'
+                            new_class, status, remark = cl_ss[cl_ss.index(request.POST['Class'])+1], 'Fear result, Promoted to '+cl_ss[cl_ss.index(request.POST['Class'])+1]+' on trial', 'On Trial'
                             nta += 1
                         else:
-                            new_class, status, remark = request.GET.get('Class'), 'Poor result, you are to repeat '+request.GET.get('Class'), 'Repeated'
+                            new_class, status, remark = request.POST['Class'], 'Poor result, you are to repeat '+request.POST['Class'], 'Repeated'
                             rpt += 1
                         scrd = sorted(list(set(scr)))
                         scrd += [None]*10
@@ -457,17 +456,13 @@ class Pdf(View):#LoginRequiredMixin,
                         datum.append(scrd[:12])
                         ix.Class, ix.principal_comment = [new_class, status]
                         ix.save()
-                        data = {"counts":request.GET.get('Class')}
+                        data = {"counts":request.POST['Class']}
                     print(pmt, nta, rpt)
                     params = {
-                        'request':request, 'today':timezone.now(), 'Class':request.GET.get('Class'), 'students':datum, 'counts':len(datum), 'pmt':pmt, 'nta':nta, 'rpt':rpt
+                        'request':request, 'today':timezone.now(), 'Class':request.POST['Class'], 'students':datum, 'counts':len(datum), 'pmt':pmt, 'nta':nta, 'rpt':rpt
                             }
-                    return Rendered.render('result/report_card_summary.html', params, 'pdf/cards/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.GET.get('Class')))+'/summary', request.GET.get('Class')[-1])
-                else:
-                    print('Retreived!')
-            data = {'status': request.GET.get('Class')}
-            return JsonResponse(data)
-        
+                    return Rendered.render('result/report_card_summary.html', params, 'pdf/cards/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.POST['Class']))+'/summary', request.POST['Class'][-1])
+                return JsonResponse(data)
 
 
 file_path = os.path.join(module_dir, 'JSS 2.txt')
