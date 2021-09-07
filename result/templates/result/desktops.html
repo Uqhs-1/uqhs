@@ -1168,7 +1168,7 @@ function next(a=$("#Class").val(), b=$("#Subject").val()){
 							else{
 								var request = $.ajax({
 								type:'POST',
-								data:{'content':JSON.stringify(allChecked), 'Class': a,'Subject': b, 'flow':'promo', 'lent':""+allChecked.length, 'csrfmiddlewaretoken': '{{csrf_token}}'},
+								data:{'content':JSON.stringify(allChecked), 'Class': a,'Term': $("#Term").val(), 'flow':'promo', 'lent':""+allChecked.length, 'csrfmiddlewaretoken': '{{csrf_token}}'},
 								url:"{% url 'report_card_summary' %}",
 								dataType: 'json',
 								success: function(data){

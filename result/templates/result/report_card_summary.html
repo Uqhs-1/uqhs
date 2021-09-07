@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -112,11 +113,18 @@
         </tr>    
         <tr>
 			
-			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='13'>
-				<pre><strong>No OF STUDENT PROMOTED:</strong>{{ pmt }}</pre></pre><pre><strong>No OF STUDENT ON TRIAL:</strong>{{rpt}}</pre><pre><strong>No OF REPEATED STUDENTS:</strong>{{nta}}
+			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='3'>
+				<pre><strong>No OF STUDENT PROMOTED:</strong>{{ pmt }}:{{ pmtt }}%</pre>
+			</th>
+			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='5'>
+				</pre><pre><strong>No OF STUDENT ON TRIAL:</strong>{{rpt}}:{{rptt}}%</pre>
+			</th>
+			<th style="background-color:#b77a7a;color:white;font-size:10px;" colspan='5'>
+				<pre><strong>No OF REPEATED STUDENTS:</strong>{{nta}}:{{ntat}}%
 			</th>
 			   
         </tr> 
+		 
         <th  style="background-color:#d84848;color:white;"colspan="13" id="foot">{{ grade_conuts }}</th>
 		
 	</table>

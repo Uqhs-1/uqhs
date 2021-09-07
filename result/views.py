@@ -415,7 +415,8 @@ class Pdf(View):#LoginRequiredMixin,
 
 
 def report_card_summary(request):
-                print([i[-1] for i in json.loads(request.POST['content'])])
+        cl_ss = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', '']
+        if request.POST['Term'] == '3rd Term':
                 pmt, nta, rpt = 0, 0, 0
                 if request.POST['Class']:
                     scr_bd = ['C', 'A', 'C6', 'C5', 'C4', 'B3', 'B2', 'A1']
@@ -438,8 +439,6 @@ def report_card_summary(request):
                                 else:
                                     scr += [(s.tutor.subject+' : '+s.grade)]
                         eng_mat, other = [len(i) for i in grades]
-                        
-                        cl_ss = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ' ']
                         if eng_mat == 2 and other >= 3:
                             new_class, status, remark = cl_ss[cl_ss.index(request.POST['Class'])+1], 'Good result, Promoted to '+cl_ss[cl_ss.index(request.POST['Class'])+1], 'Promoted'
                             pmt += 1
@@ -456,13 +455,16 @@ def report_card_summary(request):
                         datum.append(scrd[:12])
                         ix.Class, ix.principal_comment = [new_class, status]
                         ix.save()
-                        data = {"counts":request.POST['Class']}
                     print(pmt, nta, rpt)
+                    sumT = sum([pmt, nta, rpt])
+                    pmtt, ntat, rptt = [round(pmt*100/sumT, 2), round(nta*100/sumT, 2), round(rpt*100/sumT, 2)]
                     params = {
-                        'request':request, 'today':timezone.now(), 'Class':request.POST['Class'], 'students':datum, 'counts':len(datum), 'pmt':pmt, 'nta':nta, 'rpt':rpt
+                        'request':request, 'today':timezone.now(), 'Class':request.POST['Class'], 'students':datum, 'counts':len(datum), 'pmt':pmt, 'nta':nta, 'rpt':rpt, 'pmtt':pmtt, 'ntat':ntat, 'rptt':rptt
                             }
-                    return Rendered.render('result/report_card_summary.html', params, 'pdf/cards/'+str(['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'].index(request.POST['Class']))+'/summary', request.POST['Class'][-1])
-                return JsonResponse(data)
+                    return Rendered.render('result/report_card_summary.html', params, 'pdf/cards/'+str(cl_ss.index(request.POST['Class']))+'/summary', str(cl_ss.index(request.POST['Class'])))
+        else:
+            data = {'status': str(cl_ss.index(request.POST['Class']))}
+        return JsonResponse(data)
 
 
 file_path = os.path.join(module_dir, 'JSS 2.txt')
