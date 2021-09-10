@@ -27,7 +27,7 @@ gunicorn==19.9.0
 requests==2.25.1
 s3transfer==0.4.2
 six==1.15.0
-sqlparse==0.4.1
+sqlparse==0.4.2
 urllib3>=1.26.4
 webencodings==0.5.1
 whitenoise==5.2.0
