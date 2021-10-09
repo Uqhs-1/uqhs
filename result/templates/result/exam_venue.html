@@ -388,7 +388,7 @@
                     }
                 }; 
             }; 
-            $(".aside").hide();alert(array.length)
+            $(".aside").hide();
             classes(array, array.length)
     });
 		var data = {};
@@ -408,7 +408,7 @@
                		 });
             request.done(function(data){
                   counter = {counts:0};
-                  var next = window.location.href.split('/')[0]+'/static/result/pdf/shortlistedVenues/'+data.status+".pdf";
+                  var next = 'https://dhnygxib7cbg0.cloudfront.net/pdf/cards /'+data.status+"/summary.pdf";
         				  window.open(next, '_blank');
            			  });     
             request.fail(function(xhr, orders, error) {
