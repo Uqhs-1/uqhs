@@ -134,7 +134,7 @@ def may_not(r, dg):
        return [0]
 
 def s3_session():
-    aws_session = boto3.Session(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
+    aws_session = boto3.Session('AKIAZXDZRFQVP24YW7UU', '32hOmVzUovuSW89PjoSYS2WNBm3IE/JKyosYehQh')# boto3.Session(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
     return aws_session
     
 def upload_to_s3(content, path):
@@ -199,8 +199,8 @@ class Rendered:
             try:
                 upload_to_s3(response.content, 'pdf/cards /'+filename+'/summary.pdf')
                 print('saved to uqhs bucket!')
-            except:
-                result = open(path+'.pdf', 'wb')
+            except:#
+                result = open('/storage/emulated/0/uqi/result/static/pdf/'+'test.pdf', 'wb')
                 pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
                 result.close()
                 print('saved to offline!')

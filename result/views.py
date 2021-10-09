@@ -402,11 +402,15 @@ class Pdf(View):#LoginRequiredMixin,
         if ty == '6':
             if request.GET.get('saved'):
                 data = [int(request.GET.get(str(i))) for i in range(int(request.GET.get('size'))) if request.GET.get(str(i)) is not None]
-
+                Class = request.GET.get('Class', None).split(',')
+                if len(Class) == 2:
+                    for i in CNAME.objects.filter(id__in=data).order_by('gender', 'full_name'):
+                        i.club_two = Class[1]
+                        i.save()
                 params = {
-                'request': request, 'today': timezone.now(), 'Class':request.GET.get('Class', None), 'students':CNAME.objects.filter(id__in=data).order_by('gender', 'full_name')
+                'request': request, 'today': timezone.now(), 'Class':Class[0], 'students':CNAME.objects.filter(id__in=data).order_by('gender', 'full_name')
                   }
-                return Rendered.render('result/shortlisted.html', params, 'shortlistedVenues/'+request.GET.get('Class', None), request.GET.get('Class', None))
+                return Rendered.render('result/shortlisted.html', params, 'shortlistedVenues/'+Class[0], Class[0])
             candi = CNAME.objects.all()
             #Class = [i[0] for i in list(set(list(candi.values_list('Class'))))]
             param = {"students":candi.count(), "one":candi.filter(Class__exact='JSS 1', gender__exact=1).order_by('gender', 'full_name'), "two":candi.filter(Class__exact='JSS 1', gender__exact=2).order_by('gender', 'full_name'), "three":candi.filter(Class__exact='JSS 2', gender__exact=1).order_by('gender', 'full_name'), "four":candi.filter(Class__exact='JSS 2', gender__exact=2).order_by('gender', 'full_name'), "five":candi.filter(Class__exact='JSS 3', gender__exact=1).order_by('gender', 'full_name'), "six":candi.filter(Class__exact='JSS 3', gender__exact=2).order_by('gender', 'full_name'), "seven":candi.filter(Class__exact='SSS 1', gender__exact=1).order_by('gender', 'full_name'), "eight":candi.filter(Class__exact='SSS 1', gender__exact=2).order_by('gender', 'full_name'), "nine":candi.filter(Class__exact='SSS 2', gender__exact=1).order_by('gender', 'full_name'), "ten":candi.filter(Class__exact='SSS 2', gender__exact=2).order_by('gender', 'full_name'), "eleven":candi.filter(Class__exact='SSS 3', gender__exact=1).order_by('gender', 'full_name'), "tewlve":candi.filter(Class__exact='SSS 3', gender__exact=2).order_by('gender', 'full_name')
