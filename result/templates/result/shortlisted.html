@@ -134,7 +134,7 @@
 				<th style="background-color:#FFA07A;width:10%;">-9-</th>
 				<th style="background-color:#FFA07A;width:10%;">-10-</th>
 				<th style="background-color:#FFA07A;width:10%;">Class</th>
-                <th style="background-color:#989c5b;width:10%;">Club</th>
+                <th style="background-color:#989c5b;width:10%;">Rem</th>
                         {% if students %} 
                         {% for scr in students %}
             <tbody>
@@ -181,13 +181,21 @@
 			</ul>
 			</th>   
         </tr> 
-        <th  style="background-color:#d84848;color:white;"colspan="15" id="foot">{{ grade_conuts }}</th>
+        <th  style="background-color:#d84848;color:white;"colspan="15" id="foot">
+        <ol>
+            <li>JETS: Junior Engineers, Technicians and Scientists Club<li>
+            <li>YGF: Young Farmers Club <li>
+            <li>L&D: literary and Debate Club<li>
+            <li>RSC: Road Safety Core Club<li>
+            <li>PRS: Press Club<li>
+        </ol>
+        </th>
 		
 		
 		
 	</table>
     
-    <div id="footerContent">
+    <div id="footerContent">n
             {%block page_foot%}
 			www.https://uqhs.herokuapp.com/result/render/pdf/{{qry.id}}/2/0/:
             {{qry.subject.name}}/{{Class}}/{{term}}/generated <on:->{{ today }}</on:->

@@ -164,7 +164,7 @@
       </tbody>
       </table>    
     <li><button style="border:2px solid white;color:white;border-radius:5px;background-color:#35c2b6;width:100%;text-align:left;line-height:15%;" onclick="$('#tsix').show()"> <input type="checkbox" value='six' name='six' id='six'>JSS 3 LIST OF REGISTERED STUDENT | FEMALES</button></li>
-<table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='tsix' hidden>
+	 <table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='tsix' hidden>
     <tbody>
            <thead>
      		<th>SN</th><th>Student Name</th><th>Admission No. </th><th>Year</th><th>Age</th><th>Status</th><th>Tick</th>
@@ -176,14 +176,14 @@
         <td style="color:white;font-size:12px;">{{ scr.uid }}</td>
         <td style="color:white;font-size:12px;">{{ scr.session }}</td>
         <td style="color:white;font-size:12px;">{{ scr.age }}</td>
-        <td style="color:white;font-size:12px;">{{ scr.orders }}</td>
-        <td style="color:white;font-size:12px;"  id="td_six_{{ forloop.counter }}"><input type="checkbox" value="{{ scr.id }}" name='six_{{ forloop.counter }}' class='six' id='six_{{ forloop.counter }}' onclick="counts('six_{{ forloop.counter }}')"></td>        
+        <td style="color:white;font-size:12px;"  id="td_six_{{ forloop.counter }}">{{ scr.orders }}</td>
+        <td style="color:white;font-size:12px;"><input type="checkbox" value='{{ scr.id }}' name='six_{{ forloop.counter }}' class='six' id='six_{{ forloop.counter }}' onclick="counts('six_{{ forloop.counter }}')"></td>        
       </tr>
       {% endfor %}
       <tfoot><th colspan="7" onclick="$('#tsix').hide()"><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">Hide</button><button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" name='done'>Done: <em id='dsix'></em>
       </button></th></tfoot>
       </tbody>
-      </table>      
+      </table>   
     <li><button style="border:2px solid white;color:white;border-radius:5px;background-color:#35c2b6;width:100%;text-align:left;line-height:15%;" onclick="$('#tseven').show()"> <input type="checkbox" value='seven' name='seven' id='seven'>SSS 1 LIST OF REGISTERED STUDENT | MALES</button></li>
 	 <table class="info_tab_marg" style="width:100%;border-radius:5px;border:1px solid gray;" id='tseven' hidden>
     <tbody>
