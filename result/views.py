@@ -411,7 +411,7 @@ class Pdf(View):#LoginRequiredMixin,
                 'request': request, 'today': timezone.now(), 'Class':Class[0], 'students':CNAME.objects.filter(id__in=data).order_by('gender', 'full_name')
                   }
                 return Rendered.render('result/shortlisted.html', params, 'shortlistedVenues/'+Class[0], Class[0])
-            candi = CNAME.objects.filter(club_two__exact='JET')
+            candi = CNAME.objects.all()#filter(club_two__exact='JET')
             #Class = [i[0] for i in list(set(list(candi.values_list('Class'))))]
             param = {"students":candi.count(), "one":candi.filter(Class__exact='JSS 1', gender__exact=1).order_by('gender', 'full_name'), "two":candi.filter(Class__exact='JSS 1', gender__exact=2).order_by('gender', 'full_name'), "three":candi.filter(Class__exact='JSS 2', gender__exact=1).order_by('gender', 'full_name'), "four":candi.filter(Class__exact='JSS 2', gender__exact=2).order_by('gender', 'full_name'), "five":candi.filter(Class__exact='JSS 3', gender__exact=1).order_by('gender', 'full_name'), "six":candi.filter(Class__exact='JSS 3', gender__exact=2).order_by('gender', 'full_name'), "seven":candi.filter(Class__exact='SSS 1', gender__exact=1).order_by('gender', 'full_name'), "eight":candi.filter(Class__exact='SSS 1', gender__exact=2).order_by('gender', 'full_name'), "nine":candi.filter(Class__exact='SSS 2', gender__exact=1).order_by('gender', 'full_name'), "ten":candi.filter(Class__exact='SSS 2', gender__exact=2).order_by('gender', 'full_name'), "eleven":candi.filter(Class__exact='SSS 3', gender__exact=1).order_by('gender', 'full_name'), "tewlve":candi.filter(Class__exact='SSS 3', gender__exact=2).order_by('gender', 'full_name')
             }
