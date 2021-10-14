@@ -159,7 +159,7 @@ def all_View(request, pk, md):##Step 2::  every tutor home detail views all_sear
 
 
 def Student_names_list(request, pk):##Step 2::  every tutor home detail views
-    gender = CNAME.objects.all().exclude(gender__exact= pk).order_by('Class', 'gender')  
+    gender = CNAME.objects.all().exclude(gender__exact= pk).order_by('full_name', 'gender')  
     counted = [gender.filter(Class__exact=i).count() for i in ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
     return render(request, 'result/searched_names.html',  {'all_page': paginator(request, gender), 'counts': gender.count(), 'Jo': counted[0], 'Jt': counted[1], 'Jh': counted[2], 'So': counted[3], 'St': counted[4], 'Sh': counted[5]})
 
