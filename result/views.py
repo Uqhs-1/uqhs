@@ -496,13 +496,9 @@ def name_down(request, pk, fm,  ps):
     pair_subject =  ["ACC", "AGR", "ARB", "BIO", "BST", "BUS", "CHE", "CIV", "COM", "CTR", "ECO", "ELE", "ENG", "FUR", "GEO", "GOV", "GRM", "HIS", "ICT", "IRS", "LIT", "MAT", "NAV", "PHY", "PRV", "YOR", ' ']
     Class = ['JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3', ''][int(pk)]
     response = HttpResponse(content_type=['', 'application/csv', 'application/pdf', 'text/plain', 'text/plain'][int(fm)])
-    contents = QSUBJECT.objects.filter(tutor__Class__exact=Class, tutor__subject__exact=pair_subject[int(ps)], tutor__session__exact=session.profile.session).order_by('student_name__gender', 'student_name__full_name')
+    contents = CNAME.objects.filter(Class__exact=Class).order_by('gender', 'full_name')
     if fm == '4':
-        if contents:
-            sd = [[x.student_name_id, x.student_name.full_name, randrange(11, 20), randrange(8, 10), randrange(8, 10), randrange(21, 60)] for x in contents]
-        else:
-            contents = CNAME.objects.filter(Class__exact=Class).order_by('gender', 'full_name')
-            sd = [[x.id, x.full_name, randrange(11, 20), randrange(8, 10), randrange(8, 10), randrange(21, 60)] for x in contents]
+        sd = [[x.id, x.full_name, randrange(11, 20), randrange(8, 10), randrange(8, 10), randrange(21, 60)] for x in contents]
     elif pk == '6':
         contents = QSUBJECT.objects.filter(tutor__exact=BTUTOR.objects.get(pk=int(request.user.profile.account_id))).order_by('student_name__gender', 'student_name__full_name')
         sd = [[x.student_name.full_name, x.test, x.agn, x.atd, x.total, x.exam, x.agr, x.sagr, x.fagr, x.aagr, x.avr, x.grade, x.posi] for x in contents]
@@ -514,6 +510,7 @@ def name_down(request, pk, fm,  ps):
         contents = CNAME.objects.filter(Class__exact=Class, session__exact=session.profile.session).order_by('gender', 'full_name')
         sd = [[x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id] for x in contents]
     else:
+        contents = QSUBJECT.objects.filter(tutor__Class__exact=Class, tutor__subject__exact=pair_subject[int(ps)], tutor__session__exact=session.profile.session).order_by('student_name__gender', 'student_name__full_name')
         sd = [[x.student_name.id, x.student_name.full_name, x.test, x.atd, x.agn, x.exam] for x in contents]
         Class = Class +'_'+pair_subject[int(ps)]
     writer = csv.writer(response)
