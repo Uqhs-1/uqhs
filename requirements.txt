@@ -8,7 +8,7 @@ django-celery-results
 django-celery-beat
 chardet==4.0.0
 dj-database-url==0.5.0
-Django==2.2.13
+Django==2.2.24
 django-cors-headers==3.7.0
 django-crispy-forms==1.11.0
 django-storages==1.11.1
@@ -27,7 +27,7 @@ gunicorn==19.9.0
 requests==2.25.1
 s3transfer==0.4.2
 six==1.15.0
-sqlparse==0.4.1
+sqlparse==0.4.2
 urllib3>=1.26.4
 webencodings==0.5.1
 whitenoise==5.2.0
