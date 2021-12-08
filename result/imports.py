@@ -75,18 +75,18 @@ def upload_new_subject_scores(request):
             if len(valid_input[0][1:]) == 9:#BST ONLY: Reduced 8 to 4 columns by averaging.
                 valid_input = [[x[0].split('¿')[-1], x[1], round_half_up(mean([int(i) for i in x[2:4]])), round_half_up(mean([int(i) for i in x[4:6]])), round_half_up(mean([int(i) for i in x[6:8]])), round_half_up(mean([int(i) for i in x[8:10]]))] for x in valid_input]
         x = cader(tutor.Class)
-        try:
-            raw_scores = [[x[0].split('¿')[-1],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]       
-            posi = do_positions([int(i[-1]) for i in raw_scores][:])
-            grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
-            final = [x+[y]+[z] for x,y,z in zip(raw_scores, grade, posi)]
-            from .updates import get_or_create
-            [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(id__exact=i[0]).exists() and i[5] != 0]
-            if tutor.subject == 'BST1' or tutor.subject == 'BST2':
+        #try:
+        raw_scores = [[x[0].split('¿')[-1],  x[1], int(x[2]), int(x[3]), int(x[4]), sum([int(i) for i in x[2:5]]), int(x[5]), sum([sum([int(i) for i in x[2:5]]), int(x[5])])] for x in valid_input]       
+        posi = do_positions([int(i[-1]) for i in raw_scores][:])
+        grade = do_grades([int(i[-1]) for i in raw_scores][:], x)
+        final = [x+[y]+[z] for x,y,z in zip(raw_scores, grade, posi)]
+        from .updates import get_or_create
+        [get_or_create(tutor, i[0], i) for i in final if CNAME.objects.filter(id__exact=i[0]).exists() and i[5] != 0]
+        if tutor.subject == 'BST1' or tutor.subject == 'BST2':
                 tutor.subject = 'BST'
-            tutor.save()
-        except:
-            print('error!')
+        tutor.save()
+        #except:
+            #print('error!')
             #return redirect('home')
         elapsed_time_secs = time.time() - start_time
         msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
