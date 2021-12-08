@@ -87,7 +87,7 @@ def upload_new_subject_scores(request):
             tutor.save()
         except:
             print('error!')
-            return redirect('home')
+            #return redirect('home')
         elapsed_time_secs = time.time() - start_time
         msg = "Execution took: %s secs (Wall clock time)" % timedelta(seconds=round(elapsed_time_secs))
         messages.success(request, msg)
