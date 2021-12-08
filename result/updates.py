@@ -166,7 +166,7 @@ def get_or_create(tutor, serial_no, scores):#name-name_id
     student_name = CNAME.objects.get(id=serial_no)#############################################
     instance = QSUBJECT.objects.filter(student_name__exact=student_name, tutor__exact = tutor)
     if not instance.exists():#[i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11]]
-        instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9], fagr=scores[10], sagr=scores[11])
+        instance = QSUBJECT(student_name=student_name, tutor=tutor, test = scores[2], agn = scores[3], atd = scores[4], total = scores[5], exam = scores[6], agr = scores[7], grade = scores[8], posi = scores[9])
     else:#[352, '1-6-25', 7, 4, 3, 14, 56, 70, 'A', '10th', 0, 70, 'Adisa', '2nd Term', '3rd Term']
         instance = QSUBJECT.objects.get(student_name=student_name, tutor = tutor)
         if tutor.subject == 'BST1' or tutor.subject == 'BST2':
