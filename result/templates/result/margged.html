@@ -352,7 +352,7 @@
       </tr>  
       <tfoot>
       <tr>
-        <th colspan="14" id='fifteen' style="line-height:68%;">
+        <th colspan="13" id='fifteen' style="line-height:68%;">
             {% if all_page.has_other_pages %}
               <em class="pagination" >
                 {% if all_page.has_previous %}
@@ -450,16 +450,17 @@
         window.open('whatsapp://send?text=' + link)
       };
     function colset(){
-        if ("{{ qry.third_term }}" == '1st Term'){
-		          if ("{{ qry.second_term }}" == '2nd Term'){
+        
+	      if ("{{ qry.second_term }}" == '2nd Term'){
                   document.getElementById("tena").colSpan = "9";
                   document.getElementById("tenb").colSpan = '9';
                   document.getElementById("fifteen").colSpan = '14';}
-              else{
+              if ("{{ qry.third_term }}" == '3rd Term'){
                   document.getElementById("tena").colSpan = "8";
                   document.getElementById("tenb").colSpan = '8';
-                  document.getElementById("fifteen").colSpan = '13';}
-                }};
+                  document.getElementById("fifteen").colSpan = '15';}
+                }
+	       
         
     function edith(i, name){
             document.getElementById("ide_"+""+i).value = 'Waiting';
