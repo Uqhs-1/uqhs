@@ -452,12 +452,12 @@
     function colset(){
         
 	      if ("{{ qry.second_term }}" == '2nd Term'){
-                  document.getElementById("tena").colSpan = "9";
-                  document.getElementById("tenb").colSpan = '9';
-                  document.getElementById("fifteen").colSpan = '14';}
-              if ("{{ qry.third_term }}" == '3rd Term'){
                   document.getElementById("tena").colSpan = "8";
                   document.getElementById("tenb").colSpan = '8';
+                  document.getElementById("fifteen").colSpan = '14';}
+              if ("{{ qry.third_term }}" == '3rd Term'){
+                  document.getElementById("tena").colSpan = "9";
+                  document.getElementById("tenb").colSpan = '9';
                   document.getElementById("fifteen").colSpan = '15';}
                 }
 	       
