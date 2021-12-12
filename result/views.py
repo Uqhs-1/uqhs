@@ -388,9 +388,11 @@ class Pdf(View):#LoginRequiredMixin,
                 tutor = get_object_or_404(BTUTOR, pk = int(request.user.profile.account_id))
             else:
                 tutor = get_object_or_404(BTUTOR, pk = int(pk))#
-            params, filepath, filename = param_marksheets(request, tutor, myHod)
-            return Render.render('result/MarkSheetPdf.html', params, filepath+'/'+filename+'_'+sx+'.pdf', filename)
-            
+            try:
+               params, filepath, filename = param_marksheets(request, tutor, myHod)
+               return Render.render('result/MarkSheetPdf.html', params, filepath+'/'+filename+'_'+sx+'.pdf', filename)
+            except:
+                   return redirect('home')
         if ty == '5':
             if request.GET.get('saved'):
                 params = {
