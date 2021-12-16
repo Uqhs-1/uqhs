@@ -228,7 +228,7 @@
                         document.getElementById("first_term").value = data.first_term;
                         document.getElementById("second_term").value = data.second_term;
                         document.getElementById("third_term").value = data.third_term;
-                        alert('Data saved')
+                        location.replace(document.referrer)
              }});     
                    request.fail(function(xhr, status, error) {
        var errors = {'0':'Client connectivity', '500':'Internal Server' };
