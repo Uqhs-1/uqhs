@@ -367,7 +367,7 @@ def csv_bsh(request, pk):
 class Pdf(View):#LoginRequiredMixin,
     def get(self, request, ty, sx, pk):#CARD
         if ty == '1' or ty == '4':
-            this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term', tutor__session__exact=session.profile.session, tutor__Class__exact=CNAME.objects.get(pk=sx).Class).order_by('student_name__gender', 'student_name__full_name') 
+            this = QSUBJECT.objects.filter(student_name_id__exact=sx, tutor__term__exact='1st Term')
             lists = [x for x in this][:10]
             if len(lists) != 10:
                 lists = lists + [None]*(10-len(lists))
