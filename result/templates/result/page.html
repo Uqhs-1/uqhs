@@ -64,7 +64,7 @@
                         };
         function marksheet(y, x){
         var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
-        var x = x.split(':')[0]
+        //var x = x.split(':')[0];alert(x)
         var kwd = argt[y]+x.replace('7', argt[y])
         var next = "https://dhnygxib7cbg0.cloudfront.net/pdf/marksheets /"+kwd;
         window.open(next, '_blank');
