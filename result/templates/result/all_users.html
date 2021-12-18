@@ -13,8 +13,8 @@
                     <tr><th>sn</th><th>User Name</th><th>Last Name</th><th>First Name</th><th>Admin Status</th><th>Account Status</th><th>Department</th><th>Staff Status</th></tr>      
                 </thead>
                 <tbody>
-                    {% if all_page %}
-                    {% for sub in all_page %}
+                    {% if qry %}
+                    {% for sub in qry %}
                         <tr><td>{{ forloop.counter }}</td><td>{{ sub.username }}</td><td>{{ sub.profile.last_name }}</td><td>{{ sub.profile.first_name }}</td><td>{{sub.is_superuser}}</td><td>{{sub.profile.email_confirmed}}</td><td>{{sub.profile.department}}</td><td><a href="{% url 'user_update' pk=sub.profile.id %}">{{ sub.is_staff }}</a></td></tr>
                     {% endfor %}
                     {% else %}
