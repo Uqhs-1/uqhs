@@ -407,7 +407,10 @@ class Pdf(View):#LoginRequiredMixin,
                 Class = request.GET.get('Class', None).split(',')
                 if len(Class) == 2:
                     for i in CNAME.objects.filter(id__in=data).order_by('gender', 'full_name'):
-                        i.club_two = Class[1]
+                        if Class[0] == 'promotions':
+                           i.Class = Class[1]
+                        else:
+                           i.club_two = Class[1]
                         i.save()
                 params = {
                 'request': request, 'today': timezone.now(), 'Class':Class[0], 'students':CNAME.objects.filter(id__in=data).order_by('gender', 'full_name')
