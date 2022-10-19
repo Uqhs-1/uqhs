@@ -411,9 +411,11 @@ class Pdf(View):#LoginRequiredMixin,
                 if len(Class) == 2:
                     for i in CNAME.objects.filter(id__in=data).order_by('gender', 'full_name'):
                         if Class[0] == 'promotions':
-                           i.Class = Class[1]
+                            i.Class = ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3'][int(str(Class[1].split(',')[-1]))]
+                        elif len(Class[1]) == 3:
+                            i.club_two = Class[1]
                         else:
-                           i.club_two = Class[1]
+                            return redirect('home')
                         i.save()
                 params = {
                 'request': request, 'today': timezone.now(), 'Class':Class[0], 'students':CNAME.objects.filter(id__in=data).order_by('gender', 'full_name')
