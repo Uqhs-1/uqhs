@@ -146,8 +146,8 @@ def massRegistration(request):
                 return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_names[i]})
         if request.POST.get('Class'):
                     valid_names = [i + [request.POST.get('Class')] for i in valid_names]
-                    reged = [regMe(i) for i in valid_names]
-                    cname = CNAME.objects.filter(id__in= reged)
+                    regeds = [regMe(i) for i in valid_names]
+                    cname = CNAME.objects.filter(id__in= regeds)
                     student_id = [i.last_name[0]+i.first_name[0]+'/'+i.Class[0]+'/'+i.session[-2:]+'/'+str(i.id) for i in cname]
         else:
                return render(request, 'result/names_loader.html')
