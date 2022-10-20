@@ -121,7 +121,7 @@ def setup_questions(request):
 
 def regMe(dim):
     if len(dim) == 5:#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
-         reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
+         reged = CNAME.objects.create(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
          reged.save()
     return reged.id
 def massRegistration(request):
