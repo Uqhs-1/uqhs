@@ -132,9 +132,9 @@ def common(request, pk):
         [save(QSUBJECT, posi[i], QSUBJECT.objects.filter(tutor__exact=tutor).order_by('id')[i].id) for i in range(0, len(posi))]
     term = ['-', '1st Term', '2nd Term', '3rd Term'][sorted([int(i) for i in [tutor.first_term[0], tutor.second_term[0], tutor.third_term[0]]])[-1]]
     mains = QSUBJECT.objects.filter(tutor__exact=tutor).order_by('student_name__gender', 'student_name__full_name')#.exclude(fagr__exact=0)
-    for i in CNAME.objects.filter(id__in =[a.student_name_id for a in mains]):
-        i.Class = tutor.Class
-        i.save()
+    #for i in CNAME.objects.filter(id__in =[a.student_name_id for a in mains]):
+        #i.Class = tutor.Class
+       # i.save()
     return [term,  mains, tutor]
 def detailView(request, pk, md):##Step 2::  every tutor home detail views all_search_lists
     mains = common(request, pk)
