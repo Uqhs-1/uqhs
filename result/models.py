@@ -182,6 +182,8 @@ class CNAME(models.Model):
         self.updated = today
         self.last_name = self.full_name.split(' ')[0]
         self.first_name = self.full_name.split(' ')[1]
+        if self.uid == "2019/JS_1/10":
+                self.uid = self.id
         self.sex = ['', 'Male', 'Female'][int(self.gender)]
         super(CNAME, self).save()
         
