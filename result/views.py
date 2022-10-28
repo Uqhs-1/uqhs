@@ -56,8 +56,9 @@ def home(request):#Step 1:: list of tutor's subjects with class, term
            tutors = TUTOR_HOME.objects.all()
            for i in tutors:
                second_term, third_term = i.second_term, i.third_term
-               second_term.second_term = '1st Term' 
-               third_term.third_term = '1st Term'
+               if i.second_term =! None and i.third_term =! None:
+                    second_term.second_term = '1st Term' 
+                    third_term.third_term = '1st Term'
                second_term.save()
                third_term.save()
                i.second_term, i.third_term = second_term, third_term
