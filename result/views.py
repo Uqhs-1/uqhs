@@ -53,16 +53,11 @@ def home(request):#Step 1:: list of tutor's subjects with class, term
         present = datetime.datetime.today()
         past = request.user.last_login
         if not QSUBJECT.objects.all():
-           tutors = TUTOR_HOME.objects.all()
+           tutors = BTUTOR.objects.all()
            for i in tutors:
-               second_term, third_term = i.second_term, i.third_term
-               if i.second_term and i.third_term:
-                    second_term.second_term = '1st Term' 
-                    third_term.third_term = '1st Term'
-                    second_term.save()
-                    third_term.save()
-                    i.second_term, i.third_term = second_term, third_term
-               i.save()
+                i.second_term = '1st Term' 
+                i.third_term = '1st Term'
+                i.save()
         if present.year != past.year or present.month != past.month or present.day != past.day:
             login_count = request.user.profile.login_count
             login_count += 1
