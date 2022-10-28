@@ -214,6 +214,12 @@ def responsive_updates(request, pk):
                     instance = QSUBJECT.objects.filter(tutor__exact = tutor).order_by('student_name__gender', 'student_name__full_name')
                     data = {"status":tutor.updated, "tutor_name":tutor.accounts.username}
                     data["list"] = ['Default']+[[i.student_name.full_name, i.student_name.uid, i.test, i.agn, i.atd, i.exam, i.grade, i.posi, i.student_name.gender, i.fagr, i.sagr, i.aagr, i.avr, i.student_name.id] for i in instance]
+                    if not QSUBJECT.objects.all():
+                        tutors = TUTOR_HOME.objects.all()
+                        for i in tutors:
+                            i.second_term.second_term = '1st Term' 
+                            i.third_term.third_term = '1st Term'
+                            i.save()
                 if request.GET.get('flow') == "mygrade":
                     tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
                     data = {'sn':request.GET.get('sn'), 'grade':do_grades([int(request.GET.get('scores'))], cader(tutor.Class))[0]}
