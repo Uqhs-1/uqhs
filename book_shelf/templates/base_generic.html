@@ -35,7 +35,7 @@
                     <a href="{% url 'results_junior_senior' pk=3 %}" title="JSS 3 results">JSS 3</a>
                     <a href="{% url 'post_list' %}" title="Post Lists">Info</a>
                   </div>
-                </div>
+                
                   <span class="dropbtn">Seniors</span>
                   <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=4 %}" title="SSS 1 results">SSS 1</a>
@@ -43,7 +43,7 @@
                     <a href="{% url 'results_junior_senior' pk=6 %}" title="SSS 3 results">SSS 3</a>
                     <a href="{% url 'flexing' %}" title="Home Page">info</a> 
                 </div>
-                <div class="dropdown">
+                
                   <span class="dropbtn">Library</span>
                   <div class="dropdown-content">
                     <a href="{% url 'stores' %}" title="Book list">Books</a>
@@ -51,15 +51,15 @@
                     <a href="{% url 'genres' %}" title="Book Genres">Genre</a>
                     <a href="{% url 'my_loan_book' %}" class="top-menu" title="My library">Lib</a>
                   </div>
-                </div>
-                <div class="dropdown">
+                
+                
                   <span class="dropbtn">Students</span>
                   <div class="dropdown-content">
                     <a href="{% url 'student_names' pk=2 %}" title="Male name list">Male</a>
                     <a href="{% url 'student_names' pk=1 %}" title="Female name list">Female</a>
                    <a href="{% url 'student_names' pk=0 %}" title="Students name list">All</a>
                   </div>
-                </div>
+                
                 <span>
                     <button style="color:white;background-color:blue;" onclick="(location.replace(window.location.href.split('/')[0]+'/result/home/'))"><span class="glyphicon glyphicon-home btn-lg"></span></button>
                 </span>
