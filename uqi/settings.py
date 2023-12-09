@@ -45,7 +45,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['uqhi.herokuapp.com', 'uqhs.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']
 #add email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
