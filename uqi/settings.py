@@ -45,7 +45,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 #add email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
