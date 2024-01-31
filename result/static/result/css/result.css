@@ -11,7 +11,7 @@ label {
 }
 
 body {
-    background-color:dodgerblue;
+    background-color:#5bee17;
     font-size: 13px;
     font-family: "Helvetica Neue" , "Lucida Grande" , "Segoe UI" , Arial, Helvetica, Verdana, sans-serif;
     margin: 0px;
@@ -56,7 +56,7 @@ body {
         }
 
 .jss_three{   
-        background-color: blue;
+        background-color: rgb(10, 223, 56);
         width: 220px;
         opacity: 0.9;
         border-radius: 2px;
@@ -86,7 +86,7 @@ body {
 
 .header {
   overflow: hidden;
-  background-color: dodgerblue;
+  background-color: rgb(44, 241, 126);
   padding: 20px 10px;
   width: 57%;
   
@@ -152,12 +152,12 @@ body {
   text-align: center; /* Center text*/
   width: 57%;
   margin-top: 600px;
-  background-color: rgb(18, 14, 245)
+  background-color: rgb(70, 228, 149)
 }
 
 form {
   overflow: hidden;
-  background-color: rgb(114, 162, 211);
+  background-color: rgb(33, 214, 130);
   padding: 20px 10px;
   width: 83%;
   border-radius: 5px;
@@ -166,7 +166,7 @@ form {
 
 
 table, th, td {
-        border: 1px solid #0000CD;
+        border: 1px solid #4be025;
         border-radius: 5px;
         font-family: Baskerville Old Face;
         text-align: center;
@@ -474,13 +474,13 @@ p{ margin: 0px;
 
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #2980B9;
+  background-color: #11ebe0;
   opacity: 0.6;
 }
 
 /* Style The Dropdown Button */
 .dropbtn {
-  background-color:dodgerblue;
+  background-color:rgb(20, 238, 220);
   color: red;
   padding: 16px;
   font-size: 14px;
@@ -546,7 +546,7 @@ p{ margin: 0px;
 
 /* Style The Dropdown Button */
 .dropbtn {
-  background-color:dodgerblue;
+  background-color:rgb(223, 193, 25);
   color: red;
   padding: 16px;
   font-size: 14px;
@@ -605,7 +605,7 @@ p{ margin: 0px;
 
 .header-right {
   overflow: hidden;
-  background-color: dodgerblue;
+  background-color: rgb(92, 219, 7);
   font-family: Helvetica;
   top: 0px;
   width: 44px;
@@ -647,7 +647,7 @@ p{ margin: 0px;
 }
 #info_form{
   overflow:hidden;
-  background-color: rgb(114, 162, 211);
+  background-color: rgb(72, 160, 108);
   padding:20px 10px;
   width:80%;
   border-radius:5px;
@@ -693,7 +693,7 @@ p{ margin: 0px;
 }
   
    .dropbtn {
-  background-color:dodgerblue;
+  background-color:rgb(10, 223, 106);
   color: red;
   padding: 10px;
   font-size: 19px;
