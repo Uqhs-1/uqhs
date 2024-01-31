@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'citadel.urls'
+ROOT_URLCONF = 'uqi.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'citadel.wsgi.application'
+WSGI_APPLICATION = 'uqi.wsgi.application'
 
 
 # Database
