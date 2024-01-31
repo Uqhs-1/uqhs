@@ -1,1 +1,1 @@
-web: gunicorn uqi.wsgi
+web: python manage.py migrate && python manage.py collectstatic --no-input && gunicorn citadel.wsgi

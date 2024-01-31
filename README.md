@@ -1,2 +1,2 @@
-# uqhs
-uqhs-app
+# railway
+deploying to railway
