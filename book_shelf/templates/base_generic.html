@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 {% load static %}
-{% load crispy_forms_tags %}
 <html lang="en">
    <head>
         <div id="head">
             <meta charset="UTF-8">
             <title>
-                uqhs |{% block title %} uqhs {% endblock %}
+                cihs |{% block title %} cihs {% endblock %}
              </title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-            <link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
+            <link rel="shortcut icon" type="image/png" src="https://dhnygxib7cbg0.cloudfront.net/pdf/cihs.jpg">
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
             <link rel="stylesheet" href="{% static 'result/css/result.css' %}">
             <link rel="javascript" href="{% static 'result/js/result.js' %}">
@@ -22,11 +21,12 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
            {% if request.user.is_superuser %}<script src="//cdn.jsdelivr.net/npm/eruda"></script> <script>eruda.init();</script> {% endif %}
             <div class="navbar">
                 <div class="dropdown">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{% url 'index' %}" style='background-color:blue;font-size:83%;'><img src="{% static "result/iiro.jpg"%}" alt="iiro-logo"  height:'120' width="120"/></a>
+                    <a class="navbar-brand" href="{% url 'results_junior_senior' pk=4 %}" style='background-color:#5bee17;font-size:83%;'><img src="{% static "result/cihs.jpg"%}" alt="cihs-logo"  height:'120' width="120"/></a>
                 </div>
                   <span class="dropbtn">Juniors</span>
                   <div class="dropdown-content">
@@ -35,24 +35,27 @@
                     <a href="{% url 'results_junior_senior' pk=3 %}" title="JSS 3 results">JSS 3</a>
                     <a href="{% url 'post_list' %}" title="Post Lists">Info</a>
                   </div>
-                
+                </div>
+                <div class="dropdown">
                   <span class="dropbtn">Seniors</span>
                   <div class="dropdown-content">
                     <a href="{% url 'results_junior_senior' pk=4 %}" title="SSS 1 results">SSS 1</a>
                     <a href="{% url 'results_junior_senior' pk=5 %}" title="SSS 2 results">SSS 2</a>
                     <a href="{% url 'results_junior_senior' pk=6 %}" title="SSS 3 results">SSS 3</a>
-                    <a href="{% url 'flexing' %}" title="Home Page">info</a> 
+                    <a href="{% url 'flexing' %}" title="Home Page">info</a>
+                  </div>
                 </div>
                 
+                <div class="dropdown">
                   <span class="dropbtn">Library</span>
                   <div class="dropdown-content">
-                    <a href="{% url 'stores' %}" title="Book list">Books</a>
-                    <a href="{% url 'authors' %}" title="Book Authors">Authors</a>
-                    <a href="{% url 'genres' %}" title="Book Genres">Genre</a>
-                    <a href="{% url 'my_loan_book' %}" class="top-menu" title="My library">Lib</a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}" title="Book list">Books</a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}" title="Book Authors">Authors</a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}" title="Book Genres">Genre</a>
+                    <a href="{% url 'results_junior_senior' pk=4 %}" class="top-menu" title="My library">Lib</a>
                   </div>
-                
-                
+                </div>
+                <div class="dropdown">
                   <span class="dropbtn">Students</span>
                   <div class="dropdown-content">
                     <a href="{% url 'student_names' pk=2 %}" title="Male name list">Male</a>
@@ -61,33 +64,33 @@
                   </div>
                 </div>
                 <span>
-                    <button style="color:white;background-color:blue;" onclick="(location.replace(window.location.href.split('/')[0]+'/result/home/'))"><span class="glyphicon glyphicon-home btn-lg"></span></button>
+                    <button style="color:white;background-color:#5bee17;" onclick="(location.replace(window.location.href.split('/')[0]+'/result/home/'))"><span class="glyphicon glyphicon-home btn-lg"></span></button>
                 </span>
             </div>
               <!-- Side navigation -->
             <navz>
-                <span><em style="margin-left:250px; color: white;">Welcom to UMMUL_QURA RESULT PORTAL </em></span>
+                <span><em style="margin-left:250px; color: white;">Welcom to CITADEL ISLAMIC HIGH SCHOOL PORTAL </em></span>
             </navz>
             <div id="mySidebar" class="sidebar">
             <div id="status_bar_container" style="width:100%;height:15px;position:relative;background:green;border:1px solid white;border-radius:1px;" hidden> 
                 <input type="text" value="560 of 1000" disabled id="status_bar_animate" style="width:0%;height:14px;position:absolute;background:gray;text-align:center;font-size:70%;color:white;"> 
             </div>
             {% if request.user.is_authenticated %}
-            <div class="dropdowns" style"min-width:380px;">
-                <span class="dropbtns" id="downloading"><img class="rounded-circle" src="{% static 'result/uqhs.jpg' %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
+            <div class="dropdowns" style="min-width:380px;">
+                <span class="dropbtns" id="downloading"><img class="rounded-circle" src="{% static 'result/cihs.jpg' %}" alt="My_pics" style="max-width: 35px; margin: auto 0px;"/></span>
                 <div class="dropdown-contents">
                 <a href="{% url 'pro_detail' request.user.id %}" class="top-menu" title="Edit personal information"><span class="glyphicon glyphicon-edit"></a>
                 <a href="{% url 'offline' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-tasks"></a>
                 <a href="{% url 'transfers' md=30 %}" title="Move a class subject to another teacher"><span class="glyphicon glyphicon-transfer"></a>
-                <a href="{% url 'pdf' ty=5 sx=0 pk=0 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
+                <a href="{% url 'pdf' ty=5 sx=0 pk=0 uk=1 %}" title="lesson template"><span class="glyphicon glyphicon-print"></a>
                {% if request.user.is_superuser == True %}
                <a href="{% url 'admin:index' %}" title='adimin'><span class="glyphicon glyphicon-globe"></span></a>
                <a href="{% url 'all_users' pk=0 %}" title="exam score computation"><span class="glyphicon glyphicon-user"></a>
-               <a href="{% url 'pdf' ty=6 sx=0 pk=0 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
+               <a href="{% url 'pdf' ty=6 sx=0 pk=0 uk=1 %}" title="Examination venues"><span class="glyphicon glyphicon-list"></a>
                 <em style="width:30%;cursor:pointer;" onclick="$('#hid_k').show()"><span class="glyphicon glyphicon-download"></span>
                 <div id="hid_k" hidden>
-                <em style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">
-                <select value="" id="Class" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">
+                <em style="color:#5bee17;" style="line-height5px;border:2px solid #5bee17;color:black;border-radius:5px;width:8%;">
+                <select value="" id="Class" style="line-height5px;border:2px solid #5bee17;color:black;border-radius:5px;width:8%;">
                         <option value="">Class</option>
                         <option value="1">JSS 1</option>
                         <option value="2">JSS 2</option>
@@ -246,8 +249,8 @@
                 {% if request.user.profile.class_in != None %}
                 <em style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').show()"><span class="glyphicon glyphicon-download"></span>
                     <div id="hid_{{ forloop.counter }}" hidden>
-                    <em style="color:blue;" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:8%;">
-                    <select value="" id="sheets" style="line-height5px;border:2px solid blue;color:black;border-radius:5px;width:18%;">
+                    <em style="color:#5bee17;" style="line-height5px;border:2px solid #5bee17;color:black;border-radius:5px;width:8%;">
+                    <select value="" id="sheets" style="line-height5px;border:2px solid #5bee17;color:black;border-radius:5px;width:18%;">
                         <option value="">Broadsheet</option>
                         <option value="3/2/">Pages 1 - 2</option>
                         <option value="3/3/">Pages 3 - 4</option>
@@ -282,7 +285,7 @@
                     </navs>
                     <article id="Reliance"> 
                         <h2>Reliance on Allah</h2>
-                        <img src="{% static "result/hadbill.jpg"%}" alt="True Provider for the Universe!" width=620>
+                        <img src="{% static "result/bill.jpg"%}" alt="True Provider for the Universe!" width=620>
                         <h3>List of features</h3>
                         <ul>
                             <li>Aboundace Provission:1</li>
@@ -460,9 +463,9 @@
                  <div class="ft"><a href="{% url 'pro_detail' request.user.id %}"><small><span class="glyphicon glyphicon-flag" style="color:white;border-radius:5px;"></small></span><h6>{{ request.user.profile.bio|default:"Action required!" }}</h6></a></div>
                  {% endif %}
             {% endif %}
-        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Contact: </strong>Arowona Bus-Stop, Akanran Road, Ibadan-Oyo state.</div>
-        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">E-mail: </strong>ummulqura@marktoob.com, ummulqr@yahoo.com</div>
-        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Tell: </strong>08053776177, 07042412052</div>
+        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Contact: </strong>Akomeji Oganke, thy-will, Bus-Stop Akanran Road, Ibadan.</div>
+        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">E-mail: </strong> cihs@gmail.com, cihs@yahoo.com</div>
+        <div  style="font-family:Helvetica; color:white; font-size: 10px;"><strong style="font-family:Blackadder ITC; color:red; font-size: 10px;">Tell: </strong>08110650468, 08102262538, 08054426623</div>
         </div> 
         <form method="GET" action="{% url 'searchs'%}"  style="margin-left:10px;">
                 <div class="input-group">{% csrf_token %}
@@ -490,7 +493,7 @@
         var con = confirm('Do you want to change all to '+x+'?')
         if (con == true){
             var request  = $.ajax({
-          url: "{% url 'responsive_updates' pk=0 %}",
+          url: "{% url 'responsive_updates' pk=0 uk=1 %}",
           data: {
                 'Term':x, 'flow':'currnetTerms'
                 },
