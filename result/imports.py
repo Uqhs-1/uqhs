@@ -5,15 +5,9 @@ from .utils import do_grades, do_positions, cader, round_half_up, session
 from django.contrib.auth.decorators import login_required
 import time
 import datetime
-#from django.contrib.auth.models import User
 from datetime import timedelta
 from django.contrib import messages
-#from django.conf import settings
-#import os
-#import shutil
 from statistics import mean
-#from django.http import JsonResponse
-#import datetime
 
 session = session()
 
@@ -42,9 +36,8 @@ def check_repeated_names(valid_input):
 
 
 @login_required
-def upload_new_subject_scores(request):
+def upload_new_subject_scores(request, pk):
     start_time = time.time()
-    pk = int(request.user.profile.account_id)
     tutor = get_object_or_404(BTUTOR, pk=pk)
     term = sorted([tutor.first_term, tutor.second_term, tutor.third_term])[-1] 
     if request.method == "POST":
@@ -121,8 +114,8 @@ def setup_questions(request):
 
 def regMe(dim):
     #global reged
-    #if len(dim) == 5:#ADEWALE, BAYO, IBRAHIM, 2011-03-16, 2
-         reged = CNAME(full_name = dim[2].upper() +' '+ dim[0].upper(), last_name = dim[2].upper(), middle_name = dim[1].upper(), first_name = dim[0].upper(), gender = int(dim[4]), birth_date = dim[3], Class = dim[5])
+    #if len(dim) == 5:#FAGBENRO WARIS, 2011-03-16, 1
+         reged = CNAME(full_name = dim[0].upper() +' '+ dim[1].upper(), last_name = dim[0].upper(), middle_name = dim[0].upper(), first_name = dim[1].upper(), gender = int(dim[3]), birth_date = dim[2], Class = dim[4])
          reged.save()
          return reged.id
 def massRegistration(request):
@@ -140,8 +133,8 @@ def massRegistration(request):
         valid_names = [n[:] for n in names if len(n) is not 1]
         for i in range(0, len(valid_names)):
             output = [check(s) for s in valid_names[i]]
-            if len(output) == 5:
-                if output != [False, False, False, False, True]:
+            if len(output) == 4:
+                if output != [False, False, False, True]:
                     return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_names[i]})
             else:
                 return render(request, 'result/InputTypeError.html', {'int':i, 'invalid': valid_names[i]})

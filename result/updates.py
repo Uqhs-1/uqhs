@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 session = session()
 
 
-def Teacher_model_view(request, pk):#
+def Teacher_model_view(request, pk):# C:\Users\USER\AppData\Local\Programs\Python\cihs\citadel\result\static\result\pdf\marksheets
     if request.GET.get('accounts') is not None:
         btutor = get_object_or_404(BTUTOR, pk=pk)
         if request.GET.get('status') == 'delete':
@@ -43,7 +43,7 @@ class Cname_edit(LoginRequiredMixin, UpdateView):#New teacher form for every new
     fields = ['full_name', 'gender']
 ###################################################   
 
-subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
+subj = [['----', 'ACC', 'AGR', 'ARB', 'BST', 'BIO', 'BUS', 'CTR', 'CHE', 'CIV', 'COM', 'ECO', 'ELE', 'ENG', 'FUR', 'GRM', 'GEO', 'GOV', 'HIS', 'ICT', 'IRS', 'LIT', 'MAT', 'MKT', 'NAV', 'PHY', 'PRV', 'YOR'], ['', 'JSS 1', 'JSS 2', 'JSS 3', 'SSS 1', 'SSS 2', 'SSS 3']]
 def need_tutor(request, x, subj, Term, username):
     tutor = BTUTOR.objects.filter(subject__exact = subj[0][int(x[1])], Class__exact = subj[1][int(x[0])], term__exact = '1st Term')
     if tutor:
@@ -65,14 +65,14 @@ def profiles(request, pk):#
     return render(request, 'result/profiles.html', {'qry' : user.profile, 'pk':pk})
 @csrf_exempt
 def create_local_accounts(request, x):
-  if x == '0':
+  if x == 0:
     users = [[i.profile.title, i.profile.last_name, i.profile.first_name, i.profile.department, i.username] for i in User.objects.all()]
     data = {'response':users}
-  elif x == '2':
+  elif x == 2:
     tutors = [[i.accounts.username, i.second_term, i.third_term, i.subject_teacher_id] for i in BTUTOR.objects.all()]
     data = {'tutors':tutors}
   else:
-    if x == '1': 
+    if x == 1: 
         from django.contrib import messages
         raw_data = json.loads(request.POST['content'])
         for i in raw_data:
@@ -205,10 +205,10 @@ def currentTerms(Term, tutor):
 
 @login_required
 @csrf_exempt
-def responsive_updates(request, pk):
+def responsive_updates(request, pk, uk):
     if request.user.is_authenticated:
         if request.user.profile.email_confirmed:
-            if pk == '0':#i.student_name.last_name[0]+i.student_name.first_name[0]+'/J/18/'+str(i.student_name.id)      
+            if pk == 0:#i.student_name.last_name[0]+i.student_name.first_name[0]+'/J/18/'+str(i.student_name.id)      
                 if request.GET.get('flow') == "toHtml":#feeding the html page x.serial_no
                     tutor = BTUTOR.objects.get(pk=int(request.GET.get('tutor_id')))
                     instance = QSUBJECT.objects.filter(tutor__exact = tutor).order_by('student_name__gender', 'student_name__full_name')
@@ -216,7 +216,7 @@ def responsive_updates(request, pk):
                     data["list"] = ['Default']+[[i.student_name.full_name, i.student_name.uid, i.test, i.agn, i.atd, i.exam, i.grade, i.posi, i.student_name.gender, i.fagr, i.sagr, i.aagr, i.avr, i.student_name.id] for i in instance]
                    
                 if request.GET.get('flow') == "mygrade":
-                    tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
+                    tutor = BTUTOR.objects.get(pk=uk)
                     data = {'sn':request.GET.get('sn'), 'grade':do_grades([int(request.GET.get('scores'))], cader(tutor.Class))[0]}
 
                 if request.GET.get('flow') == "currnetTerms":
@@ -262,18 +262,20 @@ def responsive_updates(request, pk):
                         else:
                             data = {"exist":0, "name":request.GET.get('name')}
                 if request.GET.get('flow') == "create" and request.user.profile.email_confirmed is True:
-                        exist = create_new_subject_teacher(request.user, request.GET.get('Subject'), request.GET.get('Class'))
-                        user = request.user.profile
-                        user.account_id = exist.id
-                        user.save()
+                        exist = BTUTOR.objects.filter(subject__exact = request.GET.get('Subject'), Class__exact = request.GET.get('Class'), term__exact = '1st Term')
+                        if not exist.exists():
+                            exist = create_new_subject_teacher(request.user, request.GET.get('Subject'), request.GET.get('Class'))
+                            user = request.user.profile
+                            user.account_id = exist.id
+                            user.save()
                         data = {"status":exist.id, "tutor_name":exist.teacher_name, "tutor_id":exist.id}
                 if request.method == 'POST':#fetching from the html page and save to the database.
-                    tutor = BTUTOR.objects.get(pk=int(request.user.profile.account_id))
-                    response = [get_or_create(tutor, int(i[0]), i) for i in json.loads(request.POST['content'])]
+                    tutor = BTUTOR.objects.get(pk=json.loads(request.POST['content'])[0])
+                    response = [get_or_create(tutor, int(i[0]), i) for i in json.loads(request.POST['content'])[1]]
                     if tutor.subject == 'BST1' or tutor.subject == 'BST2':
                         tutor.subject = 'BST'
                     data = {"status":str(len(response)), 'updated':response[0][0], 'agr':response[0][1], 'fagr':response[0][2], 'sagr':response[0][3], 'aagr':response[0][4], 'avg':response[0][5]}
-            elif pk == "1":
+            elif pk == 1:
                     names = QSUBJECT.objects.filter(tutor__Class__exact= request.GET.get('Class'), tutor__subject__exact= request.GET.get('Subject'), tutor__session__exact = session.profile.session, tutor__term__exact = "1st Term").order_by('student_name__gender', 'student_name__full_name')
                     data = {"status":str(names.count())}
                     data["list"] = ['Default']+[[i.student_name.full_name, get_serial_no(i.student_name), i.student_name.id] for i in names] 
@@ -348,7 +350,7 @@ def synch(request, last, subject, Class):
             return HttpResponse("Error!", status=400)
 
         
-    elif last == '3':
+    elif last == 3:
         if subject == '1':
             contents = CNAME.objects.filter(Class__exact=subj[1][int(Class)], session__exact=session.profile.session).order_by('gender', 'full_name')
             sd = [[x.full_name, x.uid, x.birth_date, x.age, x.Class, x.gender, x.term, x.no_open, x.no_present, x.no_absent, x.no_of_day_abs, x.purpose, x.remark, x.W_begin, x.W_end, x.H_begin, x.H_end, x.good,x.fair, x.poor, x.event, x.indoor, x.ball, x.combat, x.track, x.jump, x.throw, x.swim, x.lift, x.sport_comment, x.club_one, x.club_two, x.contrib_one, x.contrib_two, x.master_comment, x.principal_comment, x.resumption, x.id] for x in contents]

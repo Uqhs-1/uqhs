@@ -13,7 +13,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class BTUTOR(models.Model):#
     accounts = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, help_text='loggon-account:move account here', related_name='btutor')
     teacher_name = models.CharField(max_length=50, blank=True, null=True, help_text='Subject Teacher')###
-    codex = tuple([('----', 'None'), ('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
+    codex = tuple([('----', 'None'), ('ACC', 'Account'), ('AGR', 'Agric. Sc.'), ('ARB', 'Arabic'), ('BST', 'Basic Science and Technology'), ('BIO', 'Biology'), ('BUS', 'Business Studies'), ('CTR', 'Catering'), ('CHE', 'Chemistry'), ('CIV', 'Civic Education'), ('COM', 'Commerce'), ('ECO', 'Economics'), ('ELE', 'Electrical'), ('ENG', 'English'), ('FUR', 'Furthe Mathematics'), ('GRM', 'Garment Making'), ('GEO', 'Geography'), ('GOV', 'Government'), ('HIS', 'History'), ('ICT', 'Information Technology'), ('IRS', 'Islamic Studies'), ('LIT', 'Litrature'), ('MAT', 'Mathematics'), ('MKT', 'Marketing'), ('NAV', 'National Value'), ('PHY', 'Physics'), ('PRV', 'Pre-Vocation'), ('YOR', 'Yoruba')])
     subject = models.CharField(max_length=30, choices= codex, blank=True, null=True, default='ENG', help_text='select subject NAME',)
     class_status = (('JSS 1', 'jss_one'), ('JSS 2', 'jss_two'), ('JSS 3', 'jss_three'), ('SSS 1', 'sss_one'), ('SSS 2', 'sss_two'), ('SSS 3', 'sss_three'))
     Class = models.CharField(max_length=30, choices=class_status, null=True, default='JSS 1', help_text='select subject CLASS')
@@ -154,9 +154,11 @@ class CNAME(models.Model):
     principal_comment = models.CharField(max_length=115, blank=True, null=True, default= 'Fairly good performance, you can do better.')
     resumption = models.DateTimeField(editable=False, blank=True, null=True,)
 
-    annual_scores = models.IntegerField(blank=True, null=True, default=0)
-    annual_avr = models.FloatField(max_length=4, blank=True, null=True, default=0)
-    posi = models.CharField(max_length=5, blank=True, null=True)
+    total_scores = models.IntegerField(blank=True, null=True, default=0)
+    grade = models.CharField(max_length=115, blank=True, null=True, default="null")
+    posi = models.CharField(max_length=5, blank=True, null=True, default="th")
+    no = models.IntegerField(blank=True, null=True, default=0)
+    dept = models.CharField(max_length=5, blank=True, null=True, default="nill")
 
     serial_no = models.IntegerField(blank=True, null=True, default=0)
     
@@ -182,8 +184,9 @@ class CNAME(models.Model):
         self.updated = today
         self.last_name = self.full_name.split(' ')[0]
         self.first_name = self.full_name.split(' ')[1]
-        if self.uid == "2019/JS_1/10" and self.id:
-              self.uid = "UQ/ADM/"+str(int(self.session[2:]) - 1)+"/"+str(self.id)
+        if self.uid:# == "2019/JS_1/10" and self.id:
+              self.uid = "CIHS/"+str(int(self.session[2:]) - 1)+"/"+str(self.id)
+              print(self.uid)
         self.sex = ['', 'Male', 'Female'][int(self.gender)]
         super(CNAME, self).save()
         
@@ -273,7 +276,7 @@ class QSUBJECT(models.Model):#step5-subject
 
 class Edit_User(models.Model):
    user = models.OneToOneField(User, on_delete=models.CASCADE,  blank=True, null=True, related_name='profile')
-   status = (('Mr.', 'Mr'), ('Mrs.', 'Mrs'), ('Sir.', 'Senior officer'), ('Ma.', 'Madam'), ('Mall.', 'Mallam'), ('Ust.', 'Ustadh'), ('Alh.', 'Alhaj'), ('Dr.', 'Doctor'), ('Engr.', 'Engineer'))
+   status = (('Mr.', 'Mr'), ('Mrs.', 'Mrs'),('Miss.', 'Miss'), ('Sir.', 'Senior officer'), ('Ma.', 'Madam'), ('Mall.', 'Mallam'), ('Ust.', 'Ustadh'), ('Alh.', 'Alhaj'), ('Dr.', 'Doctor'), ('Engr.', 'Engineer'))
    title = models.CharField(max_length=15, choices=status, null=True, help_text='Select title to address you.', default= 'Mr.')
    last_name = models.CharField(max_length=20, null=True, help_text='(Surname)-Required')
    first_name = models.CharField(max_length=20, null=True, help_text='(Other names)-Required')

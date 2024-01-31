@@ -1,12 +1,12 @@
 from .models import TUTOR_HOME
 from io import BytesIO
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template.loader import get_template
 import xhtml2pdf.pisa as pisa
 from django.contrib.auth.models import User
 from django.conf import settings
 import zipfile
-import os, boto3, requests
+#mport os#, boto3, requests
 
 def session():
     return User.objects.filter(is_superuser__exact=True).first()
@@ -166,6 +166,10 @@ class Render:
         if not pdf.err:
             response = HttpResponse(response.getvalue(), content_type = "application/pdf")
             response['Content-Disposition'] = "attachment; filename={name}.pdf".format(name=filename)
+            print(filepath)
+            result = open('C:/Users/USER/AppData/Local/Programs/Python/cihs/citadel/result/static/result/'+filepath, 'wb')
+            pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+            result.close()
             try:
                 upload_to_s3(response.content, filepath.split('.')[0]+'.pdf')
             except:
@@ -184,7 +188,7 @@ def generate_zip(files):
     return mem_zip.getvalue()
 
 
-from django.http import JsonResponse
+
 class Rendered:
     @staticmethod
     def render(path: str, params: dict, filepath, filename):
@@ -196,13 +200,9 @@ class Rendered:
         if not pdf.err:
             response = HttpResponse(response.getvalue(), content_type = "application/pdf")
             response['Content-Disposition'] = "attachment; filename={name}.pdf".format(name='summary')
-            try:
-                upload_to_s3(response.content, 'pdf/cards /'+filename+'/summary.pdf')
-                print('saved to uqhs bucket!')
-            except:#
-                result = open('/storage/emulated/0/uqi/result/static/pdf/'+'test.pdf', 'wb')
-                pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
-                result.close()
-                print('saved to offline!')
+            result = open('C:/Users/USER/AppData/Local/Programs/Python/cihs/citadel/result/static/result/pdf/shortlistedVenues/'+filename+'.pdf', 'wb')
+            pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+            result.close()
+            print('saved to offline!')
         data = {'status': filename}
         return JsonResponse(data)
