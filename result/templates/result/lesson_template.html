@@ -223,7 +223,7 @@
                 if (con == true) {
                             localStorage.setItem("{{ request.user.username }}"+"_lesson_template", JSON.stringify(quest));
                             var request  = $.ajax({
-                            url: "{% url 'pdf' ty=5 sx=0 %}",
+                            url: "{% url 'pdf' ty=5 sx=0 pk=2 uk=1 %}",
                             data: quest,
                             dataType: 'json',
                             });

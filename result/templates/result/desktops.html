@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link rel="shortcut icon" type="image/png" href="{% static "result/iiro.jpg" %}"/>
+	<link rel="shortcut icon" type="image/png" href="{% static "result/cihs.jpg" %}"/>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 	<script type="text/javascript" src="{{ STATIC_URL }}/static/jquery-3.4.1.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
@@ -15,168 +15,22 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-     
-		<style>
-		body, html { margin: 0px; padding: 0px; background-color:lavender; font-family: 'Trebuchet MS'; }
-		Container { width: 90%; min-width: 500px; margin: auto; }
-		.input{
-			text-align:center;width:100%;background-color:white;color:black;border-radius:5px;
-		}
-		table, th, td {
-			border: 1px solid #0000CD;border-radius:5px;font-family: Baskerville Old Face;text-align: center;font-size: 11px;
-            	}
-          	img{
-        	    border:2px solid rgba(247, 238, 238, 0.918);padding: 2px;
-    		}
-            	.forTd {width:6%;color:white;
-            	}
-		.inport{
-			height:1176px;top:10%;border:1px solid white;border:2px solid white;color:black;border-radius:5px;background-color:silver;margin-left:10%;width:55%;bottom:10%;margin-right:10%;overflow-x:hidden;
-		}
-		table {
-			border-collapse: collapse;margin-left:1%;width: 98%;
-		}
-		th, td {padding: 2px;}
-		table {border-spacing: 1px;
-		}
-		thead, tfoot {background-color:#2980B9;}
-		tbody {background-color:cornflowerblue;}
-		tr:nth-child(even) {background-color:lightgrey;}
-		.capt{margin-left:1%;border-radius: 5px;background-color:green;text-align: center;color: white;font-size:11px;width: 98%;
-		}
-		#sidenav {
-			height: 100%;width:25%;position:fixed;z-index: 1;top: 0px;right: 0;background-color: #f1f1f1;overflow-x:hidden;padding-top: 20px;background: #408000;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);margin-top: 89px;right:10%;border:2px solid goldenrod;color:black;border-radius:5px;
-		}
-		.sidenavs.nav {
-				margin-top: 20px;display: block;
-		}
-		.sidenavs a {
-			padding: 6px 8px 6px 16px;text-decoration: none;font-size: 25px;color: #818181;display: block;
-		}
-		.sidenavs a:hover {
-				color: #f1f1f1;
-		}
-		.grade_no {
-			background-color:white;border:2px solid white;color:black;border-radius:5px;border:1px solid blue;color:blue;
-		}
-		.red_black {
-				color:white;border-radius:4px;background-color:black;border:2px solid white;
-		}
-		.red_white {
-				color:white;border-radius:4px;background-color:black;border:2px solid white;
-		}
-		.highlight{
-				background-color:pink;border:2px solid red;
-		}
-		.selected{
-				border:2px solid green;background-color:blue;
-		}
-		.selectbut{
-			border:2px solid white;color:black;border-radius:5px;width:60%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;font-family:Bodoni MT Condensed;line-height:16px;
-		}
-		.images{
-       			height:40px;wdith:40px;border-radius:4px;padding: 1px;border:2px solid white;
-  		}
-
-		.doned{
-			background-color:white;color:green;border-radius:5px;border:1px solid green;
-		}
-	    	.forReg{
-		 	width:60%;background-color:hsla(71, 78%, 87%, 0.294);color:white;border:3px solid hsla(70, 34%, 63%, 0.863);border-radius:5px;font-family:Broadway;font-size:10px;line-height:16px;
-	    	}
-    		#header {
-        		border:1px solid white;border:2px solid lightblue;color:black;border-radius:5px;margin-left:10%;color:white;width:80%;font-size:275%;
-    		}
-    		#headern {
-        		margin-left:6%;font-size:200%
-    		}
-
-    		#right {
-        		height:100%;width:10%;top:0px;border:2px solid white;border-radius:5px;position:fixed;background-color:blue;right:0;color:white;text-align:center;
- 	 	}
-    		#left {
-        		height:100%;width:10%;top:0px;border:2px solid white;border-radius:5px;position:fixed;background-color:blue;left:0;color:white;text-align:center;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
-    		}
-    
-    		#header2 {
-        		border-radius:2px;height:30px;background-color:red;border:2px solid red;color:white;width:45%;font-size:18px;
-    		}
-    		#header3 {
-       	 		border-radius:2px;height:30px;background-color:white;border:2px solid red;color:black;width:45%;font-size:18px;
-    		}
-    		#address {
-        		color:white;border:3px solid white;border-radius:5px;text-align:center;width:80%;margin-left:10%;margin-right:10%;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
-    		}
-    		#address1 {
-        	color:white;border:2px solid white;color:white;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;font-size:19px;padding:2px;
-    		}
-    		#contact {
-                	color:white;border:1px solid white;border:2px solid white;color:black;border-radius:5px;text-align:center;margin-left:10%;margin-right:10%;
-            	}
-            	#contact1 {
-                	margin-left:-26%;
-            	}
-		#middle {background-color:gray;border:1px solid white;border-radius:3px;color:white;
-		}
-    		@media (max-width: 900px) 
-		{
-  			#right, #left, #sidenav {
-    				width: 0;overflow-x: hidden;background-color:gray;border:none;margin-top:0;
- 				}
-  			#rightm {
-        			height:50px;width:10%;top:0px;border:1px solid red;border-radius:5px;position:fixed;background-color:gray;right:0;color:white;text-align:center;
-    				}
-			#leftm {
-        			height:50px;width:10%;top:0px;border:1px solid red;border-radius:5px;position:fixed;background-color:gray;left:0;color:white;text-align:center;
-    				}
-			#closebtn {
-      				color:red;border-radius:1px solid white;background-color:hsla(71, 78%, 87%, 0.294);
-  				}
-  			#header {
-      				font-size:185%
-  				}
-  			#header2, header3 {
-      				font-size:15px;
-  				}
-  			#headern {
-        			margin-left:5%;font-size:150%;
-    				}
-   
-    			.capt{
-        			width:100%;font-size:9px;
-    				}
-    			.inport{
-        			width:100%;font-size:9px;margin-left:0;
-    				}
-    			#address, #address1, #contact {
-        			width:100%;margin-left:0;margin-right:0;border:1px solid red;text-align:center;
-    				}
-     			#contact1 {
-                		margin-left:0;
-            			}
-    			table, th, td {font-size:8px;border-spacing:none;padding:0px;}
-    			.forTd {
-                 		width:10%;font-size:10px;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
-            			}
-    			.tth {
-                 		width:6%;font-size:10px;box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
-            			}
-		}
-	</style>
+    <link rel="stylesheet" href="{% static 'result/css/desctop.css' %}">
+		
    </head>
    <body>
-		<div id="header"><em id="headern" style="color:blue;">UMMUL-QURA INSTITUTE</em>
+		<div id="header"><em id="headern" style="color:rgb(181, 250, 92)">CITADEL ISLAMIC HIGH SCHOOL</em>
 		</div>
 		<div id="address" style="color:red;margin-left:10px;width:100%;">
-			Akanran Road, Arowona Bus-stop Amuloko, Oyo State, Ibadan.
+			Akomeji Oganke, thy-will, Bus-Stop Akanran Road, Ibadan. 
 		</div>
 		<div id="address1" style="color:white;font-size:200%;margin-left:120px;;width:80%;"><em >EXAMINATION RESULT PORTAL</em>
 				
 		</div>
-                <button id="rightm" onclick="openNav('right')"><img src="{% static "result/iiro.jpg" %}" height="50" style="border-radius:5px;" width="50"/><br>
+                <button id="rightm" onclick="openNav('right')"><img src="{% static "result/cihs.jpg" %}" height="50" style="border-radius:5px;" width="50"/><br>
                 Menu</button>
         
-		<div id="right">  <img src="{% static "result/uqhs.jpg" %}" height="50" style="border-radius:5px;" width="50"/>
+		<div id="right">  <img src="{% static "result/cihs.jpg" %}" height="50" style="border-radius:5px;" width="50"/>
             <div onclick="closeNav('right')" id="rightbtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div> <br>
 			<a href="{% url 'flexing' %}" title="Home Page" style="color:white;font-weight:bold;">Main Page</a>
 			<br>
@@ -235,13 +89,14 @@
 
 <br>
 		</div>
-       <button id="leftm" onclick="openNav('left')"><img src="{% static "result/uqhs.jpg" %}" height="50"  id="closebtn" style="border-radius:5px;" width="50"/></span><br>
+       <button id="leftm" onclick="openNav('left')"><img src="{% static "result/cihs.jpg" %}" height="50"  id="closebtn" style="border-radius:5px;" width="50"/></span><br>
                 Main</button>
 	    <div id="left">
                <div onclick="closeNav('left')" id="leftbtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div>
 			<br>
-			<a href="{% url 'home' %}" title="home" style="color:white;font-weight:bold;"><img src="{% static "result/iiro.jpg" %}" height="50" style="border-radius:5px;" width="50"/></a>	<br>
+			<a href="{% url 'home' %}" title="home" style="color:white;font-weight:bold;"><img src="{% static "result/oyologo.jpg" %}" height="50" style="border-radius:5px;" width="50"/></a>	<br>
 			<br>
+
 		<u style="font-weight:bold;">RESULTS</u>
 			<ol>
 				<li>
@@ -327,6 +182,7 @@
 				<option value="IRS">Islamic Religion Studies</option>
 				<option value="LIT">Literature</option>
 				<option value="MAT">Mathematics</option>
+				<option value="MKT">Marketing</option>
 				<option value="NAV">Regional and National Value</option>
 				<option value="PHY">Physics</option>
 				<option value="PRV">Pre-Vocational Studies</option>
@@ -385,7 +241,7 @@
 				</a>
 				<u class="red_black" id="term">First Term</u>
 				<div>
-				<label id="header2">UMMUL-QURA HIGH SCHOOL</label><label id="header3">{<span style="font-size:14px;" id="dated"></span>}</label><img src="{% static "result/uqhs.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
+				<label id="header2">CITADEL ISLAMIC HIGH SCHOOL </label><label id="header3">{<span style="font-size:14px;" id="dated"></span>}</label><img src="{% static "result/cihs.jpg" %}" height="30" style="border-radius:5px;" width="30"/>
 				</div>
 			</div>
 							 
@@ -406,13 +262,13 @@
 						<th style="width:30%;">
 							  <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid white;color:black;border-radius:5px;">Males</button>
              
-                <a href="{% url 'pdf' ty=2 sx=2 pk=0 %}">
+                <a onclick="pdf()">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
               |
                 <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid white;color:black;border-radius:5px;">Fmales</button>
             
-                <a href="{% url 'pdf' ty=2 sx=1 pk=0 %}">
+                <a onclick="pdf()">
                   <span class="glyphicon glyphicon-print" title="print"></span>
                 </a>
 						</th>
@@ -451,9 +307,9 @@
                                 <td id="total_{{ forloop.counter }}" class="tth">30</td>
                                 <td class="forTd"  id="all_{{ forloop.counter }}_4"><input type="number" min="0" max="70" class="input" id="exam_{{ forloop.counter }}" value="0" onclick="done({{ forloop.counter }}, 4)"></td>
                                 <td id="agr_{{ forloop.counter }}" class="tth">100</td>
-								<td id="first_{{ forloop.counter }}" class="third" class="tth" hidden>100</td>
-								<input type="text" id="fagr_{{ forloop.counter }}" value="0" hidden>
 								<td id="second_{{ forloop.counter }}" class="third" class="tth" hidden>100</td>
+								<input type="text" id="fagr_{{ forloop.counter }}" value="0" hidden>
+								<td id="first_{{ forloop.counter }}" class="third" class="tth" hidden>100</td>
 								<input type="text" id="sagr_{{ forloop.counter }}" value="0" hidden>
 								<td id="anual_{{ forloop.counter }}" class="third" class="tth" hidden>300</td>
 								<input type="text" id="aagr_{{ forloop.counter }}" value="0" hidden>
@@ -548,7 +404,7 @@
 					</td>
 					<td id="mid_foo">
 						<button style="width:100%;border:2px solid white;color:black;border-radius:5px;background-color:white;">
-						   <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"><span class="glyphicon glyphicon-save"></span></a>
+						   <a onclick="pdf()"><span class="glyphicon glyphicon-save"></span></a>
 						</button>
 					</td>
 					</tr>                                                                                                                             
@@ -585,7 +441,10 @@ function redirect(to) {
 					var next = window.location.href.split('offline')[0]+to+'/';
         			location.replace(next);
 					};
-			
+function pdf(){
+					var pdf = 'pdf/2/0/'+dom.tutor_id;
+					redirect(pdf)
+				}			
 $("#Jone, #Jtwo, #Jthree, #Sone, #Stwo, #Sthree").change(function(){
 					redirect($(this).val()+'/1')
 				});
@@ -622,7 +481,7 @@ $('#form').submit(function (evt) {
 				   ', Last Name:' + $("#lname").val()+ ', Gender: '+ $("#gender").val()+', Birth :'+ $("#birth").val()+ ', Class :'+ $("#class").val() +', Click OK to continue.')
 		                   if (promp == true){
             		var request  = $.ajax({
-			   							url: "{% url 'responsive_updates' pk=0 %}",   
+			   							url: window.location.href.split('offline')[0]+'responsive_updates/0/'+dom.tutor_id+'/',   
 			   							data: { 'flow':'registration',  
 				       					'first': $("#fname").val(), 'middlename':$("#oname").val(),
 				       					'last' : $("#lname").val(),
@@ -817,7 +676,7 @@ function reload(data, classCat){
 
 function go_to_load_data(tutor_id){
 							var request = $.ajax({
-								url: "{% url 'responsive_updates' pk=0 %}",
+								url: window.location.href.split('offline')[0]+'responsive_updates/0/'+dom.tutor_id+'/', 
 								data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"toHtml", 'tutor_id':tutor_id},
 								dataType: 'json',
 								success: function(data) {
@@ -845,7 +704,7 @@ $("#Class").change(function(){
 							$("#top_class").html($(this).val());
 							getNames($(this).val(), 'ENG')
 						var request = $.ajax({
-							url:"{% url 'responsive_updates' pk=0 %}",
+							url:window.location.href.split('offline')[0]+'responsive_updates/0/1/', 
 							data:{'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"confirm"},
 							dataType: 'json',
 							success: function(data){
@@ -863,12 +722,11 @@ $("#Class").change(function(){
 										var create = confirm("No "+  $("#Class").val() + '/'+ $("#Subject").val() +" in your accoount! Do you  want to create it?");
 										if (create == true){
 											var request = $.ajax({
-												url: "{% url 'responsive_updates' pk=0 %}",
+												url: window.location.href.split('offline')[0]+'responsive_updates/0/1/', 
 												data: {'Class':$("#Class").val(),'Subject':$("#Subject").val(),'Term':$("#Term").val(), 'flow':"create"},
 												dataType: 'json',
 												success: function(data) {
 												if (data.status){
-			
 													$("#dated").html(data.updated);
 													$("#tutor_name").html(data.tutor_name);
 													dom.tutor_id = data.tutor_id;
@@ -1010,12 +868,13 @@ function done(x, y){
 
 $("#Subject").change(function(){$("#min, #max").html($(this).val())});
 
+var sub_tittle = {'ACC':"ACCOUNT", 'AGR':"AGRIC. SC.",'ARB':"ARABIC",'BIO':"BIOLOGY",'BST':"BASIC SCIENCE AND TECHNOLOGY",'BST1':"BASIC SCIENCE",'BST2':"BASIC TECHNOLOGY",'BUS':"BUSINESS STUDIES",'CHE':"CHEMISTRY",'CIV':"CIVIC EDUCATION",'COM':"COMMERCE",'CTR':"CATERING",'DRN':"DATA PROCESSING",'ECO':"ECONOMICS",'ELE':"ELECTRICAL",'ENG': "ENGLISH",'FUR':"FURTHE MATHEMATICS",'GEO':"GEOGRAPHY",'GOV':"GOVERNMENT",'GRM':"GARMENT MAKING",'HIS': "HISTORY",'ICT':"INFORMATION TECHNOLOGY",'IRS':"ISLAMIC STUDIES",'LIT':"LITRATURE",'MAT':"MATHEMATICS",'MKT':"MARKETING",'NAV':"NATIONAL VALUE",'PHY':"PHYSICS",'PRV':"PRE-VOCATION",'YOR':"YORUBA", '1st Term':'FIRST TERM', '2nd Term':'SECOND TERM', '3rd Term':'THIRD TERM'}
 function go_to(key, i){
 							if (dom.tutor_id){
                             if (i == 'none') {
 								if ('{{qry}}' !='None'){
-									var conf = confirm("Do you want to overwrite "+ data.Term + ' scores?')
-								if (conf == true){redirect('upload_txt/'+ dom.tutor_id)}
+									var conf = confirm("Do you want to upload "+sub_tittle[$("#Term").val()]+ " scores for "+ sub_tittle[$("#Subject").val()] + ' '+$("#Class").val()+' ?')
+									if (conf == true){redirect('upload_txt/'+ dom.tutor_id)}
 								}else{redirect('upload_txt/'+ dom.tutor_id)}
                                     }
                             else{redirect(+key+'/'+ dom.tutor_id +'/'+i)
@@ -1117,7 +976,7 @@ function getNames(a, b){
 									$("#tb_"+itr).removeClass("newBox");
 								};
 							var request = $.ajax({
-									url:"{% url 'responsive_updates' pk=1 %}",
+									url:window.location.href.split('offline')[0]+'responsive_updates/1/'+dom.tutor_id+'/', 
 									data: {'Class': a,'Subject': b, 'flow':'name'},
 										dataType: 'json',
 										success: function(data) {
@@ -1270,6 +1129,7 @@ function listening(data){
 								find(data[0][i], data[1].sort((a, b) => b - a), i+1);
 								};
 							var array = [];var list, fagr, sagr;
+							array.push(dom.tutor_id)
 							for (var i = varTotal.start; i < varTotal.end;  i++){
 								var itr = ""+i;
 								if ($("#fagr_"+itr).val()){fagr = $("#fagr_"+itr).val()}else{fagr = 0};
@@ -1281,7 +1141,7 @@ function listening(data){
 								var request = $.ajax({
 								type:'POST',
 								data:{'content':array},
-								url:"{% url 'responsive_updates' pk=0 %}",
+								url:window.location.href.split('offline')[0]+'responsive_updates/0/'+dom.tutor_id+'/', 
 								dataType: 'json',
 								success: function(data) {
 								counter.count = 1;
@@ -1322,7 +1182,7 @@ function share(){
                    <div onclick="closeNav('middle')" id="middlebtn" hidden><span class="glyphicon glyphicon-remove" id="closebtn"></span></div>
                    <em id='response' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;" hidden>Registeration Successful: Details</em>
 				   <ol id='failed' style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;font-family:Bookman Old Style;"></ol>
-                   <ol id='success' style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;"></ol>
+                   <ol id='success' style="border:2px solid white;color:black;border-radius:5px;width:85%; border:1px solid red;border:2px solid white;color:black;border-radius:5px;color:white;"></ol> 
 				<div style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;text-align:center;" id="searchResult" hidden>LIST OF <em id='sub_class'></em> NAMES<em id='count'></em></div>{% csrf_token %}	
 				<table style="margin-left:0%;border:2px solid white;color:black;border-radius:5px;width:100%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;" id="resultTable"></table>	
 			   	<em style="margin-left:23%;border:2px solid white;color:black;border-radius:5px;width:5%; border:1px solid white;border:2px solid white;color:black;border-radius:5px;color:white;background-color:black;">JUNIOR SUBJECT LIST</em>	
@@ -1384,9 +1244,9 @@ function share(){
 				<br>
             </div>
 			
-		<div id="contact"><em id="contact1"><i>Contact</i>: 08053776177, 07042412052</em></div>
+		<div id="contact"><em id="contact1"><i>Contact</i>:08110650468, 08102262538, 08054426623</em></div>
 		<div id="contact"
-		><em id="contact1"><i>E-mail</i>: ummulqura@marktoob.com, ummulqr@yahoo.com</em></div>
+		><em id="contact1"><i>E-mail</i>:cihsa@marktoob.com, cihs@yahoo.com</em></div>
    </body>
     
 </html>

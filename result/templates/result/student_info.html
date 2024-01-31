@@ -59,7 +59,7 @@
                             <option value="Others">Others</option>
                 </select>
             <label for="" style="font-size:60%;">Contacts: </label>
-            <input type="number" value="{{ info.contact1 }}" style="line-height:5px;font-size:60%;width:18%;background-color:#9DC0AF;color:white;border-radius:5px;font-size:10px;" name="contact1" id="contact1" max=11>/<input type="number" value="{{ info.contact2 }}" style="line-height:5px;font-size:60%;width:18%;background-color:#9DC0AF;color:white;border-radius:5px;font-size:10px;" name="contact" id="contact2" max=11>
+            <input type="tel" value="{{ info.contact1 }}" style="line-height:5px;font-size:60%;width:18%;background-color:#9DC0AF;color:white;border-radius:5px;font-size:10px;" name="contact1" id="contact1" max=11>/<input type="tel" value="{{ info.contact2 }}" style="line-height:5px;font-size:60%;width:18%;background-color:#9DC0AF;color:white;border-radius:5px;font-size:10px;" name="contact" id="contact2" max=11>
    
             <label style="font-size:60%">Address.:</label><input type="text" value="{{ info.address }}" style="font-size:60%;height:19px;width:84%;background-color:#A29A9A;border-radius:3px;color:white;" name="address" id="address"><br>
         <div style="font-weight:bold;background-color:black;color:white;border-radius:5px;border:1px solid blue;text-align:center;width:40%;">Attendance and Punctuality</div>
@@ -272,15 +272,15 @@
                 <td>
                     <select name="club_two" id="club_two" required="True" value="{{ info.club_two }}" style="background-color:rgb(236, 235, 234);color:Maroon;width:100%;text-align:center;border-radius:5px;">
                         <option value="{{ info.club_two }}">{{ info.club_two }}</option>
-                        <option value="ARTS">Arts & Craft</option>
+                        <option value="ART">Arts & Craft</option>
                         <option value="CHY">Choreography</option>
                         <option value="LDS">Literary and Debating Society</option>
                         <option value="JETS">The JETS club</option>
-                        <option value="SCOUT">Scout of Nigeria</option>
-                        <option value="PRESS">The Press club</option>
-                        <option value="AGRO">The Young Agriculturist</option>
+                        <option value="SCT">Scout of Nigeria</option>
+                        <option value="PRS">The Press club</option>
+                        <option value="YGF">The Young Agriculturist</option>
                         <option value="MSSN">Muslim Student Society of Nigeria</option>
-                        <option value="HMC">The Home makers club</option>
+                        <option value="RSC">Nigeria Road Safety club</option>
                     </select>
                 </td>
                 <td>
@@ -325,7 +325,7 @@
                 {% endif %}
             </select>
             <button class="btn-btn-primary" name='Save' style="background-color:green;color:white;border-radius:5px;font-size:10px;">Save<span class="glyphicon glyphicon-ok"> </span></button><br>
-            <div style="width:100%;font-weight:bold;margin-left:0%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;" id="outcome" hidden><em id="success"></em> <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=info.id pk=0 %}" title="{{ scr.student_id }}" style="color:white;">Go to Report Card</a></button></div>
+            <div style="width:100%;font-weight:bold;margin-left:0%;background-color:white;color:gray;opacity:0.6;border-radius:5px;border:1px solid blue;text-align:center;" id="outcome" hidden><em id="success"></em> <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;"><a href="{% url 'pdf' ty=4 sx=info.id pk=0 uk=1 %}" title="{{ scr.student_id }}" style="color:white;">Go to Report Card</a></button></div>
         </div>
         
     </div>   

@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}{% load crispy_forms_tags %}
+{% extends "base_generic.html" %}
 <html lang="en">
 	<head>
     
@@ -60,7 +60,7 @@
             <option value="ARB">Arabic</option>
             <option value="BIO">Biology</option>
             <option value="BST1">Basic Science</option>
-	    <option value="BST2">Basic Technology</option>
+	          <option value="BST2">Basic Technology</option>
             <option value="BST">Basic Science & Technology</option>
             <option value="BUS">Business Studies</option>
             <option value="CHE">Chemistry</option>
@@ -80,6 +80,7 @@
             <option value="IRS">Islamic Religion Studies</option>
             <option value="LIT">Literature</option>
             <option value="MAT">Mathematics</option>
+            <option value="MKT">Marketing</option>
             <option value="NAV">Regional and National Value</option>
             <option value="PHY">Physics</option>
             <option value="PRV">Pre-Vocational Studies</option>
@@ -228,7 +229,8 @@
                         document.getElementById("first_term").value = data.first_term;
                         document.getElementById("second_term").value = data.second_term;
                         document.getElementById("third_term").value = data.third_term;
-                        location.replace(document.referrer)
+                        var oldurl = document.referrer;
+                        location.replace(oldurl)
              }});     
                    request.fail(function(xhr, status, error) {
        var errors = {'0':'Client connectivity', '500':'Internal Server' };

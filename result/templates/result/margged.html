@@ -30,14 +30,14 @@
           <button onclick="$('.gen_2').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.males}}">Males
           </button>
           {% if user.is_authenticated %}
-            <a href="{% url 'pdf' ty=2 sx=2 pk=0 %}">
+            <a href="{% url 'pdf' ty=2 sx=2 pk=0 uk=qry.id %}">
               <span class="glyphicon glyphicon-save" title="print"></span>
             </a>
           {% endif %}
             <button onclick="$('.gen_1').toggle()" style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;" title="{{qry.females}}">Females
             </button>
           {% if user.is_authenticated %}
-            <a href="{% url 'pdf' ty=2 sx=1 pk=0 %}">
+            <a href="{% url 'pdf' ty=2 sx=1 pk=0 uk=qry.id %}">
               <span class="glyphicon glyphicon-save" title="print"></span>
             </a>
           {% endif %}
@@ -81,7 +81,7 @@
           $("#toAll_{{ forloop.counter }}").addClass("gen_{{ scr.student_name.gender }}");
         </script>
         <td style="width:1%;">{{ forloop.counter }}</td>
-        <td style="width:30%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()" id="edith_student_hide_{{ forloop.counter }}">{{ scr.student_name.full_name }}
+        <td style="width:40%;cursor:pointer;" onclick="$('#hid_{{ forloop.counter }}').toggle()" id="edith_student_hide_{{ forloop.counter }}">{{ scr.student_name.full_name }}
             <div id="hid_{{ forloop.counter }}" hidden>
               <button style="line-height:65%;border:2px solid blue;color:black;border-radius:5px;">
                 <a href="{% url 'student_info' pk=scr.student_name.id %}" title="{{ scr.student_id }}" style="color:blue;">
@@ -102,7 +102,7 @@
         <td id="edith_student_show_{{ forloop.counter }}" hidden>
           <input  id="edith_name_show_{{ forloop.counter }}" type="text" value="{{ scr.student_name.full_name }}" style="line-height:65%;border-radius:3px;background-color:white;color:black;width:100%;border:1px solid red;text-align:center;font-size:11px;" disabled>
         </td>
-        <td style="color:sienna;width:5%;" title="{{ scr.student_name }}"  id="show_ed{{ forloop.counter }}">
+        <td style="color:sienna;width:10%;" title="{{ scr.student_name }}"  id="show_ed{{ forloop.counter }}">
           <button style="line-height:65%;border-radius:3px;background-color:green;color:white;width:100%;border:1px solid white;" onclick="edith('{{ forloop.counter }}', '{{ scr.student_name.full_name }}')" class="show_ed">
             {{ scr.student_id }}
           </button>
@@ -289,10 +289,21 @@
                 <span class="glyphicon glyphicon-remove" title="remove a student from the table"></span>
               </button>
         </td>
-        <td><strong>AGR:</strong></td>
+        <td>
+          {% if request.user.is_superuser %}
+          <button style="line-height:65%;border-radius:3px;background-color:rgb(241, 240, 238);color:white;border:1px solid white;width:100%;">
+            <a href="{% url 'pdf' ty=4 sx=pk pk=pk uk=11 %}"> 
+              <span class="glyphicon glyphicon-file" title="click to generate card for this class" ></span>
+            </a>
+          </button>
+          {% else %}
+          <strong>AGR:</strong>
+          {% endif %}
+        </td>
         <td style="color:white;">
           <input type='text'  value='{{ subject_scores }}' disabled style="line-height:65%;border-radius:3px;background-color:white;font-weight:bold;color:red;border:1px solid white;width:100%;">
         </td>
+
         <td colspan="2" style="color:white;width:5%;">
           <input type='text'  value='{{ subject_pert }}%' disabled style="line-height:65%;border-radius:3px;background-color:white;font-weight:bold;color:red;border:1px solid white;width:100%;">
         </td>
@@ -307,45 +318,45 @@
             <button onclick="activate()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;">
                 <span class="glyphicon glyphicon-align-right" title="Click to edith all"></span>
             </button>
-            <button id="saveBut" onclick="saveOnce()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;" hidden>
+            <button id="saveBut" onclick="saveOnce()" style="line-height:65%;border-radius:3px;background-color:rgb(241, 252, 241);color:white;border:1px solid white;" hidden>
                 <span class="glyphicon glyphicon-floppy-saved" title="Click to save all"></span>
             </button>
         </td>
         <td colspan="7" id='tenb'>
             <a href="{% url 'tutor_update' pk=pk %}" title='Click to edit class details'>
-              <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;" >
+              <button style="line-height:65%;border-radius:3px;background-color:rgb(240, 243, 240);color:rgb(238, 24, 24);border:1px solid white;" >
                 {{ qry.teacher_name }}
               </button>
             </a> |{% if user.is_authenticated %}
             <a href="" style="color:white;" title='Click to upload exam questions'> 
-              <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;">
+              <button style="line-height:65%;border-radius:3px;background-color:rgb(237, 247, 237);color:rgb(212, 29, 29);border:1px solid white;">
                 Upload Questions 
               </button>
             </a>
           {% endif %}
         </td>
         <td>{% if user.is_authenticated %}
-          <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;">
-            <a href="{% url 'pdf' ty=2 sx=0 pk=0 %}"> 
-              <span class="glyphicon glyphicon-save" title="click to download pdf file" ></span>
+          <button style="line-height:65%;border-radius:3px;background-color:rgb(246, 252, 246);color:rgb(228, 24, 24);border:1px solid white;width:100%;">
+            <a href="{% url 'pdf' ty=2 sx=0 pk=0 uk=qry.id %}"> 
+              <span class="glyphicon glyphicon-print" title="click to download pdf file" ></span>
             </a>
           </button>
           {% endif %}
         </td>
         <td>
-          <button onclick="share()" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;"> 
+          <button onclick="share()" style="line-height:65%;border-radius:3px;background-color:rgb(236, 243, 236);color:rgb(231, 23, 23);border:1px solid white;width:100%;"> 
             <span class="glyphicon glyphicon-share-alt" title="click to share on whatsapp"></span> 
           </button> 
         </td>
         <td>
-          <button style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;">
+          <button style="line-height:65%;border-radius:3px;background-color:rgb(237, 243, 237);color:white;border:1px solid white;width:100%;">
             <a href="{% url 'name_down' pk=6 fm=1 ps=0 %}">
               <span class="glyphicon glyphicon-export" title="click to download csv file"></span>
             </a>
          </button>
         </td>
         <td>
-          <button id='clicked' onclick="synchr('{{ qry.subject }}', '{{ qry.Class }}')" style="line-height:65%;border-radius:3px;background-color:green;color:white;border:1px solid white;width:100%;">
+          <button id='clicked' onclick="synchr('{{ qry.subject }}', '{{ qry.Class }}')" style="line-height:65%;border-radius:3px;background-color:white;color:rgb(235, 12, 12);border:1px solid white;width:100%;">
             <span class="glyphicon glyphicon-refresh" title="click to update record"></span>
           </button>
         </td>
@@ -428,11 +439,12 @@
     dim.unshift("{{ scr.grade }}");
     $("#toAll").addClass("oneBox")
     $("#toAll").addClass("gen_{{ scr.student_name.gender }}");
+
     function cards(nam, cls, trm){
-              var argt = {'JSS 1':'1', 'JSS 2':'2', 'JSS 3':'3', 'SSS 1':'4', 'SSS 2':'5', 'SSS 3':'6'}
-              var kwd = argt[cls]+'/'+trm+'/'+nam.split(' ')[0]+'_'+nam.split(' ')[1]+'.pdf'
-              var next = "https://dhnygxib7cbg0.cloudfront.net/pdf/cards /"+kwd;
-              window.open(next, '_blank');
+            var name = nam.split(' ')[0]+'_'+nam.split(' ')[1];
+            var ls = {'JSS 1':'1', 'JSS 2':2, 'JSS 3':3, 'SSS 1':4, 'SSS 2':5, 'SSS 3':6}
+            var next = window.location.href.replace(window.location.href.split('result')[1], '/static/result/pdf/cards/'+ls[cls]+'/'+trm+'/'+name+'.pdf')
+                window.open(next, '_blank');
               };
     if ("{{ qry.Class }}".split(' ')[0] == 'JSS'){
 		      $("#Senior").hide();$("#Junior").show()}
@@ -507,9 +519,8 @@
             $("#show_sa"+""+i).css('color', 'white');
             $("#total_"+""+i).html(eval([DictVal.test, DictVal.atd, DictVal.agn].join('+')));
             if ('{{request.user.is_superuser}}' == 'True' || '{{ request.user.is_staff }}' == 'True'){
-                if (window.navigator.onLine) {
                 var grader  = $.ajax({
-                                url: "{% url 'responsive_updates' pk=0 %}",
+                                url: "{% url 'responsive_updates' pk=0 uk=pk %}",
                                 data: {
                                     'flow':'mygrade',
                                     'scores':eval([DictVal.test, DictVal.atd, DictVal.agn, DictVal.exam].join('+')),
@@ -523,7 +534,7 @@
                         var request = $.ajax({
                                       type:'POST',
                                       data:{'content':array},
-                                      url: "{% url 'responsive_updates' pk=0 %}",
+                                      url: "{% url 'responsive_updates' pk=0 uk=pk %}",
                                       dataType: 'json',
                                       
                                           });
@@ -547,10 +558,7 @@
                                                   
                                                  
                                                    });
-                                                   }
-                              else {
-                                alert("No network is available!")
-                              } }
+                                                    }
                               else{
                                           var next = window.location.href.split('/')[0]+"/result/logins/";
                                           location.replace(next);
@@ -702,7 +710,7 @@
                 var request = $.ajax({
                         type:'POST',
                         data:{'content':JSON.stringify(content)},
-                        url:"{% url 'responsive_updates' pk=0 %}",
+                        url:"{% url 'responsive_updates' pk=0 uk=pk %}",
                         dataType: 'json',
                         success: function(data) {
                             }

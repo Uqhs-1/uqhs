@@ -40,7 +40,7 @@
                     };
                 $("#dropDown").change(function(){
                         var pk = $("#dropDown").val();
-                        redirect('render/pdf/4/'+pk+'/0/')
+                        redirect('render/pdf/4/'+pk+'/0/1')
                     });
             </script>
     </div>
@@ -473,7 +473,7 @@
                 <option value="Fairly good result, work harder on the concerned subject">Fairly good result, work harder on the concerned subject</option>
                 </select>
 
-                <a href="{% url 'pdf' ty=1 sx=info.id pk=0 %}" target="_blank"><button name="saved" style="margin-left:-4px;background:orange;width:13%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);font-size:8px;">Ok
+                <a href="{% url 'pdf' ty=1 sx=info.id pk=0 uk=1 %}" target="_blank"><button name="saved" style="margin-left:-4px;background:orange;width:13%;border-radius:5px;text-align:center;border: 1px solid rgba(247, 238, 238, 0.918);font-size:8px;">Ok
                     <span class="glyphicon glyphicon-print"></span>
                 </button></a>
             </i>
